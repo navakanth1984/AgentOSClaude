@@ -1,0 +1,21 @@
+{
+  "page_num": 12,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:31.727301+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_12_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 200.8036346435547,
+        "x2": 832.1715698242188,
+        "y2": 1267.937255859375
+      },
+      "layout_tag": "table",
+      "confidence": 0.8845993876457214,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th>Friday<br/>11/025</th>\n<th>C.W</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>4,</td>\n<td>Name the line given in at<br/>least ten ways choosing only<br/>two letters at a time .</td>\n</tr>\n<tr>\n<td>Sol:-</td>\n<td>AB, AC, AD, AE, BC, BP, BE<br/>CD, CE, DE</td>\n</tr>\n<tr>\n<td>5,</td>\n<td>List the points that are collinear<br/>on the line segment AE.<br/>R S T<br/>A B C D E<br/>P Q</td>\n</tr>\n<tr>\n<td>Sol:-</td>\n<td>A, B, C, D, E</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

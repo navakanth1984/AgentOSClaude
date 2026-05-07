@@ -1,0 +1,99 @@
+{
+  "page_num": 6,
+  "image_width": 1080,
+  "image_height": 1492,
+  "created_at": "2026-02-14T03:07:13.240938+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_006",
+      "coordinates": {
+        "x1": 111.091796875,
+        "y1": 1073.1788330078125,
+        "x2": 1044.8289794921875,
+        "y2": 1316.8221435546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9484140872955322,
+      "reading_order": 7,
+      "text": "Hydrophytes are plants which live in\nwater. These plants can either be\nsubmerged in water (hydrilla) or\nfloating (lotus) on the surface of\nthe water."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_003",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 420.19189453125,
+        "x2": 1011.4794311523438,
+        "y2": 599.9064331054688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9437353610992432,
+      "reading_order": 4,
+      "text": "Ans, The two kinds of aquatic habitats\nare the marine and the\nfreshwater habitats ."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_002",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 258.3517761230469,
+        "x2": 952.5499267578125,
+        "y2": 381.9164123535156
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9366204738616943,
+      "reading_order": 3,
+      "text": "Q, Name the two types of aquatic\nhabitats."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_004",
+      "coordinates": {
+        "x1": 0.7882797718048096,
+        "y1": 625.1210327148438,
+        "x2": 985.8182983398438,
+        "y2": 753.9478759765625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8990330100059509,
+      "reading_order": 5,
+      "text": "8Q, What are the characteristics of\na grassland habitat?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_001",
+      "coordinates": {
+        "x1": 728.3369140625,
+        "y1": 93.7621078491211,
+        "x2": 990.6286010742188,
+        "y2": 186.4700927734375
+      },
+      "layout_tag": "header",
+      "confidence": 0.8645567297935486,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_005",
+      "coordinates": {
+        "x1": 0.7194972038269043,
+        "y1": 776.04248046875,
+        "x2": 1018.6978149414062,
+        "y2": 1052.3211669921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8413128852844238,
+      "reading_order": 6,
+      "text": "Ans, A grassland habitat has tall\ngrasses with a few trees. There\nis no place for animals to hide.\n90, What are hydrophytes?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_6_block_000",
+      "coordinates": {
+        "x1": 445.6280517578125,
+        "y1": 149.61553955078125,
+        "x2": 562.4291381835938,
+        "y2": 207.97398376464844
+      },
+      "layout_tag": "header",
+      "confidence": 0.8246945142745972,
+      "reading_order": 1,
+      "text": "C·W"
+    }
+  ]
+}

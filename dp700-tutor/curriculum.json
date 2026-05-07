@@ -1,0 +1,28 @@
+{
+    "modules": [
+        {
+            "id": "onelake",
+            "title": "OneLake: The Galactic Repository",
+            "description": "The 'OneDrive for data' that unifies all organizational data in a single, logical lake.",
+            "topics": ["Shortcuts", "Delta Parquet", "Security & Governance"]
+        },
+        {
+            "id": "datafactory",
+            "title": "Data Factory: Stellar Pipelines",
+            "description": "High-scale data ingestion and transformation with Pipelines and Dataflows Gen2.",
+            "topics": ["Dataflows Gen2", "Copy Activity", "Triggers"]
+        },
+        {
+            "id": "synapse_dw",
+            "title": "Synapse Warehouse: Quantum Analytics",
+            "description": "The converged data warehouse for massive scale SQL analytics.",
+            "topics": ["T-SQL", "Performance Optimization", "Scaling"]
+        },
+        {
+            "id": "realtime",
+            "title": "Real-Time Intelligence",
+            "description": "Streaming data processing and KQL analytics.",
+            "topics": ["Eventstreams", "KQL Database", "Reflex"]
+        }
+    ]
+}

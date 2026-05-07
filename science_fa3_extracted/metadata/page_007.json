@@ -1,0 +1,138 @@
+{
+  "page_num": 7,
+  "image_width": 1080,
+  "image_height": 1456,
+  "created_at": "2026-02-14T03:07:13.553001+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_009",
+      "coordinates": {
+        "x1": 64.056396484375,
+        "y1": 1037.015869140625,
+        "x2": 1052.7646484375,
+        "y2": 1261.428466796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9447236061096191,
+      "reading_order": 10,
+      "text": "Ans, jaguars have spots on their bodies.\nThis makes it hard for their prey\nto see them among the speckled\nshadows of the rainforest."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_007",
+      "coordinates": {
+        "x1": 49.60587692260742,
+        "y1": 665.748779296875,
+        "x2": 1030.4686279296875,
+        "y2": 881.0303344726562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9434805512428284,
+      "reading_order": 8,
+      "text": "Ans, some desert toads seal themselves\nin burrows and sleep for\neight to nine months until\na heavy rain occurs."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_006",
+      "coordinates": {
+        "x1": 54.2944221496582,
+        "y1": 518.3223266601562,
+        "x2": 1033.7254638671875,
+        "y2": 644.9132690429688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9203202724456787,
+      "reading_order": 7,
+      "text": "11Q, How do some desert toads protect\nthemselves from the heat?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_008",
+      "coordinates": {
+        "x1": 42.83869934082031,
+        "y1": 904.7662963867188,
+        "x2": 1001.9791870117188,
+        "y2": 1015.1051635742188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9130647778511047,
+      "reading_order": 9,
+      "text": "120, How are the spots of a jaguar\nuseful?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_003",
+      "coordinates": {
+        "x1": 753.4711303710938,
+        "y1": 101.33805847167969,
+        "x2": 1010.9146728515625,
+        "y2": 190.90283203125
+      },
+      "layout_tag": "header",
+      "confidence": 0.8997963666915894,
+      "reading_order": 4,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_005",
+      "coordinates": {
+        "x1": 31.675451278686523,
+        "y1": 369.6205749511719,
+        "x2": 971.2267456054688,
+        "y2": 497.1678161621094
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8787465691566467,
+      "reading_order": 6,
+      "text": "Ans, Air bladders help the fish to\nfloat in the water."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_004",
+      "coordinates": {
+        "x1": 140.95985412597656,
+        "y1": 261.3166809082031,
+        "x2": 1004.1268310546875,
+        "y2": 351.34942626953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8701419830322266,
+      "reading_order": 5,
+      "text": "How do air bladders help fish?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_002",
+      "coordinates": {
+        "x1": 453.0147399902344,
+        "y1": 170.65972900390625,
+        "x2": 565.6930541992188,
+        "y2": 218.06387329101562
+      },
+      "layout_tag": "header",
+      "confidence": 0.7745090126991272,
+      "reading_order": 3,
+      "text": "C. W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 76.72733306884766,
+        "x2": 114.35567474365234,
+        "y2": 237.2034454345703
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6671378016471863,
+      "reading_order": 1,
+      "text": "Tuesday\n11/11/25"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_7_block_001",
+      "coordinates": {
+        "x1": 34.884464263916016,
+        "y1": 283.4931335449219,
+        "x2": 120.00898742675781,
+        "y2": 445.9608459472656
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5731610655784607,
+      "reading_order": 2,
+      "text": "10 Q\n\nAns,"
+    }
+  ]
+}

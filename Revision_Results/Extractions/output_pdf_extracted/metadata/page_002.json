@@ -1,0 +1,476 @@
+{
+  "page_num": 2,
+  "image_width": 2550,
+  "image_height": 3300,
+  "created_at": "2026-02-12T17:59:40.274371+00:00",
+  "blocks": [
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_009",
+      "coordinates": {
+        "x1": 163.4618377685547,
+        "y1": 1004.6820678710938,
+        "x2": 2395.18603515625,
+        "y2": 1153.7734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9813287258148193,
+      "reading_order": 10,
+      "text": "Active participation in development of Process Excellence Community and culture through active involvement in a variety of workshops, forums and training sessions related to Lean Six Sigma and other Process Excellence concepts and practices."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_013",
+      "coordinates": {
+        "x1": 314.3775634765625,
+        "y1": 1355.393310546875,
+        "x2": 2457.052490234375,
+        "y2": 1556.494140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9795640110969543,
+      "reading_order": 14,
+      "text": "○ Reporting (periodic, quarterly, half-yearly) the data received via excel, share point, Salesforce and other applications and share it with technology team for Tableau refresh, which includes data consolidation, analysis and building a story by providing the insights on data patterns which helps the service areas to manage their process better."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_035",
+      "coordinates": {
+        "x1": 163.79537963867188,
+        "y1": 3108.009521484375,
+        "x2": 2453.45654296875,
+        "y2": 3207.862548828125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9771565794944763,
+      "reading_order": 36,
+      "text": "Creating dashboards and Scorecards and designing Exceptional reports according to the client needs for business decision."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_034",
+      "coordinates": {
+        "x1": 163.95611572265625,
+        "y1": 3007.77392578125,
+        "x2": 2453.322021484375,
+        "y2": 3106.42529296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9762082099914551,
+      "reading_order": 35,
+      "text": "Handled massive data and come-up with business analysis along with inferences and reports delivery under stringent timelines."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_003",
+      "coordinates": {
+        "x1": 161.95628356933594,
+        "y1": 543.8611450195312,
+        "x2": 2452.063232421875,
+        "y2": 641.3271484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9757540225982666,
+      "reading_order": 4,
+      "text": "Strong understanding on the Core Talent Services service delivery model (Talent on Demand, CIC and CTS), metrics, C-SAT"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_010",
+      "coordinates": {
+        "x1": 163.87327575683594,
+        "y1": 1154.5877685546875,
+        "x2": 2444.96875,
+        "y2": 1253.6229248046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9736893177032471,
+      "reading_order": 11,
+      "text": "Continues process Improvements using Lean Methodologies, Applying the Robotic process automation (RPA) strategies to create robust mechanism."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_007",
+      "coordinates": {
+        "x1": 165.01846313476562,
+        "y1": 801.4613647460938,
+        "x2": 2406.62890625,
+        "y2": 953.755859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9736029505729675,
+      "reading_order": 8,
+      "text": "Intensive HR Analytics by using MS-Excel, Power BI, Tableauand Salesforce tools to analyze trends on Head counts, Forecast spend, Hiring, Onboarding, Time management, attrition, Vendor Performance, strategic placements, Order board forecast, Cost reduction, Process gaps and other HR dynamics."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_016",
+      "coordinates": {
+        "x1": 315.07257080078125,
+        "y1": 1658.8359375,
+        "x2": 2453.037841796875,
+        "y2": 1757.6143798828125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9727020859718323,
+      "reading_order": 17,
+      "text": "○ Analyze the results received via surveys to understand and identify the opportunities to further improve the experience of professionals reaching out to CTS."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_031",
+      "coordinates": {
+        "x1": 91.15509796142578,
+        "y1": 2661.534912109375,
+        "x2": 849.8192138671875,
+        "y2": 2753.128173828125
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9686809778213501,
+      "reading_order": 32,
+      "text": "Previous Work Experience"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_004",
+      "coordinates": {
+        "x1": 161.99830627441406,
+        "y1": 645.0441284179688,
+        "x2": 1518.906494140625,
+        "y2": 696.4691162109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9643942713737488,
+      "reading_order": 5,
+      "text": "Project Management, Program management & Change Management"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_030",
+      "coordinates": {
+        "x1": 162.2436981201172,
+        "y1": 2563.899658203125,
+        "x2": 1200.8765869140625,
+        "y2": 2615.969970703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9641642570495605,
+      "reading_order": 31,
+      "text": "Location lead for Impact day – Community services"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_022",
+      "coordinates": {
+        "x1": 93.1721420288086,
+        "y1": 2111.52001953125,
+        "x2": 725.4755249023438,
+        "y2": 2160.798583984375
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9635480642318726,
+      "reading_order": 23,
+      "text": "Significant Accomplishments:"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_020",
+      "coordinates": {
+        "x1": 163.36038208007812,
+        "y1": 1961.0252685546875,
+        "x2": 1481.53955078125,
+        "y2": 2009.3587646484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.963512122631073,
+      "reading_order": 21,
+      "text": "Part of governance and operations reviews with service area leads"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_021",
+      "coordinates": {
+        "x1": 161.7272186279297,
+        "y1": 2011.3043212890625,
+        "x2": 1685.2783203125,
+        "y2": 2061.011962890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9625625014305115,
+      "reading_order": 22,
+      "text": "Ideate for automation of data integration process for the dashboard solutions"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_026",
+      "coordinates": {
+        "x1": 162.50192260742188,
+        "y1": 2313.52880859375,
+        "x2": 1578.6156005859375,
+        "y2": 2362.45556640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9614648818969727,
+      "reading_order": 27,
+      "text": "Transitioned the reporting process from emails to interactive MS-Teams"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_011",
+      "coordinates": {
+        "x1": 162.1218719482422,
+        "y1": 1255.3802490234375,
+        "x2": 2009.7637939453125,
+        "y2": 1307.7020263671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.96131831407547,
+      "reading_order": 12,
+      "text": "Developing user guides and or any other documentation using MS-Visio for the stakeholders"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_028",
+      "coordinates": {
+        "x1": 163.79986572265625,
+        "y1": 2464.188232421875,
+        "x2": 819.632568359375,
+        "y2": 2511.58740234375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9599936604499817,
+      "reading_order": 29,
+      "text": "Well-being POC for Operations"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_015",
+      "coordinates": {
+        "x1": 313.56829833984375,
+        "y1": 1608.5032958984375,
+        "x2": 1698.3828125,
+        "y2": 1658.363037109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9597072601318359,
+      "reading_order": 16,
+      "text": "Reporting the daily outlier reports with respective service area leaders"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_023",
+      "coordinates": {
+        "x1": 162.2184600830078,
+        "y1": 2162.216552734375,
+        "x2": 1306.454833984375,
+        "y2": 2210.763427734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9585444927215576,
+      "reading_order": 24,
+      "text": "Successfullytransformed HR metrics and financial reports"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_008",
+      "coordinates": {
+        "x1": 162.23617553710938,
+        "y1": 954.774169921875,
+        "x2": 2145.211181640625,
+        "y2": 1004.1409301757812
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9582543969154358,
+      "reading_order": 9,
+      "text": "☑ Schedules, designs and executes standard and Ad-hoc reports to retrieve data from the HR Repository"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_025",
+      "coordinates": {
+        "x1": 162.31741333007812,
+        "y1": 2263.590576171875,
+        "x2": 1555.110595703125,
+        "y2": 2310.287109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9579648375511169,
+      "reading_order": 26,
+      "text": "Automated the reports from PPT to Tableau and Power BI dashboards"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_033",
+      "coordinates": {
+        "x1": 93.91944885253906,
+        "y1": 2957.73486328125,
+        "x2": 803.462158203125,
+        "y2": 3007.204345703125
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9569389224052429,
+      "reading_order": 34,
+      "text": "Business Analytics and Reporting"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_005",
+      "coordinates": {
+        "x1": 163.44815063476562,
+        "y1": 699.794921875,
+        "x2": 1065.0244140625,
+        "y2": 749.48046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9569314122200012,
+      "reading_order": 6,
+      "text": "Business Strategy development and planning"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_027",
+      "coordinates": {
+        "x1": 94.05671691894531,
+        "y1": 2413.523681640625,
+        "x2": 608.5643310546875,
+        "y2": 2461.0283203125
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9560523629188538,
+      "reading_order": 28,
+      "text": "OtherAccomplishments:"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_024",
+      "coordinates": {
+        "x1": 161.98818969726562,
+        "y1": 2213.423828125,
+        "x2": 1781.6212158203125,
+        "y2": 2262.19921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9560034275054932,
+      "reading_order": 25,
+      "text": "Redesigned the data collation and reporting work flow for periodic metric reporting"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_029",
+      "coordinates": {
+        "x1": 163.9281768798828,
+        "y1": 2514.951171875,
+        "x2": 700.754150390625,
+        "y2": 2559.80078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.955357015132904,
+      "reading_order": 30,
+      "text": "MS-Teams LAB member"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_006",
+      "coordinates": {
+        "x1": 162.68104553222656,
+        "y1": 752.141845703125,
+        "x2": 2300.558837890625,
+        "y2": 803.2767333984375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9539476037025452,
+      "reading_order": 7,
+      "text": "Reporting and data analytics of the employee data from sourcing, recruiting till separations (employee life cycle)"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_018",
+      "coordinates": {
+        "x1": 312.9369201660156,
+        "y1": 1808.8538818359375,
+        "x2": 2315.69091796875,
+        "y2": 1859.2744140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.949294924736023,
+      "reading_order": 19,
+      "text": "Reporting and analysis of CTS efficiencies to build a story which helps SALs in taking business decisions"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_000",
+      "coordinates": {
+        "x1": 91.8658447265625,
+        "y1": 306.3314208984375,
+        "x2": 615.980712890625,
+        "y2": 398.3506164550781
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9414390325546265,
+      "reading_order": 1,
+      "text": "Work Experience"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_019",
+      "coordinates": {
+        "x1": 161.52613830566406,
+        "y1": 1857.8363037109375,
+        "x2": 2456.302734375,
+        "y2": 1962.180419921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9196215867996216,
+      "reading_order": 20,
+      "text": "Lead the reporting and dashboard management for the unit and assist enhancements- including requirement gathering, data analysis, template design and other functional requirements of the dashboard"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_012",
+      "coordinates": {
+        "x1": 163.6768798828125,
+        "y1": 1306.43408203125,
+        "x2": 762.1717529296875,
+        "y2": 1355.368408203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8664352893829346,
+      "reading_order": 13,
+      "text": "Talent Performance Metrics"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_032",
+      "coordinates": {
+        "x1": 92.34264373779297,
+        "y1": 2851.380126953125,
+        "x2": 1941.102783203125,
+        "y2": 2904.84130859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8183802366256714,
+      "reading_order": 33,
+      "text": "Dec'01 2010 – Apr'14 2016 with Cognizant Technologies., Hyderabad as Senior Analyst,"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_017",
+      "coordinates": {
+        "x1": 164.4261016845703,
+        "y1": 1758.8843994140625,
+        "x2": 638.1802978515625,
+        "y2": 1806.63818359375
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.756624698638916,
+      "reading_order": 18,
+      "text": "CTS by the Numbers"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_014",
+      "coordinates": {
+        "x1": 164.1605224609375,
+        "y1": 1557.03564453125,
+        "x2": 744.3999633789062,
+        "y2": 1606.689697265625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.744375467300415,
+      "reading_order": 15,
+      "text": "CTS Customer Satisfaction"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_001",
+      "coordinates": {
+        "x1": 89.53604125976562,
+        "y1": 442.1871643066406,
+        "x2": 2040.6595458984375,
+        "y2": 494.4541320800781
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7365714311599731,
+      "reading_order": 2,
+      "text": "Since Apr'16 with Deloitte Support Services India Pvt. Ltd., Hyderabad as AssistantManager,"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_2_block_002",
+      "coordinates": {
+        "x1": 92.15599822998047,
+        "y1": 495.0736389160156,
+        "x2": 889.013916015625,
+        "y2": 544.3049926757812
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.662589967250824,
+      "reading_order": 3,
+      "text": "General Operations – U.S India Team"
+    }
+  ]
+}

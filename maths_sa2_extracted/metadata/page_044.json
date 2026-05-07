@@ -1,0 +1,73 @@
+{
+  "page_num": 44,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:34.337434+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_44_block_002",
+      "coordinates": {
+        "x1": 115.3536605834961,
+        "y1": 503.4563903808594,
+        "x2": 816.6691284179688,
+        "y2": 869.13818359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.941037654876709,
+      "reading_order": 3,
+      "text": "Draw a quadrilateral PQRS.\nDraw its diagonals. Is the\nmeeting point of the diagonals\nin the interior or exterior\nof the quadrilateral?\ns"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_44_block_004",
+      "coordinates": {
+        "x1": 87.25656127929688,
+        "y1": 1223.978271484375,
+        "x2": 814.3702392578125,
+        "y2": 1458.3106689453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8509163856506348,
+      "reading_order": 5,
+      "text": "The meeting point of the diagonals\nis in the interior of the\nquadrilateral."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_44_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 279.3095397949219,
+        "x2": 105.52752685546875,
+        "y2": 401.8017883300781
+      },
+      "layout_tag": "header",
+      "confidence": 0.7235519886016846,
+      "reading_order": 1,
+      "text": "friday\n11/10/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_44_block_003",
+      "coordinates": {
+        "x1": 120.45225524902344,
+        "y1": 862.5784301757812,
+        "x2": 830.29052734375,
+        "y2": 1249.064453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6622651219367981,
+      "reading_order": 4,
+      "text": "diagonals"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_44_block_001",
+      "coordinates": {
+        "x1": 842.177001953125,
+        "y1": 312.3250427246094,
+        "x2": 899.0,
+        "y2": 435.83892822265625
+      },
+      "layout_tag": "header",
+      "confidence": 0.5366039872169495,
+      "reading_order": 2,
+      "text": "Yr\nआ"
+    }
+  ]
+}

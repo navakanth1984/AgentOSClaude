@@ -1,0 +1,125 @@
+{
+  "page_num": 16,
+  "image_width": 1080,
+  "image_height": 1515,
+  "created_at": "2026-02-14T03:07:15.443893+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_007",
+      "coordinates": {
+        "x1": 52.37398147583008,
+        "y1": 1138.22412109375,
+        "x2": 1009.8474731445312,
+        "y2": 1297.3685302734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9484579563140869,
+      "reading_order": 8,
+      "text": "30, In the statement, Bangalore is 9.20m\nabove sea level; what do '920'm?\nstand for?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_004",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 547.9986572265625,
+        "x2": 1047.8533935546875,
+        "y2": 782.818603515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9431039690971375,
+      "reading_order": 5,
+      "text": "Ans, Any quantity that can be measured\nis called a physical quantity.\nMeasure of length, weight and\ntime are some examples."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_008",
+      "coordinates": {
+        "x1": 42.666725158691406,
+        "y1": 1317.4564208984375,
+        "x2": 951.7215576171875,
+        "y2": 1500.8076171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.935900092124939,
+      "reading_order": 9,
+      "text": "Ans, The unit 'm' stands for the unit\nmetre which is the standard\nunit used to measure height"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_006",
+      "coordinates": {
+        "x1": 1.6204619407653809,
+        "y1": 897.552490234375,
+        "x2": 1008.9558715820312,
+        "y2": 1108.3101806640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9292762279510498,
+      "reading_order": 7,
+      "text": "Ans, A standard unit is a standard\nmeasure that remains the same,\nwherever it is used by\nwhomsoever."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_003",
+      "coordinates": {
+        "x1": 4.34884786605835,
+        "y1": 388.4837341308594,
+        "x2": 1048.816650390625,
+        "y2": 535.1206665039062
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9264293313026428,
+      "reading_order": 4,
+      "text": "10. What is a physical quantity? Give\nthree example of physical quantities."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_002",
+      "coordinates": {
+        "x1": 66.70103454589844,
+        "y1": 289.6943359375,
+        "x2": 665.8029174804688,
+        "y2": 379.41876220703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9147198796272278,
+      "reading_order": 3,
+      "text": "Short answer questions"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_001",
+      "coordinates": {
+        "x1": 707.2268676757812,
+        "y1": 101.67266845703125,
+        "x2": 972.3986206054688,
+        "y2": 197.7955322265625
+      },
+      "layout_tag": "header",
+      "confidence": 0.9049010276794434,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_005",
+      "coordinates": {
+        "x1": 14.322738647460938,
+        "y1": 796.8553466796875,
+        "x2": 935.550048828125,
+        "y2": 887.5576782226562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8051859140396118,
+      "reading_order": 6,
+      "text": "20, What is a Standard unit?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_16_block_000",
+      "coordinates": {
+        "x1": 277.4049377441406,
+        "y1": 185.3515625,
+        "x2": 380.2694091796875,
+        "y2": 241.25929260253906
+      },
+      "layout_tag": "header",
+      "confidence": 0.6111775636672974,
+      "reading_order": 1,
+      "text": "C-W"
+    }
+  ]
+}

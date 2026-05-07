@@ -1,0 +1,86 @@
+{
+  "page_num": 19,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.056565+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_19_block_005",
+      "coordinates": {
+        "x1": 824.2739868164062,
+        "y1": 303.14874267578125,
+        "x2": 899.0,
+        "y2": 429.39459228515625
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6558376550674438,
+      "reading_order": 6,
+      "text": "Tues\n11/12"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_19_block_001",
+      "coordinates": {
+        "x1": 23.20415687561035,
+        "y1": 375.18212890625,
+        "x2": 812.496337890625,
+        "y2": 541.3081665039062
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6069535613059998,
+      "reading_order": 2,
+      "text": "5, Can a triangle be drawn with\nthe following measures of angles?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_19_block_004",
+      "coordinates": {
+        "x1": 63.5617561340332,
+        "y1": 1173.510986328125,
+        "x2": 764.009765625,
+        "y2": 1361.501708984375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6043156981468201,
+      "reading_order": 5,
+      "text": "Find the third angle of the\ntriangle when two angles are\ngiven"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_19_block_002",
+      "coordinates": {
+        "x1": 0.5877156257629395,
+        "y1": 596.742919921875,
+        "x2": 812.1080322265625,
+        "y2": 888.5106201171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6018931865692139,
+      "reading_order": 3,
+      "text": "sol: The angles is $30+70+90=190$\nNo, its not triangle be drawn with\nfollowing measures of angles.\n\nii) $25^\\circ, 75^\\circ, 80^\\circ$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_19_block_003",
+      "coordinates": {
+        "x1": 76.836181640625,
+        "y1": 906.7325439453125,
+        "x2": 757.5564575195312,
+        "y2": 1180.362060546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5350694060325623,
+      "reading_order": 4,
+      "text": "The angles is $25+75+80=180$\nYes, we can drawn with the\nfollowing measures of angles."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_19_block_000",
+      "coordinates": {
+        "x1": 337.5539245605469,
+        "y1": 332.46044921875,
+        "x2": 416.65643310546875,
+        "y2": 378.757080078125
+      },
+      "layout_tag": "header",
+      "confidence": 0.5151753425598145,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

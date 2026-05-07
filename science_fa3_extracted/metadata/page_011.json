@@ -1,0 +1,47 @@
+{
+  "page_num": 11,
+  "image_width": 1080,
+  "image_height": 1460,
+  "created_at": "2026-02-14T03:07:15.191612+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_11_block_001",
+      "coordinates": {
+        "x1": 753.73876953125,
+        "y1": 87.98617553710938,
+        "x2": 1011.1011962890625,
+        "y2": 178.54444885253906
+      },
+      "layout_tag": "header",
+      "confidence": 0.8789404034614563,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_11_block_002",
+      "coordinates": {
+        "x1": 33.5348014831543,
+        "y1": 253.24734497070312,
+        "x2": 1074.8099365234375,
+        "y2": 1455.20751953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7104038000106812,
+      "reading_order": 3,
+      "text": "4Q, What are aquatic animals? How\nis a fish adapted to live in water?\n\nAns, Animals that live in\nwater are called aquatic\nanimals . Fish have:\ni, Special organs called gills to\nbreathe in water.\nii, Streamlined bodies with scales\nthat make it easier (for them) to move\nin water.\niii, Fins and a tail to help them\nto swim.\niv, Air bladders to help them\nto stay afloat.\n\n5Q, How is a camel adapted to\nlive in its habitat?\n\nAns, A camel is adapted to live in\nhot and dry conditions.\ni, It can drink more than 100\nlitres of water. This water\nis stored in the body and"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_11_block_000",
+      "coordinates": {
+        "x1": 395.7253112792969,
+        "y1": 144.42764282226562,
+        "x2": 508.370361328125,
+        "y2": 204.73561096191406
+      },
+      "layout_tag": "header",
+      "confidence": 0.6706007122993469,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

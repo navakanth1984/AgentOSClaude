@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDLC - Context Development Life Cycle</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0A0A0A;
+      color: #FFFFFF;
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden;
+    }
+    #root {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+    }
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="root" data-width="1920" data-height="1080" data-duration="150" data-start="0">
+    <div class="grid-overlay"></div>
+    
+    <!-- SLIDE 1: Introduction -->
+    <div id="slide-1" 
+         data-composition-id="slide-1" 
+         data-composition-src="compositions/slide-1.html" 
+         data-start="0" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 2: The LLM Engine -->
+    <div id="slide-2" 
+         data-composition-id="slide-2" 
+         data-composition-src="compositions/slide-2.html" 
+         data-start="slide-1 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 3: Team Flywheel -->
+    <div id="slide-3" 
+         data-composition-id="slide-3" 
+         data-composition-src="compositions/slide-3.html" 
+         data-start="slide-2 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 4: CDLC Infinity Loop -->
+    <div id="slide-4" 
+         data-composition-id="slide-4" 
+         data-composition-src="compositions/slide-4.html" 
+         data-start="slide-3 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 5: Step 1 Generate -->
+    <div id="slide-5" 
+         data-composition-id="slide-5" 
+         data-composition-src="compositions/slide-5.html" 
+         data-start="slide-4 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 6: Step 2 Test -->
+    <div id="slide-6" 
+         data-composition-id="slide-6" 
+         data-composition-src="compositions/slide-6.html" 
+         data-start="slide-5 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 7: Step 3 Distribute -->
+    <div id="slide-7" 
+         data-composition-id="slide-7" 
+         data-composition-src="compositions/slide-7.html" 
+         data-start="slide-6 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 8: Step 4 Observe -->
+    <div id="slide-8" 
+         data-composition-id="slide-8" 
+         data-composition-src="compositions/slide-8.html" 
+         data-start="slide-7 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 9: Context Orchestration -->
+    <div id="slide-9" 
+         data-composition-id="slide-9" 
+         data-composition-src="compositions/slide-9.html" 
+         data-start="slide-8 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 10: AI SBOM -->
+    <div id="slide-10" 
+         data-composition-id="slide-10" 
+         data-composition-src="compositions/slide-10.html" 
+         data-start="slide-9 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 11: Security Gates -->
+    <div id="slide-11" 
+         data-composition-id="slide-11" 
+         data-composition-src="compositions/slide-11.html" 
+         data-start="slide-10 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 12: Registry Scaling -->
+    <div id="slide-12" 
+         data-composition-id="slide-12" 
+         data-composition-src="compositions/slide-12.html" 
+         data-start="slide-11 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 13: Feedback Loops -->
+    <div id="slide-13" 
+         data-composition-id="slide-13" 
+         data-composition-src="compositions/slide-13.html" 
+         data-start="slide-12 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 14: Organizational Intelligence -->
+    <div id="slide-14" 
+         data-composition-id="slide-14" 
+         data-composition-src="compositions/slide-14.html" 
+         data-start="slide-13 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+
+    <!-- SLIDE 15: Engineering Baselines -->
+    <div id="slide-15" 
+         data-composition-id="slide-15" 
+         data-composition-src="compositions/slide-15.html" 
+         data-start="slide-14 + 9" 
+         data-duration="10" 
+         data-track-index="1"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    window.__timelines["root"] = tl;
+  </script>
+</body>
+</html>

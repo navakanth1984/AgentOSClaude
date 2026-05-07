@@ -1,0 +1,21 @@
+{
+  "page_num": 29,
+  "image_width": 1600,
+  "image_height": 815,
+  "created_at": "2026-02-14T03:08:33.825422+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_29_block_000",
+      "coordinates": {
+        "x1": 33.38899612426758,
+        "y1": 236.38836669921875,
+        "x2": 1518.8529052734375,
+        "y2": 655.6611938476562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7381662726402283,
+      "reading_order": 1,
+      "text": "Answer the following:-\nMeasure the sides in each of the\ngiven figures and list out the"
+    }
+  ]
+}

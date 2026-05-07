@@ -1,0 +1,26 @@
+[
+  {
+    "id": "article_ai_agents",
+    "type": "article",
+    "source": "https://lilianweng.github.io/posts/2023-06-23-agent/",
+    "raw_input": "Article: LLM Powered Autonomous Agents by Lilian Weng\n\nBuilding agents with LLMs as the core controller is a cool concept. LLM is augmented with key modules: planning, memory, and tool use. Planning involves task decomposition using chain-of-thought or tree-of-thought prompting. Memory includes in-context (short-term) and external vector stores (long-term). Tool use allows agents to call APIs, search the web, run code. Key challenge: reliability — agents can get stuck in loops, hallucinate tool outputs, or fail to recover from errors. Component breakdown: (1) Planning: CoT, ToT, ReAct pattern. (2) Memory: sensory, short-term, long-term. (3) Tools: MRKL, Toolformer, function calling. Real systems: AutoGPT, GPT-Engineer, ChemCrow.",
+    "expected_tags": ["ai-agents", "llm", "planning", "memory", "tool-use"],
+    "expected_project": "AI-Automation"
+  },
+  {
+    "id": "youtube_obsidian_workflow",
+    "type": "youtube_transcript",
+    "source": "https://www.youtube.com/watch?v=example123",
+    "raw_input": "YouTube: How I Use Obsidian as a Second Brain (25 min video)\n\nTranscript excerpt: The key to a good second brain is capture friction — if it's hard to save something you won't do it. I use a daily note as a staging area. Everything lands there first. Then once a week I do a review and move notes to their permanent home. Tags I use: #fleeting for rough ideas, #literature for things I read, #permanent for processed insights. The PARA method works well with Obsidian — Projects, Areas, Resources, Archive. Don't over-organize up front. Capture first, organize later. Backlinks are more powerful than folders. The graph view is cool but I never actually use it for navigation.",
+    "expected_tags": ["obsidian", "second-brain", "pkm", "productivity", "PARA"],
+    "expected_project": "Personal-Knowledge"
+  },
+  {
+    "id": "brain_dump_automation_idea",
+    "type": "brain_dump",
+    "source": "Personal note",
+    "raw_input": "rough idea: what if i had a script that watches my clipboard and whenever i copy a url it automatically opens claude and says hey summarize this and save it to obsidian. like zero friction capture. could use python clipboard monitoring, trigger claude api, format as vault note, save via filesystem. questions: would this work on windows? how do i watch clipboard in python? what if i copy urls i dont want saved? maybe a hotkey toggle to enable/disable. could be really useful for my research workflow.",
+    "expected_tags": ["automation", "clipboard", "obsidian", "python", "workflow-idea"],
+    "expected_project": "AI-Automation"
+  }
+]

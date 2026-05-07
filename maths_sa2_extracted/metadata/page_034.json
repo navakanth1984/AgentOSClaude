@@ -1,0 +1,73 @@
+{
+  "page_num": 34,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.183881+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_34_block_004",
+      "coordinates": {
+        "x1": 111.82067108154297,
+        "y1": 932.6748657226562,
+        "x2": 852.542236328125,
+        "y2": 1234.908935546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9606109261512756,
+      "reading_order": 5,
+      "text": "Draw a triangle ABC. Mark\na point P in its interior and\nO in its exterior. Is the\npoint A in its exterior or in\nits interior?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_34_block_003",
+      "coordinates": {
+        "x1": 275.8623962402344,
+        "y1": 797.4299926757812,
+        "x2": 636.3563842773438,
+        "y2": 924.997802734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9281389713287354,
+      "reading_order": 4,
+      "text": "Vertex = $x$\nArms = $xz, xy$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_34_block_001",
+      "coordinates": {
+        "x1": 403.57794189453125,
+        "y1": 288.4462890625,
+        "x2": 496.2797546386719,
+        "y2": 330.96771240234375
+      },
+      "layout_tag": "header",
+      "confidence": 0.5688690543174744,
+      "reading_order": 2,
+      "text": "c . ω"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_34_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 211.4265899658203,
+        "x2": 126.95663452148438,
+        "y2": 334.2324523925781
+      },
+      "layout_tag": "header",
+      "confidence": 0.5437953472137451,
+      "reading_order": 1,
+      "text": "Friday\n11/10/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_34_block_002",
+      "coordinates": {
+        "x1": 189.70654296875,
+        "y1": 355.8264465332031,
+        "x2": 748.3519897460938,
+        "y2": 782.0894775390625
+      },
+      "layout_tag": "image",
+      "confidence": 0.5037074685096741,
+      "reading_order": 3,
+      "text": "The image displays a hand-drawn geometric diagram on a piece of paper. It features three lines labeled with capital letters: 'Z' and 'Y' are positioned on the upper left and upper right, respectively, while 'X' is positioned at the bottom center. The lines 'Z' and 'Y' originate from a common vertex and diverge upwards, creating an angle. A small arc is drawn between the two lines to indicate the angle's measure. The line 'X' intersects the angle formed by 'Z' and 'Y' at the vertex. A red marking, possibly a correction or emphasis, is visible near the intersection point of line 'X' and the angle. There are no numerical values, axes, or legends present in the image."
+    }
+  ]
+}

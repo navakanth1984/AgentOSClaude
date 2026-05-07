@@ -1,0 +1,125 @@
+{
+  "page_num": 8,
+  "image_width": 1020,
+  "image_height": 1600,
+  "created_at": "2026-02-14T03:05:47.194374+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_007",
+      "coordinates": {
+        "x1": 136.7180633544922,
+        "y1": 362.4927062988281,
+        "x2": 990.0287475585938,
+        "y2": 664.9918823242188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.952366292476654,
+      "reading_order": 8,
+      "text": "\"These lemon pickle containers are\ngoing to give happiness to my\nnext generation and the generations\nafter them\". Who says these words\nand what do they mean by it"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_008",
+      "coordinates": {
+        "x1": 147.30563354492188,
+        "y1": 692.5702514648438,
+        "x2": 986.9805908203125,
+        "y2": 1096.87158203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.948071300983429,
+      "reading_order": 9,
+      "text": "These words are spoken by the\nspeaker's grandmother By these\nwords she means that just\nlike how she inherited the\npickles along with the blessing\nof her ancestors The future\ngeneration's would also inherit\nthem"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_006",
+      "coordinates": {
+        "x1": 69.86901092529297,
+        "y1": 1040.68017578125,
+        "x2": 135.42784118652344,
+        "y2": 1190.7337646484375
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7556821703910828,
+      "reading_order": 7,
+      "text": "$\\sqrt{a/4}$"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_003",
+      "coordinates": {
+        "x1": 778.958251953125,
+        "y1": 156.1270294189453,
+        "x2": 991.7996215820312,
+        "y2": 278.4696960449219
+      },
+      "layout_tag": "header",
+      "confidence": 0.7395156621932983,
+      "reading_order": 4,
+      "text": "PAGE NO.\nDATE: 1 17"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_004",
+      "coordinates": {
+        "x1": 75.7063217163086,
+        "y1": 395.79730224609375,
+        "x2": 115.9975814819336,
+        "y2": 463.5939025878906
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6767529845237732,
+      "reading_order": 5,
+      "text": "49"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 140.69802856445312,
+        "x2": 174.3063201904297,
+        "y2": 212.90232849121094
+      },
+      "layout_tag": "header",
+      "confidence": 0.6726860404014587,
+      "reading_order": 1,
+      "text": "Wednesday"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_001",
+      "coordinates": {
+        "x1": 0.6521742343902588,
+        "y1": 276.4788513183594,
+        "x2": 131.10174560546875,
+        "y2": 346.36419677734375
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.648284375667572,
+      "reading_order": 2,
+      "text": "19/11/25"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_005",
+      "coordinates": {
+        "x1": 47.938987731933594,
+        "y1": 698.833251953125,
+        "x2": 118.85211944580078,
+        "y2": 749.313232421875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5435338020324707,
+      "reading_order": 6,
+      "text": "And"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_8_block_002",
+      "coordinates": {
+        "x1": 465.60284423828125,
+        "y1": 262.8226318359375,
+        "x2": 557.1437377929688,
+        "y2": 304.0352478027344
+      },
+      "layout_tag": "header",
+      "confidence": 0.5212530493736267,
+      "reading_order": 3,
+      "text": "C.W"
+    }
+  ]
+}

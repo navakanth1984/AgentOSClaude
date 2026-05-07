@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Paper - Human Written Style</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Gochi+Hand&family=Indie+Flower&family=Patrick+Hand&display=swap');
+
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 50px;
+            margin: 0;
+        }
+
+        .paper {
+            background-color: #fffef0;
+            width: 800px;
+            min-height: 1100px;
+            padding: 60px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1), -2px -2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            background-image: 
+                linear-gradient(#d1eaff 1px, transparent 1px);
+            background-size: 100% 30px;
+            line-height: 30px;
+            transform: rotate(-0.5deg); /* Slight tilt for imperfection */
+        }
+
+        /* Margin line */
+        .paper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 80px;
+            width: 2px;
+            height: 100%;
+            background-color: #ffcccc;
+        }
+
+        .handwritten {
+            font-family: 'Patrick Hand', cursive;
+            color: #1a3a5f; /* Blue pen ink color */
+            font-size: 20px;
+            position: relative;
+        }
+
+        .header-date {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            font-family: 'Gochi Hand', cursive;
+            font-size: 18px;
+            color: #2c3e50;
+            transform: rotate(2deg);
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Architects Daughter', cursive;
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-decoration: underline;
+            color: #c0392b; /* Red pen for title */
+        }
+
+        .question {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .answer {
+            color: #2980b9;
+            margin-left: 10px;
+            font-family: 'Indie Flower', cursive;
+            font-size: 22px;
+            display: inline-block;
+            transform: translateY(2px);
+        }
+
+        .hint {
+            font-size: 16px;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-left: 20px;
+        }
+
+        .sol-tag {
+            position: absolute;
+            left: 10px;
+            font-family: 'Gochi Hand', cursive;
+            color: #8e44ad; /* Purple pen for tags */
+            font-size: 18px;
+        }
+
+        /* Scrawled notes / doodles for imperfection */
+        .doodle {
+            position: absolute;
+            bottom: 100px;
+            right: 50px;
+            opacity: 0.3;
+            transform: rotate(-10deg);
+        }
+
+        .ink-smudge {
+            position: absolute;
+            top: 200px;
+            left: 150px;
+            width: 40px;
+            height: 20px;
+            background: rgba(26, 58, 95, 0.05);
+            filter: blur(5px);
+            border-radius: 50%;
+        }
+
+        .formula-section {
+            margin-top: 60px;
+            padding: 20px;
+            border: 1px dashed #ccc;
+            font-family: 'Gochi Hand', cursive;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #555;
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="paper">
+        <div class="header-date">
+            Thurs<br>
+            6/11/2
+        </div>
+
+        <div class="title">Challenge Yourself</div>
+
+        <div class="handwritten">
+            <div class="question">
+                Q1. If two lines in a plane, do not intersect at any point, what are they called?
+            </div>
+            <div class="hint">
+                (Hint: The prefix 'para' means alongside :)
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <span class="sol-tag">Sol:-</span>
+                <span class="answer">its called parallel line</span>
+            </div>
+
+            <br><br>
+
+            <div class="question">
+                Q2. How many vertices can be found in a hexagon?
+            </div>
+            <div class="hint">
+                (Hint: A polygon has as many vertices as sides.)
+            </div>
+
+                        <div style="margin-top: 10px;">
+
+                            <span class="sol-tag">Sol:-</span>
+
+                            <span class="answer">Six vertices can be found in a hexagon</span>
+
+                        </div>
+
+                    </div>
+
+        <div class="ink-smudge"></div>
+        <div class="doodle">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="20" fill="none" stroke="#ccc" stroke-width="1" stroke-dasharray="5,5" />
+                <path d="M30 30 L70 70 M70 30 L30 70" stroke="#ddd" stroke-width="1" />
+            </svg>
+        </div>
+    </div>
+
+</body>
+</html>

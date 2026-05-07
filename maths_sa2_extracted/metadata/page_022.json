@@ -1,0 +1,47 @@
+{
+  "page_num": 22,
+  "image_width": 1080,
+  "image_height": 1561,
+  "created_at": "2026-02-14T03:08:31.218692+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_22_block_001",
+      "coordinates": {
+        "x1": 105.17098999023438,
+        "y1": 744.8673095703125,
+        "x2": 979.1071166992188,
+        "y2": 948.740478515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8978701829910278,
+      "reading_order": 2,
+      "text": "Write any two similarities\nbetween the following."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_22_block_000",
+      "coordinates": {
+        "x1": 441.6857604980469,
+        "y1": 687.0073852539062,
+        "x2": 560.1908569335938,
+        "y2": 743.56298828125
+      },
+      "layout_tag": "header",
+      "confidence": 0.7244828343391418,
+      "reading_order": 1,
+      "text": "C,W"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_22_block_003",
+      "coordinates": {
+        "x1": 101.4061050415039,
+        "y1": 954.985107421875,
+        "x2": 1080.0,
+        "y2": 1561.0
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6250001192092896,
+      "reading_order": 4,
+      "text": "a rectangle and a parallelogram\nopposite sides are equal, oppo\nangles are equal.\na square and a rhombus.\nall sides are equal, opposite su\nangles are equal, opposite sid\nare parallel"
+    }
+  ]
+}

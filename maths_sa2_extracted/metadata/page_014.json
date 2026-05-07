@@ -1,0 +1,21 @@
+{
+  "page_num": 14,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:34.132601+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_14_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 126.73324584960938,
+        "x2": 897.9100341796875,
+        "y2": 1357.71875
+      },
+      "layout_tag": "table",
+      "confidence": 0.9605222940444946,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th>Friday<br/>7/11/25</th>\n<th>c.w</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>4,</td>\n<td>Name the types of angles whose<br/>measures are given below.</td>\n</tr>\n<tr>\n<td>i, 86°</td>\n<td>Q<br/>O Acute P</td>\n</tr>\n<tr>\n<td>ii, 145°</td>\n<td>O Obtuse angle<br/>P</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>English FA3 Revision - Handwritten Notebook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Architects+Daughter&display=swap');
+
+        :root {
+            --blue-ink: #1a237e;
+            --red-ink: #b71c1c;
+            --pencil: #455a64;
+            --paper-bg: #fffdf5;
+            --line-color: #e3f2fd;
+            --margin-line: #ffcdd2;
+        }
+
+        body {
+            background-color: #546e7a;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: var(--paper-bg);
+            width: 850px;
+            min-height: 1200px;
+            padding: 60px 60px 60px 120px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            border: 1px solid #d1d1d1;
+        }
+
+        .notebook-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100px;
+            width: 2px;
+            height: 100%;
+            background-color: var(--margin-line);
+        }
+
+        .sidebar {
+            position: absolute;
+            left: 10px;
+            top: 50px;
+            width: 80px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--pencil);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--red-ink);
+        }
+
+        .hw-tag {
+            border: 2px solid var(--red-ink);
+            padding: 2px 15px;
+            border-radius: 5px;
+            transform: rotate(-3deg);
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 28px;
+            text-decoration: underline;
+            color: var(--red-ink);
+            font-family: 'Architects Daughter', cursive;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--blue-ink);
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+            display: inline-block;
+        }
+
+        .meanings {
+            margin-left: 20px;
+            color: var(--blue-ink);
+            font-size: 20px;
+        }
+
+        .question {
+            font-weight: bold;
+            color: var(--blue-ink);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            margin-left: 30px;
+            font-family: 'Indie Flower', cursive;
+            color: #37474f;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .report-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            background: rgba(255,255,255,0.5);
+            margin-top: 20px;
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .report-header {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 10px;
+        }
+
+        .footer-scribble {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+            font-family: 'Shadows Into Light', cursive;
+            color: #90a4ae;
+            transform: rotate(2deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-page">
+        <div class="sidebar">
+            Wed<br>26/1/25<br><br>
+            C.W.<br>
+            English
+        </div>
+
+        <div class="header-box">
+            <div class="hw-tag">C.W.</div>
+            <div style="font-size: 20px;">Page: 1-4</div>
+        </div>
+
+        <div class="section">
+            <div class="title">English FA3 Revision Set</div>
+            
+            <div class="subtitle">A Catch for a Tiger</div>
+            <div class="meanings">
+                1. Rana : a title given to a king<br>
+                2. Macho : a word that usually suggests being manly<br>
+                3. Raven-haired : raven is a large black bird (used for jet black hair)
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="subtitle">Lucy (Poem)</div>
+            <div class="question">Q. Why does the poet compare Lucy to a Violet flower and a fair star?</div>
+            <div class="answer">
+                The poet compares her to a Violet flower and a fair star. The comparison is appropriate because the violet flower beside a mossy stone is often hidden and remains unnoticed. Similarly, a fair star cannot be noticed when all other stars are shining, but is appreciated when it is the only one in the sky. Lucy was a woman whom few people knew and appreciated.
+            </div>
+
+            <div class="question">Q. What happened when Lucy died? How was the speaker affected?</div>
+            <div class="answer">
+                When Lucy died, few people came to know of her death, but the poet was greatly affected. He felt a deep sense of loss as she was "the one" for him.
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="subtitle">The Little Lemon Tree</div>
+            <div class="meanings">
+                1. Enduring : long-lasting<br>
+                2. Wasps : insects with wings and yellow/black stripes<br>
+                3. Caterings : providing food and drink
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="subtitle">Report Writing</div>
+            <div class="report-box">
+                <div class="report-header">Captors Captured</div>
+                <div style="text-align: right;">Sreya Mukerji, 26 Jan 2025</div>
+                <p>
+                    Villagers around Sher-kila National Park spotted two outsiders hovering around the entrance of the sanctuary before sunrise. They did not look like tourists and their behaviour also seemed curious. When the security guards questioned them, they said they were tourists and walked away. Ms Ayesha, who had permission for a photo shoot, claimed to have seen the two men in the park...
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-scribble">
+            Learned about metaphors and reporting today!
+        </div>
+    </div>
+
+</body>
+</html>

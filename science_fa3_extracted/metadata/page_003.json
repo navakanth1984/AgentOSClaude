@@ -1,0 +1,60 @@
+{
+  "page_num": 3,
+  "image_width": 1080,
+  "image_height": 1531,
+  "created_at": "2026-02-14T03:07:13.393213+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_3_block_003",
+      "coordinates": {
+        "x1": 84.2896728515625,
+        "y1": 596.7064208984375,
+        "x2": 1072.2618408203125,
+        "y2": 1151.896484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9708031415939331,
+      "reading_order": 4,
+      "text": "Snake:- Snakes do not have limbs:\nthey use their muscles and scales\nto move. They move with the help\nof body scales that catch any\nuneven surface making a series\nof loops. They contract\ntheir muscles starting at the\nneck and thrusting their body\nfrom side to side\ncreating a series of curves."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_3_block_002",
+      "coordinates": {
+        "x1": 6.160401344299316,
+        "y1": 224.9022979736328,
+        "x2": 1053.80029296875,
+        "y2": 585.9114379882812
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9618842601776123,
+      "reading_order": 3,
+      "text": "iii, Bird:- Birds beat their wings against\nair to propel forward. The strong\nchest muscles help to move the\nwings up and down. It uses\nits two legs to walk or jump\nwhen it is not flying."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_3_block_001",
+      "coordinates": {
+        "x1": 728.0043334960938,
+        "y1": 82.63765716552734,
+        "x2": 980.1731567382812,
+        "y2": 168.30111694335938
+      },
+      "layout_tag": "header",
+      "confidence": 0.920166552066803,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: 1 / 20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_3_block_000",
+      "coordinates": {
+        "x1": 414.1192932128906,
+        "y1": 140.84642028808594,
+        "x2": 522.080322265625,
+        "y2": 185.60653686523438
+      },
+      "layout_tag": "header",
+      "confidence": 0.7512831687927246,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

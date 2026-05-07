@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; background: #0B0C10; overflow: hidden; font-family: 'Rajdhani', sans-serif; color: #FFFFFF; }
+    [data-composition-id="root"] { width: 1920px; height: 1080px; position: relative; }
+    
+    .scene {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      box-sizing: border-box; padding: 100px;
+    }
+    
+    /* Scene Backgrounds act as structural transitions covering the previous scene */
+    #scene1 { z-index: 10; background: radial-gradient(circle at center, #1A53D8 0%, #0B0C10 70%); }
+    #scene2 { z-index: 20; background: radial-gradient(circle at bottom right, #E63946 0%, #0B0C10 80%); }
+    #scene3 { z-index: 30; background: radial-gradient(circle at top left, #F4C430 0%, #0B0C10 80%); }
+    #scene4 { z-index: 40; background: #0B0C10; border: 15px solid #1A53D8; }
+
+    .glow-text { text-shadow: 0 0 40px rgba(26, 83, 216, 1); }
+    .gold-text { color: #F4C430; text-shadow: 0 0 30px rgba(244, 196, 48, 0.6); }
+    .title-huge { font-size: 160px; font-weight: 800; text-transform: uppercase; text-align: center; line-height: 1.1; margin:0;}
+    .title-large { font-size: 120px; font-weight: 700; text-transform: uppercase; margin:0; }
+    .subtitle { font-size: 60px; font-weight: 600; color: #E63946; letter-spacing: 4px; margin-top:30px;}
+    
+    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; width: 80%; }
+    .team-card { background: rgba(255,255,255,0.05); border-left: 8px solid #F4C430; padding: 30px; font-size: 50px; font-weight: 700; text-align: left; }
+    
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+</head>
+<body>
+  <div data-composition-id="root" data-start="0" data-width="1920" data-height="1080" data-duration="30">
+    
+    <!-- SCENE 1: 0s to 7s -->
+    <div id="scene1" class="scene clip" data-start="0" data-duration="7" data-track-index="1">
+      <h1 class="title-huge glow-text s1-el">THE FESTIVAL<br>RETURNS</h1>
+      <div class="subtitle s1-el">IPL 2026</div>
+    </div>
+
+    <!-- SCENE 2: 7s to 15s -->
+    <div id="scene2" class="scene clip" data-start="7" data-duration="8" data-track-index="2">
+      <h2 class="title-large s2-el">10 TEAMS. 1 TROPHY.</h2>
+      <div class="team-grid">
+        <div class="team-card s2-team">CHENNAI SUPER KINGS</div>
+        <div class="team-card s2-team">MUMBAI INDIANS</div>
+        <div class="team-card s2-team">KOLKATA KNIGHT RIDERS</div>
+        <div class="team-card s2-team">ROYAL CHALLENGERS</div>
+      </div>
+    </div>
+
+    <!-- SCENE 3: 15s to 23s -->
+    <div id="scene3" class="scene clip" data-start="15" data-duration="8" data-track-index="3">
+      <h1 class="title-huge gold-text s3-el">THE BIGGEST<br>STARS</h1>
+      <div class="subtitle s3-el" style="color: #0B0C10; background: #F4C430; padding: 10px 40px; border-radius: 10px;">CLASH ON THE BIGGEST STAGE</div>
+    </div>
+
+    <!-- SCENE 4: 23s to 30s -->
+    <div id="scene4" class="scene clip" data-start="23" data-duration="7" data-track-index="4">
+      <h1 class="title-huge glow-text s4-el">IPL 2026</h1>
+      <h2 class="title-large s4-el" style="margin-top: 40px;">MARCH 22</h2>
+      <div class="subtitle s4-el">TUNE IN LIVE</div>
+    </div>
+    
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Scene 1 Entrance (0s)
+    tl.from(".s1-el", { y: 100, opacity: 0, rotationX: -45, transformOrigin: "50% 100%", duration: 1.2, stagger: 0.2, ease: "expo.out" }, 0.5);
+
+    // Scene 2 Entrance (7s) - The scene background wipes in
+    tl.from("#scene2", { x: "100%", duration: 1.0, ease: "power4.inOut" }, 7.0);
+    tl.from(".s2-el", { scale: 1.2, opacity: 0, duration: 1.0, ease: "power3.out" }, 8.0);
+    tl.from(".s2-team", { x: -50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "back.out(1.5)" }, 8.4);
+
+    // Scene 3 Entrance (15s) - The scene background scales in as a circle
+    tl.from("#scene3", { scale: 0, borderRadius: "100%", duration: 1.2, ease: "expo.inOut" }, 15.0);
+    tl.from(".s3-el", { y: 80, opacity: 0, duration: 1.0, stagger: 0.2, ease: "elastic.out(1, 0.7)" }, 16.2);
+
+    // Scene 4 Entrance (23s) - The scene background crossfades
+    tl.from("#scene4", { opacity: 0, duration: 1.0, ease: "power2.inOut" }, 23.0);
+    tl.from(".s4-el", { y: 50, scale: 0.9, opacity: 0, duration: 1.2, stagger: 0.3, ease: "power3.out" }, 24.0);
+    
+    // Final Scene Exit (28.5s) - Allowed on final scene only
+    tl.to(".s4-el", { opacity: 0, y: -30, duration: 1.0, stagger: 0.1, ease: "power2.in" }, 28.5);
+
+    window.__timelines["root"] = tl;
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+{
+  "page_num": 16,
+  "image_width": 1027,
+  "image_height": 1447,
+  "created_at": "2026-02-14T03:05:47.940992+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_010",
+      "coordinates": {
+        "x1": 85.62699127197266,
+        "y1": 952.6939086914062,
+        "x2": 962.108154296875,
+        "y2": 1158.78466796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9440997838973999,
+      "reading_order": 11,
+      "text": "6. Star: the planet venus is called\nthe Evening Star and it seems\nbrighter than all other stars\nand planets"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_006",
+      "coordinates": {
+        "x1": 72.9250259399414,
+        "y1": 419.4622497558594,
+        "x2": 989.3666381835938,
+        "y2": 555.0123901367188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9429070949554443,
+      "reading_order": 7,
+      "text": "2. Untrodden: a place where not many\npeople have walked; a remote place"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_007",
+      "coordinates": {
+        "x1": 68.92962646484375,
+        "y1": 568.809326171875,
+        "x2": 969.6766967773438,
+        "y2": 760.8275146484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9120627641677856,
+      "reading_order": 8,
+      "text": "3. Springs of Done: springs from the\nRiver Done, believed to be located\nin the Lake District in England"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_008",
+      "coordinates": {
+        "x1": 81.4483413696289,
+        "y1": 765.5380249023438,
+        "x2": 885.00634765625,
+        "y2": 844.8566284179688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8565704226493835,
+      "reading_order": 9,
+      "text": "4. Maid : a young unmarried girl"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_011",
+      "coordinates": {
+        "x1": 78.98518371582031,
+        "y1": 1182.1112060546875,
+        "x2": 657.9833984375,
+        "y2": 1266.065185546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8391343355178833,
+      "reading_order": 12,
+      "text": "7. Ceased to be : died."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_005",
+      "coordinates": {
+        "x1": 76.73577880859375,
+        "y1": 320.65472412109375,
+        "x2": 558.248779296875,
+        "y2": 407.34527587890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8205142617225647,
+      "reading_order": 6,
+      "text": "1. Dwelt : lived"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_002",
+      "coordinates": {
+        "x1": 378.3931579589844,
+        "y1": 113.94554901123047,
+        "x2": 523.460205078125,
+        "y2": 194.97830200195312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7959628701210022,
+      "reading_order": 3,
+      "text": "Lucy"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_004",
+      "coordinates": {
+        "x1": 68.33300018310547,
+        "y1": 231.42984008789062,
+        "x2": 323.75640869140625,
+        "y2": 298.13092041015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7922204732894897,
+      "reading_order": 5,
+      "text": "I MeaningS"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_003",
+      "coordinates": {
+        "x1": 752.8323974609375,
+        "y1": 25.868215560913086,
+        "x2": 1001.6826171875,
+        "y2": 126.84184265136719
+      },
+      "layout_tag": "header",
+      "confidence": 0.780574381351471,
+      "reading_order": 4,
+      "text": "PAGE NO:\nDATE: 1 / 20"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_009",
+      "coordinates": {
+        "x1": 82.57662200927734,
+        "y1": 861.6340942382812,
+        "x2": 426.0555419921875,
+        "y2": 921.21826171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6317248940467834,
+      "reading_order": 10,
+      "text": "5. Praise : admire"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_001",
+      "coordinates": {
+        "x1": 461.45556640625,
+        "y1": 21.594526290893555,
+        "x2": 551.2561645507812,
+        "y2": 62.41377258300781
+      },
+      "layout_tag": "header",
+      "confidence": 0.5424849390983582,
+      "reading_order": 2,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_16_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 5.369623184204102,
+        "x2": 171.5594024658203,
+        "y2": 79.88671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5032078623771667,
+      "reading_order": 1,
+      "text": "Wednesday"
+    }
+  ]
+}

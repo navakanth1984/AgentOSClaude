@@ -1,0 +1,99 @@
+{
+  "page_num": 32,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:34.284406+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_001",
+      "coordinates": {
+        "x1": 72.53266906738281,
+        "y1": 184.92739868164062,
+        "x2": 879.246337890625,
+        "y2": 348.8212585449219
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.776714026927948,
+      "reading_order": 2,
+      "text": "In a general parallelogram,\ndiagonals are not equal"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_004",
+      "coordinates": {
+        "x1": 71.90691375732422,
+        "y1": 680.2421875,
+        "x2": 899.0,
+        "y2": 868.2386474609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6458606719970703,
+      "reading_order": 5,
+      "text": "In a square, diagonals are equal.\nIn a general rhombus, diagon-\nare not equal."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_006",
+      "coordinates": {
+        "x1": 3.909557342529297,
+        "y1": 1064.420166015625,
+        "x2": 897.7150268554688,
+        "y2": 1247.5001220703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6436740159988403,
+      "reading_order": 7,
+      "text": "are parallel.\nIn a trapezium, only one pair\nof opposite sides are parallel."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_003",
+      "coordinates": {
+        "x1": 73.53556060791016,
+        "y1": 458.97119140625,
+        "x2": 899.0,
+        "y2": 687.850830078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5943382978439331,
+      "reading_order": 4,
+      "text": "In a square, all angles are equal\nIn a general rhombus, only\nopposite angles are equal"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_005",
+      "coordinates": {
+        "x1": 68.01557159423828,
+        "y1": 866.1171264648438,
+        "x2": 899.0,
+        "y2": 1089.1103515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5798957943916321,
+      "reading_order": 6,
+      "text": "a trapezium and a parallelogram\nIn a parallelogram, opposite sides\nare parallel."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_002",
+      "coordinates": {
+        "x1": 80.44989776611328,
+        "y1": 375.608154296875,
+        "x2": 766.864990234375,
+        "y2": 456.76190185546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5310965776443481,
+      "reading_order": 3,
+      "text": "a square and a rhombus"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_32_block_000",
+      "coordinates": {
+        "x1": 356.9624938964844,
+        "y1": 60.30876922607422,
+        "x2": 457.8221740722656,
+        "y2": 105.74066162109375
+      },
+      "layout_tag": "header",
+      "confidence": 0.5185096263885498,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

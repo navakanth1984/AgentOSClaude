@@ -1,0 +1,166 @@
+<template id="slide-6-template">
+  <div data-composition-id="slide-6" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="step-num">STEP 2</h2>
+      <h3 class="step-title">MEASURE THE IMPACT</h3>
+      
+      <div class="funnel-container">
+        <img src="../assets/image6.png" class="funnel-img" alt="Evaluation Funnel">
+        
+        <!-- Falling particles -->
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+      </div>
+
+      <div class="warning-panel">
+        <div class="panel-header">DANGER: UNTRACKED CHANGES</div>
+        <p>Changing two lines in a file without knowing the downstream impact is dangerous. You must build evals to treat context evaluation with the rigor of code testing.</p>
+      </div>
+
+      <div class="stages-list">
+        <div class="stage" id="st1">1. Linting & Validation</div>
+        <div class="stage" id="st2">2. Comprehension Checks</div>
+        <div class="stage" id="st3">3. LLM-as-a-Judge</div>
+        <div class="stage" id="st4">4. End-to-End Sandbox</div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-6"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .step-num {
+        font-family: 'JetBrains Mono', monospace;
+        color: #FF9100;
+        font-size: 24px;
+        letter-spacing: 10px;
+        margin-bottom: 10px;
+        opacity: 0;
+      }
+      .step-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 48px;
+        color: #FFFFFF;
+        margin-bottom: 40px;
+        opacity: 0;
+      }
+      .funnel-container {
+        position: relative;
+        width: 800px;
+        height: 600px;
+        opacity: 0;
+      }
+      .funnel-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .particle {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #FF9100;
+        border-radius: 4px;
+        opacity: 0;
+        top: 0;
+      }
+      .p1 { left: 40%; }
+      .p2 { left: 50%; }
+      .p3 { left: 60%; }
+
+      .warning-panel {
+        position: absolute;
+        right: 100px;
+        top: 250px;
+        width: 400px;
+        padding: 30px;
+        background: rgba(255, 145, 0, 0.1);
+        border: 2px solid #FF9100;
+        box-shadow: 0 0 30px rgba(255, 145, 0, 0.2);
+        opacity: 0;
+      }
+      .panel-header {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 900;
+        color: #FF9100;
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+      .warning-panel p {
+        font-family: 'Inter', sans-serif;
+        color: #FFFFFF;
+        font-size: 18px;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .stages-list {
+        position: absolute;
+        left: 100px;
+        top: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .stage {
+        font-family: 'JetBrains Mono', monospace;
+        color: #B0B0B0;
+        font-size: 20px;
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(".step-num", { opacity: 1, duration: 0.8 }, 0.5);
+        tl.to(".step-title", { opacity: 1, y: 0, duration: 0.8 }, 0.7);
+        tl.to(".funnel-container", { opacity: 1, duration: 1.2 }, 1.2);
+        
+        // Particle sequence
+        [".p1", ".p2", ".p3"].forEach((p, i) => {
+          tl.to(p, { 
+            opacity: 1, 
+            y: 400, 
+            scale: 0.2, 
+            duration: 1.5, 
+            ease: "power1.in", 
+            repeat: 5, 
+            delay: i * 0.3 
+          }, 1.5);
+        });
+
+        // Stage Reveal
+        const stages = ["#st1", "#st2", "#st3", "#st4"];
+        stages.forEach((st, i) => {
+          tl.to(st, { opacity: 1, x: 0, color: "#FF9100", duration: 0.5 }, 2 + (i * 0.4));
+        });
+
+        tl.to(".warning-panel", { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 1, 
+          ease: "back.out(1.7)" 
+        }, 4);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-6"] = tl;
+      })();
+    </script>
+  </div>
+</template>

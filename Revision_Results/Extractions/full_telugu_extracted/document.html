@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="te-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+body {
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: white !important;
+    width: 100% !important;
+    font-family: serif;
+}
+
+.page-body-container {
+    background-color: white;
+    width: 210mm;
+    margin: 0 auto;
+    padding: 20mm 15mm;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+p.paragraph, .paragraph, .block, .quote, .ordered-list, .unordered-list,
+.advertisement, .answer, .contact-info, .index, .options,
+.reference, .unknown, .sidebar, .footnote {
+    text-align: justify !important;
+    text-align-last: left !important;
+    text-justify: inter-word !important;
+    font-size: inherit !important;
+    line-height: 1.3 !important;
+    margin: 0 0 12pt 0 !important;
+    text-indent: 18pt !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+.quote, .ordered-list, .unordered-list, .sidebar, .footnote {
+    text-indent: 0 !important;
+}
+
+.multi-column-row { font-size: 12pt; }
+.multi-column-row.cols-1 { font-size: 12pt; }
+.multi-column-row.cols-2 { font-size: 11pt; gap: 18pt; }
+.multi-column-row.cols-3 { font-size: 10pt; gap: 16pt; }
+.multi-column-row.cols-4 { font-size: 9pt; gap: 12pt; }
+
+.page-body-container > p.paragraph,
+.page-body-container > .paragraph {
+    font-size: 12pt !important;
+}
+
+h1.chapter-title {
+    font-size: 30pt !important;
+    line-height: 1.1 !important;
+    margin: 0 0 12pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+h2.section-title, h2.headline {
+    font-size: 18pt !important;
+    line-height: 1.1 !important;
+    margin: 12pt 0 8pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+h3.sub-section-title, h3.sub-headline,
+h4.subsub-section-title, h4.subsub-headline {
+    font-size: 13pt !important;
+    line-height: 1.25 !important;
+    margin: 12pt 0 4pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+.multi-column-row {
+    width: 100% !important;
+    margin: 12pt 0 !important;
+    display: grid;
+}
+
+.column-block {
+    text-align: left !important;
+    text-align-last: left !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.column-block p {
+    text-indent: 0 !important;
+    margin-bottom: 8pt !important;
+    font-size: inherit !important;
+}
+
+.column-block p br {
+    display: none;
+}
+
+.centered-block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 12pt 0;
+}
+
+.centered-block > * {
+    text-align: center !important;
+    font-size: 13pt !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    text-indent: 0 !important;
+}
+
+.table table {
+    width: 100% !important;
+    margin: 18pt 0 !important;
+    border-collapse: collapse;
+    border: 1.5pt solid #333;
+    table-layout: fixed;
+    font-size: 11pt;
+    line-height: 1.2;
+}
+
+.table table td,
+.table table th {
+    word-break: normal;
+    overflow-wrap: break-word;
+    padding: 6pt;
+    font-size: inherit;
+    border: 0.5pt solid #333;
+    text-align: center;
+}
+
+.table table td:first-child,
+.table table th:first-child {
+    text-align: left;
+}
+
+.table table td:not(:first-child),
+.table table th:not(:first-child) {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.column-block .table table {
+    width: 100% !important;
+    table-layout: fixed;
+    margin: 12pt 0;
+    border-collapse: collapse;
+    border: 1.5pt solid #333;
+}
+
+.column-block .table table td,
+.column-block .table table th {
+    word-break: break-word;
+    padding: 6pt;
+    font-size: 10pt;
+    border: 0.5pt solid #333;
+    text-align: center;
+}
+
+.column-block .table table td:first-child,
+.column-block .table table th:first-child {
+    text-align: left;
+}
+
+.column-block .table table td:not(:first-child),
+.column-block .table table th:not(:first-child) {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.quote {
+    font-size: 13pt !important;
+    margin: 0 0 0 0 !important;
+    padding: 0 20px !important;
+    font-style: italic;
+    border-left: 3px solid #ccc;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.ordered-list, .unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 40px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.sub-ordered-list, .sub-unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 60px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.subsub-ordered-list, .subsub-unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 80px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.image, .chart, .diagram, .photograph {
+    margin: 16px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.image img, .chart img, .diagram img, .photograph img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
+
+.chart {
+    border: 2px solid #4a90d9;
+    padding: 8px;
+    background-color: #f8fafc;
+}
+
+.diagram {
+    border: 2px solid #6b7280;
+    padding: 8px;
+    background-color: #f9fafb;
+}
+
+.photograph {
+    border: 2px solid #059669;
+    padding: 4px;
+    background-color: #f0fdf4;
+}
+
+.image-caption {
+    font-style: italic;
+    margin: 8px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.header, .footer {
+    font-size: 13pt !important;
+    margin: 12px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.sidebar {
+    font-size: inherit !important;
+    margin: 12px auto;
+    padding: 10px;
+    background-color: #f5f5f5;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.footnote {
+    font-size: inherit !important;
+    margin: 8px auto;
+    padding-left: 20px;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.advertisement, .answer, .contact-info, .index, .options,
+.reference, .unknown {
+    font-size: inherit !important;
+    margin: 0 0 12pt 0 !important;
+    text-align: justify !important;
+}
+
+.author, .dateline, .flag, .formula, .jumpline,
+.page-number, .folio, .website-link,
+.first-level-question, .second-level-question, .third-level-question {
+    font-size: inherit !important;
+    margin: 12px auto;
+    text-align: center;
+    max-width: 100% !important;
+    text-indent: 0 !important;
+}
+    </style>
+</head>
+<body>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">MY SCHOOL HITE<br/>STAR Date Page<br/>STAR</header></div>
+<div class="centered-block"><header class="header">H·W</header></div>
+<p class="paragraph">కింది ప్రశ్నలకు జవాబులు రాయండి.</p>
+<p class="paragraph">ఎంతో దూరాన్నుంచి వచ్చిన వర్షం<br/>వలన ఏమి జరిగింది?</p>
+<p class="paragraph">కొమ్మలు విలవిల కొట్టుకుంటున్నాయి.<br/>ఎంతో దురాన నుంచే ఏదో<br/>సందేశం తెచ్చింది.</p>
+<p class="paragraph">వర్షం ఆగిపోయినపుడు ఏమి<br/>జరిగింది?</p>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Ans,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">మబ్బులు రథాలెక్కి నాగలి భూజన<br/>వేసుకొని వస్తున్నాడు సూర్యుడు కొండ<br/>శిఖరాతెక్కి జోహార్లు చెప్పాడు.</p>
+</div>
+</div>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">MY SCHOOL HATE<br/>IS STAR Date Page</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">71 Monday<br/>10/11/25</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+</div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">II</aside>
+<aside class="sidebar">18,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">కింది ప్రశ్నలకు సమాధానాలు రాయండి.</p>
+<p class="paragraph">గోదావరి నదిపై ఆనకట్టను కట్టాలని<br/>కాటన్ ఎందుకమకున్నాడు?</p>
+</div>
+</div>
+<p class="paragraph">ప్రతి ఏటా వరదలు, కరువు, కరాళ నృత్యం<br/>చేస్తూ గోదావరి నది పరీవాహక వ్రాతం<br/>ప్రజలను భయకంపితులను చేయగా<br/>ఆనాటి ప్రజలు పడిన ఇబ్బందుల్ని, ఆకలి<br/>కేకల్ని, అనారోగ్యాల్ని, మరణాల్ని చూచి<br/>చలించిన హృదయంతో గోదావరి నది<br/>మీద ఆనకట్ట నిర్మించాలనే యోచన<br/>చేశాడు కాటన్.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">MY SCHOOL HATE<br/>SS Date _______<br/>STAR Page _______</header></div></div>
+<p class="paragraph">బ్రెను తెలుగు భాషకు చేసిన సేవను<br/>తెలుపుము-</p>
+<p class="paragraph">బ్రౌను తెలుగు-ఇంగ్లిషు నిఘంటువును<br/>తయారు చేశాడు. తెలుగు సాహిత్య<br/>పరమైన అనేక అనువాదాలను చేశాడు.<br/>తెలుగు వ్యాసాలు, కథలు, పద్యాలను<br/>సేకరించాడు. తెలుగు భాషకు సంబంధించి<br/>తాను రచించిన గ్రంథాలనన్నిటిని<br/>ప్రచురించాడు.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">MY SCHOOL HATE<br/>SS Date<br/>STAR Page</header></div>
+<div class="multi-column-row cols-3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Monday<br/>11/25</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">పే-3 డింట కవులు</p>
+</div>
+<div class="column-block" style="grid-column: 3;"></div>
+</div>
+<p class="paragraph">ప్రశ్నలు:-</p>
+<p class="paragraph">తిరుపతి వేంకటకవులు తమ పాండితీ<br/>ప్రకర్పణతో ఏమేమి చేశారు?</p>
+<p class="paragraph">తమ పాండితో ప్రకర్షతో వివిధ<br/>గ్రంథాలను రచించటమే కాక పద<br/>విజ్ఞానము ధారణ, ధార, ధైర్యము,<br/>ఏకాగ్రత మున్నగు అనేక అంశాలతో<br/>కూడిన అవధాన, ఆశు కవితా<br/>ప్రక్రియలను ప్రదర్శించి ప్రజలందరికి<br/>వినోద విజ్ఞానాలను, అవధాన; ఆగు<br/>కళలపట్ల కుతూహలాన్ని కలిగించారు.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">E.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">MY SCHOOL MATE<br/>SS Date _______ / _______<br/>STAR Page _______</header></div></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">29</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">తిరుపతి వేంకటకవులు తాము పొందిన<br/>సత్కారాల గురించి ఏమని చెప్పుకున్నారు?</p>
+</div>
+</div>
+<p class="paragraph">వెళ్ళిన ప్రతి చోట తమ పాండిత్య<br/>ప్రతిభను ప్రదర్శించి అందరినీ అలరించేవారు.<br/>ధనా పేక్షతోకాక కేవలము పాండితో<br/>ప్రదర్శనకే విలువచ్చి పలుప్రాంతాలను<br/>దర్కించిన వీరు వెళ్ళిన ప్రతి చోట<br/>సన్మానాలను, సత్కారాలను పొందారు.</p>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">40,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">“వీరు కారణ జన్ములు” అని అనిపించుకున్న<br/>కవులెవరు? అలా అనిపించుకోటానికి<br/>గల కారణమేమిటి?</p>
+</div>
+</div>
+<p class="paragraph">ఆశు కవితను చెప్పటమనేది శ్రీనాథుడు,</p>
+</div>
+</body>
+</html>

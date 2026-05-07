@@ -1,0 +1,125 @@
+{
+  "page_num": 18,
+  "image_width": 1080,
+  "image_height": 1468,
+  "created_at": "2026-02-14T03:07:14.605069+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_003",
+      "coordinates": {
+        "x1": 104.66653442382812,
+        "y1": 280.66571044921875,
+        "x2": 1047.949951171875,
+        "y2": 473.2618103027344
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9254583716392517,
+      "reading_order": 4,
+      "text": "Name two inventions that, in your\nopinion, helped to revolutionise\nthe transport industry."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_001",
+      "coordinates": {
+        "x1": 753.2261962890625,
+        "y1": 94.47211456298828,
+        "x2": 1023.9592895507812,
+        "y2": 190.307861328125
+      },
+      "layout_tag": "header",
+      "confidence": 0.9004955887794495,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_004",
+      "coordinates": {
+        "x1": 29.078386306762695,
+        "y1": 482.0976867675781,
+        "x2": 1019.2219848632812,
+        "y2": 683.1056518554688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.895164966583252,
+      "reading_order": 5,
+      "text": "Ans The inventions of the wheel and\nthe steam engine revolutionised\nthe transport industry."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_006",
+      "coordinates": {
+        "x1": 45.786338806152344,
+        "y1": 788.9324951171875,
+        "x2": 1029.11279296875,
+        "y2": 970.4412231445312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8944370746612549,
+      "reading_order": 7,
+      "text": "Ans, Parallax error occurs due to the\nwrong position of the eye\nwhile taking a reading."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_007",
+      "coordinates": {
+        "x1": 78.91639709472656,
+        "y1": 978.1399536132812,
+        "x2": 1070.2777099609375,
+        "y2": 1135.11376953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8442816734313965,
+      "reading_order": 8,
+      "text": "70, State wheather the following\nmotions are translatory, rotational\nor vibratory."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_008",
+      "coordinates": {
+        "x1": 119.64471435546875,
+        "y1": 1160.1373291015625,
+        "x2": 982.2110595703125,
+        "y2": 1259.9852294921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7804782390594482,
+      "reading_order": 9,
+      "text": "i, A man walking on a straight\nroad."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_005",
+      "coordinates": {
+        "x1": 53.82388687133789,
+        "y1": 696.9942016601562,
+        "x2": 950.253662109375,
+        "y2": 773.21826171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.661132276058197,
+      "reading_order": 6,
+      "text": "69, What causes parallasc error?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_002",
+      "coordinates": {
+        "x1": 414.3363342285156,
+        "y1": 171.9461212158203,
+        "x2": 521.1904907226562,
+        "y2": 235.2880859375
+      },
+      "layout_tag": "page-number",
+      "confidence": 0.6096073389053345,
+      "reading_order": 3,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_18_block_000",
+      "coordinates": {
+        "x1": 0.0782977044582367,
+        "y1": 78.47071075439453,
+        "x2": 84.71353912353516,
+        "y2": 379.2684631347656
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5707263350486755,
+      "reading_order": 1,
+      "text": "Friday\n11/25\n503,"
+    }
+  ]
+}

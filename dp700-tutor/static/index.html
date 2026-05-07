@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N^th Dimension Academy | Fabric Interactive</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="nth-body">
+    <!-- Cinematic Background -->
+    <div id="video-bg-container">
+        <video autoplay muted loop id="bg-video">
+            <source src="assets/Black_hole_forms_Tesseract_Academy_202605061837.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- WebGL Neural Field -->
+    <canvas id="three-canvas"></canvas>
+
+    <div class="app-layout">
+        <!-- Interactive 3D Nav -->
+        <aside class="glass-panel sidebar 3d-card">
+            <div class="logo-container">
+                <div class="logo-nth">N^th</div>
+                <div class="sub-logo">Dimension Academy</div>
+            </div>
+
+            <div class="curriculum-nav">
+                <h3>DP-700 Modules</h3>
+                <div id="moduleList" class="module-grid">
+                    <!-- Modules will be injected here with 3D hover effects -->
+                </div>
+            </div>
+
+            <div class="vocal-controls">
+                <h3>Transmission frequency</h3>
+                <select id="langSelect" class="nth-select">
+                    <option value="en">English (Universal)</option>
+                    <option value="te">Telugu (Spectral)</option>
+                    <option value="hi">Hindi (Solar)</option>
+                </select>
+                
+                <div class="toggle-row">
+                    <button id="voiceToggle" class="status-badge" onclick="toggleVoice()">🔊 ON</button>
+                    <button id="interruptBtn" class="prism-btn stop-btn">STOP TRANS</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Dynamic Main Field -->
+        <main class="glass-panel main-content 3d-card">
+            <header class="chat-header">
+                <div class="tutor-info">
+                    <h2 id="tutorName">Grand Master & Aura | Discussion Mode</h2>
+                    <div class="status-pill">Interactive Session</div>
+                </div>
+                <div id="vocal-indicator" class="visualizer">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+            </header>
+
+            <div id="chatWindow" class="chat-window">
+                <div class="message assistant guru-msg">
+                    <div class="speaker-tag">[GURU]</div>
+                    <div class="msg-content">The N^th Dimension is open. We are here to guide you through **Microsoft Fabric**. Click a module to begin the alignment.</div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="userInput" class="nth-input" placeholder="Interrupt or ask anything..." autocomplete="off">
+                <div class="action-buttons">
+                    <button id="genVisualBtn" class="icon-btn" title="Generate Concept Visual">👁️</button>
+                    <button id="sendBtn" class="prism-btn">TRANSMIT</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Concept Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="caption"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

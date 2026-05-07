@@ -1,0 +1,73 @@
+{
+  "page_num": 25,
+  "image_width": 1080,
+  "image_height": 1551,
+  "created_at": "2026-02-14T03:07:15.459235+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_25_block_004",
+      "coordinates": {
+        "x1": 103.80158233642578,
+        "y1": 988.8412475585938,
+        "x2": 979.429931640625,
+        "y2": 1368.7001953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9700876474380493,
+      "reading_order": 5,
+      "text": "Oscillatory motion:-\nWhen a body moves to - and - fro\nabout a fixed point it is said to\nbe in oscillatory motion or vibratory\nmotion. The motion of a pendulum\nand a vibrating string are\nexamples for oscillatory motion."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_25_block_002",
+      "coordinates": {
+        "x1": 45.2917594909668,
+        "y1": 282.4579772949219,
+        "x2": 1031.6005859375,
+        "y2": 514.5552368164062
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.969689130783081,
+      "reading_order": 3,
+      "text": "What is the difference between circular\nand oscillatory motion? Illustrate with\nexamples -"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_25_block_003",
+      "coordinates": {
+        "x1": 55.644065856933594,
+        "y1": 533.4201049804688,
+        "x2": 1057.1356201171875,
+        "y2": 957.5394897460938
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9444178938865662,
+      "reading_order": 4,
+      "text": "Circular motion :-\nWhen the motion of an object is around\na fixed point that is outside the\nobject, it is called circular motion.\nThe motion of a stone tied to a\nstring and whirled in a circle, and\nthe motion of the Earth around\nthe sun are examples of circular motion."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_25_block_000",
+      "coordinates": {
+        "x1": 698.079345703125,
+        "y1": 96.07906341552734,
+        "x2": 987.8086547851562,
+        "y2": 197.29139709472656
+      },
+      "layout_tag": "header",
+      "confidence": 0.8883227705955505,
+      "reading_order": 1,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_25_block_001",
+      "coordinates": {
+        "x1": 273.3278503417969,
+        "y1": 195.7570343017578,
+        "x2": 387.2419128417969,
+        "y2": 256.54876708984375
+      },
+      "layout_tag": "header",
+      "confidence": 0.5432155132293701,
+      "reading_order": 2,
+      "text": "(w)"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "page_num": 12,
+  "image_width": 1080,
+  "image_height": 1458,
+  "created_at": "2026-02-14T03:07:14.874985+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_004",
+      "coordinates": {
+        "x1": 122.45524597167969,
+        "y1": 367.6117248535156,
+        "x2": 1065.6455078125,
+        "y2": 708.0869750976562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9562774300575256,
+      "reading_order": 5,
+      "text": "X-rays are special photographs\ntaken to see inside the body.\nThey do not pass through\nbones and hence it makes it\npossible to take the photograph\nof the bones."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_003",
+      "coordinates": {
+        "x1": 114.18685150146484,
+        "y1": 260.2704162597656,
+        "x2": 1069.7657470703125,
+        "y2": 352.9031677246094
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9395831823348999,
+      "reading_order": 4,
+      "text": "What is the function of x-rays?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_005",
+      "coordinates": {
+        "x1": 33.77777862548828,
+        "y1": 704.9820556640625,
+        "x2": 1042.9495849609375,
+        "y2": 873.2647094726562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9295908212661743,
+      "reading_order": 6,
+      "text": "80, How many muscles are needed\nto move a bone in one\ndirection?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_002",
+      "coordinates": {
+        "x1": 736.6109008789062,
+        "y1": 100.85464477539062,
+        "x2": 991.623291015625,
+        "y2": 188.89707946777344
+      },
+      "layout_tag": "header",
+      "confidence": 0.9079686403274536,
+      "reading_order": 3,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_006",
+      "coordinates": {
+        "x1": 29.985788345336914,
+        "y1": 896.7327880859375,
+        "x2": 1042.7724609375,
+        "y2": 1067.36572265625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9037428498268127,
+      "reading_order": 7,
+      "text": "Ans, Two muscles are needed to move\na bone - one to push another\nto pull."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_007",
+      "coordinates": {
+        "x1": 54.65623092651367,
+        "y1": 1081.03857421875,
+        "x2": 1033.4884033203125,
+        "y2": 1198.534423828125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8742715120315552,
+      "reading_order": 8,
+      "text": "90, What type of skeleton does an\nearthworm have?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_008",
+      "coordinates": {
+        "x1": 54.6528205871582,
+        "y1": 1222.6181640625,
+        "x2": 1044.104248046875,
+        "y2": 1306.5791015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.76072096824646,
+      "reading_order": 9,
+      "text": "Ans, An earthworm has no skeleton"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_001",
+      "coordinates": {
+        "x1": 371.8933410644531,
+        "y1": 165.13975524902344,
+        "x2": 501.6246032714844,
+        "y2": 217.93284606933594
+      },
+      "layout_tag": "header",
+      "confidence": 0.6457229256629944,
+      "reading_order": 2,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_12_block_000",
+      "coordinates": {
+        "x1": 1.0586625337600708,
+        "y1": 68.05473327636719,
+        "x2": 100.00579071044922,
+        "y2": 434.6488342285156
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5321947336196899,
+      "reading_order": 1,
+      "text": "wrso\n11/25\n79\nAns,"
+    }
+  ]
+}

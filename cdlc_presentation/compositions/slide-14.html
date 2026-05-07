@@ -1,0 +1,135 @@
+<template id="slide-14-template">
+  <div data-composition-id="slide-14" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="title">THE CONTEXT ENGINEERING PLAYBOOK</h2>
+      
+      <div class="playbook-grid">
+        <div class="play-card" id="pc1">
+          <img src="../assets/image14.png" class="play-img p1" alt="Skills">
+          <div class="play-num">01</div>
+          <div class="play-text">BUILD SKILLS, NOT SCRIPTS</div>
+        </div>
+        
+        <div class="play-card" id="pc2">
+          <img src="../assets/image14.png" class="play-img p2" alt="MCP">
+          <div class="play-num">02</div>
+          <div class="play-text">REAL-TIME DATA FEED (MCP)</div>
+        </div>
+        
+        <div class="play-card" id="pc3">
+          <img src="../assets/image14.png" class="play-img p3" alt="Evals">
+          <div class="play-num">03</div>
+          <div class="play-text">PROBABILISTIC TESTING</div>
+        </div>
+        
+        <div class="play-card" id="pc4">
+          <img src="../assets/image14.png" class="play-img p4" alt="WAF">
+          <div class="play-num">04</div>
+          <div class="play-text">DEPLOY CONTEXT FILTERS</div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-14"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 54px;
+        color: #FFFFFF;
+        margin-bottom: 60px;
+        opacity: 0;
+      }
+      .playbook-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 30px;
+        width: 1400px;
+        height: 700px;
+      }
+      .play-card {
+        position: relative;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      .play-img {
+        width: 200%;
+        height: 200%;
+        object-fit: cover;
+        opacity: 0.5;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+      }
+      .p1 { object-position: 0% 0%; }
+      .p2 { object-position: 100% 0%; }
+      .p3 { object-position: 0% 100%; }
+      .p4 { object-position: 100% 100%; }
+
+      .play-num {
+        font-family: 'JetBrains Mono', monospace;
+        color: #00E5FF;
+        font-size: 48px;
+        font-weight: 900;
+        z-index: 2;
+      }
+      .play-text {
+        font-family: 'Outfit', sans-serif;
+        color: #FFFFFF;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        z-index: 2;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(".title", { opacity: 1, y: 0, duration: 1 }, 0.5);
+        
+        const cards = ["#pc1", "#pc2", "#pc3", "#pc4"];
+        cards.forEach((c, i) => {
+          tl.to(c, { 
+            opacity: 1, 
+            scale: 1, 
+            duration: 0.8, 
+            ease: "back.out(1.2)" 
+          }, 1.2 + (i * 0.4));
+          
+          tl.to(c, {
+            borderColor: "#00E5FF",
+            backgroundColor: "rgba(0, 229, 255, 0.1)",
+            duration: 0.4
+          }, 1.6 + (i * 0.4));
+        });
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-14"] = tl;
+      })();
+    </script>
+  </div>
+</template>

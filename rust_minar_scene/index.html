@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Weathered Spire - EVOLVED V2</title>
+    <style>
+        :root {
+            --void-black: #000000;
+            --gold-glow: rgba(255, 245, 230, 0.2);
+            --anamorphic-blue: rgba(0, 100, 255, 0.4);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--void-black);
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .composition-root {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            background: var(--void-black);
+        }
+
+        .scene-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            position: absolute;
+            width: 110%; /* Extra width for Dutch Tilt/Motion */
+            height: 110%;
+            object-fit: cover;
+            transform-origin: center center;
+        }
+
+        /* Shot 1: Close-up (Starts Silhouetted) */
+        #plate-macro {
+            z-index: 5;
+            filter: brightness(0) contrast(1.5);
+        }
+
+        /* Shot 2: Wide-angle */
+        #plate-wide {
+            z-index: 4;
+            opacity: 0;
+        }
+
+        /* Anamorphic Lens Flare */
+        .anamorphic-flare {
+            position: absolute;
+            top: 40%;
+            left: -100%;
+            width: 300%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--anamorphic-blue), transparent);
+            box-shadow: 0 0 20px 4px var(--anamorphic-blue);
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+            transform: rotate(-5deg);
+        }
+
+        /* Volumetric Shadow Cut God Rays */
+        .god-rays {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                110deg,
+                transparent,
+                transparent 60px,
+                rgba(255, 255, 255, 0.03) 65px,
+                rgba(255, 255, 255, 0.08) 80px,
+                rgba(255, 255, 255, 0.03) 95px,
+                transparent 100px
+            );
+            mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
+            opacity: 0;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,1) 100%);
+            pointer-events: none;
+            z-index: 25;
+        }
+    </style>
+</head>
+<body>
+    <div data-composition-id="spire-evolved-v2" data-start="0" data-duration="10" data-width="1920" data-height="1080" class="composition-root">
+        
+        <div id="scene-macro" class="scene-layer">
+            <img id="plate-macro" src="evolved_plate_B_macro.jpg" alt="Macro Spire">
+        </div>
+
+        <div id="scene-wide" class="scene-layer">
+            <img id="plate-wide" src="evolved_plate_A_wide.jpg" alt="Wide Spire">
+            <div id="rays" class="god-rays"></div>
+        </div>
+
+        <div class="anamorphic-flare"></div>
+        <div class="vignette"></div>
+
+        <audio 
+            id="master-audio"
+            data-start="0"
+            data-duration="10"
+            data-track-index="0"
+            src="evolved_master_audio.wav"
+            data-volume="1">
+        </audio>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // ---------------------------------------------------------
+        // SHOT 1: [HOOK] 0-3s - Macro Reveal & Rapid Crane Dutch Tilt
+        // ---------------------------------------------------------
+        
+        // 0-1s: Rembrandt Lighting Reveal
+        tl.to("#plate-macro", {
+            filter: "brightness(1) contrast(1.2)",
+            duration: 1.5,
+            ease: "power2.inOut"
+        }, 0);
+
+        // 1-3s: Rapid Crane Shot + Dutch Tilt
+        tl.to("#plate-macro", {
+            scale: 0.8,
+            rotation: -8,
+            x: 50,
+            duration: 2,
+            ease: "expo.out"
+        }, 1);
+
+        // Anamorphic Lens Flare Glint
+        tl.to(".anamorphic-flare", {
+            opacity: 1,
+            top: "45%",
+            duration: 0.5,
+            ease: "sine.inOut"
+        }, 1.2);
+        tl.to(".anamorphic-flare", {
+            opacity: 0,
+            duration: 1,
+            ease: "sine.in"
+        }, 1.7);
+
+        // ---------------------------------------------------------
+        // SHOT 2: 3-10s - Wide Angle Sentinel & Deep Void Reveal
+        // ---------------------------------------------------------
+
+        // Crossfade to Wide Shot
+        tl.to("#plate-wide", {
+            opacity: 1,
+            duration: 2,
+            ease: "power2.inOut"
+        }, 2.5);
+
+        tl.to("#plate-macro", {
+            opacity: 0,
+            duration: 2,
+            ease: "power2.inOut"
+        }, 2.5);
+
+        // God Rays Entrance
+        tl.to("#rays", {
+            opacity: 1,
+            duration: 3,
+            ease: "sine.inOut"
+        }, 3);
+
+        // Slow Cinematic Push-in for Shot 2
+        tl.to("#plate-wide", {
+            scale: 1.15,
+            rotation: 2,
+            duration: 7,
+            ease: "sine.inOut"
+        }, 3);
+
+        // Final Cinematic Fade
+        tl.to(".composition-root", {
+            filter: "brightness(0)",
+            duration: 1,
+            ease: "power2.in"
+        }, 9);
+
+        window.__timelines["spire-evolved-v2"] = tl;
+    </script>
+</body>
+</html>

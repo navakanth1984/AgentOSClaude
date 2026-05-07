@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+body {
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: white !important;
+    width: 100% !important;
+    font-family: serif;
+}
+
+.page-body-container {
+    background-color: white;
+    width: 210mm;
+    margin: 0 auto;
+    padding: 20mm 15mm;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+p.paragraph, .paragraph, .block, .quote, .ordered-list, .unordered-list,
+.advertisement, .answer, .contact-info, .index, .options,
+.reference, .unknown, .sidebar, .footnote {
+    text-align: justify !important;
+    text-align-last: left !important;
+    text-justify: inter-word !important;
+    font-size: inherit !important;
+    line-height: 1.3 !important;
+    margin: 0 0 12pt 0 !important;
+    text-indent: 18pt !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+.quote, .ordered-list, .unordered-list, .sidebar, .footnote {
+    text-indent: 0 !important;
+}
+
+.multi-column-row { font-size: 12pt; }
+.multi-column-row.cols-1 { font-size: 12pt; }
+.multi-column-row.cols-2 { font-size: 11pt; gap: 18pt; }
+.multi-column-row.cols-3 { font-size: 10pt; gap: 16pt; }
+.multi-column-row.cols-4 { font-size: 9pt; gap: 12pt; }
+
+.page-body-container > p.paragraph,
+.page-body-container > .paragraph {
+    font-size: 12pt !important;
+}
+
+h1.chapter-title {
+    font-size: 30pt !important;
+    line-height: 1.1 !important;
+    margin: 0 0 12pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+h2.section-title, h2.headline {
+    font-size: 18pt !important;
+    line-height: 1.1 !important;
+    margin: 12pt 0 8pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+h3.sub-section-title, h3.sub-headline,
+h4.subsub-section-title, h4.subsub-headline {
+    font-size: 13pt !important;
+    line-height: 1.25 !important;
+    margin: 12pt 0 4pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+.multi-column-row {
+    width: 100% !important;
+    margin: 12pt 0 !important;
+    display: grid;
+}
+
+.column-block {
+    text-align: left !important;
+    text-align-last: left !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.column-block p {
+    text-indent: 0 !important;
+    margin-bottom: 8pt !important;
+    font-size: inherit !important;
+}
+
+.column-block p br {
+    display: none;
+}
+
+.centered-block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 12pt 0;
+}
+
+.centered-block > * {
+    text-align: center !important;
+    font-size: 13pt !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    text-indent: 0 !important;
+}
+
+.table table {
+    width: 100% !important;
+    margin: 18pt 0 !important;
+    border-collapse: collapse;
+    border: 1.5pt solid #333;
+    table-layout: fixed;
+    font-size: 11pt;
+    line-height: 1.2;
+}
+
+.table table td,
+.table table th {
+    word-break: normal;
+    overflow-wrap: break-word;
+    padding: 6pt;
+    font-size: inherit;
+    border: 0.5pt solid #333;
+    text-align: center;
+}
+
+.table table td:first-child,
+.table table th:first-child {
+    text-align: left;
+}
+
+.table table td:not(:first-child),
+.table table th:not(:first-child) {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.column-block .table table {
+    width: 100% !important;
+    table-layout: fixed;
+    margin: 12pt 0;
+    border-collapse: collapse;
+    border: 1.5pt solid #333;
+}
+
+.column-block .table table td,
+.column-block .table table th {
+    word-break: break-word;
+    padding: 6pt;
+    font-size: 10pt;
+    border: 0.5pt solid #333;
+    text-align: center;
+}
+
+.column-block .table table td:first-child,
+.column-block .table table th:first-child {
+    text-align: left;
+}
+
+.column-block .table table td:not(:first-child),
+.column-block .table table th:not(:first-child) {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.quote {
+    font-size: 13pt !important;
+    margin: 0 0 0 0 !important;
+    padding: 0 20px !important;
+    font-style: italic;
+    border-left: 3px solid #ccc;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.ordered-list, .unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 40px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.sub-ordered-list, .sub-unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 60px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.subsub-ordered-list, .subsub-unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 80px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.image, .chart, .diagram, .photograph {
+    margin: 16px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.image img, .chart img, .diagram img, .photograph img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
+
+.chart {
+    border: 2px solid #4a90d9;
+    padding: 8px;
+    background-color: #f8fafc;
+}
+
+.diagram {
+    border: 2px solid #6b7280;
+    padding: 8px;
+    background-color: #f9fafb;
+}
+
+.photograph {
+    border: 2px solid #059669;
+    padding: 4px;
+    background-color: #f0fdf4;
+}
+
+.image-caption {
+    font-style: italic;
+    margin: 8px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.header, .footer {
+    font-size: 13pt !important;
+    margin: 12px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.sidebar {
+    font-size: inherit !important;
+    margin: 12px auto;
+    padding: 10px;
+    background-color: #f5f5f5;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.footnote {
+    font-size: inherit !important;
+    margin: 8px auto;
+    padding-left: 20px;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.advertisement, .answer, .contact-info, .index, .options,
+.reference, .unknown {
+    font-size: inherit !important;
+    margin: 0 0 12pt 0 !important;
+    text-align: justify !important;
+}
+
+.author, .dateline, .flag, .formula, .jumpline,
+.page-number, .folio, .website-link,
+.first-level-question, .second-level-question, .third-level-question {
+    font-size: inherit !important;
+    margin: 12px auto;
+    text-align: center;
+    max-width: 100% !important;
+    text-indent: 0 !important;
+}
+    </style>
+</head>
+<body>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<p class="paragraph">Name the two girdles in the<br/>human skeleton?</p>
+<p class="paragraph">Ans, The pelvic girdle and the<br/>pectoral girdle.</p>
+<p class="paragraph">50: Name the bones in the<br/>human arm?</p>
+<p class="paragraph">Ans The humerus is the bone found<br/>in the upper arm and the<br/>radius and ulna are found<br/>in the lower arm.</p>
+<p class="paragraph">60, What type of joint is present<br/>in the knees?)</p>
+<p class="paragraph">Ans, Hinge joint is present in<br/>the knees.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: 1/20</header></div></div>
+<p class="paragraph">cup - sthaped cavity in the<br/>shoulder girdle. The humerus<br/>can therefore move<br/>freely in all directions.</p>
+<p class="paragraph">How do the following animals<br/>move?</p>
+<p class="paragraph">Earthworm:- It moves by using a<br/>set of muscles which contract and<br/>expand the body. It also has<br/>soft hair like projections called<br/>setae to grip the ground<br/>so that the body can move<br/>forward by contractions and<br/>expansions of the muscles.</p>
+<p class="paragraph">Snail:- Snails move by creeping<br/>on a flat ‘foot’ underneath the body.<br/>The bond of muscles in the foot<br/>contract and expand. The flat<br/>foot produces slimy mucus to<br/>make a slippery track for<br/>the snail to move.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: 1 / 20</header></div></div>
+<p class="paragraph">iii, Bird:- Birds beat their wings against<br/>air to propel forward. The strong<br/>chest muscles help to move the<br/>wings up and down. It uses<br/>its two legs to walk or jump<br/>when it is not flying.</p>
+<p class="paragraph">Snake:- Snakes do not have limbs:<br/>they use their muscles and scales<br/>to move. They move with the help<br/>of body scales that catch any<br/>uneven surface making a series<br/>of loops. They contract<br/>their muscles starting at the<br/>neck and thrusting their body<br/>from side to side<br/>creating a series of curves.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<p class="paragraph">Short answer questions:-</p>
+<p class="paragraph">What do you mean by the<br/>environment?</p>
+<p class="paragraph">&amp;everything which surrounds a living<br/>organism is called its environment.<br/>It includes all the factors<br/>affecting the growth, development<br/>and survival of the particular<br/>organism.</p>
+<p class="paragraph">What are the abiotic components<br/>of the environment?</p>
+<p class="paragraph">Ans, An abiotic environment is made of<br/>soil, water, air, light as well as<br/>climatic factors such as temperature,<br/>rainfall, humidity and wind speed.<br/>30, Why are plants called autotrophs?<br/>Ans, Plants can prepare their own food. So,<br/>they are called autotrophs. Ans, An abiotic environment is made of<br/>soil, water, air, light as well as<br/>climatic factors such as temperature,<br/>rainfall, humidity and wind speed.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C-W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">y<br/>5<br/>31<br/>s,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">What are heterotrophe?</p>
+</div>
+</div>
+<p class="paragraph">Living organisms which cannot<br/>prepare their own food and have<br/>to depend on the autotrophs are<br/>called heterotrophs. For eg:- all<br/>animals depend on plants for their<br/>food either directly or<br/>indirectly.</p>
+<p class="paragraph">Which living organisms are<br/>responsible for breaking down<br/>the bodies of dead organisms?</p>
+<p class="paragraph">Ans, Organisms like bacteria and fungi<br/>are responsible for breaking<br/>down the bodies of dead<br/>organisms.</p>
+<p class="paragraph">What is a habitat?</p>
+<p class="paragraph">The area/environment where an organism<br/>lives is called its habitats.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C·W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">Q, Name the two types of aquatic<br/>habitats.</p>
+<p class="paragraph">Ans, The two kinds of aquatic habitats<br/>are the marine and the<br/>freshwater habitats.</p>
+<p class="paragraph">8Q, What are the characteristics of<br/>a grassland habitat?</p>
+<p class="paragraph">Ans, A grassland habitat has tall<br/>grasses with a few trees. There<br/>is no place for animals to hide.<br/>90, What are hydrophytes?</p>
+<p class="paragraph">Hydrophytes are plants which live in<br/>water. These plants can either be<br/>submerged in water(hydrilla) or<br/>floating(lotus) on the surface of<br/>the water.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">C. W</header></div>
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="multi-column-row cols-3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Tuesday<br/>11/11/25</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+<div class="column-block" style="grid-column: 3;"></div>
+</div>
+<aside class="sidebar">10 Q<br/><br/>Ans,</aside>
+<p class="paragraph">How do air bladders help fish?</p>
+<p class="paragraph">Ans, Air bladders help the fish to<br/>float in the water.</p>
+<p class="paragraph">11Q, How do some desert toads protect<br/>themselves from the heat?</p>
+<p class="paragraph">Ans, some desert toads seal themselves<br/>in burrows and sleep for<br/>eight to nine months until<br/>a heavy rain occurs.</p>
+<p class="paragraph">120, How are the spots of a jaguar<br/>useful?</p>
+<p class="paragraph">Ans, jaguars have spots on their bodies.<br/>This makes it hard for their prey<br/>to see them among the speckled<br/>shadows of the rainforest.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">Long answer questions: Give examples to show how the<br/>temperature and the amount of<br/>water available affect animals<br/>and plants in a habitat?</p>
+<p class="paragraph">In desert habitat temperature is<br/>high and rainfall low, plants and<br/>animal adapt to suit climatic<br/>conditions For examples:-<br/>1. Many plants such as cactus have<br/>fleshy stem to store food and<br/>water. Most desert plants have<br/>very long roots to deep into<br/>the soil in search of food.<br/>2. Camels which live in the desert<br/>habitat, can drink more than<br/>100 litres of water, this water<br/>in is stored in the body. 2, Camels which live in the desert<br/>habitat, can drink more than<br/>100 litres of water, this water<br/>im is stored in the body.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 33.33%; text-align: center;"><header class="header">Saturday<br/>11/25</header></div><div style="flex: 0 0 33.33%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 33.33%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div></div>
+<p class="paragraph">3, In Mountain regions:-<br/>Habitats are cold and windy For<br/>examples. the yak and the mountain goat<br/>have long hair to protect<br/>them selps from the cold.</p>
+<p class="paragraph">2) polar bears thick fur to<br/>protect them selves from extreme<br/>cold.</p>
+<p class="paragraph">20, Distinguish between producers, primary<br/>consumers and secondary cousumers?</p>
+<p class="paragraph">Ans Plants make their own food and are<br/>called producers. All animals<br/>depend on plants for food, as they<br/>cannot make their own food. So,<br/>they are called consumers Animals<br/>such as cow and goat eat plants as their<br/>food and are ‘called primary_consumers’.<br/>Animals such as lion and wolfs eat</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">u</header></div>
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<h2 class="section-title">C·W</h2>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+</div>
+<p class="paragraph">other animals such as cow and goat<br/>(primary consumers) as food and<br/>are thus called the secondary<br/>consumers.<br/>How are decomposers useful to us?</p>
+<p class="paragraph">When plant or animals die, part of<br/>their body is eaten by scavengers<br/>like vultures, crows and so on.<br/>The uneaten parts are acted upon<br/>by microorganisms such as fungi<br/>and bacteria known as<br/>decomposers. The decomposers break<br/>down or decompose the dead<br/>material into nutrients and<br/>help to return the nutrients<br/>to the soil. These nutrients<br/>are absorbed by plants again<br/>to make food.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">4Q, What are aquatic animals? How<br/>is a fish adapted to live in water?<br/><br/>Ans, Animals that live in<br/>water are called aquatic<br/>animals. Fish have:<br/>i, Special organs called gills to<br/>breathe in water.<br/>ii, Streamlined bodies with scales<br/>that make it easier(for them) to move<br/>in water.<br/>iii, Fins and a tail to help them<br/>to swim.<br/>iv, Air bladders to help them<br/>to stay afloat.<br/><br/>5Q, How is a camel adapted to<br/>live in its habitat?<br/><br/>Ans, A camel is adapted to live in<br/>hot and dry conditions.<br/>i, It can drink more than 100<br/>litres of water. This water<br/>is stored in the body and</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">C.W</header></div>
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">wrso<br/>11/25<br/>79<br/>Ans,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">What is the function of x-rays?</p>
+</div>
+</div>
+<p class="paragraph">X-rays are special photographs<br/>taken to see inside the body.<br/>They do not pass through<br/>bones and hence it makes it<br/>possible to take the photograph<br/>of the bones. 80, How many muscles are needed<br/>to move a bone in one<br/>direction?</p>
+<p class="paragraph">Ans, Two muscles are needed to move<br/>a bone - one to push another<br/>to pull.</p>
+<p class="paragraph">90, What type of skeleton does an<br/>earthworm have?</p>
+<p class="paragraph">Ans, An earthworm has no skeleton</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="multi-column-row cols-3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">day<br/>25<br/>ans</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="page-number">C.W</p>
+</div>
+<div class="column-block" style="grid-column: 3;"></div>
+</div>
+<p class="paragraph">thus it can go without water<br/>for several days.<br/>It can store fat in the<br/>humps, which serves us a food<br/>store. Hence, it can go without<br/>food for a long time.<br/>It can maintain high body<br/>temperature so it does not<br/>sweat. Its feet have leathery soles<br/>for walking in the soft sand.<br/>As a protection from sandstorms,<br/>it can close its nostrils and<br/>has thick long eyes lashes to<br/>protect eyes from sands.</p>
+<p class="paragraph">69, Describe the adaptations seen in<br/>animals that live on mountains.</p>
+<p class="paragraph">Ans, Animals living on mountains.<br/>i, have thick fur on their body,<br/>like snow leopard or long<br/>hair like yak to protect<br/>themselves from cold.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">have strong hooves to walk on<br/>the rocky slopes i - h<br/>(musk deer).<br/>are adapted to breed and<br/>raise their young ones quickly<br/>in the summer.<br/>migrate(swallows) or hibernate<br/>(dormice) to escape from the<br/>harsh conditions</p>
+<p class="paragraph">10, What are the features of tropical<br/>rainforests? Describe the<br/>adaptations of plants in these<br/>habitats.</p>
+<p class="paragraph">Ans, Features of tropical rainforests:<br/>i, The vegetation is dense because<br/>of the warm climate and<br/>heavy rainfall.<br/>ii, Tall trees with heavy foliage<br/>allow very little light to reach<br/>the lower levels.<br/>iii, The leaves on the trees have a<br/>special arrangement that allows</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<p class="paragraph">water to drip easily so that it<br/>does not collect on the leaves.<br/>They have grooves and special<br/>tips called drip tips for<br/>this purpose.</p>
+<p class="paragraph">Plants growing at the lower levels<br/>do not get much light so their<br/>leaves are large to help them<br/>absorb as much sunlight as<br/>possible.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C-W</header></div>
+<p class="paragraph">Short answer questions</p>
+<p class="paragraph">10. What is a physical quantity? Give<br/>three example of physical quantities.</p>
+<p class="paragraph">Ans, Any quantity that can be measured<br/>is called a physical quantity.<br/>Measure of length, weight and<br/>time are some examples.</p>
+<p class="paragraph">20, What is a Standard unit?</p>
+<p class="paragraph">Ans, A standard unit is a standard<br/>measure that remains the same,<br/>wherever it is used by<br/>whomsoever.</p>
+<p class="paragraph">30, In the statement, Bangalore is 9.20m<br/>above sea level; what do ‘920’m?<br/>stand for?</p>
+<p class="paragraph">Ans, The unit ‘m’ stands for the unit<br/>metre which is the standard<br/>unit used to measure height</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="centered-block"><header class="header">C-W</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Ans,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">The number ‘920’ represents the<br/>number of times the metre is<br/>repeated in representing the height<br/>of Bangalore above sea level.</p>
+</div>
+</div>
+<p class="paragraph">40, Name the appropriate unit for<br/>measuring the following</p>
+<p class="paragraph">1, The thickness of a cardboard<br/>sheet</p>
+<p class="paragraph">ii, The distance between stars</p>
+<p class="paragraph">iii, The length of a pencil</p>
+<p class="paragraph">iv, The length and breath of a room.<br/>Ans, metre</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Friday<br/>11/25<br/>503,</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="page-number">C.W</p>
+<p class="paragraph">Name two inventions that, in your<br/>opinion, helped to revolutionise<br/>the transport industry.</p>
+</div>
+</div>
+<p class="paragraph">Ans The inventions of the wheel and<br/>the steam engine revolutionised<br/>the transport industry.</p>
+<p class="paragraph">69, What causes parallasc error?</p>
+<p class="paragraph">Ans, Parallax error occurs due to the<br/>wrong position of the eye<br/>while taking a reading.</p>
+<p class="paragraph">70, State wheather the following<br/>motions are translatory, rotational<br/>or vibratory.</p>
+<p class="paragraph">i, A man walking on a straight<br/>road.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<p class="paragraph">The movement of the hands of a<br/>clock</p>
+<p class="paragraph">The movement of the needle<br/>of a sewing machine-</p>
+<p class="paragraph">Ans, Niobium</p>
+<p class="paragraph">iv, A spinning top</p>
+<p class="paragraph">v, The movement of a coin on a<br/>carrom board</p>
+<p class="paragraph">vi, The wheels of a moving truck Ans, Translational and rotational motion</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C. \omega</header></div>
+<p class="paragraph">Long answer questions</p>
+<p class="paragraph">10, Why is it essential to have a<br/>standard system of units?</p>
+<p class="paragraph">Ans, Standard unit is essential for:<br/>i) accuracy - the earlier units of hand<br/>span, cubit and the foot differ<br/>from one person to another and<br/>are not reliable for accurate<br/>measurements. ii, avoiding confusion - the temperature<br/>of melting ice is $0^\circ\text{C}$ and also<br/>$32^\circ\text{F}$. ii, avoiding confusion - the temperature<br/>of melting ice is $0^\circ$C and also<br/>$32^\circ$F.<br/>iii, reproducing a certain quantity<br/>accurately - 2kg of sugar or 6m of<br/>cloth.<br/>iv, understanding the meaning of a<br/>measured quantity - a 3m broad<br/>balcony.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / 20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<p class="paragraph">What are the common errors that<br/>may arise while measuring with<br/>a metre scale?</p>
+<p class="paragraph">There are three Possible errors which<br/>may occur while using a metre scale: i, If the scale is not placed exactly along<br/>the length being measured, a wrong<br/>reading is obtained Reading is difficult,<br/>An error can occur due to the wrong<br/>position of the eye while taking<br/>the reading. This error is called<br/>parallax error. The portion of the Scale near the<br/>zero mark maybe worn out. This<br/>will give a Wrong reading.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C-W</header></div>
+<p class="paragraph">How can you measure the length of<br/>a curved line? Describe one method<br/>in detail?</p>
+<p class="paragraph">A curved line cannot be measured<br/>using a meter scale A thread or a<br/>divider should be used for this<br/>measurement. Open out a divider so that the<br/>legs are about 5mm a part. Place<br/>one of the legs at one end of<br/>the line and the other leg on<br/>the line. With out altering the<br/>distance between the legs of the<br/>divider, take the divider along<br/>the line. Count the number of steps<br/>taken to cover the entire line. If some<br/>portion is left out, measure it separately.<br/>The length of the curved line is calculated<br/>as Length = number of steps x distance between<br/>legs + length of the left over line.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">10Q What kind of skeleton does<br/>a snail have?</p>
+<p class="paragraph">Ans, A snail has exoskeleton.</p>
+<p class="paragraph">11 Q. How does the shape of a<br/>fish’s body help it to move<br/>in water?</p>
+<p class="paragraph">Ans, Fish are streamlined in shape<br/>that is rounded in the front<br/>narrow at the back.<br/>This shapes facilitates easy<br/>movement through water<br/>due to reduced water<br/>resistance</p>
+<p class="paragraph">12Q, Describe how a bird files?<br/>Ans, The bird moves its wings up and<br/>down to move up and<br/>forward strong chest muscles<br/>pull their wings up and<br/>down.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="centered-block"><header class="header">c.w</header></div>
+<p class="paragraph">What is translatory motion? Describe<br/>the different kinds of translatory<br/>motion:</p>
+<p class="paragraph">A body is said to be in translatory<br/>motion When it moves as a whole<br/>such that every Part of the object<br/>moves through the same distance<br/>in a given Period of time. There<br/>are two types of translatory motion:-<br/>Rectilinear: When the object moves in a<br/>straight line, its motion is rectilinear-<br/>Curvilinear:- When the object moves in<br/>a curved line, it is said to be<br/>curvilinear-</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">(w)</header></div>
+<p class="paragraph">What is the difference between circular<br/>and oscillatory motion? Illustrate with<br/>examples Circular motion:-<br/>When the motion of an object is around<br/>a fixed point that is outside the<br/>object, it is called circular motion.<br/>The motion of a stone tied to a<br/>string and whirled in a circle, and<br/>the motion of the Earth around<br/>the sun are examples of circular motion.</p>
+<p class="paragraph">Oscillatory motion:-<br/>When a body moves to - and - fro<br/>about a fixed point it is said to<br/>be in oscillatory motion or vibratory<br/>motion. The motion of a pendulum<br/>and a vibrating string are<br/>examples for oscillatory motion.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="centered-block"><header class="header">C-W</header></div>
+<p class="paragraph">Differentiate between revolution and<br/>rotation with respect to motion.<br/>Illustrate with examples.</p>
+<p class="paragraph">Revolution - It is a kind of circular<br/>motion in which the body as a<br/>whole moves around a fixed point<br/>or a fixed axis. For example,<br/>the motion of the Earth around<br/>the sun.</p>
+<p class="paragraph">Rotation:- It is a kind of circular<br/>motion in which the body moves<br/>round without changing its position<br/>from one place to another. For Eg:<br/>a spinning top.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<p class="paragraph">Long answer questions Q, Name three organ systems in the<br/>human body and their main<br/>functions?</p>
+<p class="paragraph">ns, Different organs working together<br/>makeup and organs system with<br/>has a special functions to do<br/>i, The circulatory system help to<br/>transport substances through out<br/>the body.<br/>ii, The Respiratory System is involved in<br/>Respiration. It helps the body take<br/>in oxygen and send out<br/>carbon dioxide.<br/>iii, Digestive system helps the body<br/>break down food into substances<br/>that can be used.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">(. ω)</header></div>
+<p class="paragraph">Name the main organs and<br/>the functions of the nervous<br/>system?</p>
+<p class="paragraph">Ans, The nervous system is made up<br/>of the brain spinal cord, nerves.<br/>The main function of the<br/>nervous system is to sense<br/>what is going on around us,<br/>coordinate what we need to do<br/>and transmits messages to<br/>different parts of the body<br/>telling them what to do.. It<br/>also controls the rest of the<br/>body.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<p class="paragraph">6|11|25 C.W</p>
+<p class="paragraph">II Short answer questions.</p>
+<p class="paragraph">10, Name the organ system that is<br/>involved in breathing in<br/>human beings?</p>
+<p class="paragraph">Ans, The respiratory System is connected<br/>with our breathing.</p>
+<p class="paragraph">29: Name the only moveable bone<br/>in the skull?</p>
+<p class="paragraph">Ans, The lower jaw.</p>
+<p class="paragraph">39: What are floating ribs? Why are<br/>they called that?</p>
+<p class="paragraph">Ans, The last two pairs of ribs are<br/>not attached to the sternum or<br/>to the lowest true ribs.<br/>They are only attached to the<br/>spine and so are called<br/>the floating ribs.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div></div>
+<p class="paragraph">What are the functions of the<br/>human skeleton?</p>
+<p class="paragraph">Ans. Functions of the human skeleton<br/>i, It supports our body gives us<br/>shapes<br/>ii, It protects the organ, such as<br/>the brain, the heart, lungs<br/>iii, It help us to move with the<br/>help of muscles.<br/>iv, The blood cells are product in<br/>the bone marrow<br/>v, a soft substances present inside<br/>the bones.</p>
+<p class="paragraph">48, Explain the structure of the<br/>following and their functions<br/>i, The rib cage<br/>structure:- There are 12 pairs of thin<br/>flat, bones-ribs that curve around<br/>from the spine to the front of<br/>the body.<br/>i, The first seven pairs of ribs are<br/>attached directly to the breastbone.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="centered-block"><header class="header">6:0</header></div>
+<p class="paragraph">This are true ribs.<br/>The 8th, 9th and 10th pairs of ribs<br/>attached to the lowest true rib.<br/>The last two pairs of ribs are not<br/>attached to lowest true rib. These are<br/>attached to the spine. They are<br/>called floating ribs<br/>Function:<br/>The ribcage protects the lungs<br/>and the heart.</p>
+<p class="paragraph">ii, The Skull:<br/>Structure:- The upper part of the<br/>skull is made up of eight flat<br/>bones joined together. The face<br/>is made up of 14 bones. All joints<br/>are immovable only lower jaw<br/>movable bone in the Skull.<br/>Function:- The skull protects the brain</p>
+<p class="paragraph">The vertebral column<br/>Structure: - It is made of 33 irregularly<br/>shaped bones, called vertebrae. The backbone<br/>is S-shaped. Each vertebra has a hole</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: 1/20</header></div></div>
+<p class="paragraph">in the middle through which<br/>the spinal cord passes.<br/>Function:-<br/>The back Bone holds the head<br/>and body upright.<br/>It protects the delicate spinal cord<br/>The joints in the Vertebrae<br/>help us to bend and twist our<br/>back.</p>
+<p class="paragraph">50. Explain the structure of the ball-<br/>and -socket joint, giving two<br/>examples. What kind of movement<br/>does such a joint allow?</p>
+<p class="paragraph">The end of the bone is round<br/>like a ball. This fits into a hollow<br/>part in the other bone. The two<br/>hip joints and shoulder joints<br/>are examples of ball-and socket<br/>joint. This joint allows movement<br/>in all directions. For examples:<br/>The ball-shaped head of the<br/>humerus fits into a</p>
+</div>
+</body>
+</html>

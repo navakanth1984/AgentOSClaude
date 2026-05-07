@@ -1,0 +1,125 @@
+{
+  "page_num": 4,
+  "image_width": 1028,
+  "image_height": 1600,
+  "created_at": "2026-02-14T03:05:47.670864+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_006",
+      "coordinates": {
+        "x1": 17.5905704498291,
+        "y1": 906.9207153320312,
+        "x2": 986.9851684570312,
+        "y2": 1049.9285888671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9379243850708008,
+      "reading_order": 7,
+      "text": "5. Humble stories. stories that speak\nof a simple life."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_008",
+      "coordinates": {
+        "x1": 19.256507873535156,
+        "y1": 1224.4454345703125,
+        "x2": 1012.1673583984375,
+        "y2": 1483.674560546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9271379709243774,
+      "reading_order": 9,
+      "text": "7. Ferment: mix and react with the\ningredients to reach the right\namount of sourness (needed for\na pickle)"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_005",
+      "coordinates": {
+        "x1": 24.299997329711914,
+        "y1": 749.4793701171875,
+        "x2": 1011.2879028320312,
+        "y2": 895.2208251953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9109432101249695,
+      "reading_order": 6,
+      "text": "4. Cooking foundation: his understanding\nof cooking and serring food."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_003",
+      "coordinates": {
+        "x1": 35.84556198120117,
+        "y1": 432.468994140625,
+        "x2": 1009.088623046875,
+        "y2": 581.9876708984375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8967767953872681,
+      "reading_order": 4,
+      "text": "2. Wasps: insects with wings and yellow\nand black stripes across their body."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_007",
+      "coordinates": {
+        "x1": 21.00240707397461,
+        "y1": 1056.3414306640625,
+        "x2": 977.6386108398438,
+        "y2": 1192.8807373046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8712624311447144,
+      "reading_order": 8,
+      "text": "6. Muslin cloth: a soft, thin cotton\ncloth."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_004",
+      "coordinates": {
+        "x1": 30.916807174682617,
+        "y1": 588.972900390625,
+        "x2": 1008.58154296875,
+        "y2": 723.9899291992188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.859838604927063,
+      "reading_order": 5,
+      "text": "3. Caterings: providing food and drink\nat weddings and other events"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_002",
+      "coordinates": {
+        "x1": 49.87812805175781,
+        "y1": 321.5644836425781,
+        "x2": 738.3246459960938,
+        "y2": 425.2310791015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7496947050094604,
+      "reading_order": 3,
+      "text": "1. Enduring : long - lasting"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_000",
+      "coordinates": {
+        "x1": 314.1354064941406,
+        "y1": 44.079952239990234,
+        "x2": 999.47900390625,
+        "y2": 184.21218872070312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7475928664207458,
+      "reading_order": 1,
+      "text": "LS-7\nThe little lemon tree"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_4_block_001",
+      "coordinates": {
+        "x1": 49.19819259643555,
+        "y1": 255.82203674316406,
+        "x2": 293.5643310546875,
+        "y2": 320.5966491699219
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5178011655807495,
+      "reading_order": 2,
+      "text": "I Meanings"
+    }
+  ]
+}

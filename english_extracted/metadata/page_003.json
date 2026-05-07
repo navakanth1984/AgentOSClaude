@@ -1,0 +1,99 @@
+{
+  "page_num": 3,
+  "image_width": 1080,
+  "image_height": 1458,
+  "created_at": "2026-02-14T03:05:47.470609+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_004",
+      "coordinates": {
+        "x1": 172.761474609375,
+        "y1": 252.3485107421875,
+        "x2": 1031.0347900390625,
+        "y2": 528.1375732421875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9810289740562439,
+      "reading_order": 5,
+      "text": "Imagine that you are a reporter\nwho was at Sher-kila National\npark. Write a report in two\nparagraphs describing what happened\nwith the poachers at the waterhole"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_006",
+      "coordinates": {
+        "x1": 178.14227294921875,
+        "y1": 753.3914794921875,
+        "x2": 1015.0264892578125,
+        "y2": 1356.7537841796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9792274832725525,
+      "reading_order": 7,
+      "text": "villagers around Sher-kila National\npark spotted two outsiders hovering\naround the entrance of the sanctuary\nbefore sunrise. They did not look\nlike tourists and their behaviour\nalso seemed curious, when the\nsecurity guards questioned them\nthey said they were tourists\nand walked away. Ms Ayesha who\nhad permission to enter the park\nfor a photo shoot claimed to\nhave seen the two men in the\npark."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_005",
+      "coordinates": {
+        "x1": 184.16769409179688,
+        "y1": 555.8081665039062,
+        "x2": 847.2853393554688,
+        "y2": 733.7032470703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9515892863273621,
+      "reading_order": 6,
+      "text": "Captors captured\nSreya Mukerji\nShernagar, 26 January 2025"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_003",
+      "coordinates": {
+        "x1": 802.6979370117188,
+        "y1": 62.07307434082031,
+        "x2": 1062.0948486328125,
+        "y2": 164.70672607421875
+      },
+      "layout_tag": "header",
+      "confidence": 0.8444065451622009,
+      "reading_order": 4,
+      "text": "PAGE NO:\nDATE : 1 /20"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_002",
+      "coordinates": {
+        "x1": 515.4622802734375,
+        "y1": 34.117759704589844,
+        "x2": 617.5259399414062,
+        "y2": 85.34249877929688
+      },
+      "layout_tag": "header",
+      "confidence": 0.723391592502594,
+      "reading_order": 3,
+      "text": "c.w"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_001",
+      "coordinates": {
+        "x1": 1.0506682395935059,
+        "y1": 126.08658599853516,
+        "x2": 127.20740509033203,
+        "y2": 203.22769165039062
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7070080637931824,
+      "reading_order": 2,
+      "text": "12/4/25"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_3_block_000",
+      "coordinates": {
+        "x1": 0.5165773630142212,
+        "y1": 5.284486770629883,
+        "x2": 183.35635375976562,
+        "y2": 79.40032958984375
+      },
+      "layout_tag": "header",
+      "confidence": 0.691280722618103,
+      "reading_order": 1,
+      "text": "Wednesday"
+    }
+  ]
+}

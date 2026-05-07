@@ -1,0 +1,60 @@
+{
+  "page_num": 8,
+  "image_width": 1600,
+  "image_height": 1203,
+  "created_at": "2026-02-14T03:08:30.996849+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_8_block_003",
+      "coordinates": {
+        "x1": 200.88815307617188,
+        "y1": 191.32179260253906,
+        "x2": 1473.2080078125,
+        "y2": 1059.005859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8469959497451782,
+      "reading_order": 4,
+      "text": "How does a sector of a circle\ndiffer from its segment?\n(Hint: Sectors are formed by\nintersecting diagonals.)\nA sector is the region of a circle\nbounded by an arc of a circle and\nthe two radii from its end points,\nwhile a segment is the region"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_8_block_000",
+      "coordinates": {
+        "x1": 59.645591735839844,
+        "y1": 114.6355972290039,
+        "x2": 169.212646484375,
+        "y2": 317.4747314453125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6129001379013062,
+      "reading_order": 1,
+      "text": "7/11/25\nFriday\n4"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_8_block_002",
+      "coordinates": {
+        "x1": 483.78424072265625,
+        "y1": 1.2238683700561523,
+        "x2": 967.94775390625,
+        "y2": 156.22998046875
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.5811637043952942,
+      "reading_order": 3,
+      "text": "Crack it"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_8_block_001",
+      "coordinates": {
+        "x1": 106.8842544555664,
+        "y1": 694.9391479492188,
+        "x2": 205.090576171875,
+        "y2": 800.58349609375
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5374502539634705,
+      "reading_order": 2,
+      "text": "Sol-"
+    }
+  ]
+}

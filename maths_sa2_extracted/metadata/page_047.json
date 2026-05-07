@@ -1,0 +1,47 @@
+{
+  "page_num": 47,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.289685+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_47_block_002",
+      "coordinates": {
+        "x1": 169.21395874023438,
+        "y1": 1050.7293701171875,
+        "x2": 816.8382568359375,
+        "y2": 1309.738525390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8602193593978882,
+      "reading_order": 3,
+      "text": "In the given figure, name some\narcs and classify them as major\nand minor arcs. Shade the major\nthe arc AC. formed by"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_47_block_000",
+      "coordinates": {
+        "x1": 204.69699096679688,
+        "y1": 515.019287109375,
+        "x2": 720.1008911132812,
+        "y2": 849.5137329101562
+      },
+      "layout_tag": "image",
+      "confidence": 0.7982261180877686,
+      "reading_order": 1,
+      "text": "The image displays a hand-drawn geometric diagram of an equilateral triangle. The vertices of the triangle are labeled with the letters P, Q, and R. The vertex at the top is labeled 'Q', and the two vertices at the bottom are labeled 'P' and 'R'. The sides connecting these vertices are straight lines. There is a faint, curved line or sketch visible near the bottom right corner, partially obscuring the angle at vertex R. The diagram is set against a background with faint, illegible handwritten text."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_47_block_001",
+      "coordinates": {
+        "x1": 170.40396118164062,
+        "y1": 850.6458129882812,
+        "x2": 602.627685546875,
+        "y2": 1053.3192138671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7958599925041199,
+      "reading_order": 2,
+      "text": "Vertices - $P, Q, R$\nSides - $PQ, QR, RP$\nAngles - $\\angle P, \\angle Q, \\angle R$"
+    }
+  ]
+}

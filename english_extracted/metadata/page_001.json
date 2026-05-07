@@ -1,0 +1,73 @@
+{
+  "page_num": 1,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:05:47.773328+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_1_block_001",
+      "coordinates": {
+        "x1": 115.76754760742188,
+        "y1": 229.7201385498047,
+        "x2": 674.9495849609375,
+        "y2": 320.3166809082031
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6805353164672852,
+      "reading_order": 2,
+      "text": "A catch for a Tiger"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_1_block_000",
+      "coordinates": {
+        "x1": 330.9644470214844,
+        "y1": 139.14108276367188,
+        "x2": 452.9303894042969,
+        "y2": 241.59771728515625
+      },
+      "layout_tag": "header",
+      "confidence": 0.5583398342132568,
+      "reading_order": 1,
+      "text": "c.w\n28-6"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_1_block_004",
+      "coordinates": {
+        "x1": 2.0533342361450195,
+        "y1": 667.6398315429688,
+        "x2": 802.0386962890625,
+        "y2": 777.2964477539062
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5524464845657349,
+      "reading_order": 5,
+      "text": "3, raven-haried : raven is a large\nblack bird."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_1_block_002",
+      "coordinates": {
+        "x1": 0.33707377314567566,
+        "y1": 428.87884521484375,
+        "x2": 860.9244384765625,
+        "y2": 525.16748046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.550224244594574,
+      "reading_order": 3,
+      "text": "1, Rana : a title given to a king"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_1_block_003",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 530.9818115234375,
+        "x2": 795.5504760742188,
+        "y2": 659.853271484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.540644645690918,
+      "reading_order": 4,
+      "text": "2) Macho: a word that usually\nsuggests being manly,"
+    }
+  ]
+}

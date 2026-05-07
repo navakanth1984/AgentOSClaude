@@ -1,0 +1,73 @@
+{
+  "page_num": 2,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:30.774127+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_2_block_002",
+      "coordinates": {
+        "x1": 164.5095977783203,
+        "y1": 821.9935302734375,
+        "x2": 827.222900390625,
+        "y2": 1012.7366943359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9337834119796753,
+      "reading_order": 3,
+      "text": "Two circles with the same\ncentre called Concentric\ncircles."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_2_block_001",
+      "coordinates": {
+        "x1": 159.81446838378906,
+        "y1": 305.3772277832031,
+        "x2": 845.5599975585938,
+        "y2": 513.090087890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9102455377578735,
+      "reading_order": 2,
+      "text": "What are two circles with\nthe same centre called?\n(Hint: Prefix 'con' means 'together')"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_2_block_003",
+      "coordinates": {
+        "x1": 48.22919845581055,
+        "y1": 1023.0824584960938,
+        "x2": 843.5344848632812,
+        "y2": 1339.1243896484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.785540759563446,
+      "reading_order": 4,
+      "text": "4, Where does the vertex of an\nangle lie? (Hint: A vertex is\nformed where two lines meet.)\nSol At the common end point\nof its arms."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_2_block_000",
+      "coordinates": {
+        "x1": 26.782163619995117,
+        "y1": 1026.2921142578125,
+        "x2": 131.84288024902344,
+        "y2": 1259.479736328125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6163763403892517,
+      "reading_order": 1,
+      "text": "4,\n\nSol."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_2_block_004",
+      "coordinates": {
+        "x1": 851.4325561523438,
+        "y1": 223.30056762695312,
+        "x2": 899.0,
+        "y2": 340.6313171386719
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5684124231338501,
+      "reading_order": 5,
+      "text": "The\n611"
+    }
+  ]
+}

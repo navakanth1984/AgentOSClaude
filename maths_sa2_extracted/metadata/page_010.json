@@ -1,0 +1,99 @@
+{
+  "page_num": 10,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.701928+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_005",
+      "coordinates": {
+        "x1": 139.31277465820312,
+        "y1": 461.3849182128906,
+        "x2": 847.2996215820312,
+        "y2": 724.5626220703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9549248218536377,
+      "reading_order": 6,
+      "text": "Measure the lengths of the given\nline segments with a divider and a\nruler and arrange the lines in\nthe descending order of their lengths."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_006",
+      "coordinates": {
+        "x1": 209.94020080566406,
+        "y1": 760.8544921875,
+        "x2": 557.4397583007812,
+        "y2": 1015.0625610351562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9018396735191345,
+      "reading_order": 7,
+      "text": "$$ \\frac{G}{1cm} H \\times \\frac{1}{2.5cm} Y $$\n\n$$ E \\ 3cm \\ F \\mid 2cm $$\n\n$$ A \\quad 4.5cm \\ B $$\n\n$$ C $$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_004",
+      "coordinates": {
+        "x1": 166.17283630371094,
+        "y1": 261.2615661621094,
+        "x2": 849.9173583984375,
+        "y2": 434.0721130371094
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8603391647338867,
+      "reading_order": 5,
+      "text": "LS-10\nUnderstanding Elementary Shapes\nEX: 10.9"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_007",
+      "coordinates": {
+        "x1": 133.0420684814453,
+        "y1": 1023.1649780273438,
+        "x2": 829.957763671875,
+        "y2": 1136.5294189453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8419327735900879,
+      "reading_order": 8,
+      "text": "ascending order: $AB, EF, XY, DC, GH$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_000",
+      "coordinates": {
+        "x1": 31.27649688720703,
+        "y1": 255.9480743408203,
+        "x2": 139.65371704101562,
+        "y2": 385.6948547363281
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7886545062065125,
+      "reading_order": 1,
+      "text": "Friday\n7/11/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_001",
+      "coordinates": {
+        "x1": 47.90336990356445,
+        "y1": 1029.2884521484375,
+        "x2": 114.49120330810547,
+        "y2": 1091.83154296875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5557040572166443,
+      "reading_order": 2,
+      "text": "Sol.-"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_10_block_002",
+      "coordinates": {
+        "x1": 440.7890625,
+        "y1": 215.14059448242188,
+        "x2": 509.9352111816406,
+        "y2": 248.2732696533203
+      },
+      "layout_tag": "header",
+      "confidence": 0.5345385074615479,
+      "reading_order": 3,
+      "text": "C.W"
+    }
+  ]
+}

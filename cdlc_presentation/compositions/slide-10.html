@@ -1,0 +1,138 @@
+<template id="slide-10-template">
+  <div data-composition-id="slide-10" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="title">THE AI SBOM MANIFEST</h2>
+      
+      <div class="factory-container">
+        <img src="../assets/image10.png" class="factory-img" alt="SBOM Factory">
+        
+        <!-- Animated scan beam -->
+        <div class="scan-beam"></div>
+        
+        <!-- Manifest Callouts -->
+        <div class="manifest-items">
+          <div class="m-item" id="mi1">CREATOR IDENTITY</div>
+          <div class="m-item" id="mi2">MODEL VERSION</div>
+          <div class="m-item" id="mi3">SECURITY SCAN</div>
+        </div>
+      </div>
+
+      <div class="subtext">
+        <p>As context packages are shared across teams, security scanners must intercept exposed environment variables before they reach the registry.</p>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-10"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 54px;
+        color: #FFFFFF;
+        margin-bottom: 40px;
+        opacity: 0;
+      }
+      .factory-container {
+        position: relative;
+        width: 1200px;
+        height: 600px;
+        opacity: 0;
+      }
+      .factory-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .scan-beam {
+        position: absolute;
+        left: 450px;
+        top: 150px;
+        width: 10px;
+        height: 400px;
+        background: linear-gradient(to bottom, transparent, #00E5FF, transparent);
+        box-shadow: 0 0 20px #00E5FF;
+        opacity: 0;
+      }
+
+      .manifest-items {
+        position: absolute;
+        right: 0;
+        top: 100px;
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+      }
+      .m-item {
+        font-family: 'JetBrains Mono', monospace;
+        color: #00E5FF;
+        font-size: 18px;
+        padding-left: 30px;
+        border-left: 2px solid #00E5FF;
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      .subtext {
+        margin-top: 40px;
+        max-width: 900px;
+        text-align: center;
+        opacity: 0;
+      }
+      .subtext p {
+        font-family: 'Inter', sans-serif;
+        font-size: 20px;
+        color: #B0B0B0;
+        line-height: 1.5;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(".title", { opacity: 1, y: 0, duration: 1 }, 0.5);
+        tl.to(".factory-container", { opacity: 1, duration: 1.2 }, 1);
+        
+        // Scan beam animation
+        tl.to(".scan-beam", { 
+          opacity: 1, 
+          x: 200, 
+          duration: 1, 
+          repeat: 5, 
+          yoyo: true, 
+          ease: "power1.inOut" 
+        }, 1.5);
+
+        // Manifest reveal
+        const items = ["#mi1", "#mi2", "#mi3"];
+        items.forEach((item, i) => {
+          tl.to(item, { 
+            opacity: 1, 
+            x: 0, 
+            duration: 0.6, 
+            ease: "back.out(1.7)" 
+          }, 2.5 + (i * 0.4));
+        });
+
+        tl.to(".subtext", { opacity: 1, duration: 1 }, 4);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-10"] = tl;
+      })();
+    </script>
+  </div>
+</template>

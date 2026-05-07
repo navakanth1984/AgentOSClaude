@@ -1,0 +1,21 @@
+{
+  "page_num": 1,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T02:45:39.005626+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_1f979155-f730-44b2-916c-008722990e93_1_block_000",
+      "coordinates": {
+        "x1": 40.94633102416992,
+        "y1": 472.9664611816406,
+        "x2": 693.6630249023438,
+        "y2": 1424.2481689453125
+      },
+      "layout_tag": "table",
+      "confidence": 0.9075783491134644,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th colspan=\"2\">Tuesday<br/>2/9/25</th>\n<th>FA-2 Revision</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td colspan=\"3\">58, Draw a labelled diagram of the apparatus you would use to make distilled water in othe laboratory</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

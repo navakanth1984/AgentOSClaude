@@ -1,0 +1,86 @@
+{
+  "page_num": 12,
+  "image_width": 1080,
+  "image_height": 1563,
+  "created_at": "2026-02-14T03:10:10.579309+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_12_block_004",
+      "coordinates": {
+        "x1": 44.55691146850586,
+        "y1": 697.8154296875,
+        "x2": 1044.00390625,
+        "y2": 824.6834106445312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8789242506027222,
+      "reading_order": 5,
+      "text": "5g Which are the countries to which\nBuddhism spread from India?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_12_block_002",
+      "coordinates": {
+        "x1": 54.261207580566406,
+        "y1": 229.3239288330078,
+        "x2": 1026.1900634765625,
+        "y2": 355.5799865722656
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8707165122032166,
+      "reading_order": 3,
+      "text": "4g How could a person attain\nnirvana according to Mahasira?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_12_block_003",
+      "coordinates": {
+        "x1": 27.192094802856445,
+        "y1": 385.8924255371094,
+        "x2": 1080.0,
+        "y2": 667.3806762695312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8671523332595825,
+      "reading_order": 4,
+      "text": "Ans Mahavira bet believed everyone\nitot could attain Nirvana by\nfollowing three-fold path of\nright belief, right knowledge and\nand right conduct."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_12_block_005",
+      "coordinates": {
+        "x1": 26.073871612548828,
+        "y1": 852.7506103515625,
+        "x2": 1079.847900390625,
+        "y2": 1023.3865966796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8659554123878479,
+      "reading_order": 6,
+      "text": "Ans Buddhism spread to china, Japan,\nSrilanka, Thailand, Indonesia and\nMyanmar."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_12_block_000",
+      "coordinates": {
+        "x1": 740.91796875,
+        "y1": 40.557167053222656,
+        "x2": 1015.3425903320312,
+        "y2": 140.78636169433594
+      },
+      "layout_tag": "header",
+      "confidence": 0.8478207588195801,
+      "reading_order": 1,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_12_block_001",
+      "coordinates": {
+        "x1": 495.7575988769531,
+        "y1": 141.1612091064453,
+        "x2": 597.923583984375,
+        "y2": 178.6906280517578
+      },
+      "layout_tag": "header",
+      "confidence": 0.5181832313537598,
+      "reading_order": 2,
+      "text": "C.W"
+    }
+  ]
+}

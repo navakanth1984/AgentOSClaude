@@ -1,0 +1,8 @@
+{
+  "disabledMcpjsonServers": [
+    "notebooklm",
+    "firecrawl",
+    "pinecone",
+    "local-llm"
+  ]
+}

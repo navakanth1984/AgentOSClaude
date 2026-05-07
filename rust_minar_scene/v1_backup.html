@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Weathered Spire</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #050805;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .scene-container {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            background: radial-gradient(circle at 50% 30%, #1a2a1a 0%, #050805 70%);
+        }
+
+        .scene-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transform-origin: center 30%;
+        }
+
+        .spire {
+            width: 300px;
+            height: 800px;
+            background: #2d4c2d;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            filter: url(#verdigris);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        }
+
+        .light-ray {
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            width: 600px;
+            height: 1500px;
+            background: linear-gradient(to bottom, rgba(100, 255, 100, 0.1), transparent);
+            transform: translateX(-50%) rotate(15deg);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .dust-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+    <div data-composition-id="weathered-spire" data-start="0" data-duration="10" data-width="1920" data-height="1080" class="scene-container">
+        <div class="dust-particles"></div>
+        <div class="light-ray"></div>
+        <div class="scene-content">
+            <div class="spire"></div>
+        </div>
+    </div>
+
+    <svg>
+        <filter id="verdigris">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" seed="42" result="noise" />
+            <feDiffuseLighting in="noise" lighting-color="#4a7a4a" surfaceScale="5" result="diffuse">
+                <feDistantLight azimuth="45" elevation="60" />
+            </feDiffuseLighting>
+            <feComposite in="diffuse" in2="SourceGraphic" operator="in" />
+        </filter>
+    </svg>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script>
+        window.__timelines = window.__timelines || {};
+        
+        const tl = gsap.timeline({ paused: true });
+        
+        // 0-2s: Volumetric light reveal
+        tl.from(".light-ray", {
+            opacity: 0,
+            duration: 2,
+            ease: "power2.inOut"
+        }, 0.2);
+
+        tl.from(".spire", {
+            opacity: 0,
+            scaleY: 0.8,
+            duration: 1.5,
+            ease: "expo.out"
+        }, 0.5);
+
+        // 2-10s: Slow camera push-in
+        tl.to(".scene-content", {
+            scale: 1.3,
+            duration: 8,
+            ease: "sine.inOut"
+        }, 2);
+
+        // 8-10s: Final fade-out
+        tl.to(".scene-container", {
+            opacity: 0,
+            duration: 2,
+            ease: "power2.in"
+        }, 8);
+
+        window.__timelines["weathered-spire"] = tl;
+    </script>
+</body>
+</html>

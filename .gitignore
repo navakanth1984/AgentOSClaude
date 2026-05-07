@@ -1,0 +1,91 @@
+# Environments
+.env
+.env.local
+.env.*.local
+
+# API Keys and Secrets
+*.auth.json
+.notebooklm-auth.json
+youtube-urls.json
+secrets/
+keys/
+*.key
+*.pem
+
+# Dependencies
+node_modules/
+jspm_packages/
+package-lock.json
+pnpm-lock.yaml
+
+# Build and Output
+dist/
+build/
+out/
+bin/
+renders/
+outputs/
+graphify-out/
+*.zip
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+env/
+venv/
+
+# OS/IDEs
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Nested Repositories
+build-your-own-openclaw/
+Claude-Desktop-LLM/
+flutter_sdk/
+ltx_video_source/
+openclaw/
+openclaw_sandbox/
+puli_meka/
+Veritas_AI/
+bin/
+lib/
+
+# Binaries and Large Assets
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.wav
+*.mp3
+*.mp4
+*.mov
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+*.zip
+*.tar.gz
+*.7z
+
+# AI Models and Large Data
+*.onnx
+*.pth
+*.tflite
+*.ckpt
+*.bin
+*.model
+*.weights
+*.h5
+*.pb

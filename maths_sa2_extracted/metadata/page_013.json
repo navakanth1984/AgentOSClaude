@@ -1,0 +1,21 @@
+{
+  "page_num": 13,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.258104+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_13_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 139.2181854248047,
+        "x2": 879.8123168945312,
+        "y2": 1319.0140380859375
+      },
+      "layout_tag": "table",
+      "confidence": 0.7477976679801941,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th>Friday<br/>7/4/25</th>\n<th>C.W</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>iii,</td>\n<td>e<br/>f<br/>=Le &gt; lf</td>\n</tr>\n<tr>\n<td>iv,</td>\n<td>d<br/>e<br/>=ld &gt; Le</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

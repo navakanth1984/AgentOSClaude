@@ -1,0 +1,47 @@
+{
+  "page_num": 2,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T02:45:39.430195+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_1f979155-f730-44b2-916c-008722990e93_2_block_001",
+      "coordinates": {
+        "x1": 52.32480239868164,
+        "y1": 301.2007751464844,
+        "x2": 744.3390502929688,
+        "y2": 530.623779296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9371633529663086,
+      "reading_order": 2,
+      "text": "Wednesday 25 Z A -Z Revision\nDraw a labelled diagram of the\napparatus you would use to make\ndistilled water in the laboratory."
+    },
+    {
+      "block_id": "20260214_1f979155-f730-44b2-916c-008722990e93_2_block_002",
+      "coordinates": {
+        "x1": 95.22825622558594,
+        "y1": 517.3178100585938,
+        "x2": 787.12646484375,
+        "y2": 1593.9278564453125
+      },
+      "layout_tag": "table",
+      "confidence": 0.7710245251655579,
+      "reading_order": 3,
+      "text": "<table>\n<tbody>\n<tr>\n<td>tape</td>\n</tr>\n<tr>\n<td>solution</td>\n</tr>\n<tr>\n<td>burner</td>\n</tr>\n<tr>\n<td>distilled water</td>\n</tr>\n</tbody>\n</table>"
+    },
+    {
+      "block_id": "20260214_1f979155-f730-44b2-916c-008722990e93_2_block_000",
+      "coordinates": {
+        "x1": 379.74755859375,
+        "y1": 226.0547332763672,
+        "x2": 446.5893859863281,
+        "y2": 271.5472412109375
+      },
+      "layout_tag": "header",
+      "confidence": 0.565581202507019,
+      "reading_order": 1,
+      "text": "H/w"
+    }
+  ]
+}

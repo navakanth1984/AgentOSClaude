@@ -1,0 +1,125 @@
+{
+  "page_num": 18,
+  "image_width": 1080,
+  "image_height": 1407,
+  "created_at": "2026-02-14T03:05:48.175175+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_006",
+      "coordinates": {
+        "x1": 85.25350189208984,
+        "y1": 558.7129516601562,
+        "x2": 1003.1688232421875,
+        "y2": 881.7981567382812
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9661288857460022,
+      "reading_order": 7,
+      "text": "Ans In the first stanza, the poet\ndescribes Lucy's life as a very\nquiet and lonely one as she\nlived in a place where\nfew people lived and was admired\nand loved by so very few people."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_008",
+      "coordinates": {
+        "x1": 75.85294342041016,
+        "y1": 1109.302978515625,
+        "x2": 981.6126708984375,
+        "y2": 1363.39306640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9620053768157959,
+      "reading_order": 9,
+      "text": "Ans Yes the speaker see Lucy as\nsomeone special. We know this\nbecause he says that her death\nwould make a great difference\nto him. In the second stanza, the"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_005",
+      "coordinates": {
+        "x1": 113.96089935302734,
+        "y1": 319.85833740234375,
+        "x2": 978.431396484375,
+        "y2": 528.749755859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9605256915092468,
+      "reading_order": 6,
+      "text": "1g How does the speaker describe\nLucy's life in the first stanza?\nDoes he see Lucy as someone\nspeciab special?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_007",
+      "coordinates": {
+        "x1": 113.39149475097656,
+        "y1": 888.360595703125,
+        "x2": 997.3588256835938,
+        "y2": 1076.875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9574521780014038,
+      "reading_order": 8,
+      "text": "2g What are the two comparisons the\nspeaker uses in the second stanza?\nDo you think the comparison is\nsuitable?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_004",
+      "coordinates": {
+        "x1": 113.45692443847656,
+        "y1": 221.73219299316406,
+        "x2": 696.6982421875,
+        "y2": 293.9187927246094
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9285884499549866,
+      "reading_order": 5,
+      "text": "II Answer these questions,"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_001",
+      "coordinates": {
+        "x1": 776.0006103515625,
+        "y1": 30.039413452148438,
+        "x2": 1020.5756225585938,
+        "y2": 129.22467041015625
+      },
+      "layout_tag": "header",
+      "confidence": 0.7710320353507996,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: 1 120"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_002",
+      "coordinates": {
+        "x1": 22.723356246948242,
+        "y1": 118.43286895751953,
+        "x2": 151.9129638671875,
+        "y2": 186.84584045410156
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7278753519058228,
+      "reading_order": 3,
+      "text": "12/11/26"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_003",
+      "coordinates": {
+        "x1": 481.2917175292969,
+        "y1": 124.27523803710938,
+        "x2": 570.88427734375,
+        "y2": 169.80856323242188
+      },
+      "layout_tag": "header",
+      "confidence": 0.5369821190834045,
+      "reading_order": 4,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_18_block_000",
+      "coordinates": {
+        "x1": 27.3062686920166,
+        "y1": 19.793861389160156,
+        "x2": 163.27987670898438,
+        "y2": 71.88047790527344
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5330814123153687,
+      "reading_order": 1,
+      "text": "Wednesday"
+    }
+  ]
+}

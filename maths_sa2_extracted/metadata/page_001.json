@@ -1,0 +1,99 @@
+{
+  "page_num": 1,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:31.206078+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_006",
+      "coordinates": {
+        "x1": 63.40464401245117,
+        "y1": 940.4271850585938,
+        "x2": 849.0503540039062,
+        "y2": 1272.8582763671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9210770726203918,
+      "reading_order": 7,
+      "text": "ii, 2 lines - $\\angle \\overrightarrow{PQ}, \\angle \\overrightarrow{XY}$\niii, 8 rays - $\\overline{OY}, \\overline{OX}, \\overline{OP}, \\overline{OQ}, \\overline{BY}, \\overline{AX},$\n$CP, DQ$\niv, 6 line segments - $\\overline{OA}, \\overline{OB}, \\overline{OC}, \\overline{OD}, \\overline{AB},$\n$\\overline{CD}$."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_004",
+      "coordinates": {
+        "x1": 173.10655212402344,
+        "y1": 545.7125244140625,
+        "x2": 780.7445068359375,
+        "y2": 842.9389038085938
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7812330722808838,
+      "reading_order": 5,
+      "text": "$PC \\cong PB$\n\n$XA \\cong XD$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_005",
+      "coordinates": {
+        "x1": 145.07826232910156,
+        "y1": 845.2848510742188,
+        "x2": 572.8199462890625,
+        "y2": 909.7116088867188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6897419095039368,
+      "reading_order": 6,
+      "text": "5 points - A,B,C,D,O"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_000",
+      "coordinates": {
+        "x1": 0.9371071457862854,
+        "y1": 186.359130859375,
+        "x2": 140.61410522460938,
+        "y2": 307.83123779296875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6647372841835022,
+      "reading_order": 1,
+      "text": "Friday\n31/10/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_003",
+      "coordinates": {
+        "x1": 161.36279296875,
+        "y1": 246.64503479003906,
+        "x2": 860.6487426757812,
+        "y2": 592.5700073242188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6555705666542053,
+      "reading_order": 4,
+      "text": "Chapter -9 Basic Geometric Ideas\nEX. 9.1\nIn the given figure, name the\nfollowing.\n$P \\subset C$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_002",
+      "coordinates": {
+        "x1": 172.64425659179688,
+        "y1": 245.17466735839844,
+        "x2": 865.2608032226562,
+        "y2": 399.5914611816406
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5352252125740051,
+      "reading_order": 3,
+      "text": "Chapter -9 Basic Geometric Ideas\nEX. 9.1"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_1_block_001",
+      "coordinates": {
+        "x1": 483.8528137207031,
+        "y1": 202.58636474609375,
+        "x2": 552.2562866210938,
+        "y2": 242.70376586914062
+      },
+      "layout_tag": "header",
+      "confidence": 0.5115412473678589,
+      "reading_order": 2,
+      "text": "C.W"
+    }
+  ]
+}

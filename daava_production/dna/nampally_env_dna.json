@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "project": "DAAVA",
+  "dna_id": "ENV_NAMPALLY_CYBER_BRUTALIST_001",
+  "metadata": {
+    "description": "Visual DNA for the Cyber-Brutalist streets of Nampally (Zafar Road & Mozamjahi Road).",
+    "style_tags": ["industrial-noir", "cyber-brutalist", "high-contrast", "wet-asphalt"]
+  },
+  "environment": {
+    "architecture": {
+      "primary": "Brutalist Concrete Spine (Kabutarkhana Tower)",
+      "secondary": "Crumbling heritage buildings with cyber upgrades",
+      "details": ["Exposed digital veins (wiring bundles)", "Weathered iron/copper conduits", "Holographic shop signs"]
+    },
+    "surface_textures": ["Rain-slicked asphalt", "Cracked concrete", "Weathered metal", "Smog-choked air"],
+    "lighting": {
+      "daytime": {
+        "primary": "#F39C12 (Hazy Golden Sunlight)",
+        "atmosphere": "Dust-heavy, geometric shadows"
+      },
+      "nighttime": {
+        "primary": "#00FFFF (Flickering Cyan Neon)",
+        "secondary": "#E67E22 (Warm Biryani Stall Glow)",
+        "ambient": "#4B0082 (Bruised Purple/Indigo Sky)"
+      }
+    }
+  },
+  "camera_dna": {
+    "lens": "35mm Anamorphic (for street depth) / 14mm (for tower scale)",
+    "aesthetic": "Industrial Noir",
+    "motion": "Static, cinematic dolly-in, or slow tracking"
+  }
+}

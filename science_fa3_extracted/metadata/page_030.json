@@ -1,0 +1,73 @@
+{
+  "page_num": 30,
+  "image_width": 1080,
+  "image_height": 1444,
+  "created_at": "2026-02-14T03:07:14.552527+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_30_block_004",
+      "coordinates": {
+        "x1": 37.19244384765625,
+        "y1": 945.8485107421875,
+        "x2": 1056.3812255859375,
+        "y2": 1416.4246826171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9329670667648315,
+      "reading_order": 5,
+      "text": "48, Explain the structure of the\nfollowing and their functions\ni, The rib cage\nstructure:- There are 12 pairs of thin\nflat, bones-ribs that curve around\nfrom the spine to the front of\nthe body.\ni, The first seven pairs of ribs are\nattached directly to the breastbone."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_30_block_003",
+      "coordinates": {
+        "x1": 14.31942367553711,
+        "y1": 369.6015625,
+        "x2": 1059.47509765625,
+        "y2": 916.810546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9102915525436401,
+      "reading_order": 4,
+      "text": "Ans. Functions of the human skeleton\ni, It supports our body gives us\nshapes\nii, It protects the organ, such as\nthe brain, the heart, lungs\niii, It help us to move with the\nhelp of muscles.\niv, The blood cells are product in\nthe bone marrow\nv, a soft substances present inside\nthe bones."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_30_block_002",
+      "coordinates": {
+        "x1": 128.3979034423828,
+        "y1": 220.91156005859375,
+        "x2": 980.8834228515625,
+        "y2": 338.815185546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8937496542930603,
+      "reading_order": 3,
+      "text": "What are the functions of the\nhuman skeleton?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_30_block_001",
+      "coordinates": {
+        "x1": 728.7429809570312,
+        "y1": 73.0700454711914,
+        "x2": 969.7430419921875,
+        "y2": 157.41366577148438
+      },
+      "layout_tag": "header",
+      "confidence": 0.8830094337463379,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_30_block_000",
+      "coordinates": {
+        "x1": 424.8188781738281,
+        "y1": 128.419189453125,
+        "x2": 524.5440673828125,
+        "y2": 179.50978088378906
+      },
+      "layout_tag": "header",
+      "confidence": 0.6855953931808472,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "page_num": 18,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:34.484958+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_18_block_000",
+      "coordinates": {
+        "x1": 0.6894994974136353,
+        "y1": 208.91041564941406,
+        "x2": 857.8714599609375,
+        "y2": 1538.2955322265625
+      },
+      "layout_tag": "table",
+      "confidence": 0.9240152835845947,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th>day<br/>'25</th>\n<th>c. w</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>4)</td>\n<td>Classify the following triangles<br/>based on their angles</td>\n</tr>\n<tr>\n<td>i)</td>\n<td>70°, 90°, 20°</td>\n</tr>\n<tr>\n<td>Sol:-</td>\n<td>Right angle</td>\n</tr>\n<tr>\n<td>ii)</td>\n<td>35°, 75°, 70°</td>\n</tr>\n<tr>\n<td></td>\n<td>Acute cangle</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

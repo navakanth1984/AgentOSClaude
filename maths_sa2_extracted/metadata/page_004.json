@@ -1,0 +1,73 @@
+{
+  "page_num": 4,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:30.729119+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_4_block_003",
+      "coordinates": {
+        "x1": 106.3703384399414,
+        "y1": 853.1254272460938,
+        "x2": 807.2031860351562,
+        "y2": 1247.06103515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8777819871902466,
+      "reading_order": 4,
+      "text": "Is every chord of a circle\nalso a diameter? (Hint: Chords\ncan have different lengths.)\nNo, chord can have\ndifferent lengths"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_4_block_000",
+      "coordinates": {
+        "x1": 117.17312622070312,
+        "y1": 329.8997497558594,
+        "x2": 823.232421875,
+        "y2": 459.068359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7778996229171753,
+      "reading_order": 1,
+      "text": "Is every diameter of a circle\nalso a chord?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_4_block_002",
+      "coordinates": {
+        "x1": 124.35624694824219,
+        "y1": 652.3165283203125,
+        "x2": 744.6400756835938,
+        "y2": 829.0750732421875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7766728401184082,
+      "reading_order": 3,
+      "text": "Yes, every diameter of a\ncircle also a chord."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_4_block_001",
+      "coordinates": {
+        "x1": 112.89061737060547,
+        "y1": 452.205078125,
+        "x2": 769.323486328125,
+        "y2": 646.9417724609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6619678735733032,
+      "reading_order": 2,
+      "text": "(Hint: Every diameter joins\ntwo points on the\ncircumference.)"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_4_block_004",
+      "coordinates": {
+        "x1": 842.8868408203125,
+        "y1": 250.3963623046875,
+        "x2": 899.0,
+        "y2": 374.07537841796875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5207950472831726,
+      "reading_order": 5,
+      "text": "The\n614"
+    }
+  ]
+}

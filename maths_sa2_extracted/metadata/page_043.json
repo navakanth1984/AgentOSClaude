@@ -1,0 +1,86 @@
+{
+  "page_num": 43,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.996949+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_43_block_003",
+      "coordinates": {
+        "x1": 172.43594360351562,
+        "y1": 840.122314453125,
+        "x2": 754.348876953125,
+        "y2": 981.6336669921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7298843860626221,
+      "reading_order": 4,
+      "text": "Name the angles in the\nfollowing figures."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_43_block_002",
+      "coordinates": {
+        "x1": 251.29783630371094,
+        "y1": 755.0057983398438,
+        "x2": 877.9179077148438,
+        "y2": 865.3231811523438
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5788039565086365,
+      "reading_order": 3,
+      "text": "Point $A$ is on the triangle."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_43_block_005",
+      "coordinates": {
+        "x1": 558.2413940429688,
+        "y1": 972.6678466796875,
+        "x2": 771.282958984375,
+        "y2": 1225.6885986328125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5583730936050415,
+      "reading_order": 6,
+      "text": "ii,\n$a$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_43_block_000",
+      "coordinates": {
+        "x1": 43.79829025268555,
+        "y1": 282.57220458984375,
+        "x2": 183.32464599609375,
+        "y2": 490.2317199707031
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5264886617660522,
+      "reading_order": 1,
+      "text": "& riday\n31/10/25\n3 Sol:"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_43_block_004",
+      "coordinates": {
+        "x1": 138.66152954101562,
+        "y1": 962.3637084960938,
+        "x2": 446.884765625,
+        "y2": 1249.2728271484375
+      },
+      "layout_tag": "image",
+      "confidence": 0.5190984010696411,
+      "reading_order": 5,
+      "text": "The image displays a geometric diagram drawn on a piece of paper, rather than a data chart. It features a right-angled triangle. The right angle is located at the vertex labeled 'Q'. A vertical line segment extends upwards from Q, labeled 'i' at the top and 'R' at the base of the vertical segment. A horizontal line segment extends to the right from Q, labeled 'P' at the end. The angle at vertex Q is marked with the number '2'. There are no numerical axes or data points to analyze."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_43_block_001",
+      "coordinates": {
+        "x1": 216.3851318359375,
+        "y1": 410.8836364746094,
+        "x2": 679.4032592773438,
+        "y2": 753.0089111328125
+      },
+      "layout_tag": "table",
+      "confidence": 0.5024905204772949,
+      "reading_order": 2,
+      "text": "<table>\n<tbody>\n<tr>\n<td>A</td>\n</tr>\n<tr>\n<td>.Q</td>\n</tr>\n<tr>\n<td>.P</td>\n</tr>\n<tr>\n<td>B</td>\n</tr>\n<tr>\n<td>C</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

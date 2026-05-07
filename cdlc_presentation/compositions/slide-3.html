@@ -1,0 +1,184 @@
+<template id="slide-3-template">
+  <div data-composition-id="slide-3" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="slide-title">THE ORGANIZATIONAL FLYWHEEL</h2>
+      
+      <div class="table-container">
+        <div class="header-row">
+          <div class="cell spacer"></div>
+          <div class="cell yolo-header">YOLO PROMPTING</div>
+          <div class="cell flywheel-header">THE TEAM FLYWHEEL</div>
+        </div>
+        
+        <div class="row" id="row-action">
+          <div class="cell category">ACTION</div>
+          <div class="cell yolo-val">Typing ad-hoc prompts</div>
+          <div class="cell flywheel-val">Authoring reusable skills</div>
+        </div>
+        
+        <div class="row" id="row-stability">
+          <div class="cell category">STABILITY</div>
+          <div class="cell yolo-val">Untracked changes</div>
+          <div class="cell flywheel-val">Rigorous versioned evals</div>
+        </div>
+        
+        <div class="row" id="row-scale">
+          <div class="cell category">SCALE</div>
+          <div class="cell yolo-val">Context siloed in local chat</div>
+          <div class="cell flywheel-val">Context in shared registries</div>
+        </div>
+        
+        <div class="row" id="row-outcome">
+          <div class="cell category">OUTCOME</div>
+          <div class="cell yolo-val">Localized Friction</div>
+          <div class="cell flywheel-val">Global Intelligence</div>
+        </div>
+      </div>
+      
+      <div class="flywheel-icon-container">
+        <svg class="flywheel-svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" class="outer-ring" />
+          <path d="M50,10 L50,30 M90,50 L70,50 M50,90 L50,70 M10,50 L30,50" class="spokes" />
+          <circle cx="50" cy="50" r="10" class="inner-hub" />
+        </svg>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-3"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+        padding: 80px;
+        box-sizing: border-box;
+      }
+      .scene-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform-origin: center;
+      }
+      .slide-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 48px;
+        color: #FFFFFF;
+        margin-bottom: 60px;
+        opacity: 0;
+      }
+      .table-container {
+        width: 100%;
+        max-width: 1400px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .header-row, .row {
+        display: flex;
+        gap: 15px;
+        height: 80px;
+      }
+      .cell {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        font-family: 'Inter', sans-serif;
+        font-size: 22px;
+        border-radius: 4px;
+        opacity: 0;
+      }
+      .spacer { visibility: hidden; }
+      .category {
+        flex: 0 0 200px;
+        background: #2C3E50;
+        color: #FFFFFF;
+        font-weight: 700;
+        justify-content: center;
+        letter-spacing: 2px;
+      }
+      .yolo-header, .yolo-val {
+        background: rgba(255, 145, 0, 0.1);
+        border: 1px solid rgba(255, 145, 0, 0.3);
+        color: #FF9100;
+      }
+      .yolo-header {
+        font-weight: 800;
+        justify-content: center;
+        font-size: 28px;
+      }
+      .flywheel-header, .flywheel-val {
+        background: rgba(0, 229, 255, 0.1);
+        border: 1px solid rgba(0, 229, 255, 0.5);
+        color: #00E5FF;
+        box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.05);
+      }
+      .flywheel-header {
+        font-weight: 800;
+        justify-content: center;
+        font-size: 28px;
+      }
+      .flywheel-icon-container {
+        position: absolute;
+        bottom: 80px;
+        right: 80px;
+        width: 150px;
+        height: 150px;
+        opacity: 0;
+      }
+      .flywheel-svg {
+        width: 100%;
+        height: 100%;
+      }
+      .outer-ring {
+        fill: none;
+        stroke: #00E5FF;
+        stroke-width: 2;
+        stroke-dasharray: 10 5;
+      }
+      .spokes {
+        stroke: #00E5FF;
+        stroke-width: 4;
+        stroke-linecap: round;
+      }
+      .inner-hub {
+        fill: #00E5FF;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(".slide-title", { opacity: 1, y: 0, duration: 1 }, 0.5);
+        
+        // Header Reveal
+        tl.to(".yolo-header", { opacity: 1, duration: 0.5 }, 1.2);
+        tl.to(".flywheel-header", { opacity: 1, duration: 0.5 }, 1.4);
+
+        // Row Stagger
+        const rows = ["#row-action", "#row-stability", "#row-scale", "#row-outcome"];
+        rows.forEach((row, i) => {
+          const startTime = 1.8 + (i * 0.4);
+          tl.to(`${row} .category`, { opacity: 1, x: 0, duration: 0.5 }, startTime);
+          tl.to(`${row} .yolo-val`, { opacity: 1, x: 0, duration: 0.5 }, startTime + 0.1);
+          tl.to(`${row} .flywheel-val`, { opacity: 1, x: 0, duration: 0.5 }, startTime + 0.2);
+        });
+
+        // Flywheel Animation
+        tl.to(".flywheel-icon-container", { opacity: 1, duration: 1 }, 3.5);
+        tl.set(".flywheel-svg", { rotation: 0 });
+        tl.to(".flywheel-svg", { 
+          rotation: 360, 
+          duration: 10, 
+          ease: "none", 
+          repeat: 5 
+        }, 1.5);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-3"] = tl;
+      })();
+    </script>
+  </div>
+</template>

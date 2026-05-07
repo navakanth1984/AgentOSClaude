@@ -1,0 +1,125 @@
+{
+  "page_num": 2,
+  "image_width": 1080,
+  "image_height": 1534,
+  "created_at": "2026-02-14T03:10:12.797142+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_005",
+      "coordinates": {
+        "x1": 35.83736038208008,
+        "y1": 694.5947265625,
+        "x2": 983.4302978515625,
+        "y2": 822.6375122070312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9360941052436829,
+      "reading_order": 6,
+      "text": "20 Name the three components of a\nmap ?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_008",
+      "coordinates": {
+        "x1": 94.49247741699219,
+        "y1": 1144.2930908203125,
+        "x2": 1012.5831909179688,
+        "y2": 1307.3524169921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.921419620513916,
+      "reading_order": 9,
+      "text": "The four main directions are: North\n(N), south (S), East (E), West (W)\nare known as cardinal directions"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_006",
+      "coordinates": {
+        "x1": 30.508174896240234,
+        "y1": 845.7697143554688,
+        "x2": 1033.9583740234375,
+        "y2": 971.95654296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.904235303401947,
+      "reading_order": 7,
+      "text": "Ans The three components of maps are\nscale, direction and symbols."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_004",
+      "coordinates": {
+        "x1": 21.68244171142578,
+        "y1": 477.7699279785156,
+        "x2": 1074.638671875,
+        "y2": 683.0138549804688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9022819399833679,
+      "reading_order": 5,
+      "text": "Ans Map is a two - dimensional represent-\nation of the earth, cor parts of\nit on a flat surface."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_007",
+      "coordinates": {
+        "x1": 44.04411315917969,
+        "y1": 1001.2910766601562,
+        "x2": 871.0651245117188,
+        "y2": 1113.5306396484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8983807563781738,
+      "reading_order": 8,
+      "text": "39 What are the four cardinal\ndirections ?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_002",
+      "coordinates": {
+        "x1": 20.255613327026367,
+        "y1": 251.45079040527344,
+        "x2": 973.37744140625,
+        "y2": 336.0721435546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8870460391044617,
+      "reading_order": 3,
+      "text": "I Answer in one or two sentence"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_001",
+      "coordinates": {
+        "x1": 735.7991943359375,
+        "y1": 54.02349090576172,
+        "x2": 1020.1033935546875,
+        "y2": 165.88555908203125
+      },
+      "layout_tag": "header",
+      "confidence": 0.8038873672485352,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_003",
+      "coordinates": {
+        "x1": 22.87060546875,
+        "y1": 361.3462219238281,
+        "x2": 552.0784301757812,
+        "y2": 450.34722900390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7890289425849915,
+      "reading_order": 4,
+      "text": "1g What is a map?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_2_block_000",
+      "coordinates": {
+        "x1": 457.8744201660156,
+        "y1": 130.06634521484375,
+        "x2": 562.962158203125,
+        "y2": 197.8067169189453
+      },
+      "layout_tag": "header",
+      "confidence": 0.6057385802268982,
+      "reading_order": 1,
+      "text": "E.W"
+    }
+  ]
+}

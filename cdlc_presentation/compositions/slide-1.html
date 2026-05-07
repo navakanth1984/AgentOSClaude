@@ -1,0 +1,178 @@
+<template id="slide-1-template">
+  <div data-composition-id="slide-1" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <div class="blueprint-container">
+        <img src="../assets/image1.png" class="blueprint-img" alt="CDLC Blueprint">
+        <div class="overlay-layer">
+          <!-- SVG for animated flow lines -->
+          <svg viewBox="0 0 1920 1080" class="flow-svg">
+            <!-- Simplified paths over the pipes in image1.png -->
+            <path id="pipe-1" d="M200,400 L500,400" class="flow-path" />
+            <path id="pipe-2" d="M200,500 L500,500" class="flow-path" />
+            <path id="pipe-3" d="M200,600 L500,600" class="flow-path" />
+          </svg>
+          
+          <div class="scanning-line"></div>
+          <div class="engine-glow"></div>
+        </div>
+      </div>
+      
+      <div class="text-reveal">
+        <h1 class="title">BEYOND THE BINARY</h1>
+        <p class="subtitle">Mastering the Context Development Life Cycle (CDLC)</p>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-1"] {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+      }
+      .scene-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .blueprint-container {
+        position: relative;
+        width: 1600px;
+        height: 900px;
+        border: 2px solid rgba(0, 229, 255, 0.2);
+        overflow: hidden;
+      }
+      .blueprint-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0.8;
+      }
+      .overlay-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      .flow-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .flow-path {
+        fill: none;
+        stroke: #00E5FF;
+        stroke-width: 4;
+        stroke-linecap: round;
+        filter: drop-shadow(0 0 8px #00E5FF);
+        opacity: 0;
+      }
+      .scanning-line {
+        position: absolute;
+        top: 0;
+        left: -10%;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, transparent, #00E5FF, transparent);
+        box-shadow: 0 0 20px #00E5FF;
+        opacity: 0;
+      }
+      .engine-glow {
+        position: absolute;
+        top: 52%;
+        left: 82%;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle, rgba(0, 229, 255, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0;
+      }
+      .text-reveal {
+        margin-top: 40px;
+        text-align: center;
+      }
+      .title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 84px;
+        margin: 0;
+        letter-spacing: 4px;
+        background: linear-gradient(to bottom, #FFFFFF, #B0B0B0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 32px;
+        color: #00E5FF;
+        margin-top: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        // Initial setup
+        tl.set(".blueprint-container", { scale: 0.9, opacity: 0 });
+        tl.set(".title", { y: 40, opacity: 0 });
+        tl.set(".subtitle", { y: 20, opacity: 0 });
+
+        // Animation Sequence
+        tl.to(".blueprint-container", { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 1.5, 
+          ease: "expo.out" 
+        }, 0.5);
+
+        tl.to(".scanning-line", {
+          left: "110%",
+          opacity: 0.8,
+          duration: 3,
+          ease: "power2.inOut",
+          repeat: 2
+        }, 1.5);
+
+        tl.to(".title", { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1.2, 
+          ease: "power4.out" 
+        }, 1.2);
+
+        tl.to(".subtitle", { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1, 
+          ease: "power3.out" 
+        }, 1.8);
+
+        // Engine pulse
+        tl.to(".engine-glow", {
+          opacity: 1,
+          scale: 1.5,
+          duration: 2,
+          repeat: 5,
+          yoyo: true,
+          ease: "sine.inOut"
+        }, 2);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-1"] = tl;
+      })();
+    </script>
+  </div>
+</template>

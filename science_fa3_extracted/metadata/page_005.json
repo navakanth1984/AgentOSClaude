@@ -1,0 +1,125 @@
+{
+  "page_num": 5,
+  "image_width": 1037,
+  "image_height": 1517,
+  "created_at": "2026-02-14T03:07:13.489847+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_004",
+      "coordinates": {
+        "x1": 38.37873458862305,
+        "y1": 375.1879577636719,
+        "x2": 1028.1416015625,
+        "y2": 762.4851684570312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9198597073554993,
+      "reading_order": 5,
+      "text": "Living organisms which cannot\nprepare their own food and have\nto depend on the autotrophs are\ncalled heterotrophs. For eg:- all\nanimals depend on plants for their\nfood either directly or\nindirectly."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_003",
+      "coordinates": {
+        "x1": 57.423545837402344,
+        "y1": 264.906494140625,
+        "x2": 728.7955932617188,
+        "y2": 345.3898010253906
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.911444902420044,
+      "reading_order": 4,
+      "text": "What are heterotrophe?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_005",
+      "coordinates": {
+        "x1": 90.65502166748047,
+        "y1": 791.6458740234375,
+        "x2": 1024.3590087890625,
+        "y2": 960.7894287109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9088123440742493,
+      "reading_order": 6,
+      "text": "Which living organisms are\nresponsible for breaking down\nthe bodies of dead organisms?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_002",
+      "coordinates": {
+        "x1": 705.4576416015625,
+        "y1": 92.64310455322266,
+        "x2": 967.436279296875,
+        "y2": 186.4348907470703
+      },
+      "layout_tag": "header",
+      "confidence": 0.8788471221923828,
+      "reading_order": 3,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_006",
+      "coordinates": {
+        "x1": 9.287078857421875,
+        "y1": 979.4066162109375,
+        "x2": 1008.0968627929688,
+        "y2": 1199.42333984375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8577926158905029,
+      "reading_order": 7,
+      "text": "Ans, Organisms like bacteria and fungi\nare responsible for breaking\ndown the bodies of dead\norganisms."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_008",
+      "coordinates": {
+        "x1": 128.09808349609375,
+        "y1": 1318.9283447265625,
+        "x2": 1036.5908203125,
+        "y2": 1436.6279296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8369535207748413,
+      "reading_order": 9,
+      "text": "The area/environment where an organism\nlives is called its habitats."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_007",
+      "coordinates": {
+        "x1": 122.37313842773438,
+        "y1": 1223.665771484375,
+        "x2": 707.1375122070312,
+        "y2": 1286.6959228515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6692237854003906,
+      "reading_order": 8,
+      "text": "What is a habitat?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_001",
+      "coordinates": {
+        "x1": 377.85430908203125,
+        "y1": 157.2371063232422,
+        "x2": 485.1638488769531,
+        "y2": 212.04151916503906
+      },
+      "layout_tag": "header",
+      "confidence": 0.6208484172821045,
+      "reading_order": 2,
+      "text": "C-W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_5_block_000",
+      "coordinates": {
+        "x1": 0.20705389976501465,
+        "y1": 0.0,
+        "x2": 41.952213287353516,
+        "y2": 446.8769226074219
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5109557509422302,
+      "reading_order": 1,
+      "text": "y\n5\n31\ns,"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "page_num": 11,
+  "image_width": 1564,
+  "image_height": 1600,
+  "created_at": "2026-02-14T03:10:19.621941+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_11_block_000",
+      "coordinates": {
+        "x1": 96.40718841552734,
+        "y1": 71.0816879272461,
+        "x2": 1520.4547119140625,
+        "y2": 339.59454345703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9472364783287048,
+      "reading_order": 1,
+      "text": "5g What is an ecosystem? What is ecological\nbalance? How is it threatened by globel\nwarming?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_11_block_001",
+      "coordinates": {
+        "x1": 151.24166870117188,
+        "y1": 378.1983642578125,
+        "x2": 1510.6583251953125,
+        "y2": 900.4456787109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6626508831977844,
+      "reading_order": 2,
+      "text": "Both the living? and the non-living?\nelements of the four realms of the\nEarth interact with each other\nconstantly. The community formed by\nthe interaction of living organisms\nwith their physical environment\nconstitutes an ecosystem."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_11_block_002",
+      "coordinates": {
+        "x1": 183.82705688476562,
+        "y1": 892.5861206054688,
+        "x2": 1469.5679931640625,
+        "y2": 1535.9825439453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6452028155326843,
+      "reading_order": 3,
+      "text": "Each element in an ecosystem has\na vital role to play. Even if one\nelement is disturbed, it can lead\nto ecological imbalance, and if\nunchecked, to the eventual collapse\nof the [se] ecosystem.\nHuman activities are increasingly\nupsetting this balance. For example,\nwhen we cut down trees, the amount"
+    }
+  ]
+}

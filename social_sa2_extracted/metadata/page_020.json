@@ -1,0 +1,112 @@
+{
+  "page_num": 20,
+  "image_width": 1050,
+  "image_height": 1497,
+  "created_at": "2026-02-14T03:10:06.889314+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_006",
+      "coordinates": {
+        "x1": 164.59463500976562,
+        "y1": 241.4647674560547,
+        "x2": 992.4463500976562,
+        "y2": 379.3457336425781
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9564415216445923,
+      "reading_order": 7,
+      "text": "What are the functions of a\ngram panchayat panchayat?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_007",
+      "coordinates": {
+        "x1": 152.16783142089844,
+        "y1": 399.9554748535156,
+        "x2": 1029.9810791015625,
+        "y2": 1404.430908203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.940431535243988,
+      "reading_order": 8,
+      "text": "Some of the main functions of\na gram panchayat include:\n-> development of basic infrastru-\n-cture like roads and waterways\n-> ensuring housing facilities\nfor all\n-> improving agricultural and\nirrigation methods\n-> ensuring clean drinking water\nfor all\n-> working towards\nthe economic development of the\nvillage by providing assistance\nto small - scale and cottage\nindustries\n-> arranging for elementary and\nsecondary education facilities for all\nchildren.\n-> working towards social equality\nand the uplift of women."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_003",
+      "coordinates": {
+        "x1": 780.8782958984375,
+        "y1": 39.86697769165039,
+        "x2": 1038.0648193359375,
+        "y2": 158.56195068359375
+      },
+      "layout_tag": "header",
+      "confidence": 0.8281177878379822,
+      "reading_order": 4,
+      "text": "PAGE NO:\nDATE: 1 / 20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_004",
+      "coordinates": {
+        "x1": 190.78379821777344,
+        "y1": 120.6645736694336,
+        "x2": 306.4559020996094,
+        "y2": 236.3859405517578
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6649643182754517,
+      "reading_order": 5,
+      "text": "VA,3"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_001",
+      "coordinates": {
+        "x1": 13.421186447143555,
+        "y1": 138.04783630371094,
+        "x2": 137.13067626953125,
+        "y2": 202.12496948242188
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5928214192390442,
+      "reading_order": 2,
+      "text": "25/11/25"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_002",
+      "coordinates": {
+        "x1": 86.96171569824219,
+        "y1": 253.40052795410156,
+        "x2": 133.3030548095703,
+        "y2": 321.6558837890625
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5805492401123047,
+      "reading_order": 3,
+      "text": "28"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_005",
+      "coordinates": {
+        "x1": 508.92266845703125,
+        "y1": 138.80703735351562,
+        "x2": 606.6568603515625,
+        "y2": 183.3698272705078
+      },
+      "layout_tag": "header",
+      "confidence": 0.5515819787979126,
+      "reading_order": 6,
+      "text": "C,W"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_20_block_000",
+      "coordinates": {
+        "x1": 7.453690528869629,
+        "y1": 28.82696533203125,
+        "x2": 135.14651489257812,
+        "y2": 85.35222625732422
+      },
+      "layout_tag": "header",
+      "confidence": 0.5407217741012573,
+      "reading_order": 1,
+      "text": "Tuesday"
+    }
+  ]
+}

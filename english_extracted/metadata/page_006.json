@@ -1,0 +1,112 @@
+{
+  "page_num": 6,
+  "image_width": 1080,
+  "image_height": 1512,
+  "created_at": "2026-02-14T03:05:47.729990+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_007",
+      "coordinates": {
+        "x1": 107.00253295898438,
+        "y1": 993.768310546875,
+        "x2": 993.9120483398438,
+        "y2": 1475.8065185546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9321287870407104,
+      "reading_order": 8,
+      "text": "Ans The lemon pickle was packed\nin ceramic containers called\nburnies. The Speaker collected\nthem because they were\nunique. They came in two\ndifferent colour. The top was\nalways adark beige and the\nlower part was a lighter\nbrown colour. The Speaker's"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_005",
+      "coordinates": {
+        "x1": 154.7935791015625,
+        "y1": 345.79718017578125,
+        "x2": 1034.7237548828125,
+        "y2": 530.0671997070312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9132141470909119,
+      "reading_order": 6,
+      "text": "Why do you think the ways\nnever stung the speaker's\ngrandmother?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_004",
+      "coordinates": {
+        "x1": 173.25514221191406,
+        "y1": 236.45989990234375,
+        "x2": 819.6838989257812,
+        "y2": 311.1326904296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8847621083259583,
+      "reading_order": 5,
+      "text": "Answer these questions"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_006",
+      "coordinates": {
+        "x1": 112.01602935791016,
+        "y1": 855.7573852539062,
+        "x2": 950.7620239257812,
+        "y2": 980.8151245117188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8628028631210327,
+      "reading_order": 7,
+      "text": "20 What was special about the\npickle jars?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_001",
+      "coordinates": {
+        "x1": 815.0706787109375,
+        "y1": 35.453338623046875,
+        "x2": 1057.93603515625,
+        "y2": 151.4501190185547
+      },
+      "layout_tag": "header",
+      "confidence": 0.736708402633667,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE : 1 / 20"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_002",
+      "coordinates": {
+        "x1": 19.842201232910156,
+        "y1": 143.4103240966797,
+        "x2": 146.43035888671875,
+        "y2": 205.6582794189453
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7306514382362366,
+      "reading_order": 3,
+      "text": "lalith"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_000",
+      "coordinates": {
+        "x1": 14.424979209899902,
+        "y1": 6.3798112869262695,
+        "x2": 198.13282775878906,
+        "y2": 77.78471374511719
+      },
+      "layout_tag": "header",
+      "confidence": 0.6917527914047241,
+      "reading_order": 1,
+      "text": "Wednesday"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_6_block_003",
+      "coordinates": {
+        "x1": 516.6455078125,
+        "y1": 129.69044494628906,
+        "x2": 625.60498046875,
+        "y2": 181.08348083496094
+      },
+      "layout_tag": "header",
+      "confidence": 0.5627978444099426,
+      "reading_order": 4,
+      "text": "C.W"
+    }
+  ]
+}

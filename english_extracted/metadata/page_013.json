@@ -1,0 +1,125 @@
+{
+  "page_num": 13,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:05:48.544105+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_006",
+      "coordinates": {
+        "x1": 128.21800231933594,
+        "y1": 537.6279296875,
+        "x2": 853.111328125,
+        "y2": 889.84912109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9505641460418701,
+      "reading_order": 7,
+      "text": "The waterhole was a little far\noff from Shaan-Bahadur's\nhome. Only one winding rocky\npath led to the water hole.\nIt was surrounded by high\nelephant grass. This was the only\nplace that would have water\neven in the Summers."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_005",
+      "coordinates": {
+        "x1": 144.9566192626953,
+        "y1": 416.1347961425781,
+        "x2": 859.3486328125,
+        "y2": 509.3916015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9400888085365295,
+      "reading_order": 6,
+      "text": "Describe the setting at the watering\nhole."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_008",
+      "coordinates": {
+        "x1": 70.39703369140625,
+        "y1": 1024.9036865234375,
+        "x2": 829.7808227539062,
+        "y2": 1441.999755859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9365675449371338,
+      "reading_order": 9,
+      "text": "It was Shaan-Bahadur's favourite\nhunting spot because he had often\ncrouched behind the grass, at a\nbend and ambushed many animals.\nWhen they came there for a\ndrink of water in the summer,\nwhen most of the other\nwaterholes dried up, many animals\nhad no choice but to come"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_007",
+      "coordinates": {
+        "x1": 48.30196762084961,
+        "y1": 902.8414916992188,
+        "x2": 840.0537719726562,
+        "y2": 1018.3726806640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9222093224525452,
+      "reading_order": 8,
+      "text": "b, Why was it Shaan-Bahadur's favourite\nhunting spot?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_002",
+      "coordinates": {
+        "x1": 647.5475463867188,
+        "y1": 271.9531555175781,
+        "x2": 858.6508178710938,
+        "y2": 353.05670166015625
+      },
+      "layout_tag": "header",
+      "confidence": 0.8741496205329895,
+      "reading_order": 3,
+      "text": "PAGE NO.\nDATE 1 120"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_000",
+      "coordinates": {
+        "x1": 0.02150750905275345,
+        "y1": 253.17581176757812,
+        "x2": 129.31080627441406,
+        "y2": 379.1485900878906
+      },
+      "layout_tag": "header",
+      "confidence": 0.6871433854103088,
+      "reading_order": 1,
+      "text": "of friday\n7/11/25"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_004",
+      "coordinates": {
+        "x1": 23.4432315826416,
+        "y1": 541.6150512695312,
+        "x2": 116.40804290771484,
+        "y2": 586.9214477539062
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5863645076751709,
+      "reading_order": 5,
+      "text": "Area"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_003",
+      "coordinates": {
+        "x1": 36.869232177734375,
+        "y1": 422.52142333984375,
+        "x2": 109.24691009521484,
+        "y2": 474.0196838378906
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5849805474281311,
+      "reading_order": 4,
+      "text": "49"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_13_block_001",
+      "coordinates": {
+        "x1": 389.60699462890625,
+        "y1": 338.082275390625,
+        "x2": 476.4684753417969,
+        "y2": 382.577880859375
+      },
+      "layout_tag": "header",
+      "confidence": 0.5358327031135559,
+      "reading_order": 2,
+      "text": "C.W"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback"
+  },
+  "tools": {
+    "profile": "minimal",
+    "fs": {
+      "workspaceOnly": true
+    },
+    "exec": {
+      "security": "deny"
+    }
+  },
+  "agents": {
+    "defaults": {
+      "cliBackends": {
+        "sarvam-cli-commander": {
+          "command": "py",
+          "args": ["C:/Users/navka/navakanth001/spartan_army/sarvam_chat.py", "--role", "commander"],
+          "input": "arg",
+          "output": "text"
+        },
+        "sarvam-cli-soldier": {
+          "command": "py",
+          "args": ["C:/Users/navka/navakanth001/spartan_army/sarvam_chat.py", "--role", "soldier"],
+          "input": "arg",
+          "output": "text"
+        }
+      }
+    },
+    "list": [
+      {
+        "id": "leonidas",
+        "name": "Leonidas",
+        "model": "sarvam-cli-commander/sarvam-m",
+        "workspace": "C:/Users/navka/navakanth001/spartan_army/workspace-leonidas",
+        "default": true
+      },
+      {
+        "id": "soldier",
+        "name": "Spartan Soldier",
+        "model": "sarvam-cli-soldier/sarvam-m",
+        "workspace": "C:/Users/navka/navakanth001/spartan_army/workspace-soldier"
+      }
+    ]
+  }
+}

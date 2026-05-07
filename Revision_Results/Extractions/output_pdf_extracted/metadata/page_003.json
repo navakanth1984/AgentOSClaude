@@ -1,0 +1,463 @@
+{
+  "page_num": 3,
+  "image_width": 2550,
+  "image_height": 3300,
+  "created_at": "2026-02-12T17:59:40.395960+00:00",
+  "blocks": [
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_026",
+      "coordinates": {
+        "x1": 162.42532348632812,
+        "y1": 2257.131591796875,
+        "x2": 2453.06640625,
+        "y2": 2407.13623046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9796750545501709,
+      "reading_order": 27,
+      "text": "Six Sigma Yellow belt certified, Completed 2 JDI (Six Sigma) project on Automation of all Notification Mails (excel based macro) and Automation of Restricted clients replicated the same in all processes which released FTE from process."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_002",
+      "coordinates": {
+        "x1": 162.26687622070312,
+        "y1": 320.13531494140625,
+        "x2": 2452.631103515625,
+        "y2": 421.3934326171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.977810263633728,
+      "reading_order": 3,
+      "text": "Designed and developed extensive reports using combination of charts, pivots, slicers and tablesdynamically with appropriate Alerts by the client requirement."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_006",
+      "coordinates": {
+        "x1": 162.81655883789062,
+        "y1": 673.0453491210938,
+        "x2": 2452.586669921875,
+        "y2": 773.295166015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9771047234535217,
+      "reading_order": 7,
+      "text": "Adept in Developing SIPOC tables, Flow charts, writing Business rules, Application prototypes, and communicating effectively with higher management, Software developers."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_003",
+      "coordinates": {
+        "x1": 162.5153045654297,
+        "y1": 420.717529296875,
+        "x2": 2453.906982421875,
+        "y2": 520.4678344726562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9766693115234375,
+      "reading_order": 4,
+      "text": "Interacting with client to understand and analyze the business process and requirements and transforming into reports, documenting and rolling out the deliverable."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_007",
+      "coordinates": {
+        "x1": 162.10379028320312,
+        "y1": 772.85498046875,
+        "x2": 2453.533203125,
+        "y2": 877.0592651367188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.975510835647583,
+      "reading_order": 8,
+      "text": "Highly skilled in web-research and in gathering requirements.Understanding the basic requirements of the client and writing business rules."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_001",
+      "coordinates": {
+        "x1": 162.35586547851562,
+        "y1": 221.0613555908203,
+        "x2": 2453.15966796875,
+        "y2": 319.6387023925781
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9754673838615417,
+      "reading_order": 2,
+      "text": "Developed Custom Objects, Custom Reports and configured the Analytic Snapshots to dump the data on regular basis for the sales performance and lead generation statistics."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_005",
+      "coordinates": {
+        "x1": 162.3316192626953,
+        "y1": 572.6470947265625,
+        "x2": 2453.537109375,
+        "y2": 672.6602783203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9747299551963806,
+      "reading_order": 6,
+      "text": "Fashioned automated templates using VBA and Macros and initiated centralized database to extract all kinds of reports for Management and business requirements."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_021",
+      "coordinates": {
+        "x1": 162.2432403564453,
+        "y1": 1794.704833984375,
+        "x2": 2450.919921875,
+        "y2": 1894.7574462890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9741916060447693,
+      "reading_order": 22,
+      "text": "Perform statistical analysis of data and extracts, defines relevant parameters and interprets Data / Results per business requirements for the purpose of determining performance."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_024",
+      "coordinates": {
+        "x1": 160.94985961914062,
+        "y1": 1995.8486328125,
+        "x2": 2452.0224609375,
+        "y2": 2096.334228515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9738092422485352,
+      "reading_order": 25,
+      "text": "Work with or Assist the Quality team (Six Sigma) and Management Team with various analysis and special projects as needed"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_028",
+      "coordinates": {
+        "x1": 163.69932556152344,
+        "y1": 2460.707275390625,
+        "x2": 2452.49560546875,
+        "y2": 2558.7666015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9655998349189758,
+      "reading_order": 29,
+      "text": "Recognized as best performer in the process and received customer appreciation several times for going an extra mile to complete the work"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_025",
+      "coordinates": {
+        "x1": 91.40462493896484,
+        "y1": 2152.128173828125,
+        "x2": 725.3501586914062,
+        "y2": 2207.751708984375
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9632411599159241,
+      "reading_order": 26,
+      "text": "Significant Accomplishments:"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_030",
+      "coordinates": {
+        "x1": 168.7550811767578,
+        "y1": 2566.361328125,
+        "x2": 581.439697265625,
+        "y2": 2628.127685546875
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9624754786491394,
+      "reading_order": 31,
+      "text": "Personal Profile"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_022",
+      "coordinates": {
+        "x1": 163.32298278808594,
+        "y1": 1896.112060546875,
+        "x2": 1156.2203369140625,
+        "y2": 1946.512939453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9624655246734619,
+      "reading_order": 23,
+      "text": "Preparing of Stack Ranking, Utilization and WFM."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_031",
+      "coordinates": {
+        "x1": 163.29034423828125,
+        "y1": 2686.85107421875,
+        "x2": 1039.7076416015625,
+        "y2": 2736.995361328125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9620862603187561,
+      "reading_order": 32,
+      "text": "Languages known: English | Hindi | Telugu"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_017",
+      "coordinates": {
+        "x1": 91.92877197265625,
+        "y1": 1536.1845703125,
+        "x2": 2190.0,
+        "y2": 1586.2723388671875
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9613198637962341,
+      "reading_order": 18,
+      "text": "May'28 2007 – Nov'29 2010 with Bank of America Continuum Solutions as Senior Process Associate"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_033",
+      "coordinates": {
+        "x1": 163.25762939453125,
+        "y1": 2789.00439453125,
+        "x2": 1438.90478515625,
+        "y2": 2838.862060546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9612388014793396,
+      "reading_order": 34,
+      "text": "Founder member: W.H.Y. Foundation (www.whyfoundation.org)"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_034",
+      "coordinates": {
+        "x1": 163.0771484375,
+        "y1": 2839.67236328125,
+        "x2": 1125.4610595703125,
+        "y2": 2890.62109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9602552056312561,
+      "reading_order": 35,
+      "text": "Contact details: As mentioned on primary page"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_027",
+      "coordinates": {
+        "x1": 163.2659149169922,
+        "y1": 2409.74658203125,
+        "x2": 2202.76611328125,
+        "y2": 2459.948974609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9601960778236389,
+      "reading_order": 28,
+      "text": "Launched Defective tracker, Leave & Training planner in “Share Point” and replicate across different sites."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_019",
+      "coordinates": {
+        "x1": 161.64097595214844,
+        "y1": 1693.9261474609375,
+        "x2": 1099.2047119140625,
+        "y2": 1745.1243896484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.960042417049408,
+      "reading_order": 20,
+      "text": "Business Analysis and Management reporting."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_023",
+      "coordinates": {
+        "x1": 162.93084716796875,
+        "y1": 1948.6197509765625,
+        "x2": 1161.6585693359375,
+        "y2": 1996.275390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9578566551208496,
+      "reading_order": 24,
+      "text": "Preparation of daily, weekly and monthly reports."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_004",
+      "coordinates": {
+        "x1": 161.8542938232422,
+        "y1": 521.637939453125,
+        "x2": 2242.0166015625,
+        "y2": 571.47265625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9577932357788086,
+      "reading_order": 5,
+      "text": "Initiated a discussion with offshore team to derive Billing Report formats and redefined the report structure."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_000",
+      "coordinates": {
+        "x1": 162.18844604492188,
+        "y1": 169.7277069091797,
+        "x2": 2416.9111328125,
+        "y2": 220.61175537109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9570121765136719,
+      "reading_order": 1,
+      "text": "Developed and configured various Reports and Report Folders for different user profiles based on organization needs."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_008",
+      "coordinates": {
+        "x1": 92.27577209472656,
+        "y1": 972.92041015625,
+        "x2": 726.7249145507812,
+        "y2": 1021.8827514648438
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9568716883659363,
+      "reading_order": 9,
+      "text": "Significant Accomplishments:"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_020",
+      "coordinates": {
+        "x1": 162.6216278076172,
+        "y1": 1746.751708984375,
+        "x2": 1007.9241333007812,
+        "y2": 1793.75244140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9568196535110474,
+      "reading_order": 21,
+      "text": "Track, Analyze& Report Operations data."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_018",
+      "coordinates": {
+        "x1": 91.68809509277344,
+        "y1": 1594.8544921875,
+        "x2": 1277.625244140625,
+        "y2": 1646.51904296875
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.9563567638397217,
+      "reading_order": 19,
+      "text": "Account Maintenance – Wholesale Operations reporting"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_015",
+      "coordinates": {
+        "x1": 162.36810302734375,
+        "y1": 1324.93798828125,
+        "x2": 2083.530029296875,
+        "y2": 1375.7376708984375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9562028646469116,
+      "reading_order": 16,
+      "text": "Prepared several macros which helped in reducing the manual intervention and improved accuracy."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_032",
+      "coordinates": {
+        "x1": 162.80162048339844,
+        "y1": 2738.5576171875,
+        "x2": 1170.4671630859375,
+        "y2": 2786.68310546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9559515714645386,
+      "reading_order": 33,
+      "text": "Interests: Photography | Travelling | Table tennis"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_012",
+      "coordinates": {
+        "x1": 161.68109130859375,
+        "y1": 1173.2501220703125,
+        "x2": 1425.522705078125,
+        "y2": 1221.68603515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9550663828849792,
+      "reading_order": 13,
+      "text": "Soft dollar benefit of $60,000 innovation including two projects."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_016",
+      "coordinates": {
+        "x1": 162.37152099609375,
+        "y1": 1375.6566162109375,
+        "x2": 1237.513916015625,
+        "y2": 1426.4400634765625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9537693858146667,
+      "reading_order": 17,
+      "text": "Hosting and organizing the events at Cognizant level."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_011",
+      "coordinates": {
+        "x1": 161.76028442382812,
+        "y1": 1122.6658935546875,
+        "x2": 1010.2860107421875,
+        "y2": 1170.0941162109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9535760879516602,
+      "reading_order": 12,
+      "text": "Soft dollar benefit of $97,650 innovation."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_014",
+      "coordinates": {
+        "x1": 162.12179565429688,
+        "y1": 1273.8756103515625,
+        "x2": 2135.653564453125,
+        "y2": 1323.4122314453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9501285552978516,
+      "reading_order": 15,
+      "text": "Received Token of Appreciation from the Management for making Presentation on Work Place Culture"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_009",
+      "coordinates": {
+        "x1": 160.34873962402344,
+        "y1": 1023.7115478515625,
+        "x2": 984.4791870117188,
+        "y2": 1071.6993408203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9490789771080017,
+      "reading_order": 10,
+      "text": "Six Sigma Green belt and Lean certified"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_013",
+      "coordinates": {
+        "x1": 162.2837371826172,
+        "y1": 1222.7640380859375,
+        "x2": 2280.137451171875,
+        "y2": 1272.9879150390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9488487839698792,
+      "reading_order": 14,
+      "text": "Worked on Failure Mode Effective Analysis (FMEA),which resulted in reducing the major junk of human error's"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_010",
+      "coordinates": {
+        "x1": 163.59835815429688,
+        "y1": 1072.8226318359375,
+        "x2": 648.7762451171875,
+        "y2": 1119.7425537109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9463832974433899,
+      "reading_order": 11,
+      "text": "CFA Claritas certified."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_3_block_029",
+      "coordinates": {
+        "x1": 78.15320587158203,
+        "y1": 2541.161376953125,
+        "x2": 148.0910186767578,
+        "y2": 2624.92724609375
+      },
+      "layout_tag": "image",
+      "confidence": 0.8793770670890808,
+      "reading_order": 30,
+      "text": "The image provided is a generic icon representing a user or a person. It features a stylized silhouette of a head and shoulders, typically used as a placeholder for a profile picture in digital interfaces. The figure is depicted in a dark grey color against a white background. There are no charts, graphs, axes, legends, or numerical data present in the image."
+    }
+  ]
+}

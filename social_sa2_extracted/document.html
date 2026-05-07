@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+body {
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: white !important;
+    width: 100% !important;
+    font-family: serif;
+}
+
+.page-body-container {
+    background-color: white;
+    width: 210mm;
+    margin: 0 auto;
+    padding: 20mm 15mm;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+p.paragraph, .paragraph, .block, .quote, .ordered-list, .unordered-list,
+.advertisement, .answer, .contact-info, .index, .options,
+.reference, .unknown, .sidebar, .footnote {
+    text-align: justify !important;
+    text-align-last: left !important;
+    text-justify: inter-word !important;
+    font-size: inherit !important;
+    line-height: 1.3 !important;
+    margin: 0 0 12pt 0 !important;
+    text-indent: 18pt !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+.quote, .ordered-list, .unordered-list, .sidebar, .footnote {
+    text-indent: 0 !important;
+}
+
+.multi-column-row { font-size: 12pt; }
+.multi-column-row.cols-1 { font-size: 12pt; }
+.multi-column-row.cols-2 { font-size: 11pt; gap: 18pt; }
+.multi-column-row.cols-3 { font-size: 10pt; gap: 16pt; }
+.multi-column-row.cols-4 { font-size: 9pt; gap: 12pt; }
+
+.page-body-container > p.paragraph,
+.page-body-container > .paragraph {
+    font-size: 12pt !important;
+}
+
+h1.chapter-title {
+    font-size: 30pt !important;
+    line-height: 1.1 !important;
+    margin: 0 0 12pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+h2.section-title, h2.headline {
+    font-size: 18pt !important;
+    line-height: 1.1 !important;
+    margin: 12pt 0 8pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+h3.sub-section-title, h3.sub-headline,
+h4.subsub-section-title, h4.subsub-headline {
+    font-size: 13pt !important;
+    line-height: 1.25 !important;
+    margin: 12pt 0 4pt 0 !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+.multi-column-row {
+    width: 100% !important;
+    margin: 12pt 0 !important;
+    display: grid;
+}
+
+.column-block {
+    text-align: left !important;
+    text-align-last: left !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.column-block p {
+    text-indent: 0 !important;
+    margin-bottom: 8pt !important;
+    font-size: inherit !important;
+}
+
+.column-block p br {
+    display: none;
+}
+
+.centered-block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 12pt 0;
+}
+
+.centered-block > * {
+    text-align: center !important;
+    font-size: 13pt !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    text-indent: 0 !important;
+}
+
+.table table {
+    width: 100% !important;
+    margin: 18pt 0 !important;
+    border-collapse: collapse;
+    border: 1.5pt solid #333;
+    table-layout: fixed;
+    font-size: 11pt;
+    line-height: 1.2;
+}
+
+.table table td,
+.table table th {
+    word-break: normal;
+    overflow-wrap: break-word;
+    padding: 6pt;
+    font-size: inherit;
+    border: 0.5pt solid #333;
+    text-align: center;
+}
+
+.table table td:first-child,
+.table table th:first-child {
+    text-align: left;
+}
+
+.table table td:not(:first-child),
+.table table th:not(:first-child) {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.column-block .table table {
+    width: 100% !important;
+    table-layout: fixed;
+    margin: 12pt 0;
+    border-collapse: collapse;
+    border: 1.5pt solid #333;
+}
+
+.column-block .table table td,
+.column-block .table table th {
+    word-break: break-word;
+    padding: 6pt;
+    font-size: 10pt;
+    border: 0.5pt solid #333;
+    text-align: center;
+}
+
+.column-block .table table td:first-child,
+.column-block .table table th:first-child {
+    text-align: left;
+}
+
+.column-block .table table td:not(:first-child),
+.column-block .table table th:not(:first-child) {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.quote {
+    font-size: 13pt !important;
+    margin: 0 0 0 0 !important;
+    padding: 0 20px !important;
+    font-style: italic;
+    border-left: 3px solid #ccc;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.ordered-list, .unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 40px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.sub-ordered-list, .sub-unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 60px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.subsub-ordered-list, .subsub-unordered-list {
+    font-size: inherit !important;
+    margin: 0 0 0 0 !important;
+    padding-left: 80px !important;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.image, .chart, .diagram, .photograph {
+    margin: 16px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.image img, .chart img, .diagram img, .photograph img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
+
+.chart {
+    border: 2px solid #4a90d9;
+    padding: 8px;
+    background-color: #f8fafc;
+}
+
+.diagram {
+    border: 2px solid #6b7280;
+    padding: 8px;
+    background-color: #f9fafb;
+}
+
+.photograph {
+    border: 2px solid #059669;
+    padding: 4px;
+    background-color: #f0fdf4;
+}
+
+.image-caption {
+    font-style: italic;
+    margin: 8px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.header, .footer {
+    font-size: 13pt !important;
+    margin: 12px auto;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.sidebar {
+    font-size: inherit !important;
+    margin: 12px auto;
+    padding: 10px;
+    background-color: #f5f5f5;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.footnote {
+    font-size: inherit !important;
+    margin: 8px auto;
+    padding-left: 20px;
+    text-align: justify !important;
+    text-indent: 0 !important;
+}
+
+.advertisement, .answer, .contact-info, .index, .options,
+.reference, .unknown {
+    font-size: inherit !important;
+    margin: 0 0 12pt 0 !important;
+    text-align: justify !important;
+}
+
+.author, .dateline, .flag, .formula, .jumpline,
+.page-number, .folio, .website-link,
+.first-level-question, .second-level-question, .third-level-question {
+    font-size: inherit !important;
+    margin: 12px auto;
+    text-align: center;
+    max-width: 100% !important;
+    text-indent: 0 !important;
+}
+    </style>
+</head>
+<body>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: 1 126</header></div>
+<div class="centered-block"><header class="header">CW</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">3|11|25</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+</div>
+<p class="paragraph">IV Answer in one or two sentences.</p>
+<p class="paragraph">1g What is the meaning of the<br/>word upanishad?</p>
+<p class="paragraph">Ans The word upanishad means to<br/>sit down beside”. Thus the y-<br/>upanishad are a compilation of<br/>teaching that were orally<br/>transmitted to students.</p>
+<p class="paragraph">28 Who is a tirthankara?</p>
+<p class="paragraph">Ans A tirthankara is a person<br/>who has achieved enlightenment<br/>and shows the path to<br/>others.</p>
+<p class="paragraph">3g What does the term wahimsa<br/>mean?</p>
+<p class="paragraph">Ans Ahimsa means non-violence. It involves<br/>abstinence from killing or injuring<br/>other living Beings.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">E.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">I Answer in one or two sentence</p>
+<p class="paragraph">1g What is a map?</p>
+<p class="paragraph">Ans Map is a two - dimensional represent-<br/>ation of the earth, cor parts of<br/>it on a flat surface.</p>
+<p class="paragraph">20 Name the three components of a<br/>map?</p>
+<p class="paragraph">Ans The three components of maps are<br/>scale, direction and symbols.</p>
+<p class="paragraph">39 What are the four cardinal<br/>directions?</p>
+<p class="paragraph">The four main directions are: North<br/>(N), south(S), East(E), West(W)<br/>are known as cardinal directions</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">E.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<p class="paragraph">I Answer in one or two sentence</p>
+<p class="paragraph">1g What is a map?</p>
+<p class="paragraph">Ans Map is a two - dimensional represent-<br/>ation of the earth, cor parts of<br/>it on a flat surface.</p>
+<p class="paragraph">20 Name the three components of a<br/>map?</p>
+<p class="paragraph">Ans The three components of maps are<br/>scale, direction and symbols.</p>
+<p class="paragraph">39 What are the four cardinal<br/>directions?</p>
+<p class="paragraph">The four main directions are: North<br/>(N), south(S), East(E), West(W)<br/>are known as cardinal directions</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<aside class="sidebar">PAGE NO:<br/>DATE:</aside>
+<p class="paragraph">49 What is the North Line?</p>
+<p class="paragraph">Ans Most maps have a line or<br/>an arrow marked with ‘N’ on<br/>it. This is known as North-line</p>
+<p class="paragraph">5g What is the colour used to<br/>show plates of very high altitude<br/>on a map?</p>
+<p class="paragraph">Ans High elevation are shown by<br/>colour ranging from light brown<br/>to dark brown, white or shades<br/>of purple are used to show<br/>extremely high elevation. 6g How is a sketch different from a<br/>plan?</p>
+<p class="paragraph">Sketch | Plan<br/>$\rightarrow$ A sketch is a rough guide to any place | $\rightarrow$ A plan is a detailed and accurate drawing of a very small area on a large scale</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">Wednesday</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: 1 120</header></div></div>
+<aside class="sidebar">12|11|25</aside>
+<p class="paragraph">IV Answer im a paragraph</p>
+<p class="paragraph">1g Differentiate between globes and maps?</p>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<p class="paragraph">*An globe is a<br/>true model of<br/>the Earth.</p>
+<p class="paragraph">* The shapes and<br/>sizes of continents<br/>and countries are<br/>shown accurately</p>
+<p class="paragraph">* Globes are large<br/>and cumbersome<br/>cumbersome to carry<br/>around.</p>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">Map<br/>* A map is a<br/>two-dimensional<br/>representation of the<br/>Earth on a flat<br/>surface * As a result of<br/>flattening, maps often<br/>distort the shapes<br/>and sizes of continents-<br/>and countries. The<br/>larger the area shown<br/>by the map, the<br/>more will be the<br/>distortion. distortion<br/>* Maps are convenient<br/>to carry around<br/>and refer to.</p>
+</div>
+</div>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">How</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: / /20</header></div></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<p class="paragraph">* Globes cannot be<br/>used to sturdly<br/>smaller areas in<br/>detail, nor can they<br/>be used to show<br/>patterns or processes,<br/>like population growth,<br/>crops grown, climate<br/>change or rate of<br/>literacy</p>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">*Maps are versatile. They<br/>can be used to show<br/>the entire world, or a<br/>small village in great<br/>detail. They can also<br/>be used to show<br/>a wide variety of<br/>proce processes and<br/>patterns</p>
+</div>
+</div>
+<p class="paragraph">26 What are the different kinds of<br/>maps?</p>
+<p class="paragraph">There are different types of maps,<br/>such as physical, political and<br/>thematic and digital maps</p>
+<p class="paragraph">Physical maps are those that show<br/>natural features like mountains, plateaus,<br/>plains, rivers, lakes, seas and oceans.<br/>They are also known as relief<br/>maps.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">C.W</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: 1 /20</header></div></div>
+<div class="multi-column-row cols-3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">1125</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+<div class="column-block" style="grid-column: 3;"></div>
+</div>
+<p class="paragraph">II Answer in one or two sentences. 1g What is a realm? How many<br/>realms are there on the Earth? Ans A realm is a major biographical<br/>division of the earth surface. It<br/>has lithosphere, Hydrosphere, Atmosphere. 28 Which is the deepest point on<br/>Earth? In which ocean does it<br/>lie?</p>
+<p class="paragraph">Ans Challenger deep at the Bottom of<br/>the mariana trench is the<br/>deepest point on the earth. It<br/>lies in the pacific ocean. 3g Name the layers of the atmosphere? The atmosphere is divided into<br/>five layers: 1) layers: divided into<br/>2) Troposphere 2) Stratosphere 3) Mesosphere<br/>4) Thermosphere 5) Exocosphere</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<p class="paragraph">Name the latest two research<br/>stations that have been up by<br/>India in Antarctica</p>
+<p class="paragraph">Ans The two latest research station<br/>that been setup by India<br/>in Antarctica are Maitri and<br/>Bharati.</p>
+<p class="paragraph">58 Define biosphere?</p>
+<p class="paragraph">The Biosphere is the realm where<br/>the lithosphere, hydrosphere and<br/>atmosphere meets and interact,<br/>and where all life form exist.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">H.W</header></div>
+<p class="paragraph">26 Explain the importance of the<br/>lithosphere and the hydrosphere?</p>
+<p class="paragraph">The Earth has three main layers. The<br/>innermost layer is known as the<br/>core, the layer in the middle is<br/>the mantle, while the outermost<br/>layer is the crust. The curst and<br/>the upper portion of the mantle<br/>together from the lithosphere. The<br/>lithosphere consists of huge masses<br/>of land known as continents -<br/>Asia, Africa, North America, South<br/>America, Europe, Australia and<br/>Antarctica.</p>
+<p class="paragraph">Water exists on Earth in all<br/>its forms - as liquid in the form<br/>of oceans, seas, rivers and lakes; as<br/>solid in the form of ice sheet<br/>sheets and glaciers; and as gas in<br/>the form of water vapour in<br/>the atmosphere over all the water<br/>bodies bodies on the Earth’s surface.<br/>The hydrosphere covers almost 75% of the Earth’s surface</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<p class="paragraph">PAGE NO:<br/>DATE: 1 / 20</p>
+<p class="paragraph">are the largest, and account<br/>for almost 97% of the water.<br/>But scientists have divided them<br/>into five different ones as it<br/>makes it easier for them to<br/>sturdy oceans we have five(different) oceans<br/>there as Pacific ocean, Atlantic ocean<br/>Indian ocean, Southern ocean and<br/>Arctic ocean.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<p class="paragraph">5g What is an ecosystem? What is ecological<br/>balance? How is it threatened by globel<br/>warming?</p>
+<p class="paragraph">Both the living? and the non-living?<br/>elements of the four realms of the<br/>Earth interact with each other<br/>constantly. The community formed by<br/>the interaction of living organisms<br/>with their physical environment<br/>constitutes an ecosystem. Each element in an ecosystem has<br/>a vital role to play. Even if one<br/>element is disturbed, it can lead<br/>to ecological imbalance, and if<br/>unchecked, to the eventual collapse<br/>of the[se] ecosystem.<br/>Human activities are increasingly<br/>upsetting this balance. For example,<br/>when we cut down trees, the amount</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<p class="paragraph">4g How could a person attain<br/>nirvana according to Mahasira?</p>
+<p class="paragraph">Ans Mahavira bet believed everyone<br/>itot could attain Nirvana by<br/>following three-fold path of<br/>right belief, right knowledge and<br/>and right conduct.</p>
+<p class="paragraph">5g Which are the countries to which<br/>Buddhism spread from India?</p>
+<p class="paragraph">Ans Buddhism spread to china, Japan,<br/>Srilanka, Thailand, Indonesia and<br/>Myanmar.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE:</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<p class="paragraph">H.W</p>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+</div>
+<p class="paragraph">of carbon dioxide in the air<br/>rises. Over time, the increased<br/>carbon dioxide causes the temperature<br/>across the igler globe to rise.<br/>This phenomenon is known as<br/>global warm warming?</p>
+<p class="paragraph">Salu Ashraf<br/>2014</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">2211/46</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+</div>
+<p class="paragraph">II Answer in one or two sentences.</p>
+<p class="paragraph">18 Mention two ways in which people<br/>of a democracy can participate<br/>indirectly in the affairs of the<br/>government.</p>
+<p class="paragraph">Ans The two ways in which people of<br/>a democracy can participate<br/>indirectly in the affairs<br/>of government are Writing letters<br/>to editors of newspaper and<br/>Magazines, protest.</p>
+<p class="paragraph">28 Use the example of the Mullaperiyar<br/>Dam dispute to explain explain<br/>the role of the government in<br/>conflict resolution?</p>
+<p class="paragraph">The central goverment intervened<br/>in the dispute Between states<br/>of Tamil Nadu and Kerela<br/>over sharing courts which<br/>created a permanent committee to</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<p class="paragraph">over See this Issue.</p>
+<p class="paragraph">What do you understand by the<br/>term ‘conflict resolution’?</p>
+<p class="paragraph">Ans The process through which the<br/>government resolves the conflict<br/>arising out of difference of<br/>opinion and competition for<br/>resources in a peaceful: manner<br/>is called conflict conflict<br/>resolution.</p>
+<p class="paragraph">4g What are the reasons that<br/>inequality esa’sts in India?</p>
+<p class="paragraph">The vast diversity of India<br/>often leads to discrimination.<br/>and this leads to inequality<br/>This is the reason why<br/>social and economic inequalities<br/>continue to exist in India.</p>
+<p class="paragraph">Gopal Ashutosh<br/>21/4</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">Monday</header></div>
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">A.42</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">24/11/25</aside>
+<aside class="sidebar">38</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">ਖਾਲਸਾ What social evil does<br/>Article 17 of the constitution<br/>of India make punishable by<br/>law? What was the need for<br/>this Article?</p>
+</div>
+</div>
+<p class="paragraph">Once of the most common causes<br/>of discrimination in India is<br/>the caste system. Untouchability<br/>is one of the cruelest expressions<br/>of such discrimination. The Dalits<br/>were denied equal opportunities<br/>in education, employment and<br/>healthcare for long. But the efforts<br/>of Dr BR Ambedkar encouraged<br/>many others to speak up in<br/>favour of removing the practices<br/>of untouchability in India. Finally<br/>Article 17 of the constitution of<br/>India made the practice of<br/>untouchability an offence<br/>punishable by law.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<p class="paragraph">rA-3 4g What do you understand by the<br/>term positive discrimination? How<br/>is it used to address the<br/>issue of social inequality in<br/>India?</p>
+<p class="paragraph">To ensure social equality, the<br/>constitution of India introduced<br/>the policy of reservation for<br/>scheduled ^ castes and scheduled<br/>Tribes. Seats were<br/>reserved for them in<br/>parliament and in government-<br/>run schools and colleges.<br/>jobs were also reserved for<br/>them in public sector organisa-<br/>tions. This policy of of<br/>reservation pursued by the<br/>Indian government is also<br/>known as positive or protective<br/>discrimination.</p>
+<p class="paragraph">Shashikant<br/>24th</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<p class="paragraph">C.W</p>
+<p class="paragraph">II Answer in one or two sentences<br/>1g What is local self-government?</p>
+<p class="paragraph">Local government is a system by which people of a locality, such as village, town or cities to govern themselves.</p>
+<p class="paragraph">29 What are the local self-governing<br/>bodies in towns and cities?</p>
+<p class="paragraph">Ans In towns and cities there are<br/>Municipal corporation, Municipal<br/>councils. In villages they have<br/>panchayats Raj System. 39 What are the three levels of<br/>the Panchayati Raj system? Draw<br/>s a diagro diagram to illustrate<br/>it? Ans The three levels of Panchayati Raj<br/>system are</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: 1 / 20</header></div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Tuesday<br/>5/11/26<br/>3 Johns</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+</div>
+<p class="paragraph">1) Gram panchayat<br/>2) Panchayati Samiti<br/>3) zilla parishad zilla $\rightarrow$ To the district level<br/>parishad<br/>Panchayati $\rightarrow$ It is middle or Block level<br/>samiti<br/>gram panchayat $\rightarrow$ It is the Base of the Panchayat Raj System</p>
+<p class="paragraph">4g Mention any two sources of<br/>income of the Gram Gram panchayat?<br/>Ans The two sources of Income of the<br/>Gram panchayat are:<br/>$\rightarrow$ Taxes imposed by the panchayat<br/>on land, houses, custom duties, tolls.<br/>$\rightarrow$ Grants from central or state<br/>government.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div style="display: flex; justify-content: space-around; margin: 18px 0;"><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">Tuesday</header></div><div style="flex: 0 0 50.00%; text-align: center;"><header class="header">PAGE NO:<br/>DATE: 1 / 20</header></div></div>
+<div class="centered-block"><header class="header">C,W</header></div>
+<div class="multi-column-row cols-3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">25/11/25</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">VA,3</p>
+</div>
+<div class="column-block" style="grid-column: 3;"></div>
+</div>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">28</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">What are the functions of a<br/>gram panchayat panchayat?</p>
+</div>
+</div>
+<p class="paragraph">Some of the main functions of<br/>a gram panchayat include:<br/>-&gt; development of basic infrastru-<br/>-cture like roads and waterways<br/>-&gt; ensuring housing facilities<br/>for all<br/>-&gt; improving agricultural and<br/>irrigation methods<br/>-&gt; ensuring clean drinking water<br/>for all<br/>-&gt; working towards<br/>the economic development of the<br/>village by providing assistance<br/>to small - scale and cottage<br/>industries<br/>-&gt; arranging for elementary and<br/>secondary education facilities for all<br/>children.<br/>-&gt; working towards social equality<br/>and the uplift of women.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="centered-block"><header class="header">C,W</header></div>
+<p class="paragraph">What is a Nyaya panchayat?</p>
+<p class="paragraph">A Nyaya panchayat is like a<br/>village court and provides speedy<br/>justice to the Villagers. It deliberates<br/>on minor cases like theft or<br/>dispute between individuals or<br/>families, However, a Nyaya<br/>panchayat cannot send a person<br/>to jail; it can only impose<br/>fines.</p>
+<p class="paragraph">Balash<br/>26/11</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<p class="paragraph">of what were the yr upanishads? What<br/>did they teach?</p>
+<p class="paragraph">2 Ans The main teachings of the Spanishads<br/>include: 2 Ans The main teachings of the Spanishads<br/>include:<br/>* belief in the law of Karma or the<br/>belief that every action has a reaction<br/>* belief in Samsara or the cycle of birth<br/>death and rebirth<br/>* belief in the Atman or the individual<br/>soul<br/>* faith in Brahman or the universal<br/>soul<br/>* belief in Moksha or freedom<br/>from the eternal circle of birth<br/>and death</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: 1 120</header></div>
+<p class="paragraph">What were the main teachings of<br/>Mahasira? Why did Jainism decline?</p>
+<p class="paragraph">Ans * Ahimsa(be non-violent and abstain<br/>from killing or injuring other<br/>living beings) * Satya(to always speak the truth)<br/>* Asteya(abstain from stealing)<br/>* Aparigraha(abstain from having<br/>worldly possessions)</p>
+<p class="paragraph">So what was the Sangha? What was<br/>at its role in the spread of<br/>Buddhism?</p>
+<p class="paragraph">3 Ans After the death of Mahasira, the<br/>popularity of the religion began to<br/>wane in the absence of cable teachers.<br/>Also, since the focus of Mahamira’s<br/>teachings was on absolute non-violence,<br/>people like farmers, who had to kill insects<br/>to save their crops, found it difficult<br/>to abide by the rules.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<p class="paragraph">I Answer in one or two sentences.</p>
+<p class="paragraph">1g What is an empire? Who founded the<br/>first empire in Ancient India?</p>
+<p class="paragraph">Ans An empire is a kingdom spread<br/>over a vast area, with many<br/>officers helping to govern it.<br/>Maurya dynasty creatid the<br/>dynasty in India.</p>
+<p class="paragraph">29 Who was chanakya? What was the<br/>importance of the treatise he wrote?</p>
+<p class="paragraph">Chanakya was chandragupta mauryas<br/>political advisor He was expert<br/>in politics and the affairs of state<br/>The arthashastra written by him<br/>is still recognised by the goverment</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<p class="paragraph">1/1/26 c.w<br/>3g Who was selucus Nicator?<br/>Ans Selucus Nicator was the greek governor<br/>left bt behind by alexander.<br/>4g What is the meaning of dhamma?<br/>Ans Dhamma is a Prakrit word meaning<br/>“Religious duty”.<br/>5g What are edicts?<br/>Ans Edicts are laws or proclamation<br/>carved on a rock or stone<br/>pillars.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / / 20</header></div>
+<div class="centered-block"><header class="header">c.w</header></div>
+<p class="paragraph">parked the way for the establishment<br/>of the Mauryan Empire. 5A-3<br/>How did chandragupta Maurya lay the<br/>ground for the Maurya Empire?</p>
+<p class="paragraph">* Chandragupta Maurya was the first<br/>ruler of the Mauryan dynasty. He overthrew<br/>the might Nandas, who were ruling<br/>over Magadha at this time, with the<br/>help of Chanakya or Kautily, an<br/>important minister in the court of<br/>the Nandas. Chandragupta extended his<br/>Kingdom beyond the Vindhya Mountains<br/>till the Deccan in the south. The<br/>Tamil works Ahananuru and Purananuru<br/>talk about his southern conquests.<br/>Chandragupta became a follower of<br/>jainism. He left his throne to lead<br/>the life of a wandering ascetic.<br/>He is believed to have breathed<br/>his last at Shravanabelagola, in<br/>present - day[to] Karnataka.</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<div class="centered-block"><header class="header">PAGE NO:<br/>DATE: / /20</header></div>
+<div class="centered-block"><header class="header">C.W</header></div>
+<div class="multi-column-row cols-3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">Friday<br/><br/>7/11/29<br/><br/>#</aside>
+</div>
+<div class="column-block" style="grid-column: 2;"></div>
+<div class="column-block" style="grid-column: 3;"></div>
+</div>
+<p class="paragraph">The empire had a large army<br/>consisting of elephants, horses foot<br/>soldiers, to protect the empire and<br/>ensure peace and stability. 49 What were the causes for the decline<br/>of the Mauryan Empire?</p>
+<p class="paragraph">Ans After the death of Ashoka in 232 BCE<br/>the Mauryan Empire declined rapidly-<br/>some of the reasons were:</p>
+<p class="paragraph">* The kings who succeeded Ashoka were<br/>weak and unable to hold the vast<br/>empire together.</p>
+<p class="paragraph">* As the administration broke down, communi-<br/>-cation with(and control over) the<br/>distant parts of the empire became<br/>difficult.</p>
+<p class="paragraph">The policies of ahimsa and dhamma -<br/>Vijaya followed by Ashoka wakened the<br/>army. Kingdoms in the bordering</p>
+</div>
+<br><br>
+<div class="page-body-container">
+<aside class="sidebar">7/4/25</aside>
+<div class="multi-column-row cols-2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="column-block" style="grid-column: 1;">
+<aside class="sidebar">4th</aside>
+<aside class="sidebar">*</aside>
+</div>
+<div class="column-block" style="grid-column: 2;">
+<p class="paragraph">regions of the empire took advantage<br/>of the weak centre to declare their<br/>independence</p>
+<p class="paragraph">A great deal of money was needed<br/>to administer the vast empire and<br/>the later rulers could not<br/>collect enough revenue for this.</p>
+</div>
+</div>
+<p class="paragraph">Ashu<br/>10/21,</p>
+<aside class="sidebar">FOR GOVERNMENT USE ONLY</aside>
+</div>
+</body>
+</html>

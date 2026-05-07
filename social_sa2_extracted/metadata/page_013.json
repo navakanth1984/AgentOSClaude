@@ -1,0 +1,60 @@
+{
+  "page_num": 13,
+  "image_width": 1030,
+  "image_height": 1552,
+  "created_at": "2026-02-14T03:10:12.864855+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_13_block_002",
+      "coordinates": {
+        "x1": 160.0693817138672,
+        "y1": 233.35394287109375,
+        "x2": 1005.5079345703125,
+        "y2": 612.1568603515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9702765345573425,
+      "reading_order": 3,
+      "text": "of carbon dioxide in the air\nrises. Over time, the increased\ncarbon dioxide causes the temperature\nacross the igler globe to rise.\nThis phenomenon is known as\nglobal warm warming?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_13_block_003",
+      "coordinates": {
+        "x1": 308.1814880371094,
+        "y1": 625.4248657226562,
+        "x2": 592.363525390625,
+        "y2": 773.9884033203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9557564854621887,
+      "reading_order": 4,
+      "text": "Salu Ashraf\n2014"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_13_block_000",
+      "coordinates": {
+        "x1": 472.5623474121094,
+        "y1": 123.31126403808594,
+        "x2": 568.7427368164062,
+        "y2": 182.50450134277344
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7556246519088745,
+      "reading_order": 1,
+      "text": "H.W"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_13_block_001",
+      "coordinates": {
+        "x1": 804.2650146484375,
+        "y1": 22.759675979614258,
+        "x2": 1005.3785400390625,
+        "y2": 155.2539825439453
+      },
+      "layout_tag": "header",
+      "confidence": 0.7175766825675964,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE:"
+    }
+  ]
+}

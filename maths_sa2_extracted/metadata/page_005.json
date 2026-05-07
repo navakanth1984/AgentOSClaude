@@ -1,0 +1,73 @@
+{
+  "page_num": 5,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:31.112307+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_5_block_004",
+      "coordinates": {
+        "x1": 129.57215881347656,
+        "y1": 1151.2135009765625,
+        "x2": 873.4611206054688,
+        "y2": 1414.8026123046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8808937072753906,
+      "reading_order": 5,
+      "text": "Parallel - $\\overleftrightarrow{GH} \\parallel \\overleftrightarrow{IJ}$, $\\overleftrightarrow{AB} \\parallel \\overleftrightarrow{CD}$\nIntersecting - $\\overleftrightarrow{GH}$ and $\\overleftrightarrow{AB}$, $\\overleftrightarrow{GH}$ and $\\overleftrightarrow{CD}$. $\\overleftrightarrow{GH}$\nand $\\overleftrightarrow{EF}$, $\\overleftrightarrow{IJ}$, and $\\overleftrightarrow{AB}$, $\\overleftrightarrow{IJ}$ and $\\overleftrightarrow{CD}$,\n$\\overleftrightarrow{EF}$ and $\\overleftrightarrow{EF}$, $\\overleftrightarrow{CD}$ and $\\overleftrightarrow{EF}$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_5_block_002",
+      "coordinates": {
+        "x1": 108.7127914428711,
+        "y1": 359.62109375,
+        "x2": 856.3130493164062,
+        "y2": 692.6756591796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7760513424873352,
+      "reading_order": 3,
+      "text": "Answer the following:-\nList out the parallel lines,\nintersecting lines and unconcurrent\nlines in $B$ the given figure."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_5_block_003",
+      "coordinates": {
+        "x1": 120.0197525024414,
+        "y1": 667.8491821289062,
+        "x2": 797.2013549804688,
+        "y2": 1159.2239990234375
+      },
+      "layout_tag": "table",
+      "confidence": 0.6822965741157532,
+      "reading_order": 4,
+      "text": "<table>\n<thead>\n<tr>\n<th></th>\n<th>E</th>\n<th>D</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>K</td>\n<td rowspan=\"2\">L</td>\n<td>H&gt;</td>\n</tr>\n<tr>\n<td>G</td>\n<td>I &lt; M &lt; N &lt; O &lt; J</td>\n</tr>\n<tr>\n<td>A</td>\n<td>C</td>\n<td>B</td>\n</tr>\n</tbody>\n</table>"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_5_block_001",
+      "coordinates": {
+        "x1": 106.33055114746094,
+        "y1": 359.4524841308594,
+        "x2": 676.0143432617188,
+        "y2": 458.8469543457031
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5179629325866699,
+      "reading_order": 2,
+      "text": "Answer the following:-"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_5_block_000",
+      "coordinates": {
+        "x1": 39.21073913574219,
+        "y1": 1163.84375,
+        "x2": 100.41816711425781,
+        "y2": 1231.2059326171875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.509208619594574,
+      "reading_order": 1,
+      "text": "sol:"
+    }
+  ]
+}

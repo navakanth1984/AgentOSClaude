@@ -1,0 +1,73 @@
+{
+  "page_num": 26,
+  "image_width": 1053,
+  "image_height": 1464,
+  "created_at": "2026-02-14T03:10:12.433763+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_26_block_004",
+      "coordinates": {
+        "x1": 82.4089126586914,
+        "y1": 542.8082275390625,
+        "x2": 1030.4622802734375,
+        "y2": 1394.24658203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9738172888755798,
+      "reading_order": 5,
+      "text": "* Chandragupta Maurya was the first\nruler of the Mauryan dynasty. He overthrew\nthe might Nandas, who were ruling\nover Magadha at this time, with the\nhelp of Chanakya or Kautily, an\nimportant minister in the court of\nthe Nandas. Chandragupta extended his\nKingdom beyond the Vindhya Mountains\ntill the Deccan in the south. The\nTamil works Ahananuru and Purananuru\ntalk about his southern conquests.\nChandragupta became a follower of\njainism. He left his throne to lead\nthe life of a wandering ascetic.\nHe is believed to have breathed\nhis last at Shravanabelagola, in\npresent - day [to] Karnataka."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_26_block_001",
+      "coordinates": {
+        "x1": 704.9716186523438,
+        "y1": 43.665977478027344,
+        "x2": 977.2918701171875,
+        "y2": 145.0591583251953
+      },
+      "layout_tag": "header",
+      "confidence": 0.8881489634513855,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_26_block_003",
+      "coordinates": {
+        "x1": 82.7956314086914,
+        "y1": 358.6317443847656,
+        "x2": 1040.000732421875,
+        "y2": 514.3526000976562
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7118001580238342,
+      "reading_order": 4,
+      "text": "5A-3\nHow did chandragupta Maurya lay the\nground for the Maurya Empire?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_26_block_000",
+      "coordinates": {
+        "x1": 441.3350830078125,
+        "y1": 135.7515869140625,
+        "x2": 538.1791381835938,
+        "y2": 174.24502563476562
+      },
+      "layout_tag": "header",
+      "confidence": 0.6784908175468445,
+      "reading_order": 1,
+      "text": "c.w"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_26_block_002",
+      "coordinates": {
+        "x1": 81.4498519897461,
+        "y1": 234.1693572998047,
+        "x2": 1052.2877197265625,
+        "y2": 356.2267761230469
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6780273914337158,
+      "reading_order": 3,
+      "text": "parked the way for the establishment\nof the Mauryan Empire."
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learning Dashboard with Robo-Buddy</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a2e22",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom speech bubble tail */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: currentColor transparent transparent transparent;
+            /* Matches the bg color of the bubble */
+            color: inherit; 
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-24">
+<!-- Header -->
+<header class="flex items-center justify-between p-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 border-2 border-primary ring-2 ring-white dark:ring-background-dark shadow-sm" data-alt="User avatar of a smiling child" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8bnzCedkVaBCvW2l6a6SDMKyDEdXbFgTrSZbq6Df-oFVFPkdWaeW7k1kFrf9M_jjwGpdQ-1zxIrM-xQ5HMl88BH7-oBKyRhAGWPJNgHdwW2WgcbbAfUmSkazqNeIxC2TbA-2gJC-ftE36Bfhm2dNE0xuAWePSOZdpiqrSwMRJSVUGVHvAA8cM5rBmtqRdamZ_xGqdXFK8ga6iFtrDYDW5etFeMGa6FdmlSmsj5gBjAmOQ5o9E8kirWALPFAYJ6X9ku2Ke_nGtjtVB");'>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-500 dark:text-gray-400">Welcome back,</p>
+<p class="text-lg font-bold text-gray-900 dark:text-white leading-none">Alex</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-card-dark px-3 py-1.5 rounded-full shadow-sm border border-gray-100 dark:border-gray-800">
+<span class="text-orange-500 material-symbols-outlined text-[20px] filled">local_fire_department</span>
+<p class="text-gray-900 dark:text-white text-sm font-bold tracking-wide">5 Days</p>
+</div>
+</header>
+<!-- Hero Section: Robot & Greeting -->
+<section class="flex flex-col items-center justify-center px-6 pt-4 pb-8">
+<!-- Speech Bubble -->
+<div class="relative mb-2 animate-[bounce_3s_infinite]">
+<div class="bg-white dark:bg-card-dark text-card-light dark:text-card-dark rounded-lg p-4 shadow-sm border border-gray-100 dark:border-gray-700 max-w-[280px] text-center relative z-10">
+<h2 class="text-gray-900 dark:text-white text-xl font-bold leading-tight">Hi Alex! Ready to learn today?</h2>
+</div>
+<!-- Tail logic via absolute div to handle coloring correctly -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white dark:bg-card-dark transform rotate-45 border-r border-b border-gray-100 dark:border-gray-700 z-0"></div>
+</div>
+<!-- Robot Character -->
+<div class="relative w-full max-w-[300px] aspect-square flex items-center justify-center mt-2">
+<!-- Decorative background blob -->
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-2xl transform scale-90"></div>
+<!-- Robot Image -->
+<div class="relative w-48 h-56 bg-center bg-no-repeat bg-contain z-10 transition-transform hover:scale-105 duration-300 cursor-pointer" data-alt="3D cute robot character waving hello with big blue eyes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBM-Ji-m_bcGrhBpJt9Dx9hG9mn3FT8qEnTPlQVinvDG-Q9joDQQbOrOxBPYZwT1YEqUgOUbIPSOTfVjwTt_7um5Ex2lGEPqHk7doKr_O9qGEz7dBggPj_OrAZ-oWCVp3ueVB1WHMghpuQnBIm-rqFlfH7qZlbpqEIJ8EREUUfHy9S-2nAr74sGW8pjKypISFSj6Ig7usQC4ur0-U5KlkSqd0uE8uEjHdOFboRS3QAVQxGxvSyfgSaQiagNH5LHJA6q9dGRTqC2KulY");'>
+</div>
+</div>
+</section>
+<!-- Action Cards Section -->
+<main class="flex flex-col gap-5 px-5">
+<!-- Card 1: Daily Lessons -->
+<div class="group relative overflow-hidden rounded-lg bg-white dark:bg-card-dark p-1 shadow-sm transition-all hover:shadow-md border border-transparent hover:border-primary/20">
+<div class="flex items-stretch gap-4 p-4">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-4 py-1">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[24px]">menu_book</span>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-wider">Education</p>
+</div>
+<h3 class="text-gray-900 dark:text-white text-xl font-bold leading-tight">Daily Lessons</h3>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Math &amp; Science • 2 tasks</p>
+</div>
+<button class="flex items-center justify-center gap-2 overflow-hidden rounded-full h-10 px-6 bg-primary hover:bg-green-400 text-[#0d1b12] text-sm font-bold leading-normal w-fit transition-colors shadow-lg shadow-primary/20">
+<span>Start</span>
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+</div>
+<!-- Illustration -->
+<div class="w-24 shrink-0 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center relative overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain transform scale-75" data-alt="3D floating books and pencil illustration" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCrzbgKlot0YuzCA46teqBvc5jQkVQEnOkgU_2UId0E67y2av0VkupszIR18hE2BtF-3OQAnYhM72eFbLOoUW6KvbT2EPqJMts3I6w4DizAnScpWyL3IbTDxdIxK8VZ2pQ7sEeOGprRBc6F0L_821XyPvJT-ESbjFr8GyoHS1W7LfP3qO9YyN841jAZ6_r0IAOhHkkP9pMJtazQ2KKC2HcOYLsC1eQlHx6vXckhyycfeNCI-iHVKh4sW-4-_JTR9A9pMMHax1S2tcuG");'>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: My Progress -->
+<div class="group relative overflow-hidden rounded-lg bg-white dark:bg-card-dark p-1 shadow-sm transition-all hover:shadow-md border border-transparent hover:border-primary/20">
+<div class="flex items-stretch gap-4 p-4">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-4 py-1">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[24px]">monitoring</span>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-wider">Stats</p>
+</div>
+<h3 class="text-gray-900 dark:text-white text-xl font-bold leading-tight">My Progress</h3>
+<div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2.5 mt-1">
+<div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium mt-1">Level 5 • 75% Complete</p>
+</div>
+<button class="flex items-center justify-center gap-2 overflow-hidden rounded-full h-10 px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white text-sm font-bold leading-normal w-fit transition-colors">
+<span>View</span>
+</button>
+</div>
+<!-- Illustration -->
+<div class="w-24 shrink-0 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center relative overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain transform scale-75" data-alt="3D trophy cup illustration" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAaoOIod1UlBA6P916hcXmr96BLjlwpT5ana7L3MGMHt3_nLKNoPb6qlmTCjZUe5DrbMHQtcEh30zVuPt40O6LFVoKQVqpx0iqf0j1ezOo62VN_TBWwfq6matP6d7fsOKvNrBWsHj5V9HSr4iWhDXi4aaPDmpb9HOJ58FOPHaDVyuhMHnrhsaNwzaGzuM1qn18u3bPj3nDi62q-JItJ-_apf6ki1m5Z1mLrUkiXMccm7m5wBTtspSe6ghKjfQkOt5oQk37Ynxx71cRf");'>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Fun Quiz -->
+<div class="group relative overflow-hidden rounded-lg bg-white dark:bg-card-dark p-1 shadow-sm transition-all hover:shadow-md border border-transparent hover:border-primary/20 mb-4">
+<div class="flex items-stretch gap-4 p-4">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-4 py-1">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[24px]">psychology_alt</span>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-semibold uppercase tracking-wider">Game</p>
+</div>
+<h3 class="text-gray-900 dark:text-white text-xl font-bold leading-tight">Fun Quiz</h3>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Test your memory!</p>
+</div>
+<button class="flex items-center justify-center gap-2 overflow-hidden rounded-full h-10 px-6 bg-primary hover:bg-green-400 text-[#0d1b12] text-sm font-bold leading-normal w-fit transition-colors shadow-lg shadow-primary/20">
+<span>Play</span>
+<span class="material-symbols-outlined text-[18px]">videogame_asset</span>
+</button>
+</div>
+<!-- Illustration -->
+<div class="w-24 shrink-0 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center relative overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain transform scale-75" data-alt="3D lightbulb idea illustration" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUTWc2UKR1EReIWwW9s0DrS8XqRXT4plWE_D8LjKzfky5si7tSnU3FJv7ZqHfYkFBc2QOyN86AE5bntLI77_9IbCAZcnmXA2YW7bUvXSVUHWpqhllH3HYUEQnGzs6rY-JR7NH3eaXYHQMrWuVBBce-mZEahlJWVBhAWc0YakPlocWv3dXpeEIToqV2OMOVjQyvuyV2YvwMCjIVvAZfQzyVowITOMrSuQA3RNUZD67x6TDYnR1mAbIhJm69dIio6xObrGe18UiFTYUU");'>
+</div>
+</div>
+</div>
+</div>
+<div class="h-6"></div> <!-- Spacer -->
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full bg-white dark:bg-card-dark border-t border-gray-100 dark:border-gray-800 px-6 py-3 pb-6 flex justify-between items-center z-50 rounded-t-lg shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center gap-1 w-16 group">
+<div class="w-12 h-8 rounded-full bg-primary/20 flex items-center justify-center transition-colors group-hover:bg-primary/30">
+<span class="material-symbols-outlined text-primary text-[24px] filled">home</span>
+</div>
+<span class="text-[10px] font-bold text-primary">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-16 group text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+<div class="w-12 h-8 rounded-full flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[24px]">explore</span>
+</div>
+<span class="text-[10px] font-medium">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-16 group text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+<div class="w-12 h-8 rounded-full flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</div>
+<span class="text-[10px] font-medium">Me</span>
+</button>
+</nav>
+</div>
+</body></html>

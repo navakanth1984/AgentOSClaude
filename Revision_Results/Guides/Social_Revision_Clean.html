@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Science Revision - Panchayat Raj</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&display=swap');
+
+        body {
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: #fffef0;
+            width: 800px;
+            min-height: 1100px;
+            padding: 50px 60px;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+            background-image: linear-gradient(#d1eaff 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            border-left: 2px solid #ffcccc;
+            transform: rotate(0.2deg);
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Gochi Hand', cursive;
+            color: #c0392b;
+            border-bottom: 2px solid #c0392b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-notes {
+            position: absolute;
+            left: 5px;
+            top: 100px;
+            width: 50px;
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.2;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+        }
+
+        .main-content {
+            color: #1a3a5f; /* Blue ink */
+            font-size: 22px;
+        }
+
+        /* Representing the shapes/hierarchy */
+        .hierarchy-container {
+            margin: 40px auto;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .level {
+            border: 2px solid #2980b9;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+            background: rgba(52, 152, 219, 0.05);
+            position: relative;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .level::after {
+            content: "→";
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+        }
+
+        .level-desc {
+            display: inline-block;
+            margin-left: 60px;
+            color: #2c3e50;
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .level-1 { width: 40%; align-self: center; }
+        .level-2 { width: 60%; align-self: center; }
+        .level-3 { width: 80%; align-self: center; border-style: dashed; }
+
+        .qa-section {
+            margin-top: 60px;
+        }
+
+        .question {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            margin-left: 20px;
+            display: block;
+        }
+
+        .arrow-bullet::before {
+            content: "→";
+            margin-right: 10px;
+            color: #e67e22;
+        }
+
+        .ink-blot {
+            position: absolute;
+            bottom: 50px;
+            left: 80px;
+            width: 30px;
+            height: 15px;
+            background: rgba(26, 58, 95, 0.1);
+            filter: blur(4px);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-page">
+        <div class="sidebar-notes">
+            Tuesday | 5/11/26 | 3 Johns
+        </div>
+
+        <div class="header-section">
+            <div>PAGE NO: ________</div>
+            <div>DATE: 1 / 20 / 26</div>
+        </div>
+
+        <div class="main-content">
+            <div style="margin-left: 40px; margin-top: 20px;">
+                1) Gram panchayat <br>
+                2) Panchayati Samiti <br>
+                3) Zilla parishad
+            </div>
+
+            <div class="hierarchy-container">
+                <div style="display: flex; align-items: center; width: 100%; justify-content: center;">
+                    <div class="level">Zilla Parishad</div>
+                    <div class="level-desc">To the district level</div>
+                </div>
+                <div style="display: flex; align-items: center; width: 100%; justify-content: center;">
+                    <div class="level">Panchayati Samiti</div>
+                    <div class="level-desc">It is middle or Block level</div>
+                </div>
+                <div style="display: flex; align-items: center; width: 100%; justify-content: center;">
+                    <div class="level">Gram Panchayat</div>
+                    <div class="level-desc">It is the Base of the Panchayat Raj System</div>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <div class="question">
+                    Q. Mention any two sources of income of the Gram Panchayat?
+                </div>
+                <div class="answer">
+                    Ans: The two sources of Income of the Gram Panchayat are: <br>
+                    <div class="arrow-bullet">Taxes imposed by the panchayat on land, houses, custom duties, tolls.</div>
+                    <div class="arrow-bullet">Grants from central or state government.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ink-blot"></div>
+    </div>
+
+</body>
+</html>

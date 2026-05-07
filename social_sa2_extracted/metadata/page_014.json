@@ -1,0 +1,112 @@
+{
+  "page_num": 14,
+  "image_width": 1080,
+  "image_height": 1449,
+  "created_at": "2026-02-14T03:10:09.634292+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_005",
+      "coordinates": {
+        "x1": 55.5168342590332,
+        "y1": 596.7508544921875,
+        "x2": 1014.4777221679688,
+        "y2": 917.729248046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9536014795303345,
+      "reading_order": 6,
+      "text": "Ans The two ways in which people of\na democracy can participate\nindirectly in the affairs\nof government are Writing letters\nto editors of newspaper and\nMagazines, protest."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_004",
+      "coordinates": {
+        "x1": 82.38661193847656,
+        "y1": 345.9205627441406,
+        "x2": 1014.3126220703125,
+        "y2": 557.7786254882812
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9520105719566345,
+      "reading_order": 5,
+      "text": "18 Mention two ways in which people\nof a democracy can participate\nindirectly in the affairs of the\ngovernment."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_006",
+      "coordinates": {
+        "x1": 76.77869415283203,
+        "y1": 931.6431274414062,
+        "x2": 997.0834350585938,
+        "y2": 1137.8988037109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.949168860912323,
+      "reading_order": 7,
+      "text": "28 Use the example of the Mullaperiyar\nDam dispute to explain explain\nthe role of the government in\nconflict resolution?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_007",
+      "coordinates": {
+        "x1": 149.0238494873047,
+        "y1": 1149.9361572265625,
+        "x2": 971.7645874023438,
+        "y2": 1421.758544921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9452919960021973,
+      "reading_order": 8,
+      "text": "The central goverment intervened\nin the dispute Between states\nof Tamil Nadu and Kerela\nover sharing courts which\ncreated a permanent committee to"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_003",
+      "coordinates": {
+        "x1": 64.4641342163086,
+        "y1": 246.07327270507812,
+        "x2": 1002.242919921875,
+        "y2": 315.653564453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8542615175247192,
+      "reading_order": 4,
+      "text": "II Answer in one or two sentences."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_000",
+      "coordinates": {
+        "x1": 759.5281372070312,
+        "y1": 42.39891052246094,
+        "x2": 1022.8768920898438,
+        "y2": 148.06930541992188
+      },
+      "layout_tag": "header",
+      "confidence": 0.8259412050247192,
+      "reading_order": 1,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_002",
+      "coordinates": {
+        "x1": 484.6001892089844,
+        "y1": 138.05799865722656,
+        "x2": 577.25537109375,
+        "y2": 180.68797302246094
+      },
+      "layout_tag": "header",
+      "confidence": 0.6030985713005066,
+      "reading_order": 3,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_14_block_001",
+      "coordinates": {
+        "x1": 1.5215528011322021,
+        "y1": 140.9405059814453,
+        "x2": 119.62953186035156,
+        "y2": 196.1653594970703
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5949746370315552,
+      "reading_order": 2,
+      "text": "2211/46"
+    }
+  ]
+}

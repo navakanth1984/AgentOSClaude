@@ -1,0 +1,60 @@
+{
+  "page_num": 25,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.701896+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_25_block_003",
+      "coordinates": {
+        "x1": 466.1325378417969,
+        "y1": 949.8458251953125,
+        "x2": 739.1785278320312,
+        "y2": 1284.9715576171875
+      },
+      "layout_tag": "image",
+      "confidence": 0.8969882130622864,
+      "reading_order": 4,
+      "text": "The image displays a geometric diagram of a triangle labeled $\\triangle ABC$. The vertices are labeled $A$, $B$, and $C$. Angle $A$ is a right angle, explicitly marked with a small square and labeled $90^\\circ$. Angle $C$ is labeled $85^\\circ$. Angle $B$ is the remaining angle in the triangle, which is calculated as $180^\\circ - 90^\\circ - 85^\\circ = 5^\\circ$. The diagram is a standard representation used in trigonometry to illustrate the properties of a right triangle."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_25_block_002",
+      "coordinates": {
+        "x1": 171.2386474609375,
+        "y1": 862.7125244140625,
+        "x2": 871.3616333007812,
+        "y2": 972.19189453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8026207089424133,
+      "reading_order": 3,
+      "text": "(Hint: Angles of a Triangle add up\nto $180^\\circ$)"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_25_block_001",
+      "coordinates": {
+        "x1": 162.3793487548828,
+        "y1": 743.1640014648438,
+        "x2": 820.0761108398438,
+        "y2": 856.4789428710938
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7941033840179443,
+      "reading_order": 2,
+      "text": "In a right triangle $ABC$, find\n$\\angle A$ if $\\angle C$ is $58^\\circ$."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_25_block_000",
+      "coordinates": {
+        "x1": 446.4417724609375,
+        "y1": 236.11279296875,
+        "x2": 541.59326171875,
+        "y2": 276.0370178222656
+      },
+      "layout_tag": "header",
+      "confidence": 0.6346048712730408,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

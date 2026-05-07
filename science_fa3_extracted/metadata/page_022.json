@@ -1,0 +1,73 @@
+{
+  "page_num": 22,
+  "image_width": 1080,
+  "image_height": 1543,
+  "created_at": "2026-02-14T03:07:14.176203+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_22_block_004",
+      "coordinates": {
+        "x1": 104.86936950683594,
+        "y1": 724.4081420898438,
+        "x2": 1069.1087646484375,
+        "y2": 1392.3699951171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9732999801635742,
+      "reading_order": 5,
+      "text": "Open out a divider so that the\nlegs are about 5mm a part. Place\none of the legs at one end of\nthe line and the other leg on\nthe line. With out altering the\ndistance between the legs of the\ndivider, take the divider along\nthe line. Count the number of steps\ntaken to cover the entire line. If some\nportion is left out, measure it separately.\nThe length of the curved line is calculated\nas Length = number of steps x distance between\nlegs + length of the left over line."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_22_block_003",
+      "coordinates": {
+        "x1": 71.53248596191406,
+        "y1": 514.08056640625,
+        "x2": 1026.260498046875,
+        "y2": 733.1185302734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9618890285491943,
+      "reading_order": 4,
+      "text": "A curved line cannot be measured\nusing a meter scale A thread or a\ndivider should be used for this\nmeasurement."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_22_block_002",
+      "coordinates": {
+        "x1": 69.09037017822266,
+        "y1": 287.6047668457031,
+        "x2": 1017.9796752929688,
+        "y2": 484.84307861328125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9552803635597229,
+      "reading_order": 3,
+      "text": "How can you measure the length of\na curved line? Describe one method\nin detail?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_22_block_001",
+      "coordinates": {
+        "x1": 735.229248046875,
+        "y1": 99.42020416259766,
+        "x2": 1020.5095825195312,
+        "y2": 197.669921875
+      },
+      "layout_tag": "header",
+      "confidence": 0.8449442386627197,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_22_block_000",
+      "coordinates": {
+        "x1": 395.9378356933594,
+        "y1": 185.75845336914062,
+        "x2": 499.8387145996094,
+        "y2": 238.1384735107422
+      },
+      "layout_tag": "header",
+      "confidence": 0.7040942907333374,
+      "reading_order": 1,
+      "text": "C-W"
+    }
+  ]
+}

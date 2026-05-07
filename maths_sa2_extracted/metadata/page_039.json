@@ -1,0 +1,47 @@
+{
+  "page_num": 39,
+  "image_width": 1600,
+  "image_height": 1186,
+  "created_at": "2026-02-14T03:08:34.056355+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_39_block_001",
+      "coordinates": {
+        "x1": 234.41099548339844,
+        "y1": 393.5824890136719,
+        "x2": 1501.0345458984375,
+        "y2": 877.6414184570312
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9008885025978088,
+      "reading_order": 2,
+      "text": "What is the shape of the base\nof a triangular prism? What\nis the shape of each of its\nfaces?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_39_block_002",
+      "coordinates": {
+        "x1": 279.2456359863281,
+        "y1": 930.3538208007812,
+        "x2": 989.6587524414062,
+        "y2": 1113.9244384765625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8747937679290771,
+      "reading_order": 3,
+      "text": "Triangle, Rectangle"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_39_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 273.9873352050781,
+        "x2": 209.33909606933594,
+        "y2": 392.6056213378906
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5402962565422058,
+      "reading_order": 1,
+      "text": "20/11/25"
+    }
+  ]
+}

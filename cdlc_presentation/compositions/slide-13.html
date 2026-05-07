@@ -1,0 +1,116 @@
+<template id="slide-13-template">
+  <div data-composition-id="slide-13" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="title">THE CONTINUOUS FEEDBACK FLYWHEEL</h2>
+      
+      <div class="flywheel-viz">
+        <img src="../assets/image13.png" class="viz-img" alt="CDLC Flywheel">
+        
+        <!-- Rotating highlight -->
+        <div class="highlight-ring"></div>
+        
+        <!-- Stage markers -->
+        <div class="marker m-gen">GENERATE</div>
+        <div class="marker m-test">TEST</div>
+        <div class="marker m-dist">DISTRIBUTE</div>
+        <div class="marker m-obs">OBSERVE</div>
+      </div>
+
+      <div class="center-text">
+        <p>Solo workflows improve the individual. The CDLC transforms local friction into global organizational intelligence.</p>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-13"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 54px;
+        color: #FFFFFF;
+        margin-bottom: 40px;
+        opacity: 0;
+      }
+      .flywheel-viz {
+        width: 1100px;
+        height: 600px;
+        opacity: 0;
+      }
+      .viz-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      
+      .center-text {
+        width: 500px;
+        text-align: center;
+        opacity: 0;
+      }
+      .center-text p {
+        font-family: 'Outfit', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.4;
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      }
+
+      .marker {
+        position: absolute;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        color: #00E5FF;
+        opacity: 0;
+      }
+      .m-gen { bottom: 100px; right: 300px; }
+      .m-test { top: 150px; left: 350px; }
+      .m-dist { top: 150px; right: 350px; }
+      .m-obs { left: 100px; top: 50%; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.set(".flywheel-viz", { scale: 0.9 });
+        tl.set(".center-text", { y: 20 });
+        
+        tl.to(".title", { opacity: 1, y: 0, duration: 1 }, 0.5);
+        tl.to(".flywheel-viz", { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" }, 1);
+        
+        // Stage Sequence
+        const markers = [".m-gen", ".m-test", ".m-dist", ".m-obs"];
+        markers.forEach((m, i) => {
+          tl.to(m, { 
+            opacity: 1, 
+            scale: 1.2, 
+            duration: 0.6, 
+            ease: "back.out(2)",
+            color: "#FFFFFF"
+          }, 2 + (i * 0.5));
+          tl.to(m, { scale: 1, color: "#00E5FF", duration: 0.4 }, 2.6 + (i * 0.5));
+        });
+
+        tl.to(".center-text", { opacity: 1, y: 0, duration: 1.2 }, 4);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-13"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,73 @@
+{
+  "page_num": 14,
+  "image_width": 1080,
+  "image_height": 1565,
+  "created_at": "2026-02-14T03:07:14.229162+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_14_block_004",
+      "coordinates": {
+        "x1": 22.404932022094727,
+        "y1": 1053.0274658203125,
+        "x2": 1066.433349609375,
+        "y2": 1531.9395751953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9164831638336182,
+      "reading_order": 5,
+      "text": "Ans, Features of tropical rainforests:\ni, The vegetation is dense because\nof the warm climate and\nheavy rainfall.\nii, Tall trees with heavy foliage\nallow very little light to reach\nthe lower levels.\niii, The leaves on the trees have a\nspecial arrangement that allows"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_14_block_001",
+      "coordinates": {
+        "x1": 730.832275390625,
+        "y1": 109.13343811035156,
+        "x2": 995.3411254882812,
+        "y2": 203.41407775878906
+      },
+      "layout_tag": "header",
+      "confidence": 0.9142513275146484,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE : / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_14_block_002",
+      "coordinates": {
+        "x1": 82.58375549316406,
+        "y1": 287.83221435546875,
+        "x2": 1023.8977661132812,
+        "y2": 779.4523315429688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8871619701385498,
+      "reading_order": 3,
+      "text": "have strong hooves to walk on\nthe rocky slopes i - h\n(musk deer).\nare adapted to breed and\nraise their young ones quickly\nin the summer.\nmigrate (swallows) or hibernate\n(dormice) to escape from the\nharsh conditions"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_14_block_003",
+      "coordinates": {
+        "x1": 18.45146369934082,
+        "y1": 801.1497192382812,
+        "x2": 1056.71728515625,
+        "y2": 1023.5255737304688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8750854730606079,
+      "reading_order": 4,
+      "text": "10, What are the features of tropical\nrainforests? Describe the\nadaptations of plants in these\nhabitats."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_14_block_000",
+      "coordinates": {
+        "x1": 405.3761291503906,
+        "y1": 176.640625,
+        "x2": 493.9217834472656,
+        "y2": 229.76589965820312
+      },
+      "layout_tag": "header",
+      "confidence": 0.6750486493110657,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

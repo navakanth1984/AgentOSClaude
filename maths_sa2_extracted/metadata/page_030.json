@@ -1,0 +1,21 @@
+{
+  "page_num": 30,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.586647+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_30_block_001",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 3.9541311264038086,
+        "x2": 897.5938110351562,
+        "y2": 1463.108642578125
+      },
+      "layout_tag": "table",
+      "confidence": 0.8687394261360168,
+      "reading_order": 2,
+      "text": "<table>\n<tbody>\n<tr>\n<td>Day<br/>5</td>\n<td>c . w</td>\n</tr>\n<tr>\n<td>ii</td>\n<td>C B A P<br/>AB = BC = CD = DA</td>\n</tr>\n<tr>\n<td>Sol:-</td>\n<td>OP = QR, PQ = OR</td>\n</tr>\n<tr>\n<td>iii,<br/>G H I E D F<br/>H G F</td>\n<td>Sol GH = HI = ID = DE<br/>= EF = FG</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

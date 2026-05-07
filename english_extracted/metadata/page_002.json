@@ -1,0 +1,138 @@
+{
+  "page_num": 2,
+  "image_width": 1080,
+  "image_height": 1450,
+  "created_at": "2026-02-14T03:05:47.300032+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_007",
+      "coordinates": {
+        "x1": 165.72955322265625,
+        "y1": 232.12388610839844,
+        "x2": 999.5018920898438,
+        "y2": 979.9913940429688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9534298777580261,
+      "reading_order": 8,
+      "text": "poet compares her to a Violet\nflower and a fair star. The\ncomparison is appropriate because\nthe violet flower beside camossy\nstone is often hidden by the\nit stone and remains unnoticed.\nThe fair star also cannot\nbe noticed when all the other\nstars are shining in the sky,\nbut can be seen and appreciated\nappreciated when it is the only\none in the sky. The poet\nhas said that Lucy was a\nwoman whom few po people\nknew and appreciated."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_008",
+      "coordinates": {
+        "x1": 109.8774642944336,
+        "y1": 1001.8386840820312,
+        "x2": 936.8104248046875,
+        "y2": 1195.372802734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9362034797668457,
+      "reading_order": 9,
+      "text": "3d What happened when lucy died?\nDid people known about it? How\nwas the speaker affected by\nher death?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_009",
+      "coordinates": {
+        "x1": 162.48193359375,
+        "y1": 1225.3773193359375,
+        "x2": 974.3474731445312,
+        "y2": 1396.81396484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9151073694229126,
+      "reading_order": 10,
+      "text": "When Lucy died, few people came\nto know of her her death, but\nthe poet was greatly affected. He"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_002",
+      "coordinates": {
+        "x1": 767.8053588867188,
+        "y1": 39.96621322631836,
+        "x2": 1014.278076171875,
+        "y2": 140.5799560546875
+      },
+      "layout_tag": "header",
+      "confidence": 0.8322160243988037,
+      "reading_order": 3,
+      "text": "PAGE NO:\nDATE: / 120"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_003",
+      "coordinates": {
+        "x1": 47.54225158691406,
+        "y1": 252.3817138671875,
+        "x2": 148.9554901123047,
+        "y2": 308.29376220703125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7720875144004822,
+      "reading_order": 4,
+      "text": "2 Ans"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_005",
+      "coordinates": {
+        "x1": 65.20752716064453,
+        "y1": 1236.984130859375,
+        "x2": 135.51858520507812,
+        "y2": 1282.631591796875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6594535708427429,
+      "reading_order": 6,
+      "text": "Ans"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_001",
+      "coordinates": {
+        "x1": 0.11006176471710205,
+        "y1": 134.36363220214844,
+        "x2": 117.31503295898438,
+        "y2": 203.6404266357422
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6369685530662537,
+      "reading_order": 2,
+      "text": "આવક"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_006",
+      "coordinates": {
+        "x1": 486.8473815917969,
+        "y1": 126.47200012207031,
+        "x2": 586.3421630859375,
+        "y2": 179.26988220214844
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6241435408592224,
+      "reading_order": 7,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 15.430624008178711,
+        "x2": 159.52272033691406,
+        "y2": 72.25853729248047
+      },
+      "layout_tag": "header",
+      "confidence": 0.5968843698501587,
+      "reading_order": 1,
+      "text": "Wednesday"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_2_block_004",
+      "coordinates": {
+        "x1": 106.8228759765625,
+        "y1": 1009.784912109375,
+        "x2": 158.71212768554688,
+        "y2": 1064.4066162109375
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5040987730026245,
+      "reading_order": 5,
+      "text": "3d"
+    }
+  ]
+}

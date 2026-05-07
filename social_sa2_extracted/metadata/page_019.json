@@ -1,0 +1,73 @@
+{
+  "page_num": 19,
+  "image_width": 1080,
+  "image_height": 1546,
+  "created_at": "2026-02-14T03:10:06.438650+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_19_block_002",
+      "coordinates": {
+        "x1": 116.39095306396484,
+        "y1": 240.64276123046875,
+        "x2": 712.5270385742188,
+        "y2": 430.3139343261719
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9177034497261047,
+      "reading_order": 3,
+      "text": "1) Gram panchayat\n2) Panchayati Samiti\n3) zilla parishad"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_19_block_001",
+      "coordinates": {
+        "x1": 749.4412231445312,
+        "y1": 32.584529876708984,
+        "x2": 1079.744873046875,
+        "y2": 145.65103149414062
+      },
+      "layout_tag": "header",
+      "confidence": 0.7791418433189392,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE : 1 / 20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_19_block_004",
+      "coordinates": {
+        "x1": 5.277750492095947,
+        "y1": 982.1887817382812,
+        "x2": 1022.5772094726562,
+        "y2": 1527.1668701171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7723779082298279,
+      "reading_order": 5,
+      "text": "4g Mention any two sources of\nincome of the Gram Gram panchayat?\nAns The two sources of Income of the\nGram panchayat are:\n$\\rightarrow$ Taxes imposed by the panchayat\non land, houses , custom duties , tolls.\n$\\rightarrow$ Grants from central or state\ngovernment."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_19_block_003",
+      "coordinates": {
+        "x1": 281.33056640625,
+        "y1": 425.854248046875,
+        "x2": 1027.167724609375,
+        "y2": 951.6259155273438
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6429388523101807,
+      "reading_order": 4,
+      "text": "zilla $\\rightarrow$ To the district level\nparishad\nPanchayati $\\rightarrow$ It is middle or Block level\nsamiti\ngram panchayat $\\rightarrow$ It is the Base of the Panchayat Raj System"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_19_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 21.575151443481445,
+        "x2": 96.86603546142578,
+        "y2": 313.8533935546875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.611947774887085,
+      "reading_order": 1,
+      "text": "Tuesday\n5/11/26\n3 Johns"
+    }
+  ]
+}

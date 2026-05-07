@@ -1,0 +1,160 @@
+<template id="slide-4-template">
+  <div data-composition-id="slide-4" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="title">THE CDLC INFINITY LOOP</h2>
+      
+      <div class="loop-container">
+        <img src="../assets/image4.png" class="loop-img" alt="Infinity Loop">
+        
+        <div class="stage-markers">
+          <div class="marker m1" data-id="1">1</div>
+          <div class="marker m2" data-id="2">2</div>
+          <div class="marker m3" data-id="3">3</div>
+          <div class="marker m4" data-id="4">4</div>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail d1">
+          <h3>GENERATE</h3>
+          <p>From static text to dynamic ingestion</p>
+        </div>
+        <div class="detail d2">
+          <h3>TEST</h3>
+          <p>Treating context evaluation like code</p>
+        </div>
+        <div class="detail d3">
+          <h3>DISTRIBUTE</h3>
+          <p>Scaling skills via shared registries</p>
+        </div>
+        <div class="detail d4">
+          <h3>OBSERVE</h3>
+          <p>Automating feedback from production</p>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-4"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 54px;
+        color: #FFFFFF;
+        letter-spacing: 4px;
+        margin-bottom: 40px;
+        opacity: 0;
+      }
+      .loop-container {
+        position: relative;
+        width: 1200px;
+        height: 500px;
+        opacity: 0;
+      }
+      .loop-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .stage-markers {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .marker {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #00E5FF;
+        color: #0A0A0A;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        font-size: 28px;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      .m1 { top: 22%; left: 24%; }
+      .m2 { top: 22%; right: 24%; }
+      .m3 { bottom: 22%; right: 24%; }
+      .m4 { bottom: 22%; left: 24%; }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        width: 100%;
+        max-width: 1400px;
+        margin-top: 60px;
+      }
+      .detail {
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .detail h3 {
+        font-family: 'Outfit', sans-serif;
+        color: #00E5FF;
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .detail p {
+        font-family: 'Inter', sans-serif;
+        color: #B0B0B0;
+        font-size: 18px;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(".title", { opacity: 1, y: 0, duration: 1 }, 0.5);
+        tl.to(".loop-container", { opacity: 1, duration: 1.5 }, 0.8);
+        
+        // Marker Reveal Sequence
+        const markers = [".m1", ".m2", ".m3", ".m4"];
+        const details = [".d1", ".d2", ".d3", ".d4"];
+        
+        markers.forEach((m, i) => {
+          const startTime = 1.5 + (i * 0.8);
+          tl.to(m, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" }, startTime);
+          tl.to(details[i], { opacity: 1, y: 0, duration: 0.6 }, startTime + 0.2);
+          
+          // Glow pulse for the active marker
+          tl.to(m, { 
+            boxShadow: "0 0 40px rgba(0, 229, 255, 0.8)", 
+            duration: 0.4, 
+            yoyo: true, 
+            repeat: 1 
+          }, startTime);
+        });
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-4"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAAVA - Chapter 2: The Strategy Session Storyboard</title>
+    <style>
+        :root {
+            --orange: #E67E22;
+            --blue: #2C3E50;
+            --cyan: #00FFFF;
+            --gold: #F39C12;
+            --gray: #7F8C8D;
+            --bg: #0A0A0A;
+            --text: #E0E0E0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            border-left: 4px solid var(--orange);
+            padding-left: 20px;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .meta {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .storyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .shot-card {
+            background: #111;
+            border: 1px solid #222;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .shot-card:hover {
+            border-color: var(--cyan);
+        }
+
+        .image-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .shot-card:hover .image-container img {
+            opacity: 1;
+        }
+
+        .shot-info {
+            padding: 20px;
+        }
+
+        .shot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .shot-number {
+            color: var(--orange);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .shot-time {
+            color: var(--gold);
+            font-family: monospace;
+        }
+
+        .shot-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .shot-copy {
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 2px solid var(--cyan);
+            padding: 10px;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .dna-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: var(--blue);
+            padding: 2px 8px;
+            margin-right: 5px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            margin-top: 100px;
+            color: var(--gray);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DAAVA: Chapter 2</h1>
+        <div class="meta">
+            LEVEL 2 STORYBOARD | BIT FRAMEWORK | PERSISTENT DNA: CH_CLIMBER_ORBITAL_001
+        </div>
+    </header>
+
+    <div class="storyboard-grid">
+        <!-- Shot 1 -->
+        <div class="shot-card">
+            <div class="image-container">
+                <img src="../../../.gemini/antigravity/brain/afcf6a67-ecac-413a-ae24-8aaee65b1cec/daava_ch2_establishing_shot_1778081063050.png" alt="Shot 1 Mockup">
+            </div>
+            <div class="shot-info">
+                <div class="shot-header">
+                    <span class="shot-number">SHOT 01</span>
+                    <span class="shot-time">00:00 - 00:05</span>
+                </div>
+                <div class="shot-description">
+                    <strong>ESTABLISHING</strong>: Wide 14mm shot of the Cyber-Brutalist office. Smog-choked skyline visible through the window. Dust motes drift in a golden shaft of light.
+                </div>
+                <div class="shot-copy">
+                    "The office is a concrete cell perched above a mobile repair bazaar."
+                </div>
+                <div>
+                    <span class="dna-tag">14mm</span>
+                    <span class="dna-tag">Cyber-Brutalist</span>
+                    <span class="dna-tag">#F39C12</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shot 2 -->
+        <div class="shot-card">
+            <div class="image-container">
+                <img src="../../../.gemini/antigravity/brain/afcf6a67-ecac-413a-ae24-8aaee65b1cec/daava_ch2_arjun_sitting_1778081084724.png" alt="Shot 2 Mockup">
+            </div>
+            <div class="shot-info">
+                <div class="shot-header">
+                    <span class="shot-number">SHOT 02</span>
+                    <span class="shot-time">00:05 - 00:15</span>
+                </div>
+                <div class="shot-description">
+                    <strong>MEDIUM SHOT</strong>: Arjun in work gear (#E67E22 suit). The golden rim light catches his profile. He grips the weathered notebook. Intense, focused expression.
+                </div>
+                <div class="shot-copy">
+                    "On Tuesday, it ran brown at 6:45."
+                </div>
+                <div>
+                    <span class="dna-tag">#E67E22</span>
+                    <span class="dna-tag">#2C3E50</span>
+                    <span class="dna-tag">Arjun Varma</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shot 3 -->
+        <div class="shot-card">
+            <div class="image-container">
+                <img src="../../../.gemini/antigravity/brain/afcf6a67-ecac-413a-ae24-8aaee65b1cec/daava_ch2_kiran_whiteboard_1778081100836.png" alt="Shot 3 Mockup">
+            </div>
+            <div class="shot-info">
+                <div class="shot-header">
+                    <span class="shot-number">SHOT 03</span>
+                    <span class="shot-time">00:15 - 00:25</span>
+                </div>
+                <div class="shot-description">
+                    <strong>CLOSE UP</strong>: Kiran Rao marks the glass whiteboard. The word "PRESSURE" glows in teal neon (#00FFFF) against the gray concrete.
+                </div>
+                <div class="shot-copy">
+                    "Kiran scribbles 'PRESSURE' on the glass. The teal ink glows."
+                </div>
+                <div>
+                    <span class="dna-tag">#00FFFF</span>
+                    <span class="dna-tag">Neon Overlay</span>
+                    <span class="dna-tag">Concrete Texture</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shot 4 -->
+        <div class="shot-card">
+            <div class="image-container">
+                <!-- Reusing establishing image for layout reference -->
+                <img src="../../../.gemini/antigravity/brain/afcf6a67-ecac-413a-ae24-8aaee65b1cec/daava_ch2_establishing_shot_1778081063050.png" alt="Shot 4 Mockup" style="filter: brightness(0.5) sepia(0.5) hue-rotate(180deg);">
+            </div>
+            <div class="shot-info">
+                <div class="shot-header">
+                    <span class="shot-number">SHOT 04</span>
+                    <span class="shot-time">00:25 - 00:30</span>
+                </div>
+                <div class="shot-description">
+                    <strong>TWO SHOT</strong>: Kiran turns to face Arjun. The perspective feels cavernous. Final decision point. Transition to black.
+                </div>
+                <div class="shot-copy">
+                    "The climb is going to change what you think you're fighting for."
+                </div>
+                <div>
+                    <span class="dna-tag">Final Beat</span>
+                    <span class="dna-tag">Resolution</span>
+                    <span class="dna-tag">Fade to Black</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        GENERATED BY ANTIGRAVITY | BIT FRAMEWORK V2
+    </div>
+</body>
+</html>

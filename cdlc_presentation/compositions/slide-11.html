@@ -1,0 +1,156 @@
+<template id="slide-11-template">
+  <div data-composition-id="slide-11" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="step-num">STEP 4</h2>
+      <h3 class="step-title">ADAPT & EVOLVE</h3>
+      
+      <div class="split-view">
+        <div class="symptom-side">
+          <div class="side-label">THE SYMPTOM</div>
+          <img src="../assets/image11.png" class="split-img p1" alt="Localized Friction">
+          
+          <div class="error-stack">
+            <div class="error-msg e1">CONTEXT_DRIFT_ERROR</div>
+            <div class="error-msg e2">UNTRACKED_VIBE_CONFLICT</div>
+            <div class="error-msg e3">MANUAL_OVERRIDE_FAILED</div>
+          </div>
+        </div>
+
+        <div class="cure-side">
+          <div class="side-label green">THE CURE</div>
+          <img src="../assets/image11.png" class="split-img p2" alt="Global Adaptation">
+          
+          <div class="fix-pulse"></div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-11"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .step-num {
+        font-family: 'JetBrains Mono', monospace;
+        color: #00E5FF;
+        font-size: 24px;
+        letter-spacing: 10px;
+        margin-bottom: 10px;
+        opacity: 0;
+      }
+      .step-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 48px;
+        color: #FFFFFF;
+        margin-bottom: 40px;
+        opacity: 0;
+      }
+      .split-view {
+        display: flex;
+        width: 100%;
+        height: 700px;
+        gap: 40px;
+      }
+      .symptom-side, .cure-side {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+      }
+      .side-label {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-family: 'JetBrains Mono', monospace;
+        color: #FF4444;
+        font-size: 14px;
+        letter-spacing: 4px;
+      }
+      .side-label.green { color: #00FF9D; }
+      
+      .split-img {
+        width: 200%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .p1 { object-position: 0% center; }
+      .p2 { object-position: 100% center; }
+
+      .error-stack {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .error-msg {
+        background: #FF4444;
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        padding: 10px 20px;
+        font-size: 14px;
+        opacity: 0;
+      }
+
+      .fix-pulse {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        background: rgba(0, 255, 157, 0.2);
+        border-radius: 50%;
+        box-shadow: 0 0 50px #00FF9D;
+        opacity: 0;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.set([".symptom-side", ".cure-side"], { y: 20 });
+        
+        tl.to(".step-num", { opacity: 1, duration: 0.8 }, 0.5);
+        tl.to(".step-title", { opacity: 1, duration: 0.8 }, 0.7);
+        tl.to(".symptom-side", { opacity: 1, y: 0, duration: 1 }, 1.2);
+        
+        // Error messages popping up with shake
+        [".e1", ".e2", ".e3"].forEach((e, i) => {
+          tl.to(e, { opacity: 1, duration: 0.1 }, 1.5 + (i * 0.3));
+          tl.to(e, { x: 5, duration: 0.05, repeat: 5, yoyo: true }, 1.5 + (i * 0.3));
+        });
+
+        tl.to(".cure-side", { opacity: 1, y: 0, duration: 1 }, 3);
+        
+        // Fix pulse animation
+        tl.to(".fix-pulse", { 
+          opacity: 1, 
+          scale: 6, 
+          duration: 1.5, 
+          ease: "power2.out" 
+        }, 3.5);
+        
+        // Symptom resolution
+        tl.to(".error-stack", { opacity: 0, scale: 0.8, duration: 0.8 }, 4);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-11"] = tl;
+      })();
+    </script>
+  </div>
+</template>

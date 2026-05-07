@@ -1,0 +1,138 @@
+{
+  "page_num": 1,
+  "image_width": 1080,
+  "image_height": 1487,
+  "created_at": "2026-02-14T03:10:14.279870+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_005",
+      "coordinates": {
+        "x1": 89.88143920898438,
+        "y1": 514.8811645507812,
+        "x2": 1048.5638427734375,
+        "y2": 802.2540283203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9632096290588379,
+      "reading_order": 6,
+      "text": "Ans The word upanishad means to\nsit down beside\". Thus the y-\nupanishad are a compilation of\nteaching that were orally\ntransmitted to students."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_009",
+      "coordinates": {
+        "x1": 93.30463409423828,
+        "y1": 1271.4296875,
+        "x2": 1025.37353515625,
+        "y2": 1456.87744140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9461455941200256,
+      "reading_order": 10,
+      "text": "Ans Ahimsa means non-violence. It involves\nabstinence from killing or injuring\nother living Beings."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_007",
+      "coordinates": {
+        "x1": 95.61288452148438,
+        "y1": 910.1176147460938,
+        "x2": 1048.5321044921875,
+        "y2": 1115.9864501953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9436320662498474,
+      "reading_order": 8,
+      "text": "Ans A tirthankara is a person\nwho has achieved enlightenment\nand shows the path to\nothers."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_008",
+      "coordinates": {
+        "x1": 100.77598571777344,
+        "y1": 1140.0980224609375,
+        "x2": 928.2088012695312,
+        "y2": 1251.4766845703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9250156283378601,
+      "reading_order": 9,
+      "text": "3g What does the term wahimsa\nmean ?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_006",
+      "coordinates": {
+        "x1": 101.2962875366211,
+        "y1": 816.1735229492188,
+        "x2": 821.7593383789062,
+        "y2": 897.2109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9219666719436646,
+      "reading_order": 7,
+      "text": "28 Who is a tirthankara?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_004",
+      "coordinates": {
+        "x1": 93.51882934570312,
+        "y1": 361.3866271972656,
+        "x2": 1014.708251953125,
+        "y2": 485.7620849609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9184220433235168,
+      "reading_order": 5,
+      "text": "1g What is the meaning of the\nword upanishad ?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_003",
+      "coordinates": {
+        "x1": 88.53172302246094,
+        "y1": 250.69590759277344,
+        "x2": 1074.781005859375,
+        "y2": 326.0947570800781
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8649988174438477,
+      "reading_order": 4,
+      "text": "IV Answer in one or two sentences."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_001",
+      "coordinates": {
+        "x1": 826.918701171875,
+        "y1": 41.31447219848633,
+        "x2": 1080.0,
+        "y2": 151.68826293945312
+      },
+      "layout_tag": "header",
+      "confidence": 0.7820629477500916,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: 1 126"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_000",
+      "coordinates": {
+        "x1": 1.0336536169052124,
+        "y1": 130.5902557373047,
+        "x2": 131.2553253173828,
+        "y2": 198.40065002441406
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5578417778015137,
+      "reading_order": 1,
+      "text": "3|11|25"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_1_block_002",
+      "coordinates": {
+        "x1": 552.846923828125,
+        "y1": 148.1374053955078,
+        "x2": 662.9119262695312,
+        "y2": 193.05140686035156
+      },
+      "layout_tag": "header",
+      "confidence": 0.5006271600723267,
+      "reading_order": 3,
+      "text": "CW"
+    }
+  ]
+}

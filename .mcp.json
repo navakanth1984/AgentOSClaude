@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "node",
+      "args": [
+        "./scripts/notebooklm-mcp.mjs"
+      ],
+      "env": {
+        "YOUTUBE_API_KEY": ""
+      }
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-ab0fda1d312944c6bd1923b86168a4b4"
+      }
+    },
+    "pinecone": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@pinecone-database/mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "pcsk_6iPuct_D53HLTRVJK1EQbmcocC17oDMY2Zm6NJ1kKypeFbPNuuFPwn5JRKtJTNgvZuK9ra"
+      }
+    },
+    "local-llm": {
+      "command": "mcp-local-llm",
+      "env": {
+        "OLLAMA_URL": "http://localhost:11434",
+        "OLLAMA_MODEL": "llama3.2",
+        "ACTIVE_PROVIDER": "ollama"
+      }
+    }
+  }
+}

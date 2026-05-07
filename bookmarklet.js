@@ -1,0 +1,188 @@
+(async () => {
+  const urls = [
+  "https://www.youtube.com/watch?v=hnzrPKvRBD8",
+  "https://www.youtube.com/watch?v=C0DMdUqF73Q",
+  "https://www.youtube.com/watch?v=hlOA8ObQJXo",
+  "https://www.youtube.com/watch?v=iuPQmw4Ax00",
+  "https://www.youtube.com/watch?v=9G2MRFs4vac",
+  "https://www.youtube.com/watch?v=7UeojKTzeHE",
+  "https://www.youtube.com/watch?v=RmwbNdyrilk",
+  "https://www.youtube.com/watch?v=23t_ynq2tmk",
+  "https://www.youtube.com/watch?v=bdsc3Spm6Sw",
+  "https://www.youtube.com/watch?v=fh2dBmLN-ZM",
+  "https://www.youtube.com/watch?v=9tgelcI5X2Q",
+  "https://www.youtube.com/watch?v=D1wxOiVXM_w",
+  "https://www.youtube.com/watch?v=qGb7hYMlA3o",
+  "https://www.youtube.com/watch?v=fYhY-vC000A",
+  "https://www.youtube.com/watch?v=nMkQUlBtFlk",
+  "https://www.youtube.com/watch?v=n_MVhE63ZQQ",
+  "https://www.youtube.com/watch?v=itDBS3zefuI",
+  "https://www.youtube.com/watch?v=iT8W6kaD-RA",
+  "https://www.youtube.com/watch?v=SOo4yNoaAoc",
+  "https://www.youtube.com/watch?v=c-35hs95O18",
+  "https://www.youtube.com/watch?v=hMzfGZnaPN8",
+  "https://www.youtube.com/watch?v=Y3NUEPNZDMA",
+  "https://www.youtube.com/watch?v=KBkl3I645c8",
+  "https://www.youtube.com/watch?v=xGmGBFpmdhQ",
+  "https://www.youtube.com/watch?v=vXTK0Ac9i1Q",
+  "https://www.youtube.com/watch?v=WwRc2SEo-VI",
+  "https://www.youtube.com/watch?v=MlmFj1-mOtg",
+  "https://www.youtube.com/watch?v=8qPGUi4XSU0",
+  "https://www.youtube.com/watch?v=cIla9axQRyM",
+  "https://www.youtube.com/watch?v=cjAvD-U5so0",
+  "https://www.youtube.com/watch?v=alVWRl_X_AA",
+  "https://www.youtube.com/watch?v=D61jJJPIQeo",
+  "https://www.youtube.com/watch?v=Whe2Jh9q6jI",
+  "https://www.youtube.com/watch?v=2XMb3MD6g6Q",
+  "https://www.youtube.com/watch?v=XeN6eGO6FVQ",
+  "https://www.youtube.com/watch?v=oeVfCqlHn_I",
+  "https://www.youtube.com/watch?v=Ibj1k3IZTNU",
+  "https://www.youtube.com/watch?v=LAwBdRR4wQk",
+  "https://www.youtube.com/watch?v=gyE6Z4GLEeM",
+  "https://www.youtube.com/watch?v=mJv1_esiJ8g",
+  "https://www.youtube.com/watch?v=ewnvjnuFTOY",
+  "https://www.youtube.com/watch?v=h_1zlead9ZU",
+  "https://www.youtube.com/watch?v=JaRGJVrJBQ8",
+  "https://www.youtube.com/watch?v=2Y_PxTxLFVg",
+  "https://www.youtube.com/watch?v=2ZkJtIouKzE",
+  "https://www.youtube.com/watch?v=ijdpvG24IkE",
+  "https://www.youtube.com/watch?v=Pmd6knanPKw",
+  "https://www.youtube.com/watch?v=9vQZT2igXN4",
+  "https://www.youtube.com/watch?v=fSBgDq2ttCw",
+  "https://www.youtube.com/watch?v=_eDg9yOvvrQ",
+  "https://www.youtube.com/watch?v=ssmwxKPFMFU",
+  "https://www.youtube.com/watch?v=hCyvqRq5YmM",
+  "https://www.youtube.com/watch?v=_oOEKKiwdDE",
+  "https://www.youtube.com/watch?v=wFucddupQlk",
+  "https://www.youtube.com/watch?v=NtQ-kdLlQiU",
+  "https://www.youtube.com/watch?v=Nmo4bxfFzM0",
+  "https://www.youtube.com/watch?v=Vh97z1ephuc",
+  "https://www.youtube.com/watch?v=goCbY3zIZKo",
+  "https://www.youtube.com/watch?v=N5DAW8mkJ6Y",
+  "https://www.youtube.com/watch?v=qdk7XuBgSjw",
+  "https://www.youtube.com/watch?v=QYAgf_lfio4",
+  "https://www.youtube.com/watch?v=7aj00T-TKDc",
+  "https://www.youtube.com/watch?v=5Gg_uZIumtE",
+  "https://www.youtube.com/watch?v=J2oqi41dCNc",
+  "https://www.youtube.com/watch?v=nyxlCNcvaLA",
+  "https://www.youtube.com/watch?v=4AwyVTHEU3s",
+  "https://www.youtube.com/watch?v=tR73Ny4Dt9s",
+  "https://www.youtube.com/watch?v=hF32FvBH4gI",
+  "https://www.youtube.com/watch?v=8N7mdkrXgbc",
+  "https://www.youtube.com/watch?v=JnlSDaBjCCU",
+  "https://www.youtube.com/watch?v=In9Bq4EJMZw",
+  "https://www.youtube.com/watch?v=q-H_A_dQUxQ",
+  "https://www.youtube.com/watch?v=lIo9FcrljDk",
+  "https://www.youtube.com/watch?v=HiyzzcuaAac",
+  "https://www.youtube.com/watch?v=i5611OvTFGM",
+  "https://www.youtube.com/watch?v=vfRtLI6cJrk",
+  "https://www.youtube.com/watch?v=wRsX_ZkzxvQ",
+  "https://www.youtube.com/watch?v=jC8Pu9HBd48",
+  "https://www.youtube.com/watch?v=ajneRM-ET1Q",
+  "https://www.youtube.com/watch?v=QbMxDZeB8Ks",
+  "https://www.youtube.com/watch?v=i_DEPeCKxs8",
+  "https://www.youtube.com/watch?v=62lVH-6xYGY",
+  "https://www.youtube.com/watch?v=wgUjIRtote8",
+  "https://www.youtube.com/watch?v=CD0bRU1e1ZM",
+  "https://www.youtube.com/watch?v=Gf-kC30SLtc",
+  "https://www.youtube.com/watch?v=79p1X_7rAMo",
+  "https://www.youtube.com/watch?v=pZX8ikmWvEU",
+  "https://www.youtube.com/watch?v=0Dtt95_xabw",
+  "https://www.youtube.com/watch?v=jouFvyRZntk",
+  "https://www.youtube.com/watch?v=1CxJVdeyltw",
+  "https://www.youtube.com/watch?v=WFcYF_pxLgA",
+  "https://www.youtube.com/watch?v=csubiPlvFWk",
+  "https://www.youtube.com/watch?v=6P8hrzjnetU",
+  "https://www.youtube.com/watch?v=nqNEtdHVUjM",
+  "https://www.youtube.com/watch?v=Jy4rJcYmtUM",
+  "https://www.youtube.com/watch?v=8qaBpM73NSk",
+  "https://www.youtube.com/watch?v=S_SrHS8FvMM",
+  "https://www.youtube.com/watch?v=jGZ1mR9uLU0",
+  "https://www.youtube.com/watch?v=F9KrZd_-ge0",
+  "https://www.youtube.com/watch?v=C3X0bUAiluE",
+  "https://www.youtube.com/watch?v=4F_RBc1akC8",
+  "https://www.youtube.com/watch?v=Ky-ZJ9SS-x4",
+  "https://www.youtube.com/watch?v=FLxIoNguGRU",
+  "https://www.youtube.com/watch?v=hvPGfcAgk9Y",
+  "https://www.youtube.com/watch?v=-OBCwiPPfEU",
+  "https://www.youtube.com/watch?v=zU5EYw06wtw",
+  "https://www.youtube.com/watch?v=p4ZfkezDTXQ",
+  "https://www.youtube.com/watch?v=gE0_8AjTFaM",
+  "https://www.youtube.com/watch?v=HYVeP4F0GNU",
+  "https://www.youtube.com/watch?v=QpoaNklmRPc",
+  "https://www.youtube.com/watch?v=zVCaYyUWWSw",
+  "https://www.youtube.com/watch?v=TG8VM5-CTfw",
+  "https://www.youtube.com/watch?v=zbpb1wd-wvs",
+  "https://www.youtube.com/watch?v=GpgqXCkRO-w",
+  "https://www.youtube.com/watch?v=n28W4AmvMDE",
+  "https://www.youtube.com/watch?v=wG3UFHR1o48",
+  "https://www.youtube.com/watch?v=wAZn9dF3XTo",
+  "https://www.youtube.com/watch?v=EhlIkzJwPlk",
+  "https://www.youtube.com/watch?v=pkJi9Raxikg"
+];
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  const click = sel => {
+    const el = document.querySelector(sel);
+    if (el) { el.click(); return true; }
+    return false;
+  };
+
+  const clickText = text => {
+    const els = [...document.querySelectorAll('button, li, [role="menuitem"], [role="option"]')];
+    const el = els.find(e => e.textContent.trim().toLowerCase().includes(text.toLowerCase()));
+    if (el) { el.click(); return true; }
+    return false;
+  };
+
+  const typeIn = async (sel, value) => {
+    const input = document.querySelector(sel);
+    if (!input) return false;
+    input.focus();
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    await sleep(300);
+    return true;
+  };
+
+  console.log('Starting upload of', urls.length, 'URLs to NotebookLM...');
+
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    console.log(`[${i+1}/${urls.length}] ${url}`);
+
+    // Click "Add source"
+    clickText('add source');
+    await sleep(1000);
+
+    // Click "YouTube" or "Website" option
+    if (!clickText('youtube')) clickText('website');
+    await sleep(800);
+
+    // Find URL input and fill it
+    const inputSel = 'input[type="url"], input[placeholder*="URL" i], input[placeholder*="link" i], input[placeholder*="youtube" i]';
+    const typed = await typeIn(inputSel, url);
+    if (!typed) {
+      console.warn('Could not find URL input — skipping', url);
+      // Try to close any open dialog
+      document.querySelector('button[aria-label*="close" i], button[aria-label*="cancel" i]')?.click();
+      await sleep(500);
+      continue;
+    }
+
+    await sleep(400);
+
+    // Click Insert / Add / Confirm
+    if (!clickText('insert')) if (!clickText('add')) clickText('confirm');
+    await sleep(1500);
+
+    if ((i + 1) % 10 === 0) {
+      console.log(`Uploaded ${i+1}/${urls.length} — pausing 3s...`);
+      await sleep(3000);
+    }
+  }
+
+  console.log('Done! All', urls.length, 'URLs submitted.');
+})();

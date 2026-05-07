@@ -1,0 +1,86 @@
+{
+  "page_num": 40,
+  "image_width": 1080,
+  "image_height": 1525,
+  "created_at": "2026-02-14T03:08:32.212164+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_40_block_005",
+      "coordinates": {
+        "x1": 213.94996643066406,
+        "y1": 897.3775634765625,
+        "x2": 1080.0,
+        "y2": 1216.3681640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9152805209159851,
+      "reading_order": 6,
+      "text": "Line of Symmetry:— A line that divides\na given figure into two identical\nhalves is called the axis of symmetry\nor the line of symmetry"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_40_block_001",
+      "coordinates": {
+        "x1": 198.43922424316406,
+        "y1": 105.40797424316406,
+        "x2": 1080.0,
+        "y2": 471.7668151855469
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9062355160713196,
+      "reading_order": 2,
+      "text": "Chapter-12 Symmetry\nSymmetry - An object has symmetry\nif it can be divided into two\nequal parts such that one part\ncoincides with the other."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_40_block_004",
+      "coordinates": {
+        "x1": 770.6532592773438,
+        "y1": 558.0923461914062,
+        "x2": 1079.7939453125,
+        "y2": 656.448974609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7147537469863892,
+      "reading_order": 5,
+      "text": "-> Line of Symmetry"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_40_block_003",
+      "coordinates": {
+        "x1": 398.61065673828125,
+        "y1": 507.67730712890625,
+        "x2": 768.4788208007812,
+        "y2": 870.465087890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6777571439743042,
+      "reading_order": 4,
+      "text": "This image contains no text. It is a drawing of two symmetrical shapes connected at their centers, resembling four-leaf clovers or butterflies facing each other."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_40_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 40.319942474365234,
+        "x2": 144.65428161621094,
+        "y2": 196.0032196044922
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6606294512748718,
+      "reading_order": 1,
+      "text": "Friday\n21/11/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_40_block_002",
+      "coordinates": {
+        "x1": 216.90284729003906,
+        "y1": 489.77288818359375,
+        "x2": 376.9446716308594,
+        "y2": 572.5540771484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5738649964332581,
+      "reading_order": 3,
+      "text": "Eg:-"
+    }
+  ]
+}

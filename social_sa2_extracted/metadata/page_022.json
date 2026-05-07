@@ -1,0 +1,47 @@
+{
+  "page_num": 22,
+  "image_width": 1600,
+  "image_height": 1458,
+  "created_at": "2026-02-14T03:10:06.367786+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_22_block_000",
+      "coordinates": {
+        "x1": 70.5191650390625,
+        "y1": 2.0522820949554443,
+        "x2": 1546.699951171875,
+        "y2": 187.40194702148438
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8870476484298706,
+      "reading_order": 1,
+      "text": "of what were the yr upanishads ? What\ndid they teach?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_22_block_002",
+      "coordinates": {
+        "x1": 33.06436538696289,
+        "y1": 232.20794677734375,
+        "x2": 1593.125,
+        "y2": 1228.6922607421875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8826848864555359,
+      "reading_order": 3,
+      "text": "2 Ans The main teachings of the Spanishads\ninclude:\n* belief in the law of Karma or the\nbelief that every action has a reaction\n* belief in Samsara or the cycle of birth\ndeath and rebirth\n* belief in the Atman or the individual\nsoul\n* faith in Brahman or the universal\nsoul\n* belief in Moksha or freedom\nfrom the eternal circle of birth\nand death"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_22_block_001",
+      "coordinates": {
+        "x1": 20.728063583374023,
+        "y1": 231.6183319091797,
+        "x2": 1579.1795654296875,
+        "y2": 390.0758972167969
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5681545734405518,
+      "reading_order": 2,
+      "text": "2 Ans The main teachings of the Spanishads\ninclude:"
+    }
+  ]
+}

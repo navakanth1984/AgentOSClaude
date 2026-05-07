@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Science - 3 Tier Panchayat Raj</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&display=swap');
+
+        body {
+            background-color: #cfd8dc;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: #fffef9;
+            width: 850px;
+            min-height: 1250px;
+            padding: 60px 80px;
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            background-image: 
+                linear-gradient(#e3f2fd 1px, transparent 1px),
+                linear-gradient(90deg, transparent 79px, #ffcdd2 79px, #ffcdd2 81px, transparent 81px);
+            background-size: 100% 32px, 100% 100%;
+            line-height: 32px;
+            overflow: hidden;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: flex-end;
+            gap: 50px;
+            font-family: 'Gochi Hand', cursive;
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-date {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            font-size: 15px;
+            color: #455a64;
+            transform: rotate(-1deg);
+            line-height: 1.2;
+        }
+
+        .content {
+            color: #0d47a1; /* Deep blue ink */
+            font-size: 23px;
+        }
+
+        /* Pyramid Diagram Structure */
+        .pyramid-container {
+            margin: 60px auto;
+            position: relative;
+            width: 600px;
+            height: 350px;
+            text-align: center;
+        }
+
+        .pyramid-svg {
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .pyramid-label {
+            position: absolute;
+            font-weight: bold;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .label-top { top: 45px; left: 0; color: #fff; font-size: 18px; }
+        .label-mid { top: 145px; left: 0; color: #fff; font-size: 20px; }
+        .label-base { top: 260px; left: 0; color: #fff; font-size: 22px; }
+
+        .pyramid-description {
+            position: absolute;
+            left: 480px;
+            font-family: 'Indie+Flower', cursive;
+            font-size: 18px;
+            text-align: left;
+            width: 250px;
+            color: #37474f;
+            line-height: 1.4;
+        }
+
+        .desc-top { top: 35px; }
+        .desc-mid { top: 135px; }
+        .desc-base { top: 250px; }
+
+        .qa-block {
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answer-text {
+            margin-left: 30px;
+            line-height: 1.6;
+        }
+
+        .arrow-indicator {
+            color: #f57c00;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .student-scribble {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-family: 'Shadows Into Light', cursive;
+            font-size: 14px;
+            color: #b0bec5;
+            transform: rotate(5deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-page">
+        <div class="sidebar-date">
+            Tuesday<br>
+            5 / 11 / 26<br>
+            3 Johns
+        </div>
+
+        <div class="header-info">
+            <div>PAGE NO: <span style="text-decoration: underline;">&nbsp;26&nbsp;</span></div>
+            <div>DATE: <span style="text-decoration: underline;">&nbsp;20 / 1 / 26&nbsp;</span></div>
+        </div>
+
+        <div class="content">
+            <div style="margin-left: 40px; margin-bottom: 30px;">
+                1) Gram Panchayat <br>
+                2) Panchayati Samiti <br>
+                3) Zilla Parishad
+            </div>
+
+            <!-- Pyramid Structure -->
+            <div class="pyramid-container">
+                <svg class="pyramid-svg" width="450" height="350" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <!-- Top Tier (District) -->
+                    <path d="M50 5 L80 35 L20 35 Z" fill="#1e88e5" stroke="#0d47a1" stroke-width="0.5" />
+                    <!-- Middle Tier (Block) -->
+                    <path d="M20 35 L80 35 L90 65 L10 65 Z" fill="#42a5f5" stroke="#0d47a1" stroke-width="0.5" />
+                    <!-- Base Tier (Village) -->
+                    <path d="M10 65 L90 65 L100 95 L0 95 Z" fill="#90caf9" stroke="#0d47a1" stroke-width="0.5" />
+                </svg>
+
+                <div class="pyramid-label label-top">Zilla Parishad</div>
+                <div class="pyramid-label label-mid">Panchayati Samiti</div>
+                <div class="pyramid-label label-base">Gram Panchayat</div>
+
+                <div class="pyramid-description desc-top"><span class="arrow-indicator">→</span> To the District level</div>
+                <div class="pyramid-description desc-mid"><span class="arrow-indicator">→</span> Middle or Block level</div>
+                <div class="pyramid-description desc-base"><span class="arrow-indicator">→</span> Base of the Panchayat Raj System</div>
+            </div>
+
+            <div class="qa-block">
+                <div class="question">
+                    Q4. Mention any two sources of income of the Gram Panchayat?
+                </div>
+                <div class="answer-text">
+                    Ans: The two sources of Income of the Gram Panchayat are: <br>
+                    <span class="arrow-indicator">→</span> Taxes imposed by the Panchayat on land, houses, custom duties, tolls. <br>
+                    <span class="arrow-indicator">→</span> Grants from central or state government.
+                </div>
+            </div>
+        </div>
+
+        <div class="student-scribble">
+            Learned about local gov hierarchy today!
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Science FA3 Revision - Skeleton & Movement</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&display=swap');
+
+        :root {
+            --blue-ink: #0d47a1;
+            --red-ink: #d32f2f;
+            --pencil: #455a64;
+            --paper-bg: #fffde7;
+            --line-color: #bbdefb;
+            --margin-line: #ffab91;
+        }
+
+        body {
+            background-color: #37474f;
+            display: center;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: var(--paper-bg);
+            width: 850px;
+            min-height: 1400px;
+            margin: auto;
+            padding: 60px 60px 60px 120px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            position: relative;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            border: 1px solid #ddd;
+        }
+
+        .notebook-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100px;
+            width: 2px;
+            height: 100%;
+            background-color: var(--margin-line);
+        }
+
+        .sidebar {
+            position: absolute;
+            left: 10px;
+            top: 50px;
+            width: 80px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--pencil);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--red-ink);
+        }
+
+        .hw-tag {
+            border: 2px solid var(--red-ink);
+            padding: 2px 15px;
+            border-radius: 5px;
+            transform: rotate(-2deg);
+        }
+
+        .content {
+            color: var(--blue-ink);
+            font-size: 22px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 30px;
+            text-decoration: underline;
+            margin-bottom: 30px;
+            color: var(--red-ink);
+        }
+
+        .question {
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            margin-left: 30px;
+            font-family: 'Indie Flower', cursive;
+            color: #37474f;
+            line-height: 1.6;
+        }
+
+        .sketch-container {
+            border: 1.5px solid #ccc;
+            padding: 20px;
+            margin: 30px 0;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .skeleton-svg {
+            width: 100%;
+            height: 300px;
+        }
+
+        .label-line {
+            stroke: #2e7d32;
+            stroke-width: 1;
+            stroke-dasharray: 2,2;
+        }
+
+        .label-text {
+            font-family: 'Shadows Into Light', cursive;
+            font-size: 16px;
+            fill: #1b5e20;
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-family: 'Shadows Into Light', cursive;
+            color: #90a4ae;
+            transform: rotate(-1deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-page">
+        <div class="sidebar">
+            Science<br>FA3 Revision<br><br>
+            C.W.
+        </div>
+
+        <div class="header-box">
+            <div class="hw-tag">C.W.</div>
+            <div style="font-size: 20px;">Page Ref: 1-32</div>
+        </div>
+
+        <div class="content">
+            <div class="title">Skeleton & Animal Movement</div>
+
+            <div class="question">Q. Name the two girdles in the human skeleton?</div>
+            <div class="answer">Ans: The pelvic girdle and the pectoral girdle.</div>
+
+            <div class="question">Q. Name the bones in the human arm?</div>
+            <div class="answer">
+                Ans: The **humerus** is the bone found in the upper arm, and the **radius** and **ulna** are found in the lower arm.
+            </div>
+
+            <div class="sketch-container">
+                <svg class="skeleton-svg" viewBox="0 0 400 300">
+                    <!-- Simple Arm Sketch -->
+                    <path d="M150 50 L150 150" stroke="#0d47a1" stroke-width="8" stroke-linecap="round" fill="none" /> <!-- Humerus -->
+                    <circle cx="150" cy="150" r="10" fill="#fff" stroke="#0d47a1" stroke-width="2" /> <!-- Elbow Joint -->
+                    <path d="M145 150 L145 250" stroke="#0d47a1" stroke-width="4" stroke-linecap="round" fill="none" /> <!-- Radius -->
+                    <path d="M155 150 L155 250" stroke="#0d47a1" stroke-width="4" stroke-linecap="round" fill="none" /> <!-- Ulna -->
+                    
+                    <!-- Labels -->
+                    <line x1="150" y1="100" x2="250" y2="100" class="label-line" />
+                    <text x="260" y="105" class="label-text">Humerus (Upper Arm)</text>
+
+                    <line x1="150" y1="150" x2="250" y2="150" class="label-line" />
+                    <text x="260" y="155" class="label-text">Hinge Joint (Elbow)</text>
+
+                    <line x1="155" y1="200" x2="250" y2="200" class="label-line" />
+                    <text x="260" y="205" class="label-text">Radius & Ulna</text>
+                </svg>
+            </div>
+
+            <div class="question">Q. How do the following animals move?</div>
+            <div class="answer">
+                <strong>1. Earthworm:</strong> It moves by using a set of muscles which contract and expand the body. It has soft hair-like projections called <u>setae</u> to grip the ground.<br><br>
+                <strong>2. Snail:</strong> Snails move by creeping on a flat 'foot' underneath the body. The foot produces slimy <u>mucus</u> to make a slippery track.<br><br>
+                <strong>3. Bird:</strong> Birds beat their wings against air to propel forward. Strong chest muscles move the wings up and down.<br><br>
+                <strong>4. Snake:</strong> Snakes use their muscles and scales to move. They catch uneven surfaces and create a series of <u>curves/loops</u>.
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Draw the joints carefully for the exam!
+        </div>
+    </div>
+
+</body>
+</html>

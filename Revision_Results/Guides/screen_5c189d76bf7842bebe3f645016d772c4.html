@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Interactive Lesson Session</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Lexend -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "2rem", 
+                        "xl": "3rem", 
+                        "2xl": "4rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 15px rgba(19, 236, 91, 0.5)',
+                        'inner-glow': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar hiding for cleaner mobile look if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-[#0d1b12] dark:text-white transition-colors duration-300">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto overflow-hidden shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<header class="flex items-center p-4 pt-6 pb-2 justify-between z-10">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[#0d1b12] dark:text-white" style="font-size: 28px;">close</span>
+</button>
+<h2 class="text-[#0d1b12] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] opacity-80">Lesson 3: Solar System</h2>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[#0d1b12] dark:text-white" style="font-size: 28px;">settings</span>
+</button>
+</header>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-2 px-6 pb-2">
+<div class="flex justify-between items-end">
+<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Progress</span>
+<span class="text-sm font-bold text-primary dark:text-primary">4/10</span>
+</div>
+<div class="h-3 w-full rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden">
+<div class="h-full rounded-full bg-primary shadow-[0_0_10px_rgba(19,236,91,0.4)] transition-all duration-500 ease-out" style="width: 40%;"></div>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col items-center justify-start w-full relative px-4 overflow-y-auto no-scrollbar">
+<!-- Character Stage -->
+<div class="w-full flex justify-center py-6 relative">
+<!-- Decorative background blob behind robot -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<div class="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden border-4 border-white dark:border-white/10 shadow-soft bg-white dark:bg-white/5 flex items-center justify-center">
+<div class="w-full h-full bg-center bg-contain bg-no-repeat" data-alt="Cute 3D robot character wearing headphones with glowing chest plate" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD6e7hKGuGCMNRUzBWJfoLR-kMiXfr0qX8PzeETwRhzglLudO_UzY4AJg_99xFq5QjYbK8cpSTFdK728lE52SEtsy1aZdPirjwQL6MVP55BlMwR53OUQhnGiCWAcAGT5BIwotzk8NdX2NN3yCLc7GRCsseKWOQ5l88z2043QQ8FRTz531zOUsZAjHFJY6eoDU-fZi-2OOl-AyQetzm9ei0qp0eYhq7Xy30uBCkuuH0AF6myAbKgIPfz-bDE8nU_nIu87hDwRxeeKL2g");'>
+</div>
+<!-- Status Indicator on robot -->
+<div class="absolute bottom-4 right-8 w-4 h-4 rounded-full bg-primary shadow-glow animate-pulse border-2 border-white dark:border-[#102216]"></div>
+</div>
+</div>
+<!-- Lesson Card -->
+<div class="w-full max-w-sm">
+<div class="flex flex-col items-center justify-center rounded-2xl p-6 shadow-soft bg-white dark:bg-[#1a2e22] border border-gray-100 dark:border-white/5 transition-transform hover:scale-[1.01] active:scale-[0.99] duration-200">
+<div class="flex w-full items-start gap-4">
+<div class="flex-1 flex flex-col gap-2">
+<h3 class="text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-[#0d1b12] dark:text-white">
+                                The Earth revolves around the Sun.
+                            </h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Listen carefully</p>
+</div>
+<button class="shrink-0 flex items-center justify-center size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">volume_up</span>
+</button>
+</div>
+<!-- Waveform Visualizer (Decorative) -->
+<div class="mt-6 flex items-center justify-center gap-1 h-8 w-full opacity-50">
+<div class="w-1.5 h-3 bg-primary rounded-full animate-[bounce_1s_infinite]"></div>
+<div class="w-1.5 h-5 bg-primary rounded-full animate-[bounce_1.2s_infinite]"></div>
+<div class="w-1.5 h-8 bg-primary rounded-full animate-[bounce_0.8s_infinite]"></div>
+<div class="w-1.5 h-4 bg-primary rounded-full animate-[bounce_1.1s_infinite]"></div>
+<div class="w-1.5 h-6 bg-primary rounded-full animate-[bounce_0.9s_infinite]"></div>
+<div class="w-1.5 h-3 bg-primary rounded-full animate-[bounce_1.3s_infinite]"></div>
+</div>
+</div>
+</div>
+<!-- Spacer for flexible layout -->
+<div class="flex-1 min-h-[20px]"></div>
+<!-- Interaction Area -->
+<div class="w-full pb-8 pt-4 flex flex-col items-center gap-4 z-20">
+<p class="text-gray-600 dark:text-gray-300 text-sm font-medium text-center animate-bounce">
+                    Hold the button and repeat after Robo!
+                </p>
+<!-- Main Action Button -->
+<button class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-primary shadow-[0_10px_40px_-10px_rgba(19,236,91,0.6)] hover:shadow-[0_10px_50px_-5px_rgba(19,236,91,0.8)] active:scale-95 active:shadow-inner transition-all duration-200 cursor-pointer touch-manipulation">
+<!-- Ripple Effect Rings -->
+<div class="absolute inset-0 rounded-full border border-white/30 animate-ping opacity-20"></div>
+<div class="absolute inset-0 rounded-full border-2 border-primary/50 scale-125 opacity-20"></div>
+<!-- Icon -->
+<span class="material-symbols-outlined text-[#0d1b12] z-10 transition-transform group-hover:scale-110" style="font-size: 40px;">mic</span>
+<!-- Inner shine/highlight -->
+<div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-full pointer-events-none"></div>
+</button>
+<span class="text-xs font-bold uppercase tracking-widest text-[#0d1b12]/40 dark:text-white/40 mt-1">Hold to Speak</span>
+</div>
+</div>
+</div>
+</body></html>

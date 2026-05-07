@@ -1,0 +1,112 @@
+{
+  "page_num": 9,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:31.025637+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_006",
+      "coordinates": {
+        "x1": 179.2770233154297,
+        "y1": 509.23883056640625,
+        "x2": 870.8225708007812,
+        "y2": 727.9667358398438
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9367636442184448,
+      "reading_order": 7,
+      "text": "As every radius, of a circle, also\nits chord?\n(Hint: Radius must pass through\nthe centre.)"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_007",
+      "coordinates": {
+        "x1": 170.7759246826172,
+        "y1": 748.0078735351562,
+        "x2": 841.8795166015625,
+        "y2": 982.5348510742188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.91672682762146,
+      "reading_order": 8,
+      "text": "A radius of a circle is not a\nchord as one end of a radius\nis the Centre, which is not a\nPoint on the circle."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_005",
+      "coordinates": {
+        "x1": 184.21578979492188,
+        "y1": 323.9142150878906,
+        "x2": 876.0289916992188,
+        "y2": 507.9955749511719
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8976147770881653,
+      "reading_order": 6,
+      "text": "of a Circle bounded by a chora\nand the arc between its end points."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_000",
+      "coordinates": {
+        "x1": 25.030376434326172,
+        "y1": 233.9791717529297,
+        "x2": 135.24794006347656,
+        "y2": 354.5262145996094
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6820478439331055,
+      "reading_order": 1,
+      "text": "Friday\n7/11/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_001",
+      "coordinates": {
+        "x1": 69.48015594482422,
+        "y1": 355.4892578125,
+        "x2": 148.7388916015625,
+        "y2": 406.7064208984375
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6238863468170166,
+      "reading_order": 2,
+      "text": "2 Sol"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_002",
+      "coordinates": {
+        "x1": 122.76768493652344,
+        "y1": 522.8026123046875,
+        "x2": 156.4358673095703,
+        "y2": 569.910400390625
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5640506148338318,
+      "reading_order": 3,
+      "text": "3)"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_003",
+      "coordinates": {
+        "x1": 75.95061492919922,
+        "y1": 742.9535522460938,
+        "x2": 143.58578491210938,
+        "y2": 800.3058471679688
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5408382415771484,
+      "reading_order": 4,
+      "text": "Sol:"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_9_block_004",
+      "coordinates": {
+        "x1": 412.81689453125,
+        "y1": 288.4426574707031,
+        "x2": 494.1448974609375,
+        "y2": 336.12054443359375
+      },
+      "layout_tag": "header",
+      "confidence": 0.5320407152175903,
+      "reading_order": 5,
+      "text": "C.W"
+    }
+  ]
+}

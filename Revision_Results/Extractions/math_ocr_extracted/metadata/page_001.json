@@ -1,0 +1,112 @@
+{
+  "page_num": 1,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T02:26:18.484161+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_002",
+      "coordinates": {
+        "x1": 158.7749786376953,
+        "y1": 451.8891906738281,
+        "x2": 778.036865234375,
+        "y2": 730.44921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9460734128952026,
+      "reading_order": 3,
+      "text": "If two lines in a plane, do\nnot intersect at any point,\nwhat are they called?\nHint: The prefix 'para' means\nalongside:)"
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_004",
+      "coordinates": {
+        "x1": 157.223388671875,
+        "y1": 838.947265625,
+        "x2": 783.11083984375,
+        "y2": 1074.3818359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9256063103675842,
+      "reading_order": 5,
+      "text": "How many vertices can be\nfound in a hexagon?\n(Hint: A polygon has as many\nvertices as sides.)"
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_005",
+      "coordinates": {
+        "x1": 208.5936279296875,
+        "y1": 1078.77685546875,
+        "x2": 758.1541137695312,
+        "y2": 1277.6312255859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9129472970962524,
+      "reading_order": 6,
+      "text": "Six vertices can be\nfound in a hexagon"
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_001",
+      "coordinates": {
+        "x1": 252.77403259277344,
+        "y1": 365.5552978515625,
+        "x2": 619.1442260742188,
+        "y2": 448.5203552246094
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9116377830505371,
+      "reading_order": 2,
+      "text": "Challenge Yourself"
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_003",
+      "coordinates": {
+        "x1": 194.50485229492188,
+        "y1": 748.457763671875,
+        "x2": 717.5342407226562,
+        "y2": 822.267822265625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8499844670295715,
+      "reading_order": 4,
+      "text": "its called parallel line"
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_007",
+      "coordinates": {
+        "x1": 809.2193603515625,
+        "y1": 248.88446044921875,
+        "x2": 899.0,
+        "y2": 386.3233337402344
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7049449682235718,
+      "reading_order": 8,
+      "text": "thurs\n6/11/2"
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_006",
+      "coordinates": {
+        "x1": 234.22677612304688,
+        "y1": 1347.0771484375,
+        "x2": 616.79296875,
+        "y2": 1470.755859375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5762962698936462,
+      "reading_order": 7,
+      "text": "$H_2O \\rightarrow H^+ + OH^-$\n\n$\\frac{1}{4}N_2(g) + \\frac{3}{2}H_2(g) \\rightarrow NH_3(g)$\n\n$CO_2, O_2 \\rightarrow CO_{x+y}$\n\n$C-H: 0 = x - y$, $A=V$: $\\frac{1}{2}\\alpha V\\Delta t = A(\\beta T)$, $C_u$: $\\frac{1}{\\gamma}(T-\\theta)=t$."
+    },
+    {
+      "block_id": "20260214_49d66e3b-6a8c-424c-9a27-f14710e96fe2_1_block_000",
+      "coordinates": {
+        "x1": 46.04545211791992,
+        "y1": 1085.7762451171875,
+        "x2": 145.1546630859375,
+        "y2": 1151.62646484375
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5145694613456726,
+      "reading_order": 1,
+      "text": "Sol:-"
+    }
+  ]
+}

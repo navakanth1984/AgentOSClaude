@@ -1,0 +1,60 @@
+{
+  "page_num": 24,
+  "image_width": 1080,
+  "image_height": 1510,
+  "created_at": "2026-02-14T03:07:13.272787+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_24_block_004",
+      "coordinates": {
+        "x1": 95.86529541015625,
+        "y1": 493.0436096191406,
+        "x2": 1073.95849609375,
+        "y2": 1065.0789794921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9724094867706299,
+      "reading_order": 5,
+      "text": "A body is said to be in translatory\nmotion When it moves as a whole\nsuch that every Part of the object\nmoves through the same distance\nin a given Period of time . There\nare two types of translatory motion:-\nRectilinear : When the object moves in a\nstraight line , its motion is rectilinear-\nCurvilinear :- When the object moves in\na curved line, it is said to be\ncurvilinear-"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_24_block_003",
+      "coordinates": {
+        "x1": 89.29283905029297,
+        "y1": 271.6171569824219,
+        "x2": 1005.2313842773438,
+        "y2": 483.20269775390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.968800961971283,
+      "reading_order": 4,
+      "text": "What is translatory motion? Describe\nthe different kinds of translatory\nmotion:"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_24_block_000",
+      "coordinates": {
+        "x1": 348.154052734375,
+        "y1": 181.42005920410156,
+        "x2": 456.92474365234375,
+        "y2": 240.74459838867188
+      },
+      "layout_tag": "header",
+      "confidence": 0.7223182916641235,
+      "reading_order": 1,
+      "text": "c.w"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_24_block_001",
+      "coordinates": {
+        "x1": 727.2704467773438,
+        "y1": 93.3045425415039,
+        "x2": 1003.675537109375,
+        "y2": 190.74928283691406
+      },
+      "layout_tag": "header",
+      "confidence": 0.5751798152923584,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / / 20"
+    }
+  ]
+}

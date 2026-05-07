@@ -1,0 +1,99 @@
+{
+  "page_num": 11,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:05:47.582582+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_003",
+      "coordinates": {
+        "x1": 106.5262451171875,
+        "y1": 401.7502746582031,
+        "x2": 870.2227172851562,
+        "y2": 517.471435546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9510692954063416,
+      "reading_order": 4,
+      "text": "Who was Shaar - Bahadur's secretary?\nWhat did he tell Shah - Bahadur?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_004",
+      "coordinates": {
+        "x1": 104.71920776367188,
+        "y1": 531.8707885742188,
+        "x2": 822.7073974609375,
+        "y2": 876.1607666015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9477623701095581,
+      "reading_order": 5,
+      "text": "Shaan-Bahadur's secretary was\nNaradmuni. He told Shaan-\nBahadur to get ready since\nAyesha, the world - famous\nphotographer, was visiting the\nSher - Killa National park\nto take photographs of him."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_005",
+      "coordinates": {
+        "x1": 0.2228582501411438,
+        "y1": 863.8081665039062,
+        "x2": 840.5433349609375,
+        "y2": 1044.95654296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9341574907302856,
+      "reading_order": 6,
+      "text": "29, Describe Shaan-Bahadur's appearance?\nHow do we know that he was\nparticular about the way he looked?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_006",
+      "coordinates": {
+        "x1": 69.77301025390625,
+        "y1": 1034.9833984375,
+        "x2": 813.3831787109375,
+        "y2": 1363.1993408203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9259467124938965,
+      "reading_order": 7,
+      "text": "Shaan-Bahadur had a sparkling\ngolden coat. He had bright green\neyes. We know he was particular\nabout the way he looked because\nevery morning, he woke up and\nheaded to the waterhole to look\nat his reflection. He made"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_002",
+      "coordinates": {
+        "x1": 99.7456283569336,
+        "y1": 315.8836975097656,
+        "x2": 567.8765869140625,
+        "y2": 396.86883544921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9012754559516907,
+      "reading_order": 3,
+      "text": "Answer these questions"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_001",
+      "coordinates": {
+        "x1": 644.1617431640625,
+        "y1": 162.2278289794922,
+        "x2": 868.160888671875,
+        "y2": 250.24159240722656
+      },
+      "layout_tag": "header",
+      "confidence": 0.8707593083381653,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / 120"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_11_block_000",
+      "coordinates": {
+        "x1": 341.17242431640625,
+        "y1": 235.87152099609375,
+        "x2": 447.8490905761719,
+        "y2": 280.1207580566406
+      },
+      "layout_tag": "header",
+      "confidence": 0.7517847418785095,
+      "reading_order": 1,
+      "text": "C · W"
+    }
+  ]
+}

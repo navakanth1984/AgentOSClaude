@@ -1,0 +1,125 @@
+{
+  "page_num": 27,
+  "image_width": 1080,
+  "image_height": 1396,
+  "created_at": "2026-02-14T03:10:05.603769+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_006",
+      "coordinates": {
+        "x1": 76.10853576660156,
+        "y1": 783.2462768554688,
+        "x2": 1021.72705078125,
+        "y2": 940.613525390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9621574282646179,
+      "reading_order": 7,
+      "text": "* The kings who succeeded Ashoka were\nweak and unable to hold the vast\nempire together."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_005",
+      "coordinates": {
+        "x1": 60.54974365234375,
+        "y1": 592.0847778320312,
+        "x2": 1034.587158203125,
+        "y2": 750.4091796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9602434635162354,
+      "reading_order": 6,
+      "text": "Ans After the death of Ashoka in 232 BCE\nthe Mauryan Empire declined rapidly-\nsome of the reasons were:"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_003",
+      "coordinates": {
+        "x1": 137.11976623535156,
+        "y1": 205.04367065429688,
+        "x2": 982.3058471679688,
+        "y2": 418.98883056640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9545601606369019,
+      "reading_order": 4,
+      "text": "The empire had a large army\nconsisting of elephants, horses foot\nsoldiers, to protect the empire and\nensure peace and stability."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_004",
+      "coordinates": {
+        "x1": 78.4520034790039,
+        "y1": 423.7984924316406,
+        "x2": 1010.6964111328125,
+        "y2": 562.7418212890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9484657049179077,
+      "reading_order": 5,
+      "text": "49 What were the causes for the decline\nof the Mauryan Empire ?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_007",
+      "coordinates": {
+        "x1": 80.76654052734375,
+        "y1": 967.3551635742188,
+        "x2": 1045.15966796875,
+        "y2": 1161.2415771484375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9406923651695251,
+      "reading_order": 8,
+      "text": "* As the administration broke down, communi-\n-cation with (and control over) the\ndistant parts of the empire became\ndifficult."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_008",
+      "coordinates": {
+        "x1": 147.47979736328125,
+        "y1": 1185.59521484375,
+        "x2": 1022.0769653320312,
+        "y2": 1377.2779541015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9309072494506836,
+      "reading_order": 9,
+      "text": "The policies of ahimsa and dhamma -\nVijaya followed by Ashoka wakened the\narmy . Kingdoms in the bordering"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_001",
+      "coordinates": {
+        "x1": 721.9330444335938,
+        "y1": 19.720914840698242,
+        "x2": 982.6922607421875,
+        "y2": 115.4029769897461
+      },
+      "layout_tag": "header",
+      "confidence": 0.8995944261550903,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_002",
+      "coordinates": {
+        "x1": 466.4555969238281,
+        "y1": 122.3219985961914,
+        "x2": 561.418701171875,
+        "y2": 158.20431518554688
+      },
+      "layout_tag": "header",
+      "confidence": 0.6342244744300842,
+      "reading_order": 3,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_27_block_000",
+      "coordinates": {
+        "x1": 23.352434158325195,
+        "y1": 12.077081680297852,
+        "x2": 120.30103302001953,
+        "y2": 282.1210021972656
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6281668543815613,
+      "reading_order": 1,
+      "text": "Friday\n\n7/11/29\n\n#"
+    }
+  ]
+}

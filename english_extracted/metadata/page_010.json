@@ -1,0 +1,99 @@
+{
+  "page_num": 10,
+  "image_width": 1080,
+  "image_height": 1494,
+  "created_at": "2026-02-14T03:05:48.860437+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_005",
+      "coordinates": {
+        "x1": 160.96070861816406,
+        "y1": 589.707275390625,
+        "x2": 1060.4217529296875,
+        "y2": 1012.214111328125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9732667803764343,
+      "reading_order": 6,
+      "text": "Supporting Sentence: I used to get irritated\nbecause I didn't want to go near\nthat lemon tree as the wasps would\nsting me. I would always complain\nand say, \"Why don't you go because\nthey are going to bite me.\" And she\nwould go and no wasps would come\nnear her."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_006",
+      "coordinates": {
+        "x1": 148.85304260253906,
+        "y1": 1043.24267578125,
+        "x2": 1040.5313720703125,
+        "y2": 1355.57373046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9608027338981628,
+      "reading_order": 7,
+      "text": "Closing Sentences: It was so beautiful\nto see her bow to the tree and\nmove through its branches and look\nfor the ripest lemons. Then, she\nwould bring them inside."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_004",
+      "coordinates": {
+        "x1": 180.54330444335938,
+        "y1": 387.7908630371094,
+        "x2": 1065.611572265625,
+        "y2": 580.959716796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9586395621299744,
+      "reading_order": 5,
+      "text": "Topic sentence: we used to have a\nhuge lemon tree in the backyard\nand there were a lot of ways on it"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_003",
+      "coordinates": {
+        "x1": 186.7105255126953,
+        "y1": 179.3545379638672,
+        "x2": 1060.705810546875,
+        "y2": 363.72442626953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9520517587661743,
+      "reading_order": 4,
+      "text": "Read this paragraph. Identify the\ntopic sentence, the supporting sentences\nand the closing sentences."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_002",
+      "coordinates": {
+        "x1": 29.654436111450195,
+        "y1": 1229.8927001953125,
+        "x2": 103.45077514648438,
+        "y2": 1374.0174560546875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.838770866394043,
+      "reading_order": 3,
+      "text": "g'n"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_001",
+      "coordinates": {
+        "x1": 451.5056457519531,
+        "y1": 85.39559173583984,
+        "x2": 574.1797485351562,
+        "y2": 140.66932678222656
+      },
+      "layout_tag": "header",
+      "confidence": 0.7802915573120117,
+      "reading_order": 2,
+      "text": "C·W"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_10_block_000",
+      "coordinates": {
+        "x1": 35.63503646850586,
+        "y1": 37.32706069946289,
+        "x2": 173.50343322753906,
+        "y2": 171.7835235595703
+      },
+      "layout_tag": "header",
+      "confidence": 0.7472054362297058,
+      "reading_order": 1,
+      "text": "Friday\n21/11/65"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "page_num": 24,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.556610+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_005",
+      "coordinates": {
+        "x1": 139.92127990722656,
+        "y1": 723.7410278320312,
+        "x2": 886.416015625,
+        "y2": 1065.0157470703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9261561036109924,
+      "reading_order": 6,
+      "text": "find the length of $AC + BP$\nname the points outside $BD$\n(Hint: Draw line segment $AE$ and\nmark the points.)"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_004",
+      "coordinates": {
+        "x1": 159.1839141845703,
+        "y1": 312.6517028808594,
+        "x2": 888.3915405273438,
+        "y2": 666.6058349609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9237472414970398,
+      "reading_order": 5,
+      "text": "$A, B, C, D$ and $E$ are 5 points on a\nline segment such that $AE = 10cm$,\n$AB = 3cm$ and $DE = 2cm$. If $C$ is\nthe midpoint of $AE$:\nfind the length of $BC$ and $CP$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_006",
+      "coordinates": {
+        "x1": 128.7143096923828,
+        "y1": 1093.942626953125,
+        "x2": 751.3665771484375,
+        "y2": 1288.008544921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.90086430311203,
+      "reading_order": 7,
+      "text": "$L \\longrightarrow 5cm \\longrightarrow L \\longrightarrow 5cm \\longrightarrow$\n$A \\ 3cm \\ B \\ 2cm \\ C \\quad 3cm \\ D \\ 2cm \\ E$\n$+10cm$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_000",
+      "coordinates": {
+        "x1": 26.59918975830078,
+        "y1": 111.75444030761719,
+        "x2": 175.87464904785156,
+        "y2": 221.6730499267578
+      },
+      "layout_tag": "header",
+      "confidence": 0.8382359147071838,
+      "reading_order": 1,
+      "text": "Thursday\n13/11/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_002",
+      "coordinates": {
+        "x1": 82.05805206298828,
+        "y1": 733.5157470703125,
+        "x2": 133.40463256835938,
+        "y2": 900.7011108398438
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5539370179176331,
+      "reading_order": 3,
+      "text": "$$ ii, $$\n\n$$ ... $$\n\n$$ iii) $$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_003",
+      "coordinates": {
+        "x1": 330.43121337890625,
+        "y1": 202.8852996826172,
+        "x2": 765.5043334960938,
+        "y2": 300.06817626953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5365845561027527,
+      "reading_order": 4,
+      "text": "Challenge Yourself"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_24_block_001",
+      "coordinates": {
+        "x1": 109.62239074707031,
+        "y1": 343.7378234863281,
+        "x2": 152.7353515625,
+        "y2": 399.73028564453125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5228875875473022,
+      "reading_order": 2,
+      "text": "1)"
+    }
+  ]
+}

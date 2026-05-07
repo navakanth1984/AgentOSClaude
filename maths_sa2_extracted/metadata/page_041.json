@@ -1,0 +1,21 @@
+{
+  "page_num": 41,
+  "image_width": 1080,
+  "image_height": 1550,
+  "created_at": "2026-02-14T03:08:33.390163+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_41_block_000",
+      "coordinates": {
+        "x1": 143.09361267089844,
+        "y1": 7.603697299957275,
+        "x2": 1080.0,
+        "y2": 1544.23388671875
+      },
+      "layout_tag": "table",
+      "confidence": 0.5636174082756042,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th colspan=\"2\">C.W<br/>Lines of Symmetry</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Vertical line of symm-<br/>etry</td>\n<td>Horizontal Line of<br/>symmetry</td>\n</tr>\n<tr>\n<td></td>\n<td></td>\n</tr>\n<tr>\n<td>Quadrilateral :- A polygon with four<br/>sides is called a quadrilateral</td>\n<td></td>\n</tr>\n<tr>\n<td>① square<br/>④</td>\n<td>①</td>\n</tr>\n<tr>\n<td>A square has 4 lines<br/>of symmetry.</td>\n<td>A rectangle has 2 li<br/>of symmetoy</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "page_num": 9,
+  "image_width": 1080,
+  "image_height": 1460,
+  "created_at": "2026-02-14T03:05:49.382911+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_9_block_004",
+      "coordinates": {
+        "x1": 141.47019958496094,
+        "y1": 386.9252014160156,
+        "x2": 1037.46337890625,
+        "y2": 1453.0975341796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9667595028877258,
+      "reading_order": 5,
+      "text": "My favourite memory with my\nfamily is to taking mornings\nwalks during Spring vacation\nwhen we lived in pune. We really\nenjoyed the cool and fresh morning\nair . Some of my\nneighbours also would go for\na walk or a jog at that\ntime, am and we would wake\nto each other or exchange a\nfew words. We would stop by\nfor a cup of tea at our\nfavourite tea vendor's shop before\nreturning home. Those morning\nwalks would make us feel energetic\nfor the rest of the day. Now\nmy brother lives in singapore\nand I live in korea. Though\nthe spring season is beautiful\nhere I miss those morning walks\nwith my family."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_9_block_003",
+      "coordinates": {
+        "x1": 154.4002227783203,
+        "y1": 226.5358123779297,
+        "x2": 1075.0638427734375,
+        "y2": 401.62054443359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.902891993522644,
+      "reading_order": 4,
+      "text": "Write a paragraph on your\nfavourite memory with your family"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_9_block_002",
+      "coordinates": {
+        "x1": 808.1133422851562,
+        "y1": 26.245189666748047,
+        "x2": 1070.263427734375,
+        "y2": 160.66546630859375
+      },
+      "layout_tag": "header",
+      "confidence": 0.7663044929504395,
+      "reading_order": 3,
+      "text": "PAGE NO:\nDATE: 1 120"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_9_block_001",
+      "coordinates": {
+        "x1": 510.0714416503906,
+        "y1": 124.75402069091797,
+        "x2": 627.4444580078125,
+        "y2": 170.4508819580078
+      },
+      "layout_tag": "header",
+      "confidence": 0.6496938467025757,
+      "reading_order": 2,
+      "text": "C,W"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_9_block_000",
+      "coordinates": {
+        "x1": 1.8956325054168701,
+        "y1": 0.0,
+        "x2": 159.46009826660156,
+        "y2": 173.27931213378906
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5282175540924072,
+      "reading_order": 1,
+      "text": "Thursday\n20/11/25"
+    }
+  ]
+}

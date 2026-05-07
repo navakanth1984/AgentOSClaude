@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP-700 Video Storyboard</title>
+    <style>
+        :root {
+            --primary: #0078d4;
+            --accent: #5c2d91;
+            --bg: #0b0b1a;
+            --text: #ffffff;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #0078d4, #a670ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .storyboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        .scene {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .scene-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+        .scene-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        .timestamp {
+            background: rgba(0, 120, 212, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+        .preview-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #000;
+        }
+        .description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        .copy-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        .copy-text {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .copy-subtext {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        .telugu-script {
+            font-style: italic;
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎬 DP-700 Video Storyboard</h1>
+
+    <div class="storyboard-container">
+        
+        <!-- Scene 1 -->
+        <div class="scene">
+            <div class="scene-header">
+                <span class="scene-title">Scene 1: Introduction to Fabric</span>
+                <span class="timestamp">00s - 30s</span>
+            </div>
+            <img src="dp700_study_fabric_1778165105673.png" class="preview-img" alt="Study Environment">
+            <div class="description">
+                Introduction to the DP-700 exam. The engineer is seen studying Microsoft Fabric on MS Learn. 
+                Focus on the ecosystem: OneLake, Spark, and Dataflows.
+            </div>
+            <div class="copy-block">
+                <span class="copy-text">Master Microsoft Fabric (DP-700)</span>
+                <span class="copy-subtext">The ultimate guide for Data Engineers.</span>
+                <span class="telugu-script">"Namaskaram andarki! ... Ivala manam oka manchi vishayam gurinchi matladukundam."</span>
+            </div>
+        </div>
+
+        <!-- Scene 2 -->
+        <div class="scene">
+            <div class="scene-header">
+                <span class="scene-title">Scene 2: Certification & Roadmap</span>
+                <span class="timestamp">30s - 58s</span>
+            </div>
+            <img src="dp700_certification_goal_1778165125812.png" class="preview-img" alt="Certification Badge">
+            <div class="description">
+                The visual transitions to the certification badge. Symbols of SQL, PySpark, and KQL float around.
+                Final call to action and encouragement in Telangana accent.
+            </div>
+            <div class="copy-block">
+                <span class="copy-text">Become a Certified Associate</span>
+                <span class="copy-subtext">Your career in Data Analytics starts here.</span>
+                <span class="telugu-script">"Kastapadi chadavandi anna! ... Manchiga prepare ayite, certification mee chethilo untadi."</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

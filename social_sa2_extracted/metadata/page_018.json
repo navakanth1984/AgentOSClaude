@@ -1,0 +1,112 @@
+{
+  "page_num": 18,
+  "image_width": 1080,
+  "image_height": 1548,
+  "created_at": "2026-02-14T03:10:15.138863+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_007",
+      "coordinates": {
+        "x1": 91.23313903808594,
+        "y1": 1340.2938232421875,
+        "x2": 1038.9439697265625,
+        "y2": 1505.8970947265625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9115254282951355,
+      "reading_order": 8,
+      "text": "Ans The three levels of Panchayati Raj\nsystem are"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_005",
+      "coordinates": {
+        "x1": 74.61444091796875,
+        "y1": 880.6309814453125,
+        "x2": 1077.51123046875,
+        "y2": 1123.086669921875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9111531376838684,
+      "reading_order": 6,
+      "text": "Ans In towns and cities there are\nMunicipal corporation, Municipal\ncouncils. In villages they have\npanchayats Raj System."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_006",
+      "coordinates": {
+        "x1": 85.8516845703125,
+        "y1": 1120.57666015625,
+        "x2": 1042.6009521484375,
+        "y2": 1341.2314453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.872654139995575,
+      "reading_order": 7,
+      "text": "39 What are the three levels of\nthe Panchayati Raj system ? Draw\ns a diagro diagram to illustrate\nit?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_004",
+      "coordinates": {
+        "x1": 80.72389221191406,
+        "y1": 741.810546875,
+        "x2": 1080.0,
+        "y2": 864.3585205078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8630087971687317,
+      "reading_order": 5,
+      "text": "29 What are the local self-governing\nbodies in towns and cities?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_003",
+      "coordinates": {
+        "x1": 89.64766693115234,
+        "y1": 481.3287353515625,
+        "x2": 1080.0,
+        "y2": 706.5133056640625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8381580114364624,
+      "reading_order": 4,
+      "text": "Local government is a system by which people of a locality, such as village, town or cities to govern themselves."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_000",
+      "coordinates": {
+        "x1": 749.730224609375,
+        "y1": 23.387645721435547,
+        "x2": 1060.73388671875,
+        "y2": 143.4514617919922
+      },
+      "layout_tag": "header",
+      "confidence": 0.7955868244171143,
+      "reading_order": 1,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_002",
+      "coordinates": {
+        "x1": 39.90895080566406,
+        "y1": 235.25172424316406,
+        "x2": 1079.4835205078125,
+        "y2": 466.8764953613281
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7089182138442993,
+      "reading_order": 3,
+      "text": "II Answer in one or two sentences\n1g What is local self-government?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_18_block_001",
+      "coordinates": {
+        "x1": 459.6862487792969,
+        "y1": 141.7422332763672,
+        "x2": 596.4639282226562,
+        "y2": 198.43563842773438
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5613920092582703,
+      "reading_order": 2,
+      "text": "C.W"
+    }
+  ]
+}

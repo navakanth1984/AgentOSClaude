@@ -1,0 +1,86 @@
+{
+  "page_num": 12,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:05:47.934823+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_12_block_005",
+      "coordinates": {
+        "x1": 16.58013916015625,
+        "y1": 613.629150390625,
+        "x2": 816.7890625,
+        "y2": 1216.520751953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9691940546035767,
+      "reading_order": 6,
+      "text": "3Q, \"You are the most handsome\ntiger in the country, even\nin the morning when you awake\nwith... your dragon's breath\nthat can make The mightiest\ncreature fall!\" What does the speaker actually\nmean by this and how does he make it sound like\nNaradmuni actually says how\nmessy and smelly shaan-Bahadur\nis when he wakes up in the\nmorning but with clever use\nof words, he makes it appear\nas though he is praising\nshaan-Bahadur's appearance."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_12_block_004",
+      "coordinates": {
+        "x1": 115.87956237792969,
+        "y1": 416.3330383300781,
+        "x2": 815.9549560546875,
+        "y2": 588.6497802734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9653353691101074,
+      "reading_order": 5,
+      "text": "sure each hair in his whiskers\nwas set perfectly and his coat\nglowed like the hot lava of\na volcano"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_12_block_002",
+      "coordinates": {
+        "x1": 616.0949096679688,
+        "y1": 268.0285949707031,
+        "x2": 824.2011108398438,
+        "y2": 348.89520263671875
+      },
+      "layout_tag": "header",
+      "confidence": 0.9044232368469238,
+      "reading_order": 3,
+      "text": "PAGE NO.\nDATE: 1, 126"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_12_block_001",
+      "coordinates": {
+        "x1": 351.8553161621094,
+        "y1": 337.25909423828125,
+        "x2": 439.8308410644531,
+        "y2": 378.66644287109375
+      },
+      "layout_tag": "header",
+      "confidence": 0.8209814429283142,
+      "reading_order": 2,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_12_block_003",
+      "coordinates": {
+        "x1": 10.533224105834961,
+        "y1": 424.2644958496094,
+        "x2": 98.85089874267578,
+        "y2": 463.15582275390625
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6955580115318298,
+      "reading_order": 4,
+      "text": "2 Ans,"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_12_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 271.3381042480469,
+        "x2": 105.48603820800781,
+        "y2": 378.7652282714844
+      },
+      "layout_tag": "header",
+      "confidence": 0.5362882614135742,
+      "reading_order": 1,
+      "text": "Friday\n11/11/25"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "page_num": 32,
+  "image_width": 1080,
+  "image_height": 1508,
+  "created_at": "2026-02-14T03:07:14.271151+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_32_block_004",
+      "coordinates": {
+        "x1": 123.26837158203125,
+        "y1": 976.7384643554688,
+        "x2": 1080.0,
+        "y2": 1470.623046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9187668561935425,
+      "reading_order": 5,
+      "text": "The end of the bone is round\nlike a ball. This fits into a hollow\npart in the other bone. The two\nhip joints and shoulder joints\nare examples of ball-and socket\njoint. This joint allows movement\nin all directions. For examples:\nThe ball-shaped head of the\nhumerus fits into a"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_32_block_003",
+      "coordinates": {
+        "x1": 16.21772003173828,
+        "y1": 736.4177856445312,
+        "x2": 1079.2943115234375,
+        "y2": 957.245361328125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.839985191822052,
+      "reading_order": 4,
+      "text": "50. Explain the structure of the ball-\nand -socket joint, giving two\nexamples. What kind of movement\ndoes such a joint allow?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_32_block_001",
+      "coordinates": {
+        "x1": 760.1856689453125,
+        "y1": 95.2370834350586,
+        "x2": 1009.6535034179688,
+        "y2": 179.0118408203125
+      },
+      "layout_tag": "header",
+      "confidence": 0.8377084732055664,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: 1/20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_32_block_002",
+      "coordinates": {
+        "x1": 123.40644836425781,
+        "y1": 233.46035766601562,
+        "x2": 1074.71630859375,
+        "y2": 698.4782104492188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7854151129722595,
+      "reading_order": 3,
+      "text": "in the middle through which\nthe spinal cord passes.\nFunction :-\nThe back Bone holds the head\nand body upright.\nIt protects the delicate spinal cord\nThe joints in the Vertebrae\nhelp us to bend and twist our\nback."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_32_block_000",
+      "coordinates": {
+        "x1": 425.5811767578125,
+        "y1": 126.52336120605469,
+        "x2": 522.5314331054688,
+        "y2": 176.6020965576172
+      },
+      "layout_tag": "header",
+      "confidence": 0.5656651258468628,
+      "reading_order": 1,
+      "text": "C.W"
+    }
+  ]
+}

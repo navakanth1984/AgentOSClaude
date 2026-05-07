@@ -1,0 +1,86 @@
+{
+  "page_num": 36,
+  "image_width": 1030,
+  "image_height": 1372,
+  "created_at": "2026-02-14T03:08:31.742488+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_36_block_003",
+      "coordinates": {
+        "x1": 417.52703857421875,
+        "y1": 227.60064697265625,
+        "x2": 749.784423828125,
+        "y2": 339.0675964355469
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8449414968490601,
+      "reading_order": 4,
+      "text": "Mixed Bag?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_36_block_002",
+      "coordinates": {
+        "x1": 546.5713500976562,
+        "y1": 176.99456787109375,
+        "x2": 658.674560546875,
+        "y2": 217.92723083496094
+      },
+      "layout_tag": "header",
+      "confidence": 0.7002268433570862,
+      "reading_order": 3,
+      "text": "C,W"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_36_block_006",
+      "coordinates": {
+        "x1": 189.30706787109375,
+        "y1": 359.69610595703125,
+        "x2": 1012.1128540039062,
+        "y2": 1179.1754150390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.620904266834259,
+      "reading_order": 7,
+      "text": "What is a vertex? How many\nvertices does a cuboid have?\n\nA vertex is a point where\nthe edges of a solid meet. A\ncuboid has 8 vertices.\n\nWhat are edges?\n\nEdges are the line segments where\nthe adjacent faces of a solid\nmeet."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_36_block_004",
+      "coordinates": {
+        "x1": 186.06651306152344,
+        "y1": 352.20611572265625,
+        "x2": 1013.3153076171875,
+        "y2": 532.303955078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5431155562400818,
+      "reading_order": 5,
+      "text": "What is a vertex? How many\nvertices does a cuboid have?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_36_block_000",
+      "coordinates": {
+        "x1": 16.574417114257812,
+        "y1": 153.70924377441406,
+        "x2": 118.94448852539062,
+        "y2": 221.3267059326172
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5353279113769531,
+      "reading_order": 1,
+      "text": "20|11|25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_36_block_001",
+      "coordinates": {
+        "x1": 97.2231674194336,
+        "y1": 397.934814453125,
+        "x2": 159.77061462402344,
+        "y2": 665.864501953125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5106790661811829,
+      "reading_order": 2,
+      "text": "1)\n\nSol"
+    }
+  ]
+}

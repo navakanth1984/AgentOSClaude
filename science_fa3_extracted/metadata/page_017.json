@@ -1,0 +1,125 @@
+{
+  "page_num": 17,
+  "image_width": 1080,
+  "image_height": 1512,
+  "created_at": "2026-02-14T03:07:14.590584+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_001",
+      "coordinates": {
+        "x1": 738.2345581054688,
+        "y1": 104.79219818115234,
+        "x2": 1004.511474609375,
+        "y2": 200.48345947265625
+      },
+      "layout_tag": "header",
+      "confidence": 0.9125327467918396,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_008",
+      "coordinates": {
+        "x1": 52.08446502685547,
+        "y1": 1306.5325927734375,
+        "x2": 1038.93505859375,
+        "y2": 1460.9658203125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8759771585464478,
+      "reading_order": 9,
+      "text": "iv, The length and breath of a room.\nAns, metre"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_003",
+      "coordinates": {
+        "x1": 96.51935577392578,
+        "y1": 285.9057312011719,
+        "x2": 1043.97998046875,
+        "y2": 537.14404296875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8726105093955994,
+      "reading_order": 4,
+      "text": "The number '920' represents the\nnumber of times the metre is\nrepeated in representing the height\nof Bangalore above sea level."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_004",
+      "coordinates": {
+        "x1": 26.476943969726562,
+        "y1": 549.0165405273438,
+        "x2": 961.0480346679688,
+        "y2": 686.7059936523438
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8019179105758667,
+      "reading_order": 5,
+      "text": "40, Name the appropriate unit for\nmeasuring the following"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_007",
+      "coordinates": {
+        "x1": 63.8018684387207,
+        "y1": 1132.6417236328125,
+        "x2": 786.2742919921875,
+        "y2": 1212.5126953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7662703990936279,
+      "reading_order": 8,
+      "text": "iii, The length of a pencil"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_005",
+      "coordinates": {
+        "x1": 52.78519821166992,
+        "y1": 699.3222045898438,
+        "x2": 971.1435546875,
+        "y2": 815.4899291992188
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7148352265357971,
+      "reading_order": 6,
+      "text": "1, The thickness of a cardboard\nsheet"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_006",
+      "coordinates": {
+        "x1": 52.07188034057617,
+        "y1": 947.2861328125,
+        "x2": 878.5164794921875,
+        "y2": 1014.60546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.670566976070404,
+      "reading_order": 7,
+      "text": "ii, The distance between stars"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_000",
+      "coordinates": {
+        "x1": 408.2565612792969,
+        "y1": 185.5243682861328,
+        "x2": 510.9119567871094,
+        "y2": 239.2963409423828
+      },
+      "layout_tag": "header",
+      "confidence": 0.6431894302368164,
+      "reading_order": 1,
+      "text": "C-W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_17_block_002",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 296.5377197265625,
+        "x2": 71.18527221679688,
+        "y2": 361.8047180175781
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5011868476867676,
+      "reading_order": 3,
+      "text": "Ans,"
+    }
+  ]
+}

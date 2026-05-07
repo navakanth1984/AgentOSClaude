@@ -1,0 +1,21 @@
+{
+  "page_num": 33,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:31.772748+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_33_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 90.35625457763672,
+        "x2": 751.337646484375,
+        "y2": 1031.398193359375
+      },
+      "layout_tag": "table",
+      "confidence": 0.5154455900192261,
+      "reading_order": 1,
+      "text": "<table>\n<thead>\n<tr>\n<th colspan=\"2\">C.W</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>6</td>\n<td>The diagonals of a parallelogram<br/>bisect each other.<br/>In a non - isosceles trapezium,<br/>the diagonals do not bisect<br/>each other.</td>\n</tr>\n<tr>\n<td>2,</td>\n<td>In a parallelogram PQRS, if<br/>&lt;Q is 105°, find the other<br/>angles.<br/>(Hint : &lt;P = &lt;R; &lt;Q = &lt;S ; (&lt;P + &lt;Q)<br/>= (&lt;R + &lt;S) = 180°)</td>\n</tr>\n<tr>\n<td></td>\n<td>180° - 105° = 75°</td>\n</tr>\n<tr>\n<td></td>\n<td>&lt;P = 75°, &lt;R = 75°, &lt;S = 105°</td>\n</tr>\n</tbody>\n</table>"
+    }
+  ]
+}

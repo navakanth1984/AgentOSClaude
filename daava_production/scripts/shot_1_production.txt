@@ -1,0 +1,7 @@
+Cinematic shot, Worm's-Eye View (Extreme Low) looking up at ARJUN from the perspective of the standpipe. ARJUN is in the foreground, wearing the #E67E22 orange industrial suit and #2C3E50 climbing harness from the DNA. He is looking at a weathered notebook. In the background, the massive brutalist tower from scene1_plate.jpg looms, backlit by a hazy golden sun. Cinematic lighting, industrial noir atmosphere, 8k resolution, photorealistic. 14mm focal length.
+
+[SURGICAL DNA LOCK]:
+- Character Physique: Athletic build
+- Base Suit Hex: #E67E22
+- Harness Hex: #2C3E50
+- Helmet Hex: #F1C40F

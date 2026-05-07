@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Weathered Spire - Production Master</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .composition-root {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+        }
+
+        /* High-fidelity Video Asset Container */
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.1) brightness(0.9);
+        }
+
+        /* Overlay for cinematic mood enhancement */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+        }
+
+        .overlay-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            mix-blend-mode: overlay;
+            background: url('path/to/grain_texture.jpg');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div data-composition-id="weathered-spire-production" data-start="0" data-duration="10" data-width="1920" data-height="1080" class="composition-root">
+        
+        <!-- High-Fidelity Still Plates for 2.5D Push-in -->
+        <img id="spire-wide" data-start="0" data-duration="10" data-track-index="0" src="spire_plate_A_wide.jpg" style="position: absolute; width: 100%; height: 100%; object-fit: cover;">
+        <img id="spire-macro" data-start="4" data-duration="6" data-track-index="1" src="spire_plate_B_macro.jpg" style="position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0;">
+
+        <audio 
+            id="spire-audio"
+            data-start="0"
+            data-duration="10"
+            data-track-index="2"
+            src="flow_ambient_soundscape.wav"
+            data-volume="1">
+        </audio>
+
+        <div class="vignette"></div>
+        <div class="overlay-layer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // 6D Dynamic Control Logic
+        // 1. Scene Entrance
+        tl.from("#spire-wide", {
+            opacity: 0,
+            duration: 2,
+            ease: "power2.inOut"
+        }, 0);
+
+        // 2. Cinematic 2.5D Push-in (Dolly Track)
+        tl.to("#spire-wide", {
+            scale: 1.2,
+            duration: 10,
+            ease: "sine.inOut"
+        }, 0);
+
+        // 3. Texture Reveal (Macro Overlay)
+        tl.to("#spire-macro", {
+            opacity: 1,
+            duration: 3,
+            ease: "power1.inOut"
+        }, 4);
+        
+        tl.to("#spire-macro", {
+            scale: 1.1,
+            duration: 6,
+            ease: "sine.out"
+        }, 4);
+
+        // 4. Audio Atmosphere
+        tl.from("#spire-audio", {
+            volume: 0,
+            duration: 3,
+            ease: "sine.inOut"
+        }, 0);
+
+        window.__timelines["weathered-spire-production"] = tl;
+    </script>
+</body>
+</html>

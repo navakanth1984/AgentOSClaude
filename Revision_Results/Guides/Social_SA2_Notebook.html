@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Social SA2 Revision - Maps & Teachings</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&family=Architects+Daughter&display=swap');
+
+        :root {
+            --blue-ink: #1a237e;
+            --red-ink: #b71c1c;
+            --pencil: #455a64;
+            --paper-bg: #fffdf5;
+            --line-color: #e3f2fd;
+            --margin-line: #ffcdd2;
+        }
+
+        body {
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: var(--paper-bg);
+            width: 850px;
+            min-height: 1200px;
+            padding: 60px 60px 60px 120px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            position: relative;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            border: 1px solid #d1d1d1;
+        }
+
+        .notebook-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100px;
+            width: 2px;
+            height: 100%;
+            background-color: var(--margin-line);
+        }
+
+        .sidebar {
+            position: absolute;
+            left: 10px;
+            top: 50px;
+            width: 80px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--pencil);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--red-ink);
+        }
+
+        .hw-tag {
+            border: 2px solid var(--red-ink);
+            padding: 2px 15px;
+            border-radius: 5px;
+            transform: rotate(-2deg);
+        }
+
+        .content {
+            color: var(--blue-ink);
+            font-size: 22px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 28px;
+            text-decoration: underline;
+            color: var(--red-ink);
+            font-family: 'Architects Daughter', cursive;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            margin-left: 30px;
+            font-family: 'Indie Flower', cursive;
+            color: #37474f;
+            line-height: 1.6;
+        }
+
+        .diagram-container {
+            border: 1px dashed #ccc;
+            padding: 20px;
+            margin: 30px 0;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .compass-svg {
+            width: 100%;
+            height: 250px;
+        }
+
+        .label-text {
+            font-family: 'Shadows Into Light', cursive;
+            font-size: 20px;
+            fill: #b71c1c;
+            font-weight: bold;
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-family: 'Shadows Into Light', cursive;
+            color: #90a4ae;
+            transform: rotate(-1deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-page">
+        <div class="sidebar">
+            Social<br>SA2 Revision<br><br>
+            C.W.
+        </div>
+
+        <div class="header-box">
+            <div class="hw-tag">C.W.</div>
+            <div style="font-size: 20px;">Page Ref: 1-28</div>
+        </div>
+
+        <div class="content">
+            <div class="title">History & Geography Revision</div>
+
+            <div class="question">Q. What is the meaning of the word 'Upanishad'?</div>
+            <div class="answer">
+                Ans: The word 'Upanishad' means **"to sit down beside"**. They are a compilation of teachings that were orally transmitted to students.
+            </div>
+
+            <div class="question">Q. What is a Map? Name its three components.</div>
+            <div class="answer">
+                Ans: A **Map** is a two-dimensional representation of the earth, or parts of it, on a flat surface. The three components of a map are **Scale, Direction, and Symbols**.
+            </div>
+
+            <div class="diagram-container">
+                <svg class="compass-svg" viewBox="0 0 400 250">
+                    <!-- Compass Rose -->
+                    <line x1="200" y1="50" x2="200" y2="200" stroke="#b71c1c" stroke-width="2" />
+                    <line x1="125" y1="125" x2="275" y2="125" stroke="#b71c1c" stroke-width="2" />
+                    
+                    <!-- Arrow Heads -->
+                    <path d="M200 40 L195 55 L205 55 Z" fill="#b71c1c" />
+                    <path d="M200 210 L195 195 L205 195 Z" fill="#b71c1c" />
+                    <path d="M285 125 L270 120 L270 130 Z" fill="#b71c1c" />
+                    <path d="M115 125 L130 120 L130 130 Z" fill="#b71c1c" />
+
+                    <!-- Cardinal Labels -->
+                    <text x="195" y="35" class="label-text">N</text>
+                    <text x="195" y="235" class="label-text">S</text>
+                    <text x="295" y="132" class="label-text">E</text>
+                    <text x="90" y="132" class="label-text">W</text>
+                    
+                    <text x="210" y="60" font-family="Indie Flower" font-size="14" fill="#546e7a">North Line</text>
+                </svg>
+            </div>
+
+            <div class="question">Q. What are the four cardinal directions?</div>
+            <div class="answer">
+                Ans: The four main directions are **North (N), South (S), East (E), and West (W)**. They are known as cardinal directions.
+            </div>
+
+            <div class="question">Q. Who is a Tirthankara? What does 'Ahimsa' mean?</div>
+            <div class="answer">
+                Ans: A **Tirthankara** is a person who has achieved enlightenment and shows the path to others. **Ahimsa** means non-violence, involving abstinence from killing or injuring other living beings.
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Remember the map symbols for the practical test!
+        </div>
+    </div>
+
+</body>
+</html>

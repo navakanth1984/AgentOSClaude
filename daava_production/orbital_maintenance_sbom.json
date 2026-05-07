@@ -1,0 +1,29 @@
+{
+  "sbom_version": "1.0",
+  "project": "DAAVA",
+  "component": "Orbital Maintenance Context",
+  "version": "1.0.0",
+  "provenance": {
+    "author": "Antigravity (AI)",
+    "timestamp": "2026-05-05T16:04:00Z",
+    "source_artifacts": [
+      "c:\\Users\\navka\\navakanth001\\daava_production\\dna\\climber_dna.json",
+      "c:\\Users\\navka\\navakanth001\\daava_production\\prompts\\orbital_maintenance_library.md"
+    ]
+  },
+  "dependencies": [
+    {
+      "name": "Visual DNA Schema",
+      "version": "v2.0"
+    }
+  ],
+  "security_scan": {
+    "status": "PASSED",
+    "tool": "CDLC-Linter-v1",
+    "credential_check": "CLEAN"
+  },
+  "runtime_constraints": {
+    "intended_model": "Gemini 3 Flash",
+    "format": "Agent MD"
+  }
+}

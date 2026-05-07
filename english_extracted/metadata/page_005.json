@@ -1,0 +1,86 @@
+{
+  "page_num": 5,
+  "image_width": 1035,
+  "image_height": 1448,
+  "created_at": "2026-02-14T03:05:47.744521+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_5_block_003",
+      "coordinates": {
+        "x1": 108.67227172851562,
+        "y1": 280.9566345214844,
+        "x2": 951.771728515625,
+        "y2": 405.3310241699219
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8814897537231445,
+      "reading_order": 4,
+      "text": "9. Caress: touch in a gentle and\nloving way?"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_5_block_004",
+      "coordinates": {
+        "x1": 97.5573501586914,
+        "y1": 419.41680908203125,
+        "x2": 1012.8163452148438,
+        "y2": 601.7905883789062
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8749738335609436,
+      "reading_order": 5,
+      "text": "10. Heritage: practices, languages, buildings\ncreated in the past that are still\nimportant and valuable now"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_5_block_002",
+      "coordinates": {
+        "x1": 111.77618408203125,
+        "y1": 182.75341796875,
+        "x2": 904.5149536132812,
+        "y2": 270.05230712890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8211705088615417,
+      "reading_order": 3,
+      "text": "9. Immortality : to live on forever"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_5_block_005",
+      "coordinates": {
+        "x1": 107.89617156982422,
+        "y1": 613.7703857421875,
+        "x2": 685.6197509765625,
+        "y2": 693.9425659179688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7345312833786011,
+      "reading_order": 6,
+      "text": "11. Singsificant: important"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_5_block_000",
+      "coordinates": {
+        "x1": 44.0654411315918,
+        "y1": 8.128954887390137,
+        "x2": 177.63555908203125,
+        "y2": 66.60078430175781
+      },
+      "layout_tag": "header",
+      "confidence": 0.577583909034729,
+      "reading_order": 1,
+      "text": "Monday"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_5_block_001",
+      "coordinates": {
+        "x1": 512.8917236328125,
+        "y1": 98.16535186767578,
+        "x2": 611.6801147460938,
+        "y2": 139.67445373535156
+      },
+      "layout_tag": "header",
+      "confidence": 0.5014567375183105,
+      "reading_order": 2,
+      "text": "C.W"
+    }
+  ]
+}

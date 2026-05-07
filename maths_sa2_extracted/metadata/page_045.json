@@ -1,0 +1,34 @@
+{
+  "page_num": 45,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.464320+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_45_block_001",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 956.7227172851562,
+        "x2": 769.1713256835938,
+        "y2": 1517.897705078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9322262406349182,
+      "reading_order": 2,
+      "text": "i) two pairs of opposite sides\nSol: KL and MN, KN and LM.\nii) two pairs of opposite angles\nSol: <K and <M, <N and <L\niii) two pairs of adjacent sides\nSol: KL and <M, LM and MN\niv) two pairs of adjacent angles\nSol: <K and <<, <M, and <N"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_45_block_000",
+      "coordinates": {
+        "x1": 170.8505401611328,
+        "y1": 426.2539978027344,
+        "x2": 842.8129272460938,
+        "y2": 562.51123046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6426218152046204,
+      "reading_order": 1,
+      "text": "Draw a quadrilateral KLMN\nand state:"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "page_num": 5,
+  "image_width": 1045,
+  "image_height": 1399,
+  "created_at": "2026-02-14T03:10:05.671903+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_004",
+      "coordinates": {
+        "x1": 82.78253173828125,
+        "y1": 335.6993103027344,
+        "x2": 1013.1593017578125,
+        "y2": 420.88519287109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8639014363288879,
+      "reading_order": 5,
+      "text": "1g Differentiate between globes and maps?"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_007",
+      "coordinates": {
+        "x1": 158.99224853515625,
+        "y1": 1128.07666015625,
+        "x2": 519.7493286132812,
+        "y2": 1308.0516357421875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8226142525672913,
+      "reading_order": 8,
+      "text": "* Globes are large\nand cumbersome\ncumbersome to carry\naround."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_003",
+      "coordinates": {
+        "x1": 91.47322845458984,
+        "y1": 236.75466918945312,
+        "x2": 760.6339721679688,
+        "y2": 308.3594970703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8100319504737854,
+      "reading_order": 4,
+      "text": "IV Answer im a paragraph"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_006",
+      "coordinates": {
+        "x1": 156.416015625,
+        "y1": 728.2252197265625,
+        "x2": 531.7265014648438,
+        "y2": 940.0777587890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7763135433197021,
+      "reading_order": 7,
+      "text": "* The shapes and\nsizes of continents\nand countries are\nshown accurately"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_001",
+      "coordinates": {
+        "x1": 774.521240234375,
+        "y1": 38.437049865722656,
+        "x2": 1043.8980712890625,
+        "y2": 145.49468994140625
+      },
+      "layout_tag": "header",
+      "confidence": 0.7586357593536377,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: 1 120"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_010",
+      "coordinates": {
+        "x1": 528.4166259765625,
+        "y1": 1134.0550537109375,
+        "x2": 977.7860107421875,
+        "y2": 1317.547119140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6975885033607483,
+      "reading_order": 11,
+      "text": "distortion\n* Maps are convenient\nto carry around\nand refer to."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_009",
+      "coordinates": {
+        "x1": 546.1783447265625,
+        "y1": 750.8248291015625,
+        "x2": 1005.0010986328125,
+        "y2": 1160.5252685546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6852994561195374,
+      "reading_order": 10,
+      "text": "* As a result of\nflattening, maps often\ndistort the shapes\nand sizes of continents-\nand countries. The\nlarger the area shown\nby the map, the\nmore will be the\ndistortion."
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_008",
+      "coordinates": {
+        "x1": 561.2529907226562,
+        "y1": 446.367431640625,
+        "x2": 996.32080078125,
+        "y2": 753.582763671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6774606704711914,
+      "reading_order": 9,
+      "text": "Map\n* A map is a\ntwo-dimensional\nrepresentation of the\nEarth on a flat\nsurface"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_000",
+      "coordinates": {
+        "x1": 8.40538501739502,
+        "y1": 16.13648223876953,
+        "x2": 164.05470275878906,
+        "y2": 89.0205078125
+      },
+      "layout_tag": "header",
+      "confidence": 0.6647897362709045,
+      "reading_order": 1,
+      "text": "Wednesday"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_002",
+      "coordinates": {
+        "x1": 4.789430618286133,
+        "y1": 132.61326599121094,
+        "x2": 122.30020904541016,
+        "y2": 190.149169921875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6519797444343567,
+      "reading_order": 3,
+      "text": "12|11|25"
+    },
+    {
+      "block_id": "20260214_10ea6012-b809-4f4d-ba2b-ea9a2b3308bc_5_block_005",
+      "coordinates": {
+        "x1": 149.2822265625,
+        "y1": 486.4311828613281,
+        "x2": 504.122314453125,
+        "y2": 647.82666015625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5887473821640015,
+      "reading_order": 6,
+      "text": "*An globe is a\ntrue model of\nthe Earth."
+    }
+  ]
+}

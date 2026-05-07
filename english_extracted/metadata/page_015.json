@@ -1,0 +1,73 @@
+{
+  "page_num": 15,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:05:48.310932+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_15_block_004",
+      "coordinates": {
+        "x1": 156.7066192626953,
+        "y1": 404.94769287109375,
+        "x2": 799.04150390625,
+        "y2": 579.7138671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9096951484680176,
+      "reading_order": 5,
+      "text": "of the poachers who were\nfrightened of the tiger and\ngot caught in their own\ntrap."
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_15_block_001",
+      "coordinates": {
+        "x1": 39.45658874511719,
+        "y1": 418.78167724609375,
+        "x2": 112.37071228027344,
+        "y2": 463.1534729003906
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7828676700592041,
+      "reading_order": 2,
+      "text": "Spns"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_15_block_002",
+      "coordinates": {
+        "x1": 636.7311401367188,
+        "y1": 259.9781799316406,
+        "x2": 832.898681640625,
+        "y2": 337.2669677734375
+      },
+      "layout_tag": "header",
+      "confidence": 0.7636116743087769,
+      "reading_order": 3,
+      "text": "PAGE NO.\nDATE : 1 / 20"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_15_block_000",
+      "coordinates": {
+        "x1": 3.5466558933258057,
+        "y1": 275.87640380859375,
+        "x2": 135.0356903076172,
+        "y2": 379.69842529296875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6152663230895996,
+      "reading_order": 1,
+      "text": "Friday\n7/11/25"
+    },
+    {
+      "block_id": "20260214_b8d2266b-71a8-42db-ba38-695c38769d01_15_block_003",
+      "coordinates": {
+        "x1": 363.8428649902344,
+        "y1": 334.3588562011719,
+        "x2": 446.3757629394531,
+        "y2": 373.1176452636719
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.5737497806549072,
+      "reading_order": 4,
+      "text": "C.W"
+    }
+  ]
+}

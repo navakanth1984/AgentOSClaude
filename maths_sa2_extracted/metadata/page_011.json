@@ -1,0 +1,73 @@
+{
+  "page_num": 11,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:33.463599+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_11_block_002",
+      "coordinates": {
+        "x1": 169.37013244628906,
+        "y1": 412.525146484375,
+        "x2": 872.4257202148438,
+        "y2": 563.2457275390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9208331108093262,
+      "reading_order": 3,
+      "text": "State by observation the angle which\nis greater of the two."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_11_block_003",
+      "coordinates": {
+        "x1": 224.9972381591797,
+        "y1": 651.9718627929688,
+        "x2": 646.03662109375,
+        "y2": 936.3751831054688
+      },
+      "layout_tag": "image",
+      "confidence": 0.8077322244644165,
+      "reading_order": 4,
+      "text": "The image contains a geometric diagram, specifically a triangle with three labeled angles: angle 'a', angle 'b', and a right angle. There are no numerical values or data trends present in the image."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_11_block_004",
+      "coordinates": {
+        "x1": 221.4327392578125,
+        "y1": 1013.2638549804688,
+        "x2": 781.2825927734375,
+        "y2": 1366.619873046875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7455681562423706,
+      "reading_order": 5,
+      "text": "$$ \\vec{r} = Ld > LC $$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_11_block_000",
+      "coordinates": {
+        "x1": 18.405149459838867,
+        "y1": 215.7747344970703,
+        "x2": 143.78236389160156,
+        "y2": 349.60491943359375
+      },
+      "layout_tag": "header",
+      "confidence": 0.6319368481636047,
+      "reading_order": 1,
+      "text": "friday\n7/16/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_11_block_001",
+      "coordinates": {
+        "x1": 297.54693603515625,
+        "y1": 289.1649169921875,
+        "x2": 461.2679138183594,
+        "y2": 378.4196472167969
+      },
+      "layout_tag": "header",
+      "confidence": 0.5901249051094055,
+      "reading_order": 2,
+      "text": "$$ \\frac{C \\cdot W}{EX: 10 \\cdot 2} $$"
+    }
+  ]
+}

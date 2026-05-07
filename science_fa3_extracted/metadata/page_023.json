@@ -1,0 +1,99 @@
+{
+  "page_num": 23,
+  "image_width": 1080,
+  "image_height": 1439,
+  "created_at": "2026-02-14T03:07:15.091032+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_001",
+      "coordinates": {
+        "x1": 731.8756103515625,
+        "y1": 85.19698333740234,
+        "x2": 980.7554931640625,
+        "y2": 172.06910705566406
+      },
+      "layout_tag": "header",
+      "confidence": 0.8875072002410889,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_005",
+      "coordinates": {
+        "x1": 17.797466278076172,
+        "y1": 680.317626953125,
+        "x2": 1078.7406005859375,
+        "y2": 1024.2642822265625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8846946954727173,
+      "reading_order": 6,
+      "text": "Ans, Fish are streamlined in shape\nthat is rounded in the front\nnarrow at the back.\nThis shapes facilitates easy\nmovement through water\ndue to reduced water\nresistance"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_004",
+      "coordinates": {
+        "x1": 28.11005401611328,
+        "y1": 491.6094055175781,
+        "x2": 1011.53271484375,
+        "y2": 649.832275390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8629460334777832,
+      "reading_order": 5,
+      "text": "11 Q. How does the shape of a\nfish's body help it to move\nin water?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_002",
+      "coordinates": {
+        "x1": 31.088497161865234,
+        "y1": 238.98167419433594,
+        "x2": 972.3097534179688,
+        "y2": 356.802978515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8005574941635132,
+      "reading_order": 3,
+      "text": "10Q What kind of skeleton does\na snail have?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_000",
+      "coordinates": {
+        "x1": 393.602294921875,
+        "y1": 139.43280029296875,
+        "x2": 514.1061401367188,
+        "y2": 194.25909423828125
+      },
+      "layout_tag": "header",
+      "confidence": 0.70302814245224,
+      "reading_order": 1,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_006",
+      "coordinates": {
+        "x1": 31.541715621948242,
+        "y1": 1057.0787353515625,
+        "x2": 1077.7574462890625,
+        "y2": 1385.626953125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.68812495470047,
+      "reading_order": 7,
+      "text": "12Q, Describe how a bird files?\nAns, The bird moves its wings up and\ndown to move up and\nforward strong chest muscles\npull their wings up and\ndown."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_23_block_003",
+      "coordinates": {
+        "x1": 2.963765859603882,
+        "y1": 388.7221984863281,
+        "x2": 969.0021362304688,
+        "y2": 462.24310302734375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6509183645248413,
+      "reading_order": 4,
+      "text": "Ans, A snail has exoskeleton."
+    }
+  ]
+}

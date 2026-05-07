@@ -1,0 +1,112 @@
+{
+  "page_num": 26,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.050249+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_005",
+      "coordinates": {
+        "x1": 177.76806640625,
+        "y1": 761.0654907226562,
+        "x2": 750.7586669921875,
+        "y2": 926.0565185546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8370342254638672,
+      "reading_order": 6,
+      "text": "Find the angles of $\\Delta PQR$, if\nits angles are in the ratio $2:3:4$.\n(Hint: Let the angles be $2x, 3x$\nand $4x$.)"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_000",
+      "coordinates": {
+        "x1": 68.6631851196289,
+        "y1": 142.66635131835938,
+        "x2": 178.29212951660156,
+        "y2": 260.3338623046875
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.7371834516525269,
+      "reading_order": 1,
+      "text": "Thursday\n13/11/25"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_008",
+      "coordinates": {
+        "x1": 198.5621337890625,
+        "y1": 1047.8359375,
+        "x2": 438.5367431640625,
+        "y2": 1122.515869140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6626519560813904,
+      "reading_order": 9,
+      "text": "$$ \\frac{3}{91} \\times \\overset{20}{+80} = 60^\\circ $$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_007",
+      "coordinates": {
+        "x1": 208.66867065429688,
+        "y1": 975.92724609375,
+        "x2": 471.5539245605469,
+        "y2": 1046.7894287109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6234084367752075,
+      "reading_order": 8,
+      "text": "$$ \\frac{2}{91} \\times \\overline{+80}^{20} = 40^\\circ $$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_006",
+      "coordinates": {
+        "x1": 211.0240478515625,
+        "y1": 930.5686645507812,
+        "x2": 506.6965637207031,
+        "y2": 978.233642578125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6212365627288818,
+      "reading_order": 7,
+      "text": "Ratio = $2 + 3 + 4 = 9$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_002",
+      "coordinates": {
+        "x1": 764.4714965820312,
+        "y1": 185.5640106201172,
+        "x2": 888.7779541015625,
+        "y2": 249.8050079345703
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.614500880241394,
+      "reading_order": 3,
+      "text": "Thursday"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_003",
+      "coordinates": {
+        "x1": 189.8076629638672,
+        "y1": 246.31385803222656,
+        "x2": 888.4891357421875,
+        "y2": 685.9054565429688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5361518859863281,
+      "reading_order": 4,
+      "text": "In an isosceles $\\triangle XYZ$, $\\angle X$ and 13 | 425\n$\\angle Y$ are equab. If $\\angle Z$ is equal to . S Sol:-\n$36^\\circ$, find the measures of $\\angle X$ and\n$\\angle Y$.\n(Hint: Write given the statement\nas a mathematical expression.)\n\n$$ 180^\\circ - \\frac{36^\\circ}{72} = 194^\\circ $$\n$$ = \\frac{+44y}{x_1} = 72^\\circ $$\n\n7,"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_26_block_001",
+      "coordinates": {
+        "x1": 55.90948486328125,
+        "y1": 591.364990234375,
+        "x2": 140.91165161132812,
+        "y2": 762.6920776367188
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5311749577522278,
+      "reading_order": 2,
+      "text": "$$\n\\begin{array}{r}\n92 \\\\\n72 \\\\\n(+)36 \\\\\n\\hline\n180\n\\end{array}\n$$"
+    }
+  ]
+}

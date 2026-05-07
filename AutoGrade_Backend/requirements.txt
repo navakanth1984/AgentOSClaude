@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sarvamai
+pydantic
+python-multipart
+sympy
+scikit-learn
+numpy
+python-jose[cryptography]
+passlib[bcrypt]

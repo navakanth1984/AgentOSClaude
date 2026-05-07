@@ -1,0 +1,99 @@
+{
+  "page_num": 13,
+  "image_width": 1080,
+  "image_height": 1542,
+  "created_at": "2026-02-14T03:07:13.944519+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_001",
+      "coordinates": {
+        "x1": 741.8739013671875,
+        "y1": 102.51278686523438,
+        "x2": 1010.908203125,
+        "y2": 198.61842346191406
+      },
+      "layout_tag": "header",
+      "confidence": 0.9272418022155762,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_004",
+      "coordinates": {
+        "x1": 138.92047119140625,
+        "y1": 753.88525390625,
+        "x2": 1078.7674560546875,
+        "y2": 1085.595703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9261440634727478,
+      "reading_order": 5,
+      "text": "Its feet have leathery soles\nfor walking in the soft sand.\nAs a protection from sandstorms,\nit can close its nostrils and\nhas thick long eyes lashes to\nprotect eyes from sands."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_006",
+      "coordinates": {
+        "x1": 44.30701446533203,
+        "y1": 1244.7626953125,
+        "x2": 1070.2236328125,
+        "y2": 1522.4775390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9129744172096252,
+      "reading_order": 7,
+      "text": "Ans, Animals living on mountains.\ni, have thick fur on their body,\nlike snow leopard or long\nhair like yak to protect\nthemselves from cold."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_005",
+      "coordinates": {
+        "x1": 56.34663391113281,
+        "y1": 1102.2593994140625,
+        "x2": 1079.0638427734375,
+        "y2": 1221.1121826171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8691563010215759,
+      "reading_order": 6,
+      "text": "69, Describe the adaptations seen in\nanimals that live on mountains."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_003",
+      "coordinates": {
+        "x1": 117.38097381591797,
+        "y1": 283.1439514160156,
+        "x2": 1048.5335693359375,
+        "y2": 762.28662109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8554276823997498,
+      "reading_order": 4,
+      "text": "thus it can go without water\nfor several days.\nIt can store fat in the\nhumps, which serves us a food\nstore. Hence, it can go without\nfood for a long time.\nIt can maintain high body\ntemperature so it does not\nsweat."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_000",
+      "coordinates": {
+        "x1": 0.0,
+        "y1": 74.77880096435547,
+        "x2": 65.04461669921875,
+        "y2": 360.47393798828125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.6351802945137024,
+      "reading_order": 1,
+      "text": "day\n25\nans"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_13_block_002",
+      "coordinates": {
+        "x1": 376.5987548828125,
+        "y1": 185.37338256835938,
+        "x2": 457.4288635253906,
+        "y2": 233.94024658203125
+      },
+      "layout_tag": "page-number",
+      "confidence": 0.595756471157074,
+      "reading_order": 3,
+      "text": "C.W"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "page_num": 31,
+  "image_width": 1080,
+  "image_height": 1495,
+  "created_at": "2026-02-14T03:07:15.122224+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_31_block_001",
+      "coordinates": {
+        "x1": 696.7429809570312,
+        "y1": 96.31405639648438,
+        "x2": 939.873291015625,
+        "y2": 179.58631896972656
+      },
+      "layout_tag": "header",
+      "confidence": 0.8797067403793335,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / / 20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_31_block_002",
+      "coordinates": {
+        "x1": 82.63467407226562,
+        "y1": 246.082763671875,
+        "x2": 1009.2801513671875,
+        "y2": 766.159423828125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8781158328056335,
+      "reading_order": 3,
+      "text": "This are true ribs.\nThe 8th, 9th and 10th pairs of ribs\nattached to the lowest true rib.\nThe last two pairs of ribs are not\nattached to lowest true rib. These are\nattached to the spine. They are\ncalled floating ribs\nFunction:\nThe ribcage protects the lungs\nand the heart."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_31_block_003",
+      "coordinates": {
+        "x1": 25.571794509887695,
+        "y1": 791.358154296875,
+        "x2": 1049.7574462890625,
+        "y2": 1206.7425537109375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.809255063533783,
+      "reading_order": 4,
+      "text": "ii, The Skull:\nStructure:- The upper part of the\nskull is made up of eight flat\nbones joined together. The face\nis made up of 14 bones. All joints\nare immovable only lower jaw\nmovable bone in the Skull.\nFunction:- The skull protects the brain"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_31_block_004",
+      "coordinates": {
+        "x1": 106.18370819091797,
+        "y1": 1225.1820068359375,
+        "x2": 1055.7823486328125,
+        "y2": 1464.2440185546875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7231338620185852,
+      "reading_order": 5,
+      "text": "The vertebral column\nStructure: - It is made of 33 irregularly\nshaped bones, called vertebrae. The backbone\nis S-shaped. Each vertebra has a hole"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_31_block_000",
+      "coordinates": {
+        "x1": 376.6693420410156,
+        "y1": 157.1885986328125,
+        "x2": 470.70904541015625,
+        "y2": 217.14202880859375
+      },
+      "layout_tag": "header",
+      "confidence": 0.6010320782661438,
+      "reading_order": 1,
+      "text": "6:0"
+    }
+  ]
+}

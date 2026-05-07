@@ -1,0 +1,1674 @@
+MATHS SA2 REVISION - FULL SET
+==============================
+
+--- PAGE 001 ---
+C.W
+
+Chapter -9 Basic Geometric Ideas
+EX. 9.1
+
+Chapter -9 Basic Geometric Ideas
+EX. 9.1
+In the given figure, name the
+following.
+$P \subset C$
+
+$PC \cong PB$
+
+$XA \cong XD$
+
+5 points - A,B,C,D,O
+
+ii, 2 lines - $\angle \overrightarrow{PQ}, \angle \overrightarrow{XY}$
+iii, 8 rays - $\overline{OY}, \overline{OX}, \overline{OP}, \overline{OQ}, \overline{BY}, \overline{AX},$
+$CP, DQ$
+iv, 6 line segments - $\overline{OA}, \overline{OB}, \overline{OC}, \overline{OD}, \overline{AB},$
+$\overline{CD}$.
+
+--------------------
+
+--- PAGE 002 ---
+What are two circles with
+the same centre called?
+(Hint: Prefix 'con' means 'together')
+
+Two circles with the same
+centre called Concentric
+circles.
+
+4, Where does the vertex of an
+angle lie? (Hint: A vertex is
+formed where two lines meet.)
+Sol At the common end point
+of its arms.
+
+--------------------
+
+--- PAGE 003 ---
+<table>
+<tbody>
+<tr>
+<td>Some minor arcs:-<br/>$\overline{AC}$, $\overline{CB}$, $\overline{CBQ}$, $\overline{BQ}$,<br/>$\overline{CQP}$, and soon</td>
+</tr>
+<tr>
+<td>Some major arcs :- AQC, CPB, CPO,<br/>BAQ, BPT, QCP and soon.</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 004 ---
+Is every diameter of a circle
+also a chord?
+
+(Hint: Every diameter joins
+two points on the
+circumference.)
+
+Yes, every diameter of a
+circle also a chord.
+
+Is every chord of a circle
+also a diameter? (Hint: Chords
+can have different lengths.)
+No, chord can have
+different lengths
+
+--------------------
+
+--- PAGE 005 ---
+Answer the following:-
+
+Answer the following:-
+List out the parallel lines,
+intersecting lines and unconcurrent
+lines in $B$ the given figure.
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>E</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K</td>
+<td rowspan="2">L</td>
+<td>H&gt;</td>
+</tr>
+<tr>
+<td>G</td>
+<td>I &lt; M &lt; N &lt; O &lt; J</td>
+</tr>
+<tr>
+<td>A</td>
+<td>C</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+
+Parallel - $\overleftrightarrow{GH} \parallel \overleftrightarrow{IJ}$, $\overleftrightarrow{AB} \parallel \overleftrightarrow{CD}$
+Intersecting - $\overleftrightarrow{GH}$ and $\overleftrightarrow{AB}$, $\overleftrightarrow{GH}$ and $\overleftrightarrow{CD}$. $\overleftrightarrow{GH}$
+and $\overleftrightarrow{EF}$, $\overleftrightarrow{IJ}$, and $\overleftrightarrow{AB}$, $\overleftrightarrow{IJ}$ and $\overleftrightarrow{CD}$,
+$\overleftrightarrow{EF}$ and $\overleftrightarrow{EF}$, $\overleftrightarrow{CD}$ and $\overleftrightarrow{EF}$
+
+--------------------
+
+--- PAGE 006 ---
+Answer the following:-
+List out the parallel lines,
+intersecting lines and concurrent
+lines in $B$ the given figure.
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th colspan="2">E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K</td>
+<td>L</td>
+<td></td>
+</tr>
+<tr>
+<td>G</td>
+<td>H</td>
+<td></td>
+</tr>
+<tr>
+<td>I M N O J</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>A C</td>
+<td>V</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+Parallel - $\overleftrightarrow{GH} \parallel \overleftrightarrow{IJ}$, $\overleftrightarrow{AB} \perp \overleftrightarrow{CD}$
+Intersecting - $\overleftrightarrow{GH}$ and $\overleftrightarrow{AB}$, $\overleftrightarrow{GH}$ and $\overleftrightarrow{CD}, \overleftrightarrow{GH}$
+and $\overleftrightarrow{EF}'$, $\overleftrightarrow{IJ}$, and $\overleftrightarrow{AB}$, $\overleftrightarrow{IJ}$ and $\overleftrightarrow{CP}$,
+and $\overleftrightarrow{EF}'$ and $\overleftrightarrow{EF}$, $\overleftrightarrow{CD}$ and $\overleftrightarrow{FF}$
+
+--------------------
+
+--- PAGE 007 ---
+<table>
+<thead>
+<tr>
+<th colspan="2">c.w</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7,</td>
+<td>Which line divides a circle<br/>into two semicircles?<br/>(Hint: It will pass through<br/>the centre.<br/>Sol:- Diameter</td>
+</tr>
+<tr>
+<td>8,</td>
+<td>How many pairs of adjacent<br/>angles does a quadrilateral<br/>have? (Hint: Each side will<br/>have a pair)<br/>Sol: Four pairs.</td>
+</tr>
+</tbody>
+</table>
+
+8, How many pairs of adjacent
+angles does a quadrilateral
+have? (Hint: Each side will
+have a pair)
+Sol. Four pairs.
+
+--------------------
+
+--- PAGE 008 ---
+How does a sector of a circle
+differ from its segment?
+(Hint: Sectors are formed by
+intersecting diagonals.)
+A sector is the region of a circle
+bounded by an arc of a circle and
+the two radii from its end points,
+while a segment is the region
+
+--------------------
+
+--- PAGE 009 ---
+C.W
+
+of a Circle bounded by a chora
+and the arc between its end points.
+
+As every radius, of a circle, also
+its chord?
+(Hint: Radius must pass through
+the centre.)
+
+A radius of a circle is not a
+chord as one end of a radius
+is the Centre, which is not a
+Point on the circle.
+
+--------------------
+
+--- PAGE 010 ---
+C.W
+
+LS-10
+Understanding Elementary Shapes
+EX: 10.9
+
+Measure the lengths of the given
+line segments with a divider and a
+ruler and arrange the lines in
+the descending order of their lengths.
+
+$$ \frac{G}{1cm} H \times \frac{1}{2.5cm} Y $$
+
+$$ E \ 3cm \ F \mid 2cm $$
+
+$$ A \quad 4.5cm \ B $$
+
+$$ C $$
+
+ascending order: $AB, EF, XY, DC, GH$
+
+--------------------
+
+--- PAGE 011 ---
+friday
+7/16/25
+
+$$ \frac{C \cdot W}{EX: 10 \cdot 2} $$
+
+State by observation the angle which
+is greater of the two.
+
+$$ \vec{r} = Ld > LC $$
+
+--------------------
+
+--- PAGE 012 ---
+<table>
+<thead>
+<tr>
+<th>Friday<br/>11/025</th>
+<th>C.W</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4,</td>
+<td>Name the line given in at<br/>least ten ways choosing only<br/>two letters at a time .</td>
+</tr>
+<tr>
+<td>Sol:-</td>
+<td>AB, AC, AD, AE, BC, BP, BE<br/>CD, CE, DE</td>
+</tr>
+<tr>
+<td>5,</td>
+<td>List the points that are collinear<br/>on the line segment AE.<br/>R S T<br/>A B C D E<br/>P Q</td>
+</tr>
+<tr>
+<td>Sol:-</td>
+<td>A, B, C, D, E</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 013 ---
+<table>
+<thead>
+<tr>
+<th>Friday<br/>7/4/25</th>
+<th>C.W</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iii,</td>
+<td>e<br/>f<br/>=Le &gt; lf</td>
+</tr>
+<tr>
+<td>iv,</td>
+<td>d<br/>e<br/>=ld &gt; Le</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 014 ---
+<table>
+<thead>
+<tr>
+<th>Friday<br/>7/11/25</th>
+<th>c.w</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4,</td>
+<td>Name the types of angles whose<br/>measures are given below.</td>
+</tr>
+<tr>
+<td>i, 86°</td>
+<td>Q<br/>O Acute P</td>
+</tr>
+<tr>
+<td>ii, 145°</td>
+<td>O Obtuse angle<br/>P</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 015 ---
+<table>
+<thead>
+<tr>
+<th>day<br/>25</th>
+<th>C.W</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iii,</td>
+<td>32°</td>
+</tr>
+<tr>
+<td colspan="2">Right angle Acute P&gt; 32° O &gt;<br/>O</td>
+</tr>
+<tr>
+<td>iv,<br/>00</td>
+<td>Zero</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 016 ---
+<table>
+<thead>
+<tr>
+<th>Friday<br/>7/11/25</th>
+<th>C.W</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v) 90°</td>
+<td>Right</td>
+</tr>
+<tr>
+<td>vi) 135°</td>
+<td>Obtuse D&gt;</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 017 ---
+The hands of a clock cover $360^\circ$
+in one rotation. How many degrees
+will the minute hand turn
+between 10'clock and 50'clock?
+The minute hand covers $360^\circ$ in 60-
+min (1 hour)
+Between 10'clock and 5'o clock
+there are 4 hours.
+The minutes hand will make
+$= 4 \times 360^\circ = 1440^\circ$
+coverings
+The minute hand will turn 1440
+degrees between 1'o clock and
+5'o clock.
+
+--------------------
+
+--- PAGE 018 ---
+<table>
+<thead>
+<tr>
+<th>day<br/>'25</th>
+<th>c. w</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4)</td>
+<td>Classify the following triangles<br/>based on their angles</td>
+</tr>
+<tr>
+<td>i)</td>
+<td>70°, 90°, 20°</td>
+</tr>
+<tr>
+<td>Sol:-</td>
+<td>Right angle</td>
+</tr>
+<tr>
+<td>ii)</td>
+<td>35°, 75°, 70°</td>
+</tr>
+<tr>
+<td></td>
+<td>Acute cangle</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 019 ---
+C.W
+
+5, Can a triangle be drawn with
+the following measures of angles?
+
+sol: The angles is $30+70+90=190$
+No, its not triangle be drawn with
+following measures of angles.
+
+ii) $25^\circ, 75^\circ, 80^\circ$
+
+The angles is $25+75+80=180$
+Yes, we can drawn with the
+following measures of angles.
+
+Find the third angle of the
+triangle when two angles are
+given
+
+--------------------
+
+--- PAGE 020 ---
+<table>
+<thead>
+<tr>
+<th rowspan="2">Tuesday,<br/>14/01/25</th>
+<th>c.w</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i) 40°,60°</td>
+</tr>
+<tr>
+<td>Sol:- 40°+60°=100°<br/>180°-100=80°</td>
+</tr>
+<tr>
+<td>ii) 55°,80°</td>
+</tr>
+<tr>
+<td>Sol:- 55+80°=135°<br/>180°-135°=45°</td>
+</tr>
+<tr>
+<td>iii) 68°,47°</td>
+</tr>
+<tr>
+<td>Sol:- 68°+47°=115°<br/>180°-115°=65°</td>
+</tr>
+<tr>
+<td>iv) 94°,32°</td>
+</tr>
+<tr>
+<td>Sol:- 94°+32°=126°<br/>180°-126°=54°</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 021 ---
+Find the measures of the angles
+of $\triangle ABC$ if its angles are in the
+ratio $1:3:5$.
+
+--------------------
+
+--- PAGE 022 ---
+C,W
+
+Write any two similarities
+between the following.
+
+a rectangle and a parallelogram
+opposite sides are equal, oppo
+angles are equal.
+a square and a rhombus.
+all sides are equal, opposite su
+angles are equal, opposite sid
+are parallel
+
+--------------------
+
+--- PAGE 023 ---
+Friday
+31/10/25
+
+Name the vertex and arms in
+each of the given angles.
+
+tc.
+
+S
+
+Vertex = B
+Arms = BC, BA
+
+--------------------
+
+--- PAGE 024 ---
+Thursday
+13/11/25
+
+Challenge Yourself
+
+$A, B, C, D$ and $E$ are 5 points on a
+line segment such that $AE = 10cm$,
+$AB = 3cm$ and $DE = 2cm$. If $C$ is
+the midpoint of $AE$:
+find the length of $BC$ and $CP$
+
+find the length of $AC + BP$
+name the points outside $BD$
+(Hint: Draw line segment $AE$ and
+mark the points.)
+
+$L \longrightarrow 5cm \longrightarrow L \longrightarrow 5cm \longrightarrow$
+$A \ 3cm \ B \ 2cm \ C \quad 3cm \ D \ 2cm \ E$
+$+10cm$
+
+--------------------
+
+--- PAGE 025 ---
+C.W
+
+In a right triangle $ABC$, find
+$\angle A$ if $\angle C$ is $58^\circ$.
+
+(Hint: Angles of a Triangle add up
+to $180^\circ$)
+
+--------------------
+
+--- PAGE 026 ---
+Thursday
+
+In an isosceles $\triangle XYZ$, $\angle X$ and 13 | 425
+$\angle Y$ are equab. If $\angle Z$ is equal to . S Sol:-
+$36^\circ$, find the measures of $\angle X$ and
+$\angle Y$.
+(Hint: Write given the statement
+as a mathematical expression.)
+
+$$ 180^\circ - \frac{36^\circ}{72} = 194^\circ $$
+$$ = \frac{+44y}{x_1} = 72^\circ $$
+
+7,
+
+Find the angles of $\Delta PQR$, if
+its angles are in the ratio $2:3:4$.
+(Hint: Let the angles be $2x, 3x$
+and $4x$.)
+
+Ratio = $2 + 3 + 4 = 9$
+
+$$ \frac{2}{91} \times \overline{+80}^{20} = 40^\circ $$
+
+$$ \frac{3}{91} \times \overset{20}{+80} = 60^\circ $$
+
+--------------------
+
+--- PAGE 027 ---
+$$ \frac{4}{91} \times 180 = 80^\circ $$
+
+$40^\circ, 60^\circ, 80^\circ$
+
+Higher Order Thinking Skills
+
+A lens magnifies objects to
+Twice their size. If you look
+at a $30^\circ$ angle through it, what
+will be the measure of the angle
+you see?
+
+The Angle will be $30^\circ$. Only-
+A Lens does not change angles.
+
+If you cut a rectangle into two
+along its diagonals, what type of
+triangles will be formed? If you cut
+a square into two along its diag als,
+what Type of Triangles will be
+
+--------------------
+
+--- PAGE 028 ---
+C.W
+
+formed? Give the types based on
+angles and also based on sides-
+
+When a rectangle is cut along
+a diagonal, the triangles formed
+will be scalene, right triangles
+When a square is cut along a
+diagonal, the Triangles formed
+will be isosceles, right triangles
+
+--------------------
+
+--- PAGE 029 ---
+Answer the following:-
+Measure the sides in each of the
+given figures and list out the
+
+--------------------
+
+--- PAGE 030 ---
+<table>
+<tbody>
+<tr>
+<td>Day<br/>5</td>
+<td>c . w</td>
+</tr>
+<tr>
+<td>ii</td>
+<td>C B A P<br/>AB = BC = CD = DA</td>
+</tr>
+<tr>
+<td>Sol:-</td>
+<td>OP = QR, PQ = OR</td>
+</tr>
+<tr>
+<td>iii,<br/>G H I E D F<br/>H G F</td>
+<td>Sol GH = HI = ID = DE<br/>= EF = FG</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 031 ---
+$XY = YZ = ZX$
+
+Crack it
+
+Write any two differences
+between each of the following
+a rectangle and a parallelogram
+In a rectangle, all angles are
+equal; In a general parallelogram
+only opposite angles are equal.
+In a rectangle, the diagonals are
+equal.
+
+--------------------
+
+--- PAGE 032 ---
+C.W
+
+In a general parallelogram,
+diagonals are not equal
+
+a square and a rhombus
+
+In a square, all angles are equal
+In a general rhombus, only
+opposite angles are equal
+
+In a square, diagonals are equal.
+In a general rhombus, diagon-
+are not equal.
+
+a trapezium and a parallelogram
+In a parallelogram, opposite sides
+are parallel.
+
+are parallel.
+In a trapezium, only one pair
+of opposite sides are parallel.
+
+--------------------
+
+--- PAGE 033 ---
+<table>
+<thead>
+<tr>
+<th colspan="2">C.W</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>The diagonals of a parallelogram<br/>bisect each other.<br/>In a non - isosceles trapezium,<br/>the diagonals do not bisect<br/>each other.</td>
+</tr>
+<tr>
+<td>2,</td>
+<td>In a parallelogram PQRS, if<br/>&lt;Q is 105°, find the other<br/>angles.<br/>(Hint : &lt;P = &lt;R; &lt;Q = &lt;S ; (&lt;P + &lt;Q)<br/>= (&lt;R + &lt;S) = 180°)</td>
+</tr>
+<tr>
+<td></td>
+<td>180° - 105° = 75°</td>
+</tr>
+<tr>
+<td></td>
+<td>&lt;P = 75°, &lt;R = 75°, &lt;S = 105°</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 034 ---
+Friday
+11/10/25
+
+c . ω
+
+Vertex = $x$
+Arms = $xz, xy$
+
+Draw a triangle ABC. Mark
+a point P in its interior and
+O in its exterior. Is the
+point A in its exterior or in
+its interior?
+
+--------------------
+
+--- PAGE 035 ---
+Clw
+
+2 Fill in the Blanks
+a) A cylinder has curved edge
+b) A cone has curved edges and flat Faces
+c) A square Pyramid has 5 faces
+d) A sphere has 1 curved faces.
+e) A cuboid has 12 edges, 8 vertices and 6 faces
+
+--------------------
+
+--- PAGE 036 ---
+C,W
+
+Mixed Bag?
+
+What is a vertex? How many
+vertices does a cuboid have?
+
+What is a vertex? How many
+vertices does a cuboid have?
+
+A vertex is a point where
+the edges of a solid meet. A
+cuboid has 8 vertices.
+
+What are edges?
+
+Edges are the line segments where
+the adjacent faces of a solid
+meet.
+
+--------------------
+
+--- PAGE 037 ---
+How many faces, edges and
+vertices does a triangular pyramid
+have?
+
+4 Faces, 6 Edges and 4 Vertices.
+
+Which shape has one unbroken
+curved surface?
+
+Sphere
+
+How many edges does a
+cylinder have?
+
+--------------------
+
+--- PAGE 038 ---
+Differentiate between a cube
+and a cuboid?
+
+<table>
+<thead>
+<tr>
+<th>Cube</th>
+<th>Cuboid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1) Cube has equal,<br/>length, width and<br/>height.</td>
+<td>1) Cuboid has<br/>different dimensions</td>
+</tr>
+<tr>
+<td>2) A cube has 6<br/>square faces</td>
+<td>2) cuboid has 6<br/>rectangular faces</td>
+</tr>
+<tr>
+<td colspan="2">7) Differentiate between a pyramid<br/>and a prism.</td>
+</tr>
+<tr>
+<th>Pyramid</th>
+<th>Prism</th>
+</tr>
+<tr>
+<td>1) A pyramid has one<br/>base</td>
+<td>2) Prism has two bases</td>
+</tr>
+<tr>
+<td>2) A pyramid has trian-<br/>gular sides</td>
+<td>2) Prism has rectangular<br/>sides</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 039 ---
+What is the shape of the base
+of a triangular prism? What
+is the shape of each of its
+faces?
+
+Triangle, Rectangle
+
+--------------------
+
+--- PAGE 040 ---
+Chapter-12 Symmetry
+Symmetry - An object has symmetry
+if it can be divided into two
+equal parts such that one part
+coincides with the other.
+
+Eg:-
+
+This image contains no text. It is a drawing of two symmetrical shapes connected at their centers, resembling four-leaf clovers or butterflies facing each other.
+
+-> Line of Symmetry
+
+Line of Symmetry:— A line that divides
+a given figure into two identical
+halves is called the axis of symmetry
+or the line of symmetry
+
+--------------------
+
+--- PAGE 041 ---
+<table>
+<thead>
+<tr>
+<th colspan="2">C.W<br/>Lines of Symmetry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vertical line of symm-<br/>etry</td>
+<td>Horizontal Line of<br/>symmetry</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Quadrilateral :- A polygon with four<br/>sides is called a quadrilateral</td>
+<td></td>
+</tr>
+<tr>
+<td>① square<br/>④</td>
+<td>①</td>
+</tr>
+<tr>
+<td>A square has 4 lines<br/>of symmetry.</td>
+<td>A rectangle has 2 li<br/>of symmetoy</td>
+</tr>
+</tbody>
+</table>
+
+--------------------
+
+--- PAGE 042 ---
+saturday
+21/11/25
+
+C-W
+
+3, Rhombus
+
+A rhombus has 2
+lines of Symmetry-
+
+21/11/25
+
+4, Kite
+
+A kite has 1 line of
+symmetry.
+
+--------------------
+
+--- PAGE 043 ---
+& riday
+31/10/25
+3 Sol:
+
+<table>
+<tbody>
+<tr>
+<td>A</td>
+</tr>
+<tr>
+<td>.Q</td>
+</tr>
+<tr>
+<td>.P</td>
+</tr>
+<tr>
+<td>B</td>
+</tr>
+<tr>
+<td>C</td>
+</tr>
+</tbody>
+</table>
+
+Point $A$ is on the triangle.
+
+Name the angles in the
+following figures.
+
+ii,
+$a$
+
+--------------------
+
+--- PAGE 044 ---
+friday
+11/10/25
+
+Yr
+आ
+
+Draw a quadrilateral PQRS.
+Draw its diagonals. Is the
+meeting point of the diagonals
+in the interior or exterior
+of the quadrilateral?
+s
+
+diagonals
+
+The meeting point of the diagonals
+is in the interior of the
+quadrilateral.
+
+--------------------
+
+--- PAGE 045 ---
+Draw a quadrilateral KLMN
+and state:
+
+i) two pairs of opposite sides
+Sol: KL and MN, KN and LM.
+ii) two pairs of opposite angles
+Sol: <K and <M, <N and <L
+iii) two pairs of adjacent sides
+Sol: KL and <M, LM and MN
+iv) two pairs of adjacent angles
+Sol: <K and <<, <M, and <N
+
+--------------------
+
+--- PAGE 046 ---
+Challenge Yourself
+
+If two lines in a plane, do
+not intersect at any point,
+what are they called?
+Hint: The prefix 'para' means
+alongside:)
+
+its called parallel line
+
+How many vertices can be
+found in a hexagon?
+(Hint: A polygon has as many
+vertices as sides.)
+
+Six vertices can be
+found in a hexagon
+
+$A = \frac{1}{2}bh$
+
+$V = A \times h$
+
+$C_u, V = 490 - 375 = 115$ cm³
+
+$P_{air} = P_{\text{atm}} + \rho g H$
+
+$\Delta p = \frac{\rho v^2}{2}$
+
+$H = \frac{v^2}{2g}$
+
+$T = T_s + \frac{p}{\rho R}$
+
+$W = mgh$
+
+$E = mc^2$
+
+$F = ma$
+
+$L = vt$
+
+$S = at + bt^2$
+
+$I = IRt$
+
+$Q = it\sqrt{m(M-m)}$
+
+$N = nRT/PV$
+
+$D = rt$
+
+$G = mg$
+
+$B = mv/(At)$
+
+$K = \frac{mv}{(R+r)t}$
+
+$U = IAr/\sigma t$
+
+$J = J_c r / (rt)^n$
+
+$X = X'e^{-kt}$
+
+$Y = Y'\sin(\omega t+\phi)$
+
+$Z = Z'\cos(\omega t-\phi)$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+$w = w'$
+
+$x = x'$
+
+$y = y'$
+
+$z = z'$
+
+$t = t'$
+
+$a = a'$
+
+$b = b'$
+
+$c = c'$
+
+$d = d'$
+
+$e = e'$
+
+$f = f'$
+
+$g = g'$
+
+$h = h'$
+
+$i = i'$
+
+$j = j'$
+
+$k = k'$
+
+$l = l'$
+
+$m = m'$
+
+$n = n'$
+
+$o = o'$
+
+$p = p'$
+
+$q = q'$
+
+$r = r'$
+
+$s = s'$
+
+$t = t'$
+
+$u = u'$
+
+$v = v'$
+
+--------------------
+
+--- PAGE 047 ---
+Vertices - $P, Q, R$
+Sides - $PQ, QR, RP$
+Angles - $\angle P, \angle Q, \angle R$
+
+In the given figure, name some
+arcs and classify them as major
+and minor arcs. Shade the major
+the arc AC. formed by
+
+--------------------
+

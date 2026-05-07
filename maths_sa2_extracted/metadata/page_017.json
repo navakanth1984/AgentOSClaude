@@ -1,0 +1,73 @@
+{
+  "page_num": 17,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.466356+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_17_block_004",
+      "coordinates": {
+        "x1": 151.88796997070312,
+        "y1": 292.2084655761719,
+        "x2": 874.7399291992188,
+        "y2": 1105.1629638671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.684414803981781,
+      "reading_order": 5,
+      "text": "The hands of a clock cover $360^\\circ$\nin one rotation. How many degrees\nwill the minute hand turn\nbetween 10'clock and 50'clock?\nThe minute hand covers $360^\\circ$ in 60-\nmin (1 hour)\nBetween 10'clock and 5'o clock\nthere are 4 hours.\nThe minutes hand will make\n$= 4 \\times 360^\\circ = 1440^\\circ$\ncoverings\nThe minute hand will turn 1440\ndegrees between 1'o clock and\n5'o clock."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_17_block_000",
+      "coordinates": {
+        "x1": 22.50340461730957,
+        "y1": 170.6295623779297,
+        "x2": 140.71530151367188,
+        "y2": 363.2171325683594
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.611723005771637,
+      "reading_order": 1,
+      "text": "Friday\n1/11/25\n5,"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_17_block_002",
+      "coordinates": {
+        "x1": 45.065216064453125,
+        "y1": 1086.7159423828125,
+        "x2": 136.95083618164062,
+        "y2": 1205.610595703125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5455530285835266,
+      "reading_order": 3,
+      "text": "Jay Hillel"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_17_block_001",
+      "coordinates": {
+        "x1": 54.629817962646484,
+        "y1": 512.5299682617188,
+        "x2": 142.56825256347656,
+        "y2": 576.3550415039062
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.5418199896812439,
+      "reading_order": 2,
+      "text": "Sobin"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_17_block_003",
+      "coordinates": {
+        "x1": 377.0981140136719,
+        "y1": 241.08584594726562,
+        "x2": 475.400146484375,
+        "y2": 288.54193115234375
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.5336158275604248,
+      "reading_order": 4,
+      "text": "C.W"
+    }
+  ]
+}

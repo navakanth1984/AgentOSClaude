@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saga of Veera Hanuman — Graphic Novel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background:#0d0d0d; color:#fcebd2;
+            font-family:'Cinzel',serif;
+            display:flex; flex-direction:column; align-items:center;
+            padding:60px 40px;
+        }
+        header { text-align:center; margin-bottom:50px; }
+        header h1 { font-size:3.5rem; color:#c9a84c; text-shadow:0 0 30px rgba(201,168,76,.4); letter-spacing:8px; margin-bottom:12px; }
+        header p { font-size:.9rem; opacity:.55; letter-spacing:3px; }
+
+        .progress-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:60px; justify-content:center; }
+        .progress-step { padding:8px 20px; border:1px solid #c9a84c; font-size:.75rem; letter-spacing:1px; color:#c9a84c; }
+        .progress-step.done { background:#c9a84c; color:#000; }
+
+        .page-section { display:flex; flex-direction:column; align-items:center; margin-bottom:80px; width:100%; max-width:1260px; }
+        .page-label { font-size:.75rem; letter-spacing:4px; opacity:.45; margin-bottom:14px; text-transform:uppercase; }
+
+        iframe.portrait  { width:820px; height:1220px; border:none; box-shadow:0 20px 80px rgba(0,0,0,.9); }
+        iframe.landscape { width:1240px; height:820px; border:none; box-shadow:0 20px 80px rgba(0,0,0,.9); }
+
+        footer { margin-top:80px; text-align:center; font-size:.75rem; opacity:.35; letter-spacing:2px; line-height:2; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>VEERA HANUMAN</h1>
+        <p>THE GRAPHIC NOVEL · COMPLETE EDITION · 12 PANELS · 6 PAGES</p>
+    </header>
+
+    <div class="progress-bar">
+        <div class="progress-step done">Page 1 · The Divine Leap ✓</div>
+        <div class="progress-step done">Page 2 · The Cosmic Clash ✓</div>
+        <div class="progress-step done">Page 3 · Breath of the Universe ✓</div>
+        <div class="progress-step done">Page 4 · The Trusted Minister ✓</div>
+        <div class="progress-step done">Page 5 · The Eternal Servant ✓</div>
+        <div class="progress-step done">Bonus · Lanka Burns ✓</div>
+    </div>
+
+    <div class="page-section">
+        <div class="page-label">Page 1 · The Divine Leap · Full Splash</div>
+        <iframe class="portrait" src="page1.html" loading="lazy"></iframe>
+    </div>
+    <div class="page-section">
+        <div class="page-label">Page 2 · The Cosmic Clash · 3-Panel Grid</div>
+        <iframe class="portrait" src="page2.html" loading="lazy"></iframe>
+    </div>
+    <div class="page-section">
+        <div class="page-label">Page 3 · Breath of the Universe · 4-Panel Grid</div>
+        <iframe class="portrait" src="page3.html" loading="lazy"></iframe>
+    </div>
+    <div class="page-section">
+        <div class="page-label">Page 4 · The Trusted Minister · 2-Panel</div>
+        <iframe class="portrait" src="page4.html" loading="lazy"></iframe>
+    </div>
+    <div class="page-section">
+        <div class="page-label">Page 5 · The Eternal Servant · Full Splash</div>
+        <iframe class="portrait" src="page5.html" loading="lazy"></iframe>
+    </div>
+    <div class="page-section">
+        <div class="page-label">Bonus · The Inferno of Lanka · Panoramic Spread</div>
+        <iframe class="landscape" src="page_bonus.html" loading="lazy"></iframe>
+    </div>
+
+    <footer>
+        <p>SAGA OF VEERA HANUMAN</p>
+        <p>CHANDAMAMA / AMAR CHITRA KATHA AESTHETIC · 12 PANELS · ALL COMPLETE</p>
+        <p>C:\Users\navka\navakanth001\hanuman_animatic\graphic_novel\index.html</p>
+    </footer>
+</body>
+</html>

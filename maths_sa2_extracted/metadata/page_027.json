@@ -1,0 +1,99 @@
+{
+  "page_num": 27,
+  "image_width": 899,
+  "image_height": 1599,
+  "created_at": "2026-02-14T03:08:32.148910+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_006",
+      "coordinates": {
+        "x1": 122.65898132324219,
+        "y1": 943.9901733398438,
+        "x2": 814.8861694335938,
+        "y2": 1173.4520263671875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9438735246658325,
+      "reading_order": 7,
+      "text": "If you cut a rectangle into two\nalong its diagonals, what type of\ntriangles will be formed? If you cut\na square into two along its diag als,\nwhat Type of Triangles will be"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_004",
+      "coordinates": {
+        "x1": 138.98236083984375,
+        "y1": 551.655517578125,
+        "x2": 801.9588012695312,
+        "y2": 796.9334716796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9304383397102356,
+      "reading_order": 5,
+      "text": "A lens magnifies objects to\nTwice their size. If you look\nat a $30^\\circ$ angle through it, what\nwill be the measure of the angle\nyou see?"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_005",
+      "coordinates": {
+        "x1": 147.18310546875,
+        "y1": 804.8853759765625,
+        "x2": 802.3281860351562,
+        "y2": 932.38818359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9128661155700684,
+      "reading_order": 6,
+      "text": "The Angle will be $30^\\circ$. Only-\nA Lens does not change angles."
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_003",
+      "coordinates": {
+        "x1": 178.30426025390625,
+        "y1": 458.99114990234375,
+        "x2": 798.8995361328125,
+        "y2": 543.6387939453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8813306093215942,
+      "reading_order": 4,
+      "text": "Higher Order Thinking Skills"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_002",
+      "coordinates": {
+        "x1": 200.89276123046875,
+        "y1": 334.04168701171875,
+        "x2": 433.6287841796875,
+        "y2": 403.63360595703125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.7841300964355469,
+      "reading_order": 3,
+      "text": "$40^\\circ, 60^\\circ, 80^\\circ$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_001",
+      "coordinates": {
+        "x1": 163.88735961914062,
+        "y1": 247.06776428222656,
+        "x2": 446.12261962890625,
+        "y2": 331.6917724609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6920561790466309,
+      "reading_order": 2,
+      "text": "$$ \\frac{4}{91} \\times 180 = 80^\\circ $$"
+    },
+    {
+      "block_id": "20260214_90f94d53-0678-432b-ae56-1babd95de4ea_27_block_000",
+      "coordinates": {
+        "x1": 30.947948455810547,
+        "y1": 196.5635223388672,
+        "x2": 138.30174255371094,
+        "y2": 314.90655517578125
+      },
+      "layout_tag": "sidebar",
+      "confidence": 0.614069402217865,
+      "reading_order": 1,
+      "text": "13/11/25\n\nSol-"
+    }
+  ]
+}

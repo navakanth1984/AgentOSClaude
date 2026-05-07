@@ -1,0 +1,149 @@
+<template id="slide-9-template">
+  <div data-composition-id="slide-9" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+    <div class="scene-content">
+      <h2 class="step-num">STEP 3</h2>
+      <h3 class="step-title">DISTRIBUTE & REGISTER</h3>
+      
+      <div class="network-viz">
+        <img src="../assets/image9.png" class="network-img" alt="Context Registry Network">
+        
+        <!-- Animated file flows -->
+        <div class="flow-line f1">.agentmd</div>
+        <div class="flow-line f2">.agentmd</div>
+        <div class="flow-line f3">.agentmd</div>
+        <div class="flow-line f4">.agentmd</div>
+      </div>
+
+      <div class="conflict-zone">
+        <div class="bolt"></div>
+        <div class="alert-box">
+          <div class="alert-header">AI DEPENDENCY HELL</div>
+          <p>Shared context creates the same versioning and dependency conflicts as shared software libraries.</p>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="slide-9"] {
+        width: 100%;
+        height: 100%;
+        background: #0A0A0A;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px;
+        box-sizing: border-box;
+      }
+      .step-num {
+        font-family: 'JetBrains Mono', monospace;
+        color: #00E5FF;
+        font-size: 24px;
+        letter-spacing: 10px;
+        margin-bottom: 10px;
+        opacity: 0;
+      }
+      .step-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 48px;
+        color: #FFFFFF;
+        margin-bottom: 40px;
+        opacity: 0;
+      }
+      .network-viz {
+        position: relative;
+        width: 1000px;
+        height: 600px;
+        opacity: 0;
+      }
+      .network-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .flow-line {
+        position: absolute;
+        padding: 5px 15px;
+        background: rgba(0, 229, 255, 0.2);
+        border: 1px solid #00E5FF;
+        color: #00E5FF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        border-radius: 4px;
+        opacity: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .conflict-zone {
+        position: absolute;
+        right: 80px;
+        top: 200px;
+        width: 450px;
+        opacity: 0;
+      }
+      .alert-box {
+        background: rgba(255, 68, 68, 0.1);
+        border: 2px solid #FF4444;
+        padding: 30px;
+        border-radius: 8px;
+        margin-top: 150px;
+      }
+      .alert-header {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 900;
+        color: #FF4444;
+        font-size: 24px;
+        margin-bottom: 15px;
+      }
+      .alert-box p {
+        font-family: 'Inter', sans-serif;
+        color: #FFFFFF;
+        font-size: 18px;
+        line-height: 1.6;
+        margin: 0;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function() {
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(".step-num", { opacity: 1, duration: 0.8 }, 0.5);
+        tl.to(".step-title", { opacity: 1, duration: 0.8 }, 0.7);
+        tl.to(".network-viz", { opacity: 1, duration: 1 }, 1.2);
+        
+        // Distribution flows
+        const targets = [
+          { x: -300, y: -200 },
+          { x: 300, y: -200 },
+          { x: -300, y: 200 },
+          { x: 300, y: 200 }
+        ];
+        
+        [".f1", ".f2", ".f3", ".f4"].forEach((f, i) => {
+          tl.to(f, { 
+            opacity: 1, 
+            x: targets[i].x, 
+            y: targets[i].y, 
+            duration: 1.5, 
+            ease: "power2.out",
+            repeat: 5,
+            repeatDelay: 0.5
+          }, 1.5 + (i * 0.2));
+        });
+
+        tl.to(".conflict-zone", { opacity: 1, duration: 1 }, 4);
+        tl.from(".alert-box", { x: 50, duration: 0.8, ease: "back.out(1.7)" }, 4.2);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["slide-9"] = tl;
+      })();
+    </script>
+  </div>
+</template>

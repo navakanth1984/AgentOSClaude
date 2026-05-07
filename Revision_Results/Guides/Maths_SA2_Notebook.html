@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maths SA2 Revision - Geometric Ideas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Architects+Daughter&display=swap');
+
+        :root {
+            --blue-ink: #1a237e;
+            --red-ink: #b71c1c;
+            --pencil: #455a64;
+            --paper-bg: #fffdf5;
+            --line-color: #e3f2fd;
+            --margin-line: #ffcdd2;
+        }
+
+        body {
+            background-color: #455a64;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: var(--paper-bg);
+            width: 850px;
+            min-height: 1200px;
+            padding: 60px 60px 60px 120px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            border: 1px solid #d1d1d1;
+        }
+
+        .notebook-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100px;
+            width: 2px;
+            height: 100%;
+            background-color: var(--margin-line);
+        }
+
+        .sidebar {
+            position: absolute;
+            left: 10px;
+            top: 50px;
+            width: 80px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--pencil);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--red-ink);
+        }
+
+        .hw-tag {
+            border: 2px solid var(--red-ink);
+            padding: 2px 15px;
+            border-radius: 5px;
+            transform: rotate(-2deg);
+        }
+
+        .content {
+            color: var(--blue-ink);
+            font-size: 22px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 28px;
+            text-decoration: underline;
+            color: var(--red-ink);
+            font-family: 'Architects Daughter', cursive;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            margin-left: 30px;
+            font-family: 'Indie Flower', cursive;
+            color: #37474f;
+            line-height: 1.6;
+        }
+
+        .diagram-container {
+            border: 1px dashed #ccc;
+            padding: 20px;
+            margin: 30px 0;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .math-svg {
+            width: 100%;
+            height: 250px;
+        }
+
+        .label-line {
+            stroke: #2e7d32;
+            stroke-width: 1;
+            stroke-dasharray: 2,2;
+        }
+
+        .label-text {
+            font-family: 'Shadows Into Light', cursive;
+            font-size: 16px;
+            fill: #1b5e20;
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-family: 'Shadows Into Light', cursive;
+            color: #90a4ae;
+            transform: rotate(1deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook-page">
+        <div class="sidebar">
+            Maths<br>SA2 Revision<br><br>
+            Chapter 9<br>
+            Basic Ideas
+        </div>
+
+        <div class="header-box">
+            <div class="hw-tag">C.W.</div>
+            <div style="font-size: 20px;">Page Ref: 1-47</div>
+        </div>
+
+        <div class="content">
+            <div class="title">Geometric Ideas & Circles</div>
+
+            <div class="question">Q. In Chapter 9.1, name the following geometric elements:</div>
+            <div class="answer">
+                1. **5 Points:** A, B, C, D, O<br>
+                2. **2 Lines:** PQ, XY<br>
+                3. **8 Rays:** OY, OX, OP, OQ, BY, AX, CP, DQ<br>
+                4. **6 Line Segments:** OA, OB, OC, OD, AB, CD
+            </div>
+
+            <div class="question">Q. What are two circles with the same centre called?</div>
+            <div class="answer">
+                Ans: Two circles with the same centre are called **Concentric Circles**.
+            </div>
+
+            <div class="diagram-container">
+                <svg class="math-svg" viewBox="0 0 400 250">
+                    <!-- Concentric Circles -->
+                    <circle cx="200" cy="125" r="30" fill="none" stroke="#0d47a1" stroke-width="1.5" />
+                    <circle cx="200" cy="125" r="60" fill="none" stroke="#0d47a1" stroke-width="1.5" />
+                    <circle cx="200" cy="125" r="2" fill="#0d47a1" /> <!-- Centre O -->
+                    <text x="205" y="125" font-family="Indie Flower" font-size="14">O</text>
+                    
+                    <!-- Diameter and Chord -->
+                    <line x1="140" y1="125" x2="260" y2="125" stroke="#d32f2f" stroke-width="1.5" stroke-dasharray="4,2" />
+                    <text x="265" y="130" font-family="Indie Flower" font-size="14" fill="#d32f2f">Diameter</text>
+
+                    <line x1="160" y1="80" x2="240" y2="80" stroke="#2e7d32" stroke-width="1.5" />
+                    <text x="245" y="85" font-family="Indie Flower" font-size="14" fill="#2e7d32">Chord</text>
+                </svg>
+            </div>
+
+            <div class="question">Q. Is every diameter of a circle also a chord? Is every chord a diameter?</div>
+            <div class="answer">
+                Ans: **Yes**, every diameter is a chord because it joins two points on the circumference. However, **No**, every chord is not a diameter because chords can have different lengths and don't always pass through the centre.
+            </div>
+
+            <div class="question">Q. Where does the vertex of an angle lie?</div>
+            <div class="answer">
+                Ans: The vertex of an angle lies at the **common end point** of its arms.
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Practice drawing the arcs and angles!
+        </div>
+    </div>
+
+</body>
+</html>

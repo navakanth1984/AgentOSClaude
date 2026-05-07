@@ -1,0 +1,111 @@
+{
+  "version": "1.1",
+  "project": "DAAVA",
+  "dna_id": "CH_CLIMBER_ORBITAL_001",
+  "metadata": {
+    "description": "High-fidelity visual DNA for the orbital maintenance sequence.",
+    "source_frame": "climber_orbital_plate.jpg",
+    "style_tags": ["cinematic", "industrial-sci-fi", "extreme-perspective", "golden-hour-space"]
+  },
+  "character": {
+    "identity": "Orbital Maintenance Specialist",
+    "pose": "Climbing vertical ladder assembly, right hand reaching, left foot driving upward",
+    "apparel": {
+      "base_suit": {
+        "id": "suit_01",
+        "type": "Pressurized Jumpsuit",
+        "color": {
+          "hex": "#E67E22",
+          "name": "Industrial Safety Orange",
+          "weathering": "Heavy soot and abrasion marks on knees and elbows"
+        },
+        "material": "High-tensile ripstop nylon with reinforced padding"
+      },
+      "harness": {
+        "id": "harness_01",
+        "type": "Tactical Multi-Point Climbing Rig",
+        "color": {
+          "hex": "#2C3E50",
+          "name": "Deep Midnight Blue",
+          "accent": "#1ABC9C"
+        },
+        "material": "Synthetic webbing, matte finish, carbon-fiber buckles"
+      },
+      "helmet": {
+        "id": "helmet_01",
+        "type": "Full-Seal Safety Helmet",
+        "color": {
+          "hex": "#F1C40F",
+          "name": "Safety Yellow"
+        },
+        "features": ["Dual LED headlamps (cool white)", "Integrated comms fin", "Polycarbonate visor"]
+      },
+      "footwear": {
+        "id": "boots_01",
+        "type": "Mag-Grip EVA Boots",
+        "color": "#121212",
+        "texture": "Scuffed rubberized sole"
+      }
+    }
+  },
+  "environment": {
+    "location": "Orbital Fueling Pipeline / Space Elevator Truss",
+    "structures": [
+      {
+        "id": "pipeline_01",
+        "type": "Large Diameter Conduits",
+        "material": "Brushed aluminum, weathered steel",
+        "alignment": "Parallel vertical orientation, creating leading lines"
+      },
+      {
+        "id": "truss_01",
+        "type": "Lattice Support Framework",
+        "material": "Grated steel, industrial grey",
+        "detail": "Exposed bolts, hydraulic lines, junction boxes with glowing teal indicators"
+      }
+    ],
+    "background": {
+      "celestial_body": "Gas Giant (Saturn-like)",
+      "lighting_source": "Planetary reflection / Distant Sun",
+      "atmosphere": "Vacuum with light particulate haze (space dust)",
+      "distant_objects": ["Small scout ship ascending", "Orbital moon/ring fragment"]
+    }
+  },
+  "lighting": {
+    "primary": {
+      "type": "Rim / Backlight",
+      "color": "#F39C12",
+      "intensity": "High",
+      "description": "Warm golden glow outlining the character and structure from behind"
+    },
+    "secondary": {
+      "type": "Ambient / Fill",
+      "color": "#34495E",
+      "intensity": "Low",
+      "description": "Cool blue shadows and global illumination from the gas giant"
+    },
+    "accents": {
+      "type": "Point Lights",
+      "color": "#00FFFF",
+      "description": "Cyan status lights on industrial equipment and junction boxes"
+    }
+  },
+  "camera": {
+    "focal_length": "14mm Ultra-Wide",
+    "angle": "Extreme Low Angle (Worm's Eye View)",
+    "aperture": "f/8 (Deep focus)",
+    "composition": "One-point perspective with strong converging lines toward center-top",
+    "depth_of_field": "Infinity focus"
+  },
+  "color_palette": {
+    "dominant": ["#E67E22", "#2C3E50", "#F1C40F"],
+    "accent": ["#00FFFF", "#F39C12"],
+    "contrast_ratio": "High"
+  },
+  "surgical_variables": {
+    "weathering_level": 0.9,
+    "motion_blur": "Minimal",
+    "chromatic_aberration": "Subtle on edges",
+    "grain": "Fine cinematic grain"
+  }
+}

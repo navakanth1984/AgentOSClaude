@@ -1,0 +1,307 @@
+{
+  "page_num": 1,
+  "image_width": 2550,
+  "image_height": 3300,
+  "created_at": "2026-02-12T17:59:40.312138+00:00",
+  "blocks": [
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_008",
+      "coordinates": {
+        "x1": 87.9975814819336,
+        "y1": 919.5741577148438,
+        "x2": 2371.77001953125,
+        "y2": 1134.5694580078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9763702750205994,
+      "reading_order": 9,
+      "text": "An Operations professional with 11+ years of experience indata and analytics and operations management.\nProficient in dashboard design &visualization, customer satisfaction, andmanaging service operations. I am an\nexplorer with a passion for simplification, grasping the big picture, conceptualizing, developingand implementing solutions\nwhile partnering with business leaders & stakeholders."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_002",
+      "coordinates": {
+        "x1": 704.2740478515625,
+        "y1": 181.55455017089844,
+        "x2": 2262.234375,
+        "y2": 416.4581604003906
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.963926374912262,
+      "reading_order": 3,
+      "text": "Operations Management | Business Analysis, reportingand transformation| Data Analytics | Dashboard Management | Project Management| Customer Satisfaction program | Certified Six sigmaGreen Belt|HR Shares services"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_024",
+      "coordinates": {
+        "x1": 804.0877685546875,
+        "y1": 2074.7939453125,
+        "x2": 2371.578857421875,
+        "y2": 2948.521484375
+      },
+      "layout_tag": "image",
+      "confidence": 0.9506306052207947,
+      "reading_order": 25,
+      "text": "The image is a timeline infographic illustrating the evolution of a company's business units and services over a 19-year period. The background features a faint world map. The timeline is marked by three green circular nodes connected by a dotted line, representing key milestones. \n\n1. **2007 - 2010**: The first node highlights \"Bank of America Continuum Solutions.\"\n2. **2010 to 2016**: The second node marks \"Cognizant Technologies,\" which is further specified as \"Reporting & Analytics.\"\n3. **2016 to till date**: The third node identifies \"Deloitte Shared Services - Talent Performance metrics – Reporting and Analytics.\"\n\nThe visual narrative suggests a progression from a specific business unit (Bank of America) to a broader technology provider (Cognizant) and finally to a consulting or shared services role (Deloitte)."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_003",
+      "coordinates": {
+        "x1": 778.6088256835938,
+        "y1": 457.2547912597656,
+        "x2": 1478.7900390625,
+        "y2": 512.4338989257812
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9324908256530762,
+      "reading_order": 4,
+      "text": "Anudeep 20042005@yahoo.com"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_018",
+      "coordinates": {
+        "x1": 1600.4022216796875,
+        "y1": 1661.9935302734375,
+        "x2": 1994.30029296875,
+        "y2": 1719.584716796875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.923860490322113,
+      "reading_order": 19,
+      "text": "Project Management"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_004",
+      "coordinates": {
+        "x1": 780.2645874023438,
+        "y1": 518.2333374023438,
+        "x2": 1393.7503662109375,
+        "y2": 570.6746826171875
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9189021587371826,
+      "reading_order": 5,
+      "text": "anudeepkamuni@gmail.com"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_020",
+      "coordinates": {
+        "x1": 1602.0367431640625,
+        "y1": 1762.696044921875,
+        "x2": 2064.294189453125,
+        "y2": 1819.855712890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9177287817001343,
+      "reading_order": 21,
+      "text": "Business Transformation"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_005",
+      "coordinates": {
+        "x1": 787.9784545898438,
+        "y1": 618.9736328125,
+        "x2": 1212.928466796875,
+        "y2": 685.3859252929688
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9103505611419678,
+      "reading_order": 6,
+      "text": "+91 9505580176"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_019",
+      "coordinates": {
+        "x1": 868.4788818359375,
+        "y1": 1761.994140625,
+        "x2": 1397.6851806640625,
+        "y2": 1822.0130615234375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9065319895744324,
+      "reading_order": 20,
+      "text": "Six sigma green belt trained"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_001",
+      "coordinates": {
+        "x1": 706.3790283203125,
+        "y1": 65.39806365966797,
+        "x2": 1161.5782470703125,
+        "y2": 138.4535675048828
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.8906303644180298,
+      "reading_order": 2,
+      "text": "Anudeep Kamuni"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_000",
+      "coordinates": {
+        "x1": 247.4104766845703,
+        "y1": 80.97042083740234,
+        "x2": 669.6731567382812,
+        "y2": 647.6729736328125
+      },
+      "layout_tag": "image",
+      "confidence": 0.8826180100440979,
+      "reading_order": 1,
+      "text": "The provided image is a portrait photograph of a man and does not contain any chart, graph, or data visualization. The subject is a young man with short dark hair and a beard, smiling at the camera. He is wearing a light beige blazer over a white collared shirt. The background is a plain, light grey wall. As there is no statistical or quantitative information present, no axes, legends, or data trends can be described."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_007",
+      "coordinates": {
+        "x1": 170.19979858398438,
+        "y1": 841.2031860351562,
+        "x2": 609.1211547851562,
+        "y2": 913.83056640625
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.8814474940299988,
+      "reading_order": 8,
+      "text": "Profile Summary"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_015",
+      "coordinates": {
+        "x1": 114.70568084716797,
+        "y1": 1663.0218505859375,
+        "x2": 474.9498291015625,
+        "y2": 1718.339599609375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.849909782409668,
+      "reading_order": 16,
+      "text": "HR shares services"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_017",
+      "coordinates": {
+        "x1": 867.123779296875,
+        "y1": 1661.8111572265625,
+        "x2": 1204.8131103515625,
+        "y2": 1718.7288818359375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8348290920257568,
+      "reading_order": 18,
+      "text": "HR data Analytics"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_016",
+      "coordinates": {
+        "x1": 116.59649658203125,
+        "y1": 1763.9202880859375,
+        "x2": 359.3615417480469,
+        "y2": 1819.136962890625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.8233808279037476,
+      "reading_order": 17,
+      "text": "Automations"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_009",
+      "coordinates": {
+        "x1": 96.76636505126953,
+        "y1": 1286.769775390625,
+        "x2": 434.79693603515625,
+        "y2": 1362.12841796875
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.8231121897697449,
+      "reading_order": 10,
+      "text": "Education"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_014",
+      "coordinates": {
+        "x1": 93.91433715820312,
+        "y1": 1572.6357421875,
+        "x2": 389.48516845703125,
+        "y2": 1651.665283203125
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.8180342316627502,
+      "reading_order": 15,
+      "text": "Skill Set"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_023",
+      "coordinates": {
+        "x1": 801.2332763671875,
+        "y1": 1981.586181640625,
+        "x2": 1299.2105712890625,
+        "y2": 2078.539306640625
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.7677277326583862,
+      "reading_order": 24,
+      "text": "Career Timeline"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_021",
+      "coordinates": {
+        "x1": 92.19048309326172,
+        "y1": 1987.1214599609375,
+        "x2": 435.09710693359375,
+        "y2": 2077.529296875
+      },
+      "layout_tag": "section-title",
+      "confidence": 0.7464810609817505,
+      "reading_order": 22,
+      "text": "Soft Skills"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_011",
+      "coordinates": {
+        "x1": 90.75094604492188,
+        "y1": 1364.224365234375,
+        "x2": 739.3167724609375,
+        "y2": 1525.7047119140625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6845911145210266,
+      "reading_order": 12,
+      "text": "Graduation from PMV, Hyderabad\nIIM Calcutta - EGMP\nPursuing Prince 2 certification"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_006",
+      "coordinates": {
+        "x1": 101.92792510986328,
+        "y1": 817.0899658203125,
+        "x2": 168.07701110839844,
+        "y2": 900.681396484375
+      },
+      "layout_tag": "image",
+      "confidence": 0.6647616028785706,
+      "reading_order": 7,
+      "text": "The image contains a pixelated icon of a face with glasses. There is no text in the image."
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_022",
+      "coordinates": {
+        "x1": 95.69710540771484,
+        "y1": 2095.6064453125,
+        "x2": 767.1051635742188,
+        "y2": 2805.753173828125
+      },
+      "layout_tag": "table",
+      "confidence": 0.6490887403488159,
+      "reading_order": 23,
+      "text": "<table>\n<tbody>\n<tr>\n<td>Communicator</td>\n<td>Mentor</td>\n</tr>\n<tr>\n<td>Collaborator</td>\n<td>Change Agent</td>\n</tr>\n<tr>\n<td>Thinker</td>\n<td>Planner</td>\n</tr>\n</tbody>\n</table>"
+    },
+    {
+      "block_id": "20260212_52d1ff8e-8546-43cf-9b7d-5e4231655b42_1_block_010",
+      "coordinates": {
+        "x1": 92.01468658447266,
+        "y1": 1364.22509765625,
+        "x2": 740.6165771484375,
+        "y2": 1417.8052978515625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.5361167192459106,
+      "reading_order": 11,
+      "text": "Graduation from PMV, Hyderabad"
+    }
+  ]
+}

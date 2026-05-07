@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saga of Veera Hanuman - Page 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        body { margin:0; padding:0; background:#1a1a1a; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+        .page {
+            width:800px; height:1200px; background:#fff;
+            box-shadow:0 0 50px rgba(0,0,0,.5);
+            display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+            gap:10px; padding:10px; box-sizing:border-box;
+            border:10px solid #000; position:relative;
+        }
+        .panel { position:relative; overflow:hidden; border:4px solid #000; }
+        .panel img { width:100%; height:100%; object-fit:cover; display:block; }
+        .caption-box {
+            position:absolute; background:#fcebd2; border:2px solid #000;
+            padding:10px 14px; z-index:10; box-shadow:5px 5px 0 rgba(0,0,0,.2);
+        }
+        .caption-text { margin:0; font-family:'Playfair Display',serif; font-size:.9rem; color:#2c1e12; line-height:1.35; font-weight:700; }
+        .p1-cap { top:12px; left:12px; max-width:190px; }
+        .p2-cap { bottom:12px; right:12px; max-width:190px; }
+        .p3-cap { top:12px; right:12px; max-width:190px; }
+        .p4-cap { bottom:12px; left:12px; max-width:190px; }
+        .page-number { position:absolute; bottom:8px; right:18px; font-family:'Cinzel',serif; font-size:.75rem; color:#000; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="panel">
+            <img src="assets/page3_p1.png" alt="Vayu's Rage">
+            <div class="caption-box p1-cap">
+                <p class="caption-text">Enraged, Vayu withdrew all the air from the universe…</p>
+            </div>
+        </div>
+        <div class="panel">
+            <img src="assets/page3_p2.png" alt="Universe at Standstill">
+            <div class="caption-box p2-cap">
+                <p class="caption-text">…bringing life to a standstill until the gods intervened.</p>
+            </div>
+        </div>
+        <div class="panel">
+            <img src="assets/page3_p3.png" alt="Divine Boons">
+            <div class="caption-box p3-cap">
+                <p class="caption-text">The gods revived the boy and showered him with cosmic boons of invincibility.</p>
+            </div>
+        </div>
+        <div class="panel">
+            <img src="assets/page3_p4.png" alt="Learning from Surya">
+            <div class="caption-box p4-cap">
+                <p class="caption-text">As he grew, Hanuman approached Surya to learn the sacred Vedas.</p>
+            </div>
+        </div>
+        <div class="page-number">3</div>
+    </div>
+</body>
+</html>

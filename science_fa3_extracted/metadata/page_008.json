@@ -1,0 +1,86 @@
+{
+  "page_num": 8,
+  "image_width": 1080,
+  "image_height": 1447,
+  "created_at": "2026-02-14T03:07:13.999451+00:00",
+  "blocks": [
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_8_block_003",
+      "coordinates": {
+        "x1": 113.79736328125,
+        "y1": 374.79449462890625,
+        "x2": 1037.6688232421875,
+        "y2": 601.2066650390625
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9293548464775085,
+      "reading_order": 4,
+      "text": "Give examples to show how the\ntemperature and the amount of\nwater available affect animals\nand plants in a habitat?"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_8_block_002",
+      "coordinates": {
+        "x1": 121.76493835449219,
+        "y1": 268.52728271484375,
+        "x2": 750.8019409179688,
+        "y2": 362.142333984375
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.9273245930671692,
+      "reading_order": 3,
+      "text": "Long answer questions: -"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_8_block_001",
+      "coordinates": {
+        "x1": 753.8193359375,
+        "y1": 100.88766479492188,
+        "x2": 1017.27392578125,
+        "y2": 192.8607635498047
+      },
+      "layout_tag": "header",
+      "confidence": 0.9068023562431335,
+      "reading_order": 2,
+      "text": "PAGE NO:\nDATE: / /20"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_8_block_000",
+      "coordinates": {
+        "x1": 413.0498962402344,
+        "y1": 166.39614868164062,
+        "x2": 546.7966918945312,
+        "y2": 216.55044555664062
+      },
+      "layout_tag": "header",
+      "confidence": 0.8361237645149231,
+      "reading_order": 1,
+      "text": "C.W"
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_8_block_006",
+      "coordinates": {
+        "x1": 88.64962768554688,
+        "y1": 1100.4901123046875,
+        "x2": 1026.9110107421875,
+        "y2": 1349.2882080078125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.6463834643363953,
+      "reading_order": 7,
+      "text": "2, Camels which live in the desert\nhabitat, can drink more than\n100 litres of water, this water\nim is stored in the body."
+    },
+    {
+      "block_id": "20260214_5844806d-4167-4224-ac2f-075855bfcc78_8_block_004",
+      "coordinates": {
+        "x1": 82.26066589355469,
+        "y1": 625.0950927734375,
+        "x2": 1040.9444580078125,
+        "y2": 1339.653564453125
+      },
+      "layout_tag": "paragraph",
+      "confidence": 0.602427065372467,
+      "reading_order": 5,
+      "text": "In desert habitat temperature is\nhigh and rainfall low, plants and\nanimal adapt to suit climatic\nconditions For examples:-\n1. Many plants such as cactus have\nfleshy stem to store food and\nwater. Most desert plants have\nvery long roots to deep into\nthe soil in search of food.\n2. Camels which live in the desert\nhabitat, can drink more than\n100 litres of water, this water\nin is stored in the body."
+    }
+  ]
+}

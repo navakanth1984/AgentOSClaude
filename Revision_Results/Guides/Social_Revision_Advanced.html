@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Science - Panchayat Raj Structure</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&display=swap');
+
+        body {
+            background-color: #dcdcdc;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .page {
+            background-color: #fffdf0;
+            width: 850px;
+            min-height: 1200px;
+            padding: 60px;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.2);
+            position: relative;
+            background-image: 
+                linear-gradient(#e1f0ff 1px, transparent 1px),
+                linear-gradient(90deg, transparent 79px, #ffb3b3 79px, #ffb3b3 81px, transparent 81px);
+            background-size: 100% 32px, 100% 100%;
+            line-height: 32px;
+            overflow: hidden;
+        }
+
+        .sidebar-date {
+            position: absolute;
+            left: 10px;
+            top: 50px;
+            font-family: 'Gochi Hand', cursive;
+            color: #555;
+            font-size: 16px;
+            line-height: 1.2;
+            transform: rotate(-2deg);
+        }
+
+        .header-fields {
+            display: flex;
+            justify-content: flex-end;
+            gap: 40px;
+            font-family: 'Gochi Hand', cursive;
+            color: #c0392b;
+            margin-bottom: 30px;
+        }
+
+        .blue-ink {
+            color: #1e3a8a;
+            font-size: 24px;
+        }
+
+        /* Diagram Styling */
+        .diagram-section {
+            margin: 50px 0 50px 100px;
+            position: relative;
+        }
+
+        .diagram-box {
+            border: 2px solid #1e3a8a;
+            padding: 10px 20px;
+            display: inline-block;
+            margin-bottom: 40px;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; /* Hand-drawn look */
+            background: rgba(30, 58, 138, 0.02);
+            min-width: 180px;
+            text-align: center;
+            position: relative;
+        }
+
+        .arrow-line {
+            position: absolute;
+            left: 220px;
+            color: #e67e22;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .description {
+            position: absolute;
+            left: 280px;
+            font-family: 'Indie Flower', cursive;
+            color: #34495e;
+            white-space: nowrap;
+        }
+
+        .q-section {
+            margin-top: 80px;
+            margin-left: 20px;
+        }
+
+        .q-text {
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        .ans-text {
+            margin-left: 40px;
+            line-height: 1.6;
+        }
+
+        .scribble {
+            position: absolute;
+            bottom: 150px;
+            right: 100px;
+            opacity: 0.2;
+            transform: rotate(15deg);
+        }
+
+        .margin-note {
+            position: absolute;
+            left: 15px;
+            top: 300px;
+            font-size: 14px;
+            color: #95a5a6;
+            font-family: 'Shadows Into Light', cursive;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <div class="sidebar-date">
+            Tuesday<br>
+            5/11/26<br>
+            3 Johns
+        </div>
+
+        <div class="header-fields">
+            <div>PAGE NO: <span style="text-decoration: underline;">&nbsp;&nbsp;1&nbsp;&nbsp;</span></div>
+            <div>DATE: <span style="text-decoration: underline;">&nbsp;&nbsp;20 / 1 / 26&nbsp;&nbsp;</span></div>
+        </div>
+
+        <div class="blue-ink">
+            <div style="margin-left: 100px; margin-top: 40px; font-weight: bold;">
+                1) Gram Panchayat <br>
+                2) Panchayati Samiti <br>
+                3) Zilla Parishad
+            </div>
+
+            <div class="diagram-section">
+                <!-- Row 1 -->
+                <div style="position: relative; height: 80px;">
+                    <div class="diagram-box">Zilla Parishad</div>
+                    <span class="arrow-line">→</span>
+                    <span class="description">To the District level</span>
+                </div>
+
+                <!-- Row 2 -->
+                <div style="position: relative; height: 80px;">
+                    <div class="diagram-box">Panchayati Samiti</div>
+                    <span class="arrow-line">→</span>
+                    <span class="description">It is middle or Block level</span>
+                </div>
+
+                <!-- Row 3 -->
+                <div style="position: relative; height: 80px;">
+                    <div class="diagram-box" style="border-style: dashed;">Gram Panchayat</div>
+                    <span class="arrow-line">→</span>
+                    <span class="description">It is the Base of the Panchayat Raj System</span>
+                </div>
+            </div>
+
+            <div class="q-section">
+                <div class="q-text">
+                    Q4. Mention any two sources of income of the Gram Panchayat?
+                </div>
+                <div class="ans-text">
+                    Ans: The two sources of Income of the Gram Panchayat are: <br>
+                    <span style="color: #e67e22;">→</span> Taxes imposed by the panchayat on land, houses, custom duties, tolls. <br>
+                    <span style="color: #e67e22;">→</span> Grants from central or state government.
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-note">imp question!</div>
+
+        <div class="scribble">
+            <svg width="120" height="120">
+                <path d="M10 10 Q 50 50 90 10 T 110 90" fill="none" stroke="#aaa" stroke-width="1" />
+                <circle cx="60" cy="60" r="5" fill="#eee" />
+            </svg>
+        </div>
+    </div>
+
+</body>
+</html>
