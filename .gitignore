@@ -56,6 +56,9 @@ puli_meka/
 Veritas_AI/
 bin/
 lib/
+kqlbridge/
+kqlbridge-worktrees/
+
 
 # Binaries and Large Assets
 *.exe
