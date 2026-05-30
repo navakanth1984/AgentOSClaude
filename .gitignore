@@ -56,6 +56,11 @@ puli_meka/
 Veritas_AI/
 bin/
 lib/
+kqlbridge/
+kqlbridge-worktrees/
+ClawGlove/
+
+
 
 # Binaries and Large Assets
 *.exe
@@ -89,3 +94,14 @@ lib/
 *.weights
 *.h5
 *.pb
+
+# Agent Runtimes, Local Caches, and Tool Configs
+.agents/
+.gemini/
+.temp_skills/
+.antigravity.md
+.antigravitycli/
+.codex/
+worktrees/
+scratch/
+

@@ -13,7 +13,11 @@ $files = @(
     "c:\Users\navka\.agents\skills\website-to-hyperframes\SKILL.md",
     "C:\Users\navka\.gemini\skills\screenplay-skill\SKILL.md",
     "C:\Users\navka\.gemini\skills\cinematography-skill\SKILL.md",
-    "C:\Users\navka\.gemini\skills\direction-skill\SKILL.md"
+    "C:\Users\navka\.gemini\skills\direction-skill\SKILL.md",
+    "c:\Users\navka\navakanth001\.agents\skills\context-engineering-consulting\SKILL.md",
+    "C:\Users\navka\.gemini\skills\karpathy-coding-guidelines\SKILL.md",
+    "c:\Users\navka\navakanth001\.agents\skills\acting-performance-skill\SKILL.md",
+    "c:\Users\navka\navakanth001\.agents\skills\skill-creator\SKILL.md"
 )
 
 $text = @"

@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import sys
 import os
 
-def extract_text_from_pptx(path):
+def extract_text_from_pptx(path: str) -> str | None:
     if not os.path.exists(path):
         print(f"Error: {path} does not exist.")
         return
