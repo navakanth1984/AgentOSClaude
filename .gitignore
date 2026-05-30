@@ -58,6 +58,8 @@ bin/
 lib/
 kqlbridge/
 kqlbridge-worktrees/
+ClawGlove/
+
 
 
 # Binaries and Large Assets
@@ -92,3 +94,14 @@ kqlbridge-worktrees/
 *.weights
 *.h5
 *.pb
+
+# Agent Runtimes, Local Caches, and Tool Configs
+.agents/
+.gemini/
+.temp_skills/
+.antigravity.md
+.antigravitycli/
+.codex/
+worktrees/
+scratch/
+
