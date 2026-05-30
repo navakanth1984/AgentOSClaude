@@ -336,4 +336,31 @@ document.addEventListener('DOMContentLoaded', () => {
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendBtn.click();
     });
+
+    // Video Carousel Swiping & Clickable Dots Interaction
+    const carousel = document.querySelector('.video-carousel');
+    const dots = document.querySelectorAll('.carousel-dot');
+
+    if (carousel && dots.length > 0) {
+        carousel.addEventListener('scroll', () => {
+            const index = Math.round(carousel.scrollLeft / carousel.clientWidth);
+            dots.forEach((dot, idx) => {
+                if (idx === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const targetIndex = parseInt(this.getAttribute('data-index'));
+                carousel.scrollTo({
+                    left: targetIndex * carousel.clientWidth,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    }
 });
