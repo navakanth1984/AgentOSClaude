@@ -12,15 +12,15 @@ We use a worktree-backed environment structure for the `nthdimensionacademy` sit
 graph TD
     subgraph Local Machine
     dev[local dev branch / Active Work] -->|Local Merge| uat[local uat branch / Staging]
-    uat -->|Local Verification Merge| prod[local prod branch / Release Prep]
+    uat -->|Local Verification Merge| main[local main branch / Release Prep]
     end
-    prod -->|git push| remote_prod[remote prod branch on GitHub]
+    main -->|git push| remote_main[remote main branch on GitHub]
 ```
 
 ### Local Branches
 - **`dev`** (*Local-Only*): The active workspace branch. All features, style updates, and knowledge captures land here first.
 - **`uat`** (*Local-Only*): User Acceptance Testing and staging branch. Used for full-site testing and local previews before release.
-- **`prod`**: Production-ready branch. **This is the only branch tracked on the remote GitHub repository.**
+- **`main`**: Production-ready branch. **This is the only branch tracked on the remote GitHub repository.**
 
 ---
 
@@ -47,11 +47,11 @@ To ensure zero downtime and safe releases:
    cd C:/Users/navka/navakanth001/worktrees/uat
    git merge --no-ff dev -m "chore(merge): promote dev to uat"
    ```
-3. Verify your site locally. Once verified, navigate to your local `prod` worktree, merge `uat`, and push:
+3. Verify your site locally. Once verified, navigate to your local `main` worktree, merge `uat`, and push:
    ```bash
-   cd C:/Users/navka/navakanth001/worktrees/prod
+   cd C:/Users/navka/navakanth001/worktrees/main
    git merge --no-ff uat -m "feat(release): promote uat to production"
-   git push origin prod
+   git push origin main
    ```
 4. Create and push a semantic release tag:
    ```bash
@@ -60,14 +60,14 @@ To ensure zero downtime and safe releases:
    ```
 
 ### Emergency Rollback
-If a deployment to `prod` contains critical bugs:
+If a deployment to `main` contains critical bugs:
 1. **Do NOT force-push or rewrite git history.**
-2. Perform a clean Git revert of the merge commit on your local `prod` worktree:
+2. Perform a clean Git revert of the merge commit on your local `main` worktree:
    ```bash
    git revert -m 1 <merge-commit-hash>
    ```
-3. Push the revert commit immediately to `prod` to trigger the auto-revert Pages deployment:
+3. Push the revert commit immediately to `main` to trigger the auto-revert Pages deployment:
    ```bash
-   git push origin prod
+   git push origin main
    ```
 4. Perform the fix on the `dev` branch, test on `uat`, and re-promote cleanly.
