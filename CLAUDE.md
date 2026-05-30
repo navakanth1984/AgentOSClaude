@@ -25,7 +25,7 @@
 
 ## My Obsidian Vault
 
-- **Path:** `C:\Users\navka\OneDrive\Documents\Obsidian Vault\`
+- **Path:** `C:\Users\navka\navakanth001\obsidian-vault\Obsidian Vault\`
 - **Structure:**
   ```
   00-Inbox/          ← all captures land here first

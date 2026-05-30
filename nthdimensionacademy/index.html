@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nth Dimension Academy | Master Data Engineering & Analytics</title>
+    <title>Nth Dimension Academy | Master the Data Multiverse</title>
     <meta name="description" content="Nth Dimension Academy - Master Consultant and Microsoft Certified Trainer (MCT) Navakanth Reddy Dumpa. Expertise in Microsoft Fabric, Azure Databricks, and Medallion Architecture.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <!-- Phosphor Icons for UI -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
     <div class="cursor-glow"></div>
+    <div class="particle-bg"></div>
 
     <nav class="navbar">
         <div class="nav-container">
@@ -24,6 +25,7 @@
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#expertise">Expertise</a></li>
+                <li><a href="#knowledge-graph">Curriculum Map</a></li>
                 <li><a href="#training">Training</a></li>
                 <li><a href="#experience">Experience</a></li>
             </ul>
@@ -31,25 +33,54 @@
         </div>
     </nav>
 
+    <!-- Premium Grid Hero Section with Video Backdrop + Floating 3D Tesseract -->
     <header class="hero">
         <div class="hero-bg">
-            <video autoplay loop muted playsinline>
+            <video autoplay loop muted playsinline style="opacity: 0.12;">
                 <source src="assets/hero_video.mp4" type="video/mp4">
             </video>
         </div>
-        <div class="hero-content">
-            <div class="hero-badge-wrapper">
-                <img src="assets/media__1777542950074.jpg" alt="Microsoft Certified Trainer" class="mct-hero-badge">
-            </div>
-            <h1>Master the <br><span class="text-gradient">Azure Data Ecosystem</span></h1>
-            <p class="subtitle">Led by Navakanth Reddy Dumpa, Senior Data Analytics Architect. Bridging the gap between complex cloud engineering and scalable technical enablement.</p>
-            <div class="hero-actions">
-                <a href="#training" class="btn btn-primary">Explore Training</a>
-                <a href="#expertise" class="btn btn-secondary">View Expertise</a>
-            </div>
-            <div class="cert-bar">
-                <img src="assets/media__1777541920190.jpg" alt="MCT Badge" class="inline-cert-badge">
-                <span>MCT</span> • <span>DP-600</span> • <span>DP-203</span> • <span>DA-100</span> • <span>DP-900</span>
+        <div class="container" style="z-index: 2;">
+            <div class="asymmetric-grid">
+                <!-- Left Content Area -->
+                <div class="col-span-7" style="text-align: left; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="inline-flex" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: 30px; border: 1px solid rgba(0, 240, 255, 0.3); background: rgba(0, 240, 255, 0.05); margin-bottom: 1.5rem; width: fit-content; backdrop-filter: blur(10px);">
+                        <span style="position: relative; display: flex; h: 8px; w: 8px; width: 8px; height: 8px;">
+                            <span class="animate-pulse-gentle" style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: #00f0ff; opacity: 0.75;"></span>
+                            <span style="position: relative; display: inline-flex; border-radius: 50%; width: 8px; height: 8px; background: #00f0ff;"></span>
+                        </span>
+                        <span class="font-label-caps" style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--hyper-drive-blue); font-weight: 700;">Quantum Access Active</span>
+                    </div>
+                    
+                    <h1 style="font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; font-weight: 900; color: #fff; margin-bottom: 1.5rem;">
+                        Master the <span class="text-gradient">Data Multiverse.</span>
+                    </h1>
+                    <p class="subtitle" style="text-align: left; max-width: 580px; margin-bottom: 2.5rem; font-size: 1.15rem; line-height: 1.6; color: var(--text-muted);">
+                        Led by Master Consultant and Microsoft Certified Trainer (MCT) Navakanth Reddy Dumpa. Bridging the gap between complex cloud engineering and scalable technical enablement.
+                    </p>
+                    
+                    <div class="hero-actions" style="justify-content: flex-start; margin-bottom: 2rem;">
+                        <a href="#training" class="btn btn-primary" style="box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem;">
+                            <span>Begin the Ascent</span>
+                            <i class="ph-bold ph-arrow-right"></i>
+                        </a>
+                        <a href="#knowledge-graph" class="btn btn-secondary" style="padding: 1rem 2rem;">Explore Curriculum</a>
+                    </div>
+                    
+                    <div class="cert-bar" style="justify-content: flex-start; margin-top: 1rem;">
+                        <img src="assets/media__1777541920190.jpg" alt="MCT Badge" class="inline-cert-badge">
+                        <span>MCT</span> • <span>DP-700</span> • <span>DP-600</span> • <span>DP-203</span> • <span>DP-900</span>
+                    </div>
+                </div>
+                
+                <!-- Right Tesseract Visualization Area -->
+                <div class="col-span-5 relative" style="display: flex; justify-content: center; align-items: center; position: relative;">
+                    <div style="position: absolute; width: 120%; height: 120%; background: radial-gradient(circle, rgba(138, 43, 226, 0.12) 0%, transparent 70%); filter: blur(40px); pointer-events: none;"></div>
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuf7mipIEDSXutFsMfyrRJpkx4b96iQVuK4uvoPGGeCkicDiR3fpOwt2-fdgOochQCaUwZHmAlZvKtgDPVdgllGKFCZcl395I2VPuH75izCMWL1N6IVukcD_lvmfn61PIpC16bAgtWGaEcTR4Yto6L-sbKaAxllJymZyQsSR8F62_JcCom9-QmCIYsgqgPAY_jguvuRBTU6vus9h-gJA1IGW-dQYEV-5PD1DA4KEKtAfDQdLeQBCj7lk2qUmgtOvUiWJrAzrxs3pI" 
+                         alt="3D Glowing Tesseract Hypercube" 
+                         class="glow-blue animate-pulse-gentle" 
+                         style="width: 100%; max-width: 480px; height: auto; object-fit: contain; pointer-events: none; filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.25));">
+                </div>
             </div>
         </div>
     </header>
@@ -63,27 +94,28 @@
                 <div class="about-content">
                     <div class="about-text">
                         <h2>Professional <span class="text-gradient">Summary</span></h2>
-                    <p>Master Consultant and Microsoft Certified Trainer (MCT) with over <strong>14 years of industry experience</strong> across global enterprises. Recognized for bridging the gap between complex cloud engineering and scalable technical enablement.</p>
-                    <p>A specialist in the Azure Data Ecosystem, delivering high-impact training programs for global audiences while concurrently serving as a Lead Data Architect. Proven expertise in designing Medallion architectures using Microsoft Fabric and Azure Databricks, empowering teams through structured, certification-aligned curricula and real-world project mentoring.</p>
-                    <div class="contact-info">
-                        <p><i class="ph ph-map-pin"></i> Hyderabad, India</p>
-                        <p><i class="ph ph-envelope-simple"></i> navkanthr@gmail.com</p>
-                        <p><i class="ph ph-phone"></i> +91 9885757677</p>
+                        <p>Master Consultant and Microsoft Certified Trainer (MCT) with over <strong>14 years of industry experience</strong> across global enterprises. Recognized for bridging the gap between complex cloud engineering and scalable technical enablement.</p>
+                        <p>A specialist in the Azure Data Ecosystem, delivering high-impact training programs for global audiences while concurrently serving as a Lead Data Architect. Proven expertise in designing Medallion architectures using Microsoft Fabric and Azure Databricks, empowering teams through structured, certification-aligned curricula and real-world project mentoring.</p>
+                        <div class="contact-info">
+                            <p><i class="ph ph-map-pin"></i> Hyderabad, India</p>
+                            <p><i class="ph ph-envelope-simple"></i> navkanthr@gmail.com</p>
+                            <p><i class="ph ph-phone"></i> +91 9885757677</p>
+                        </div>
                     </div>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-card">
-                        <h3>14+</h3>
-                        <p>Years Experience</p>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <h3>14+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>MCT</h3>
+                            <p>Certified Lead</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>5+</h3>
+                            <p>Active Certifications</p>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <h3>MCT</h3>
-                        <p>Certified Lead</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>5+</h3>
-                        <p>Active Certifications</p>
-                </div>
                 </div>
             </div>
         </div>
@@ -149,37 +181,96 @@
         </div>
     </section>
 
-    <!-- NEW KNOWLEDGE GRAPH SECTION -->
-    <section id="knowledge-graph" class="graph-section">
+    <!-- INTERACTIVE KNOWLEDGE GRAPH SECTION -->
+    <section id="knowledge-graph" class="graph-section" style="padding: 6rem 0;">
         <div class="container">
             <div class="section-header center">
                 <h2>Interactive <span class="text-gradient">Curriculum Map</span></h2>
                 <p>Explore the Microsoft Azure & Fabric ecosystem through this 3D neural visualization.</p>
             </div>
-            <div id="3d-graph-container" class="glass-panel" style="width: 100%; height: 500px; position: relative; border-radius: 12px; overflow: hidden;">
+            <div id="3d-graph-container" class="glass-panel" style="width: 100%; height: 550px; position: relative; border-radius: 20px; overflow: hidden; border-color: rgba(0, 240, 255, 0.2);">
                 <!-- The 3D graph will be injected here -->
-                <div class="graph-overlay-hint" style="position: absolute; top: 10px; left: 10px; color: var(--accent-blue); font-size: 0.9rem; z-index: 10; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px var(--accent-blue);">
-                    <i class="ph-fill ph-mouse"></i> Drag to rotate | Scroll to zoom
+                <div class="graph-overlay-hint" style="position: absolute; top: 15px; left: 20px; color: var(--accent-blue); font-size: 0.9rem; z-index: 10; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="ph-fill ph-mouse"></i> <span>Drag to rotate | Scroll to zoom | Click nodes to interact</span>
                 </div>
             </div>
         </div>
     </section>
 
-
-    <section id="training" class="training-section">
+    <!-- PREMIUM HIGH-FIDELITY COURSE BENTO CATALOG -->
+    <section id="training" class="training-section bg-deep-space-black relative" style="padding: 6rem 0;">
         <div class="container">
-            <div class="section-header">
-                <h2>Training & <span class="text-gradient">Instructional Portfolio</span></h2>
-                <p>Expertise in delivering Instructor-Led Training (ILT), managing hands-on lab orchestration, and developing custom technical storytelling.</p>
+            <div class="asymmetric-grid" style="align-items: flex-end; margin-bottom: 3.5rem;">
+                <div class="col-span-7 space-y-4">
+                    <h2 class="font-headline-lg text-headline-lg text-white">Pathways to <span class="text-master-gold">Ascension</span></h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-lg" style="color: var(--text-muted); font-size: 1.1rem;">Our certification paths are engineered to transform skilled engineers into multi-dimensional data architects.</p>
+                </div>
+                <div class="col-span-5" style="text-align: right; padding-bottom: 0.5rem;">
+                    <a class="text-hyper-drive-blue font-label-caps" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 700; transition: all 0.3s; letter-spacing: 1px;" href="#knowledge-graph">
+                        <span>Browse Neural Map</span> 
+                        <i class="ph-bold ph-arrow-up-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="skills-grid">
+                <!-- Course Card 1 -->
+                <div class="glass-card holographic-sweep p-8 rounded-xl flex flex-col justify-between" style="min-height: 350px; border-radius: 20px; padding: 2.5rem;">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-6 border" style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.25); display: flex; align-items: center; justify-content: center;">
+                            <i class="ph-bold ph-git-branch text-hyper-drive-blue" style="font-size: 1.6rem; color: #00f0ff;"></i>
+                        </div>
+                        <span class="font-label-caps text-master-gold" style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--master-gold); display: block; margin-bottom: 0.6rem;">DP-700 Masterclass</span>
+                        <h3 class="font-headline-md text-white" style="font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3;">Microsoft Fabric Data Engineer</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Master the end-to-end data engineering lifecycle in Fabric, from OneLake management and Medallion architecture to real-time analytics and Spark optimization.</p>
+                    </div>
+                    <div class="flex items-center justify-between" style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1.5rem;">
+                        <span class="font-label-caps" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">Level: Elite Master</span>
+                        <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 20px;" onclick="openAssistant(); callNIM('Tell me about the DP-700 Microsoft Fabric Data Engineer curriculum.');">Syllabus</button>
+                    </div>
+                </div>
+
+                <!-- Course Card 2 -->
+                <div class="glass-card holographic-sweep p-8 rounded-xl flex flex-col justify-between" style="min-height: 350px; border-radius: 20px; padding: 2.5rem;">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-6 border" style="width: 50px; height: 50px; border-radius: 12px; background: rgba(138, 43, 226, 0.08); border-color: rgba(138, 43, 226, 0.25); display: flex; align-items: center; justify-content: center;">
+                            <i class="ph-bold ph-chart-bar text-gradient" style="font-size: 1.6rem;"></i>
+                        </div>
+                        <span class="font-label-caps text-master-gold" style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--master-gold); display: block; margin-bottom: 0.6rem;">DP-600 Masterclass</span>
+                        <h3 class="font-headline-md text-white" style="font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3;">Implementing Analytics Solutions</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Conducted high-impact training for global squads. Covers Fabric Analytics, Lakehouses, Notebooks, and Power BI enterprise integration for modern ETL squads.</p>
+                    </div>
+                    <div class="flex items-center justify-between" style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1.5rem;">
+                        <span class="font-label-caps" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">Level: Specialist</span>
+                        <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 20px;" onclick="openAssistant(); callNIM('Tell me about the DP-600 Implementing Analytics Solutions curriculum.');">Syllabus</button>
+                    </div>
+                </div>
+
+                <!-- Course Card 3 -->
+                <div class="glass-card holographic-sweep p-8 rounded-xl flex flex-col justify-between" style="min-height: 350px; border-radius: 20px; padding: 2.5rem;">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-6 border" style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.25); display: flex; align-items: center; justify-content: center;">
+                            <i class="ph-bold ph-database text-hyper-drive-blue" style="font-size: 1.6rem; color: #00f0ff;"></i>
+                        </div>
+                        <span class="font-label-caps text-master-gold" style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--master-gold); display: block; margin-bottom: 0.6rem;">DP-203 Masterclass</span>
+                        <h3 class="font-headline-md text-white" style="font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3;">Azure Data Engineering</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Scalable cloud pipelines, PySpark execution, Delta Lakes, and Medallion architecture deployments inside Synapse, Databricks, and Data Factory.</p>
+                    </div>
+                    <div class="flex items-center justify-between" style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1.5rem;">
+                        <span class="font-label-caps" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">Level: Core Master</span>
+                        <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 20px;" onclick="openAssistant(); callNIM('Tell me about the DP-203 Azure Data Engineering curriculum.');">Syllabus</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="timeline">
+            <!-- Detailed Timeline Portfolio -->
+            <div class="timeline" style="margin-top: 5rem;">
                 <div class="timeline-item reveal">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content glass-panel">
                         <h3>DP-700: Microsoft Fabric Data Engineer</h3>
                         <span class="duration">2-3 Days Masterclass</span>
-                        <p>Our flagship program. Master the end-to-end data engineering lifecycle in Fabric, from OneLake management and Medallion architecture to real-time analytics and Spark optimization. Aligned with the latest Microsoft certification standards.</p>
+                        <p>Flagship advanced orchestration training. Learn to setup Fabric capacity, build robust Medallion architectures inside OneLake, manage security and pipelines with Data Factory, and perform low-latency stream analysis with Real-Time Intelligence.</p>
                     </div>
                 </div>
 
@@ -208,6 +299,39 @@
                         <span class="duration">1-2 Days Masterclass</span>
                         <p>Led foundational workshops and masterclasses for cross-functional teams, college graduates, and new hires, introducing core cloud data concepts.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DYNAMIC ASYMMETRIC VISUAL SECTION FROM STITCH -->
+    <section class="asymmetric-section">
+        <div class="container">
+            <div class="asymmetric-grid">
+                <div class="col-span-7 asymmetric-image-container glass-card reveal">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyXp7BQn5MFWizoPNlvOZFJr7pAoiLciSLQ9R0KtxRs4EJ44p6uLXAqnzMfnaxztc2iqRb3EeeCQVOQe6dksQg6yOGwuFKpLjYMOy6w54yAg7dwauMBdnUCgauuqCeXniOJ71F7C5-OXfbXOFnlftrbnc5cC8uD1RUtJk17xVNAIZuQXo7kvNBDrFl7WoFK1Yz3QnxvOUqbHrEPcQpWCvwZa9fVWhPX-X_O82kWr8OXeQvZX5HN_2sSobE7bV5y56WdBY_mHlFqIQ" 
+                         alt="Futuristic Neural Data Center Rendering"
+                         style="filter: brightness(0.9) contrast(1.1) saturate(1.2);">
+                </div>
+                <div class="col-span-5 pl-8 space-y-stack-md" style="text-align: left; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 class="font-headline-lg text-white" style="font-size: 2.2rem; font-weight: 700; line-height: 1.2;">Engineered for the <span class="italic font-light text-hyper-drive-blue">Infinite.</span></h3>
+                    <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-top: 1rem;">
+                        Our proprietary curriculum transcends standard documentation. We provide simulated environments, live data labyrinths, and holographic mentorship sessions.
+                    </p>
+                    <ul class="verify-list">
+                        <li>
+                            <i class="ph-bold ph-seal-check"></i>
+                            <span><strong>Curated by Active Cloud Architects:</strong> Real-world scenarios from enterprise migrations.</span>
+                        </li>
+                        <li>
+                            <i class="ph-bold ph-seal-check"></i>
+                            <span><strong>Private Sandbox Ecosystem:</strong> Hands-on environments with Databricks and Fabric capacities.</span>
+                        </li>
+                        <li>
+                            <i class="ph-bold ph-seal-check"></i>
+                            <span><strong>Certification Pipeline Support:</strong> Precision structured study resources for DP-700 success.</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -282,12 +406,13 @@
             </div>
         </div>
     </section>
+
     <section id="fabric-demo" class="demo-section">
         <div class="container">
-            <div class="glass-panel demo-container">
-                <h2 class="neon-text-gold">Microsoft Fabric: The Nth Dimension Demo</h2>
+            <div class="glass-panel demo-container" style="border-color: rgba(255, 215, 0, 0.25);">
+                <h2 class="text-master-gold" style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem;">Microsoft Fabric: The Nth Dimension Demo</h2>
                 <p>Experience the convergence of Data Engineering and AI in our exclusive masterclass preview.</p>
-                <div class="video-wrapper">
+                <div class="video-wrapper" style="border-color: rgba(0, 240, 255, 0.3);">
                     <video id="fabric-video-player" class="demo-video" poster="fabric_demo_thumbnail_1778223436843.png">
                         <source src="assets/fabric_video.mp4" type="video/mp4">
                     </video>
@@ -324,36 +449,37 @@
         </div>
     </footer>
 
-    <!-- AI Assistant: Cosmic Guide -->
+    <!-- AI Assistant: Cosmic Guide (Styled with Glassmorphic Dimension Purple) -->
     <div id="ai-assistant" class="ai-assistant hidden">
-        <div class="assistant-header glass-panel">
+        <div class="assistant-header glass-panel" style="background: rgba(10, 15, 25, 0.85); border-color: rgba(138, 43, 226, 0.35); box-shadow: 0 0 15px rgba(138, 43, 226, 0.25);">
             <div class="assistant-info">
                 <img src="assets/logo_gold.jpeg" alt="Guide">
                 <div>
-                    <h4>Cosmic Guide</h4>
+                    <h4 class="text-master-gold" style="font-weight: 700;">Cosmic Guide</h4>
                     <span class="status">Online | N<span class="nth-style">TH</span> Dimension</span>
                 </div>
             </div>
             <button id="close-assistant" class="close-btn"><i class="ph ph-x"></i></button>
         </div>
-        <div id="chat-messages" class="chat-messages">
+        <div id="chat-messages" class="chat-messages" style="background: rgba(5, 7, 15, 0.8); border-left: 1px solid rgba(138, 43, 226, 0.2); border-right: 1px solid rgba(138, 43, 226, 0.2);">
             <div class="message system">
                 <p>Greetings, Voyager. I am your guide to the N<span class="nth-style">TH</span> Dimension Academy. How can I assist your data journey today?</p>
             </div>
         </div>
-        <div class="chat-input-area glass-panel">
-            <input type="text" id="user-input" placeholder="Ask about Fabric, Azure, or DP-600...">
+        <div class="chat-input-area glass-panel" style="background: rgba(10, 15, 25, 0.85); border-color: rgba(138, 43, 226, 0.35);">
+            <input type="text" id="user-input" placeholder="Ask about Fabric, Azure, or DP-700..." style="border-color: rgba(0, 240, 255, 0.3); background: rgba(5, 7, 15, 0.5);">
             <button id="send-msg"><i class="ph-fill ph-paper-plane-right"></i></button>
             <button id="voice-msg" title="Multilingual Voice"><i class="ph-fill ph-microphone"></i></button>
         </div>
     </div>
 
-    <button id="open-assistant" class="floating-trigger glass-panel">
+    <!-- Cosmic Trigger Button -->
+    <button id="open-assistant" class="floating-trigger glass-panel" style="border-color: var(--hyper-drive-blue); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); background: rgba(0, 240, 255, 0.05); color: var(--hyper-drive-blue);">
         <i class="ph-fill ph-robot"></i>
         <span>Ask Guide</span>
     </button>
 
-    <!-- 3D Graph Library -->
+    <!-- 3D Graph Library & Force Graph -->
     <script src="https://unpkg.com/3d-force-graph"></script>
     <script src="script.js"></script>
 </body>
