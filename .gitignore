@@ -4,7 +4,9 @@ raw/
 *.xlsx
 *.csv
 *.mp4
-output/
+output/*.mp4
+output/*.pdf
+output/*.xlsx
 __pycache__/
 *.pyc
 .DS_Store
