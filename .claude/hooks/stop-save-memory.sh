@@ -50,8 +50,8 @@ fi
 # Auto-push if GITHUB_TOKEN is set
 if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   cd "$REPO_DIR"
-  REMOTE_URL="https://${GITHUB_TOKEN}@github.com/$(git remote get-url origin | sed 's|https://github.com/||')"
-  git remote set-url origin "$REMOTE_URL" 2>/dev/null || true
+  REPO_SLUG=$(git remote get-url origin | sed 's|https://.*github.com/||')
+  git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${REPO_SLUG}" 2>/dev/null || true
 
   if [[ -n "$(git status --porcelain)" ]]; then
     git config user.email "noreply@anthropic.com"
