@@ -56,7 +56,7 @@ On every new session, Claude must:
 - **Session notes** → `memory/YYYY-MM-DD-session.md`
 - **Task log** → `memory/tasks.md`
 - **Architecture updates** → appended to this file under `## Change Log`
-- **Obsidian sync** → If Obsidian vault is configured, mirror `memory/` to vault's `01-Projects/AgentOS/`
+- **Obsidian sync** → Mirror `memory/` to `C:\Users\navka\navakanth001\obsidian-vault\01-Projects\AgentOS\`
 
 ### Note Format
 ```markdown

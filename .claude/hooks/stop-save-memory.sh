@@ -9,6 +9,8 @@ MEMORY_DIR="$REPO_DIR/memory"
 CLAUDE_MD="$REPO_DIR/CLAUDE.md"
 DATE=$(date +%Y-%m-%d)
 SESSION_FILE="$MEMORY_DIR/$DATE-session.md"
+OBSIDIAN_VAULT_PATH="${OBSIDIAN_VAULT_PATH:-C:\\Users\\navka\\navakanth001\\obsidian-vault}"
+OBSIDIAN_AGENT_DIR="$OBSIDIAN_VAULT_PATH/01-Projects/AgentOS"
 
 mkdir -p "$MEMORY_DIR"
 
@@ -36,6 +38,13 @@ fi
 # Append change log entry to CLAUDE.md
 if ! grep -q "$DATE:" "$CLAUDE_MD" 2>/dev/null; then
   echo "$DATE: Session completed — see memory/$DATE-session.md" >> "$CLAUDE_MD"
+fi
+
+# Sync session note to Obsidian vault if path exists
+if [[ -d "$OBSIDIAN_VAULT_PATH" ]]; then
+  mkdir -p "$OBSIDIAN_AGENT_DIR"
+  cp "$SESSION_FILE" "$OBSIDIAN_AGENT_DIR/"
+  echo "Synced to Obsidian: $OBSIDIAN_AGENT_DIR/"
 fi
 
 # Auto-push if GITHUB_TOKEN is set
