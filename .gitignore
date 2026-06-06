@@ -1,0 +1,11 @@
+.env
+raw/
+*.pdf
+*.xlsx
+*.csv
+*.mp4
+output/
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
