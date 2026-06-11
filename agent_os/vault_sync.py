@@ -28,6 +28,7 @@ VAULT_REPO_URL = os.environ.get("VAULT_REPO_URL", "")
 VAULT_REPO_PATH = Path(os.environ.get("VAULT_REPO_PATH", "/app/vault_clone"))
 VAULT_SUBDIR = os.environ.get("VAULT_SUBDIR", "obsidian-vault/Obsidian Vault")
 SYNC_INTERVAL = int(os.environ.get("VAULT_SYNC_INTERVAL", "60"))
+VAULT_REPO_BRANCH = os.environ.get("VAULT_REPO_BRANCH", "master")
 
 _last_pull_time = 0
 _sync_lock = threading.Lock()
@@ -75,10 +76,11 @@ def initial_clone():
     print(f"[VaultSync] Cloning vault repo to {VAULT_REPO_PATH}...")
     VAULT_REPO_PATH.mkdir(parents=True, exist_ok=True)
 
-    # Shallow clone with depth 1
+    # Shallow clone with depth 1 on specific branch
     result = _run_git(
         "clone",
         "--depth", "1",
+        "--branch", VAULT_REPO_BRANCH,
         "--filter=blob:none",
         "--sparse",
         VAULT_REPO_URL,
@@ -88,9 +90,10 @@ def initial_clone():
 
     if result.returncode != 0:
         print(f"[VaultSync] Clone failed: {result.stderr}")
-        # Fallback: full shallow clone
+        # Fallback: full shallow clone on specific branch
         result = _run_git(
             "clone", "--depth", "1",
+            "--branch", VAULT_REPO_BRANCH,
             VAULT_REPO_URL, str(VAULT_REPO_PATH),
             cwd="/app",
         )
