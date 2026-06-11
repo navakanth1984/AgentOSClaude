@@ -1,0 +1,278 @@
+---
+date: 2026-06-07
+tags: [notebooklm, agent-os]
+project: "AI-Automation"
+source: "Agent OS"
+---
+
+# NotebookLM - Notebook List
+
+## Key Idea
+Found 261 notebooks
+
+## Details
+- Complete Sherlock Holmes & Game: /notebook/2c4f0f26-0797-4cc0-a350-48c4b70d14cc
+- Can a Computer Simulate a Brain?: /notebook/74dc7f14-54cb-481b-9ee8-8347a6f5cba1
+- How Can Scientists Know What's in Your Genome?: /notebook/a09e40ad-d41f-43af-a3ca-5fc82bd459e5
+- Agent OS: Integrating NotebookLM and Obsidian Memory Systems: /notebook/1073c620-77ff-4380-b128-37ebf3892844
+- The Claude Code Agent Operating System Guide: /notebook/62542e5c-8172-4fcc-b36c-c4566497d6ba
+- Mapping Repositories: Enhancing Claude Code with Graphify Knowledge Graphs: /notebook/ccd27366-7f4d-4353-acc3-7e1df9b81437
+- Mastering Google Flow: A Beginner’s Step-by-Step Guide: /notebook/dc50925b-c80c-41d8-92ed-548cbab506a8
+- Beyond the Web: Selling Systems That Scale Businesses: /notebook/87686059-b6ae-4b90-a8d0-9effee9f2676
+- AI-Driven Workflows for 3D Web Design and Asset Creation: /notebook/e460967d-e873-4c3d-a035-e3f8a8e2ad0d
+- Google Antigravity and NotebookLM: The Research to Build Flow: /notebook/04d5946e-6436-4afc-9220-8ab4aae040bb
+- Building 3D Animated Websites with Antigravity and Gemini 1.5 Pro: /notebook/87ab1fb5-b394-455f-b8fc-507d5130da68
+- Mastering the Claude Code CMS for Professional Web Design: /notebook/15117212-475c-4b03-a568-d1a1342c65d8
+- Open Design: Unlimited Local AI Website Creation: /notebook/5d5dd414-787e-4f97-813c-6b88504755d3
+- Cosmic Branding for Nth Dimension Academy: /notebook/fcd1f87a-d8af-4d4e-bba2-34e683615485
+- Mobile Mastery: The NotebookLM Business Power Revolution: /notebook/7eedb04a-6e87-45a6-b380-b09782bdd50e
+- Building $10,000 Animated AI Websites with AntiGravity: /notebook/8ec49dc4-2ed7-48e3-b8a5-247f4b030c3d
+- The Agent Improvement Loop: Building LangSmith Engine: /notebook/be22524d-7fb9-4803-832d-829243ffdcfb
+- Zig 2026: Andrew Kelley on AI, Independence, and Perfection: /notebook/e1213abc-d8b1-4957-a3f5-69b9286372ba
+- DP-700 Microsoft Fabric Data Engineer Learning Atlas: /notebook/628c305c-9d5e-465c-9dbc-ffda86d70435
+- Mastering SEO Strategy with NotebookLM and AI Studio: /notebook/8406728e-bb3f-4e54-b7d5-2d90f76e7a59
+- The Infinite Context Engine: Building a Second Brain with Claude: /notebook/ebd6175e-0579-4fd4-b654-6a6725567521
+- Data Engineering Scenario-Based Interview Questions 2026: /notebook/1f8a11f6-a56c-4e23-a16d-5aef77c3d918
+- Mastering Parallel AI Workflows with Anti-Gravity CLI: /notebook/0309d50a-dd7f-4ab5-a502-677f15bc1879
+- Running Claude Code for Free with Agent OS: /notebook/176acd7f-ee2d-4887-8f2c-864f07072f9e
+- Implementing Karpathy's Code Principles in Claude MD: /notebook/4f028197-d728-48e5-88e3-d650590686a2
+- Microsoft Fabric DP-600 Exam Practice Guide: /notebook/cb53e254-0da0-4504-9ab2-1d95b46c6a3e
+- Google Anti-Gravity and NotebookLM: The Infinite Knowledge Engine: /notebook/7c953163-e783-4cdc-9b4d-2323e7d3a253
+- Mastering Analytics and Administration in Microsoft Fabric: /notebook/da8cf1bb-4b6e-45fc-8ae5-f3a4c3e4316f
+- Mastering High-Conversion Website Design with Google AI Studio 2.0: /notebook/fa6a4952-72d1-4091-995f-b05ed369fab4
+- Converting Storyboards to Cinematic Video with GPT and Seedance: /notebook/e11e5957-443e-4d6a-94bc-91b97c25c6c8
+- Mastering AI Film Workflows with Claude Skills and Seedance 2.0: /notebook/a359af78-f6d1-4cfa-95b3-b4fbebc92953
+- ClawGlove: Runtime Governance Substrate for Autonomous AI Agents: /notebook/69b92279-1bbb-4810-ad80-e17881549cc3
+- The Google Anti-gravity CLI Guide: Parallel Agents and AI Commands: /notebook/aeae58ed-de7a-425e-843c-354e721b0fdc
+- KQLBridge: Bridging the Gap Between KQL and Spark SQL: /notebook/6bec927c-c377-436c-9b1f-fa1b5250c736
+- The Top 10 GitHub AI Repositories of the Week: /notebook/e5fac296-77b7-47b3-af55-12f5467ce4a6
+- Fine-Tuning Tiny LLMs for On-Device Agent Skills: /notebook/4a66c302-d4e4-4dcc-bea3-cd19c610b177
+- Google AI Studio: Building Personal Apps with Plain English: /notebook/db1e1401-fce3-4ddd-839f-b87a7982816c
+- Optimizing Engineering Portfolios for the 2026 ATS Landscape: /notebook/c9f014ea-cdd8-4d83-8211-e676c2d8c30b
+- The Goldie Infinite Knowledge Engine and Agent Operating System: /notebook/90822ac6-cbb6-45ee-85cf-7b30f7e061a0
+- Graphify: Knowledge Graphs for Optimized AI Codebase Research: /notebook/04686dd2-0c2e-4f10-97c1-0dbd9e8d6da8
+- Claude for Small Business: The 10X Operational Powerhouse: /notebook/486b2f9e-216c-4cd5-b111-0f5d8b05cfbb
+- The Half-Million Dollar AI Film: 28 Masterclass Hacks: /notebook/bb79f8b2-cd85-4a9e-a0c7-d2f829a64a4d
+- The Half-Million Dollar AI Feature Sprint: /notebook/e3b4d0aa-9fa5-44b1-94dd-22cb412b2d8f
+- High Court Argument on Anticipatory Bail and Social Media Smear campaigns: /notebook/0634cbf1-fa6e-4eee-954f-93c3246e7adb
+- The Infinite Codex Loophole: Exploiting Goal-Based Tokens: /notebook/8497d149-1d6d-4de8-9b70-e76f05ad4f91
+- The Neuralink Pioneer: Painting With the Mind: /notebook/d647ffda-3093-4fb6-8067-fd544dcaab5e
+- Seven Essential Skills for Advanced Claude Code Workflows: /notebook/cdf55e62-b578-4c3d-a57e-2bff68d10c7a
+- Hixal 3D: Pixel-Perfect Local Image to 3D AI Generator: /notebook/44527f83-605a-4135-aef8-df3e3ae6be41
+- Ten Essential Claude AI Skills to Transform Your Workflow: /notebook/d48eefc4-7799-451f-9578-df1141f6ec04
+- Beyond the Cave of Orthodoxy: /notebook/dd147e2d-e51e-4cce-a7c4-65c5f5ebf104
+- Agentic Engineering: Moving Beyond Vibe Coding: /notebook/766ed9d2-26fe-46dd-90db-3e4c93eebbe8
+- The Voyage of Hanuman: /notebook/7e9a1506-e153-4d15-a467-d77e157d775d
+- Mastering Infinite AI Cinema with GPT Image 2 and Seedance: /notebook/af1f5839-ee19-4905-b904-43a6456bbcfd
+- Mastering Nano Banana 2: The JSON Prompt Engineering Formula: /notebook/f08e4e8f-ba04-4df9-b707-1ba99c0ea341
+- Mastering Multi-Shot Cinematic Sequences with Seedance 2.0: /notebook/1e931e1e-fd30-4115-8e83-47614dd845f2
+- Automating Video Production with Claude Code and Hixfield MCP: /notebook/99706a3b-5eb3-4e46-896a-385be95e3e33
+- 4D Objects Json Prompt Creation: /notebook/7db309b0-4f9e-4879-8a98-45ad22b23ecd
+- Mastering Complex Motion Control in AI Animation: /notebook/7ac2090f-9e24-4e23-a90d-6ec797ce11c5
+- Graphify: Optimizing Project Context for Google Antigravity: /notebook/030574e1-4cf6-4427-9a03-27aaaaf17bce
+- Mastering Google AI Studio: Apps, Images, and Advanced Logic: /notebook/ec8fe401-8b0a-4bff-8e53-0d14cd8d5dfd
+- Escaping the Context Window: Hierarchical Memory in Agents: /notebook/385b5b08-5c26-45ce-923d-75651325319d
+- Territorial Army Commission Examination Comprehensive Guide: /notebook/5e90dd14-1f46-4ab7-a595-047901260862
+- Architecting Infinite Content: The AI Automation Blueprint: /notebook/17301327-06bc-4df3-b353-e6bf536e8036
+- The Full Facts Book of Cold Reading: /notebook/cd65603f-c5eb-40ed-971c-a17b7b7e2edb
+- The NotebookLM Framework for Designing Master Prompts: /notebook/dbc6c9a3-85b5-419c-a266-834963709c6b
+- Allu Arjun: Lessons from the Actor’s Path: /notebook/cd091552-417f-4f40-a136-4ad8ef7bf1ad
+- The Claude Code Agentic Operating System: /notebook/a69491d0-257d-4cb4-81ea-96f10bcf5dda
+- FLUX and Selfflow: The Evolution of Multimodal Visual Intelligence: /notebook/5125387e-e6e2-411b-a3eb-d36f4cbf837d
+- The Void of the Missing Page: /notebook/1edfea23-3545-416e-8c41-c08f77de52b1
+- Mastering the Microsoft Fabric Lakehouse: /notebook/fda598aa-9c42-4b47-8e6b-0020930b9dff
+- The GPS Framework: Developing Taste as Your Top AI Skill: /notebook/a93d1660-b137-459a-b659-5821709c7a04
+- Gemini 1.5 Flash-Lite: Speed, Scale, and Efficient AI Workflows: /notebook/e82c108e-4101-4b1a-ab9e-31dcc56c07cb
+- Unifying Data with OneLake Shortcuts in Microsoft Fabric: /notebook/60d0a348-d8df-434c-b218-279f6f07fd3b
+- NVIDIA NIM API and AI Model Deployment Hub: /notebook/114133b5-5bbd-4b1a-9923-f7b049337645
+- The Higgsfield Content Operating System: Video and Canvas Mastery: /notebook/5a31f3cb-7f97-44b3-90c5-ff8594e9eb7b
+- Claude and CapCut: The Ultimate AI Video Editing Workflow: /notebook/97c09074-f5cc-4570-89f4-63f9c5258fdd
+- The End of Static Websites: Interact AI Super Agents: /notebook/76cb88b5-8870-44bd-9f5d-6b8a3988156b
+- Building a Content Operating System with Claude and Higsfield: /notebook/86fcede5-1c31-4952-8f78-d7cbeda166a8
+- The Context Development Life Cycle: /notebook/f8b4cb43-f184-4017-9e70-839c969a60c9
+- Integrating Local Ollama Models with Claude Desktop and Code: /notebook/67c4b990-8b05-4282-9c9a-28636d8fde57
+- Mastering Codex: Building Advanced AI Automations and Projects: /notebook/2d323b31-9ca2-4422-93d9-33aa9340bec4
+- Automating Video Editing with Claude and Hyperframes V2: /notebook/7291bdbd-d23a-4d37-9951-041286c94b8b
+- Empowering Edge Intelligence with Tiny LLMs and Agent Skills: /notebook/3e06b32e-5413-4472-a583-9c4931e8e77f
+- MCP Apps: The Global Standard for Agentic User Interfaces: /notebook/d1a3bfa9-b876-46bf-aa96-1296fcf23c91
+- The OpenCode Evolution: Free Open-Source AI Coding Agents: /notebook/cda2ce13-f1ac-45d7-b855-006e3346a28b
+- Ancient Metaphysics and the Frontiers of Modern Cosmology: /notebook/fe9e0565-18c7-4858-b736-974056de8458
+- Shunya: The Ancient Indian Protocol of Decentralized Trust: /notebook/92279f00-cebd-41a2-94ba-769c88dc6147
+- Dimensions of Interstellar: The Tesseract and 4D Space: /notebook/abc25551-567c-4dfc-beb6-e7cc37b2f2eb
+- Parashurama’s Legacy: The Science and Secrets of Kalaripayattu Warfare: /notebook/27abd9ed-91dd-4513-8ce5-85884df828ab
+- Precision Digital Doubles: The Headshot 3 Generation Guide: /notebook/b6920e88-26e5-4f8d-83ce-c64893022bbd
+- Echoes of the Devadaru Forest: /notebook/ec2775cb-53b8-4433-ab86-b55dcf189079
+- The Art of Writing and Character Development Online: /notebook/4b049fb6-3d41-4e94-af94-a4854f7f7366
+- The Flash: Monologues for a New World: /notebook/45e086dd-3f33-45dc-ba5f-f536be25a71d
+- Mastering Google Gemini for Construction Management: /notebook/6215b354-e679-4bab-8ca5-4db2ab7e6bde
+- Mastering the Obsidian Web Clipper for a Distraction-Free Ideaverse: /notebook/a148a2e1-2e10-4d08-9371-7e5e830d0740
+- Mindfulness for Actors: The Inner Art of Performance: /notebook/da1004c5-e73e-423e-859e-a58906326b38
+- The Writer’s Toolbox: Bird by Bird and Stronger Verbs: /notebook/5de31221-ab51-46cd-8e3c-89c0a4f46eb3
+- Sridhar Musical Band: Teenmar Melodies and Rhythms: /notebook/56d82221-731c-4d0d-8d5c-a09454e6db97
+- Avid Media Composer 6.5 Editing Guide: /notebook/7b92ffa3-8316-4092-bb43-42ddbef8c11f
+- The Art of Deception: /notebook/fef16815-b636-4fd7-a145-d09368cbaffc
+- Efficiency Mastery: Five Essential NotebookLM Workflow Hacks: /notebook/dec08086-9f7d-4dc5-9041-c9ecd8f903cc
+- Tantric Embodiment and the Sacramental Senses: /notebook/3b2ebefb-85d6-491c-9216-cd4c9872e149
+- Novelist: /notebook/802d02f3-0cc4-466a-8090-2964e3791986
+- I Am The Danger: The Coolie Anthem: /notebook/d84edd0b-07c4-4105-a749-646577e6e15d
+- The Soul of the Songwriter: /notebook/d1b53956-f828-466c-a54d-7b4edbfcdfb9
+- Lessons from the Frontier of Small Language Models: /notebook/fff19b27-f836-40f6-9fa7-758616d1759e
+- Building Voice Agents with Gemini Live and Agora: /notebook/96da3fa6-3cee-4bf2-9d3a-d014b7637358
+- Google Flow Music: The Producer’s Handbook: /notebook/b555a8e2-72b1-4005-875f-12cf176759e3
+- Gemini Workspace Intelligence: Advanced File Generation and Drive Integration: /notebook/b5c2e2ff-0c30-49cd-bdf4-5b107dd32f44
+- Building Voice Agents with Gemini Live and Agora: /notebook/26aa457c-becc-40ea-9958-c1e89d75f433
+- The OpenAI Codex Masterclass: Plugins, Automations, and Subagents: /notebook/6569855b-609c-4a73-accd-14e55549f755
+- Spark Zero to Hero: Data Engineering Masterclass: /notebook/ec86ce3e-eaca-4425-8a05-3578f724bfe1
+- Maximizing Claude Code: DeepSeek V4 and Cost-Efficient Workflows: /notebook/a52621f5-b2ef-46a0-9fe4-a57d35993532
+- Hyperframes: HTML-Native Video Rendering Framework for AI Agents: /notebook/bf617d03-a16e-4a70-8c15-aed11d2ef475
+- PySpark Power Guide: Data Engineering Essentials: /notebook/c807fafc-972e-47f5-8867-f1e5048a7108
+- The Andre Karpathy AutoResearch Guide: Building Autonomous AI Loops: /notebook/fb53ea1b-7cf8-423d-819e-69de81f7e338
+- Mastering Claude Code: Building High-Value Super Skills: /notebook/5a0c933f-ca31-4b04-9b55-7fe61801b6aa
+- Graphic Novels with NotebookLM: From Script to Storyboard: /notebook/f84c68d2-8b88-49e5-a1e3-4af0905f6531
+- The Pursuit of Perfection: Satisfying CGI Render Challenge: /notebook/7e050e56-1477-4e37-860d-b4a952f5144f
+- Strategic Engineering: Software Fundamentals in the Age of AI: /notebook/0df052d2-3d77-4dc7-83da-7e33bf6b7c03
+- The Nano Banana Pro Global AI Prompt Library: /notebook/b747bf67-3311-4c5c-a604-247ff7b74e6c
+- The Premise and Mechanics of Dramatic Writing: /notebook/ed9e9b7b-47f6-4d2a-8c4e-cee7c879297c
+- Untitled notebook: /notebook/fab39d8b-ca43-4250-bec7-b3bf46875770
+- Integrating Claude with Unreal Engine via MCP Setup: /notebook/88c1c09e-92ca-4e01-97d8-fb6a4671a5fd
+- Morbi Tiles Use Case: /notebook/bc913b15-b6f8-46d3-8725-83c30dcbc424
+- Building the LLM Wiki: The Future of Agentic Knowledge: /notebook/ae4a6ef7-0b24-4ce6-9ec8-9afe1801dcdb
+- Google Gemini Enterprise Agent Platform: The Vertex AI Rebuild: /notebook/0c7f72e5-a0df-483d-b1c0-874d6189cfba
+- Gaussian Splats: The Dawn of the 4D Hologram: /notebook/03f0e556-198a-44f6-8208-86341dd453ca
+- Cinematic Mastery: The Seedance 2.0 AI Filmmaking Workflow: /notebook/d6522f98-042e-4c64-aa38-832f56f95ac6
+- Mastering AI Customization: Building Skills and Visual Prompts: /notebook/d0a527ad-8285-4760-a24b-ecaf43810ce3
+- Mastering the Microsoft Career Path: AI Coaching and MCT Certification: /notebook/a45b0303-f42a-47d6-990c-7a6c450f4fc3
+- The Morbi Resilience: From Ruin to Recovery: /notebook/f11bcd5c-5fd4-45de-a27e-e067ace36e5d
+- Python Core and Advanced with Mohan Reddy Sir: /notebook/de1c90e3-be8d-4a75-ab39-57e403798d14
+- Alita Anime: /notebook/b9a329d7-bc0d-4d47-a4cc-fd7628fd6d20
+- Magnetic Monopoles: /notebook/c8258289-a10d-4172-8483-4e03c7e51811
+- Canvas Guide: /notebook/35c41053-5da4-4eac-a1a4-945ab581b158
+- Mastering LinkedIn with Claude AI: Five Prompts for Success: /notebook/eb6e0177-c8fa-4a08-9b93-9d1fa64c53c0
+- Study Skills Strategies: Accelerate Your Learning: /notebook/ee7093a0-a634-4d23-b173-f6cbba1cbb8d
+- Automated Video Editing with Claude and HyperFrames: /notebook/25401d7a-3329-4186-8afb-086f0519e686
+- Mastering AI Video Authoring: The HyperFrames Prompt Guide: /notebook/7006c900-914e-4d91-ad59-7e250dce7b43
+- 37th dimension screenplay: /notebook/ea5a9093-dcbc-490a-93c3-40f4d01a10d0
+- Seeing is Believing: A Guide to Cinematic Visual Effects: /notebook/a870b6fb-cfff-485d-9cf9-e5a7208a6b13
+- Architecting an Evergreen AI Prompt Engineering Tool: /notebook/37a11ae5-1c59-44cb-a7f1-414a27719996
+- Ryzen laptops for filmmaking: /notebook/6b324c88-f4c2-42ec-83df-a3ed972f46f2
+- The Birth of Carrie and the Price of Success: /notebook/2feea16d-26f7-4d47-ba12-c49c3c20a861
+- Essential Guide to Computing: From Excel to Programming Languages: /notebook/166a9416-15df-41f8-b0af-95b0f8a9e2c3
+- AI Video Motion Graphics with Claude Code and Remotion: /notebook/c5dc8a41-f062-4946-956c-1e21e29faab3
+- Mastering the Power of Gemini CLI Subagents: /notebook/dcd67f2e-8721-4a75-90c9-316a7d25952a
+- Mastering SeaDance 2.0 with Claude AI Video Prompting: /notebook/f09d610b-c784-4738-852c-99c20e303e2c
+- The Unified AI System: Claude Code and NotebookLM Integration: /notebook/5a634df5-9057-46ae-a88f-7780cd2c2a1d
+- The LLM Wiki: Building a Compounding Obsidian Memory System: /notebook/d19c8b82-23b4-4784-bbed-7496fc342fdc
+- Super Brain: Unleashing Your Mind's Unlimited Potential: /notebook/73699cb7-b5a0-4382-9179-d10b8c033c01
+- New Empires and Kingdoms: /notebook/f17eb0b1-6d4a-4de5-88f2-bb6626cda0ae
+- Automated Video Production: Claude, HeyGen, and ElevenLabs Orchestration: /notebook/b21d03c4-e1bf-4312-b75d-14cdcc919cc3
+- Wonders of Nature: Global Warming Assessment: /notebook/90fda290-3ef1-4b98-bb31-19acddac79de
+- 6 Social: /notebook/5142f7e8-e59b-4bb2-affd-555a16598491
+- Google Recruiter Secrets: Strategic Resume Engineering for Modern Hiring: /notebook/2974b4d2-d3d3-437e-91dd-9ff2131fdb8f
+- 5 Science: /notebook/131e640c-54e2-4445-99d6-f2ce8809cdf2
+- Claude Code vs Google Antigravity: The AI Coding Showdown: /notebook/ec29d050-0027-4cd0-928d-41679f73f0ea
+- Keep Your Brain Alive: The Neurobic Exercise Program: /notebook/d17c28ee-b7da-4fe0-a88c-55610ed4c4bd
+- Art Deco and Artifice: Production Design in The Great Gatsby: /notebook/bc6f9039-2679-453d-8ab4-5eece373e94a
+- Psychology of Intelligence Analysis: /notebook/e4eb503e-a2f3-4140-9a10-3d5a10fd80a3
+- Ancient Indian Leaps into Mathematics: /notebook/bf45617c-b0f5-447d-9947-78c5eefe91a5
+- The Architecture of Learning: Mindset, Memory, and Mastery: /notebook/572ff08b-1980-4ac4-bd70-ef5397f1e100
+- Mastering Claude Co-work for Authors and Publishers: /notebook/f2bebbe0-fe12-4396-a084-9401dda287ff
+- Designing Sound: A Guide to Pure Data: /notebook/cead0eeb-b489-4e91-b534-a49f14155423
+- Software Development Process Models: From Classical to Agile: /notebook/1c41792a-3ed3-41b3-b31d-4e16074e93db
+- Mathematics Examination Paper II Assessment: /notebook/332d8274-d596-4b1e-a49b-9f3921075a9b
+- 4 Math SA2 Revision: /notebook/3e209037-87a4-4c66-a62a-f5e1242449e4
+- The Zero to Million Dollar AI Business Blueprint: /notebook/9b51dfef-edd2-49c6-abda-5c1501daa13e
+- Primary Mathematics Curriculum and Practice Solutions: /notebook/575e56d9-8a62-40a1-98c4-5ab64cf8ec93
+- English Language Comprehension and Grammar Exercises: /notebook/213e01af-f750-4900-bfa1-85533b305e93
+- Mastering Seedance 2.0: The Ultimate AI Video Prompting Guide: /notebook/139b84f5-2d31-4707-9cea-7c4fa2c554a2
+- The Cinematographer’s Craft: From Vision to Frame: /notebook/29d289ed-7572-4149-afe2-03e38877dd8e
+- Mastering the Anti-Gravity and GSD AI Coding Workflow: /notebook/a20967ea-6b3c-447d-9cb6-54cc4bce43a6
+- Eminem: Without Me (Official Music Video Transcript): /notebook/24f99155-08ed-41e5-9165-71752d59be34
+- Sirivennela: The Celestial Song of Life: /notebook/fa23d92d-0739-4836-9983-ddb6d25de328
+- The 20-Minute Learning Loop: NotebookLM, Claude Code, and Obsidian: /notebook/3c567198-dc52-4f8b-a89d-9817b055e414
+- Hindi SA2 Revision 2026 QnA Study Guide: /notebook/efdd9ac8-edaf-46aa-9864-15e301a27f59
+- The River: A Hindi Verse on Nature's Flow: /notebook/b49b72cb-f32b-408a-a1ce-46eb867d86ce
+- Vimanika Shastra: Bridging Ancient Aeronautics and Modern Engineering: /notebook/f0092b50-328e-411c-ab81-2d9898de82dc
+- The Ultimate Guide to Prompt Engineering Techniques: /notebook/919873a0-729c-4078-ada8-f8aee16f1208
+- The Future of AI Video Editing with Remotion and Claude: /notebook/74555526-2c54-44a2-ba4d-9b3ff290d913
+- Hardware Scouter for High-Performance Unreal Engine Development: /notebook/e1199b95-08f4-498a-a4f7-fcfcd5536af5
+- The Satoshi Kon Paradox: Reality, Dreams, and Identity: /notebook/d6ad22cd-aeef-4038-8973-a025c01f20c4
+- The Birth of Shonen Bat: /notebook/bce3d87f-1864-4d01-be96-fdd81455fd29
+- The Olive Ridley Arribada of India: /notebook/1b66ee26-76ff-4e98-9403-ada22f751f4d
+- Animating AI-Generated Infographics in PowerPoint: /notebook/c382b696-f7be-4572-8053-0df1c9a47566
+- The Seedance 2.0 Viral AI Video Prompting Guide: /notebook/76a9fdc3-3d61-4830-9956-8e5a9537c60c
+- Telugu Sentence Structure and Grammar Exercises: /notebook/dc1fdbb8-2535-4c05-a88b-61ad1918c9ad
+- Mastering AI Filmmaking with Kling Motion Control: /notebook/c29bd240-92a3-4dc0-8a1e-4698198e55c9
+- Claude and NotebookLM: Integrating Infinite Memory and Advanced Skills: /notebook/7fbdd982-9013-4af5-8882-22d690d03c4f
+- Maximizing Efficiency: 18 Claude Code Token Management Hacks: /notebook/4a02fde7-8419-420b-a193-fa98e5f53249
+- Story: Substance, Structure, Style, and the Principles of Screenwriting: /notebook/3a0355d4-42a6-424b-b8cb-c70b090664d9
+- Visions of Motion: Hyderabad’s State-of-the-Art Capture Lab: /notebook/0def3e2b-3840-45c6-b3bb-3ce249f4a238
+- The Architecture of Awe and the Estranged Sentence: /notebook/1df8e744-734c-4c59-b9d4-13c527b2f383
+- Untitled notebook: /notebook/0361a9f9-39f0-4e87-ac02-3816030803d2
+- The Eternal Radiance of the Parashurama Avataram: /notebook/b5c482e0-4237-4b1b-a997-db831e0bdac8
+- The Principles of Story Design: /notebook/a323dfa9-4356-4cbb-946a-49f5fb47433d
+- The Wolfman: Living and Communicating with the Pack: /notebook/9c1b1683-da9d-44c7-9d0d-583cb0d4e522
+- DP700 Certification Guide: Microsoft Fabric Exam Preparation and Strategy: /notebook/143ed52d-e63f-431c-a63b-c0a5859e3887
+- Veda's Echo: /notebook/6a9473b5-fc0e-4f41-99c1-3fdd49459162
+- Vedic Hymns of Spiritual Vibration and National Prosperity: /notebook/d0b196ba-2c1d-4883-9344-711657ceffa1
+- Microsoft Fabric Data Engineer Associate DP-700 Comprehensive Course Curriculum: /notebook/4629e9a4-043e-4337-8a53-55f750f3e0e3
+- The Telling Detail: Michael Connelly on the Craft of Fiction: /notebook/08797966-9743-4a14-ae33-547d1af663cc
+- Joe Letteri and the Evolution of Visual Effects History: /notebook/72f0df17-e20e-4dfe-b587-fc62e826cba4
+- The Mechanics of Laughter: Cracking the Code of Comedy: /notebook/fdf6f267-feed-4fdb-a074-e9221470db99
+- Building Modern Mobile Apps with AntiGravity and Figma: /notebook/e49df289-d70b-43c8-b98e-e53ef9783be0
+- The Full Facts Book of Cold Reading: /notebook/9b01d80f-0d7e-4b0c-8221-10b01035335b
+- Vibe Coding: Building AI Software with Gemini and Anti-Gravity: /notebook/55a18aa4-32ea-4663-ae17-54c758159de0
+- Setting Up Free Custom Domain Email Addresses via Gmail: /notebook/4f714671-d637-4687-8d26-2f224a93cf45
+- Microsoft Fabric Update February 2026: /notebook/930d50d3-eb4d-43ac-b3e3-234d6cf0f2e0
+- Ranu Folk Song Search Results: /notebook/ac0d23c2-2551-4b88-b28c-7499d8f93515
+- The Modern Agent: Definitions, Architectures, and Design Patterns: /notebook/8d7f2976-acd9-4173-98c2-0188417cdb63
+- Building and Selling AI Animated Websites with Anti-Gravity: /notebook/0e0ae281-06f7-47d6-a933-f3d5aa246690
+- Deploying Full Stack Apps with Gemini CLI and MCPs: /notebook/fbbc2006-4745-4164-8dc9-f7f655545d90
+- Wedding Invitation of Jaagruthi and Vignesh: /notebook/0cc5ba11-f15d-491e-80c2-060ef37b23f8
+- Untitled notebook: /notebook/54af87a7-88c2-4791-9a7f-9103302674db
+- The Marriage of Jagruthi and Vighnesh: /notebook/93c81f87-2ffa-41bb-9a9a-7bace55e1d5c
+- Unifying Retail Intelligence with Microsoft Fabric IQ: /notebook/1c09ddda-6bd7-44c3-9e61-3daf09749aa3
+- The Fundamentals of Telugu Poetic Meter: /notebook/86c97efe-6d08-4333-8bc7-dde95859ecfd
+- Thribhasha Nigantuvu: Telugu-English-Hindi Trilingual Dictionary: /notebook/4e6014d8-b592-47fe-a7d9-1622e56c01a0
+- Trilingual Dictionary: Telugu Tamil Kannada: /notebook/5e05c7c2-0d25-4c25-bb9f-47ba07a01299
+- Amarakosam: A Multilingual Sanskrit Lexicon: /notebook/2c6f089b-c655-4ee3-b2aa-8a898a3efa9c
+- Mastering Google Anti-gravity: Automating AI Video Production and Agent Management: /notebook/e071ad97-d53a-470b-a3b3-e5f658278806
+- The Magic of Shadow Puppets: /notebook/420ae8d7-39a0-428e-a160-7a03ce6e0403
+- Chandamama September 1947: A New Dawn for Indian Children: /notebook/08e00bd5-e6c1-4be8-b180-6fc7753b0b34
+- The Full Facts Book of Cold Reading: /notebook/8fc6a63e-da17-4c62-8263-8e09e26b7de5
+- Puli Meka: The Strategy of Indian Rural Tiger Games: /notebook/6104ebf9-5033-49e9-a06a-bb0eeae80559
+- Mastering Automation with Anti-Gravity Skill Building: /notebook/305cf9de-19cc-4e01-9782-1ebd6b2c4c55
+- Professional Profile of Navakanth Reddy Dumpa: /notebook/de329546-06a9-42a7-a333-629469a70f1c
+- Training Foundations: Gradient Descent and Backpropagation Neural Networks: /notebook/8f458e6a-6d6f-41f8-a97a-2baf35636b2c
+- Building Living AI Brains with NotebookLM and Gems: /notebook/063c251b-0fe0-42b9-957a-bbb3c79e0d4e
+- Untitled notebook: /notebook/6dfbd5a5-b907-4592-986b-98191129c105
+- Mastering NotebookLM: The Ultimate Content Automation Blueprint: /notebook/b3bebe06-2660-4195-8a1a-5e18766291f5
+- Beyond Agents: Building Expertise Through Skills: /notebook/e8e10f4e-aa1d-4f32-827c-dd45fefc5993
+- Delta Lake Foundations in Microsoft Fabric: /notebook/7c533a3b-1507-4198-a8e3-619ecbfbbbab
+- Spark Data Processing in Microsoft Fabric: /notebook/d322d8b4-e0d8-453b-836b-a986543042e4
+- Architecting Insight: An Introduction to Microsoft Fabric: /notebook/04a39f63-9f7f-4a8b-93d0-a147c17d847a
+- Modern Data Warehousing with Microsoft Fabric: /notebook/bfd109a3-7ae4-40b2-bdaf-3ac5f5830707
+- Orchestrating Data Processes with Microsoft Fabric Pipelines: /notebook/a95ebff5-4f19-476b-a85d-d4435abdbd3f
+- Data Warehouse: /notebook/2ee781e1-84c3-4dd0-b719-3300f529bd03
+- Loading Data into a Microsoft Fabric Data Warehouse: /notebook/1d816df5-8fa3-42a0-87c4-7884ac92e8b0
+- Microsoft Fabric Data Warehouse and ETL Introduction: /notebook/2aa8648c-f3d2-4e72-8132-eae269935233
+- Fabric Data Warehouse Performance Guidelines and Best Practices: /notebook/20d83096-f460-4e1e-b85e-5e26afe29e4e
+- Untitled notebook: /notebook/e9066bd9-5909-44d3-b44c-96faf8731ec7
+- Microsoft Certified Fabric Analytics Engineer Associate Certification: /notebook/f6b94b61-14c3-4050-a748-d7df74a5a938
+- Gemini CLI: Powering Development with AI Agents: /notebook/ce8f0fdb-cf00-4255-becf-d24cf779f938
+- India's Aviation: Monopoly, Safety, and Regulatory Crisis: /notebook/31d09a76-556a-4fdd-99cb-4d24933a79a7
+- Indian Aviation: Safety, Economy, and Reforms: /notebook/042c7fdf-6c5a-418b-b6a7-8caea786c116
+- Data Warehouse Load Strategies and Techniques: /notebook/663ba9ab-51c4-4ea0-adf8-1146b61a5a21
+- Data Pipelines for Microsoft Fabric Warehouse Loading: /notebook/1d317bda-d53d-4f77-9fd3-41d284857e75
+- Data Transformation with Dataflow Gen2 and Copilot: /notebook/5cbc7c9a-cf84-49e6-8eaa-84ce375c2bd0
+- MCTRC Standard Operating Procedure for Participants: /notebook/9b6c6e1c-1822-4b43-9558-20f43f79efb7
+- T-SQL Data Loading in Microsoft Fabric Warehouse: /notebook/59da0454-9bc1-40f2-a323-94aa401536d2
+- Microsoft Fabric Warehouse: Features and Operations: /notebook/5b8a5326-5873-4cfc-9c14-eec346fd5501
+- Microsoft Fabric Environment Management and Administration: /notebook/2209a53b-dbf2-4131-9e98-f0151f9072b5
+- Microsoft Fabric Deployment Pipelines: Process and Features: /notebook/ac427911-2868-4f82-9b84-1c341caec524
+- Securing Microsoft Fabric Data Warehouses: /notebook/f73634c9-6b59-4b13-a78e-a6242f3885ea
+- Microsoft Fabric Domains: Setup and Management: /notebook/583f3abe-580d-4dbf-bb68-3c14310a2b09
+- Microsoft Fabric: Seamless Data Mirroring for Analytics: /notebook/6ddbb534-fb9e-47a5-ac2c-06c65ecd07ec
+
+## Action / Next Steps
+- [ ] Pick a notebook to work with
+- [ ] Generate an audio overview

@@ -1,0 +1,212 @@
+{
+  "main": {
+    "id": "0b6be3a4d30ca111",
+    "type": "split",
+    "children": [
+      {
+        "id": "df9648cdf8994986",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "49ac6c39817550f0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "00-Inbox/2026-06-07-agent-os-blueprint-6-steps.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-06-07-agent-os-blueprint-6-steps"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "923d4d3f38217ea8",
+    "type": "split",
+    "children": [
+      {
+        "id": "6b2e169369b7882c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bd07f0cb50d25c9d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "fed819e7e879d5f1",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "9e42018525674acb",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "45ff38ee228fb4ce",
+    "type": "split",
+    "children": [
+      {
+        "id": "df90c7bf9c36ab8d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c1e0fac1292891fa",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Untitled 1.base",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Untitled 1"
+            }
+          },
+          {
+            "id": "4421edb668db8fe7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Welcome.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Welcome"
+            }
+          },
+          {
+            "id": "d6678ffdfc1ad2d3",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ac20eae8e961e917",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "3e412b50c997c8f9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Welcome.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Welcome"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "bd07f0cb50d25c9d",
+  "lastOpenFiles": [
+    "00-Inbox/2026-06-06-api-test-note.md",
+    "01-Projects/AI-Automation/2026-06-06-session-agent-os-complete-build.md",
+    "01-Projects/AI-Automation/2026-06-06-agent-os-setup.md",
+    "Untitled.canvas",
+    "01-Projects/AI-Automation/2026-06-06-notebooklm-studio-agent-os-notebook-outputs.md",
+    "01-Projects/AI-Automation/2026-06-06-notebooklm-full-notebook-index-261-notebooks.md",
+    "git-sync-test.md",
+    "Untitled 1.base",
+    "00-Inbox/2026-04-11-search-for-recent-conference-proceedings-on-neurips-and-icip.md",
+    "Untitled.base",
+    "00-Inbox/2026-04-12-building-compressed-ai-agents.md",
+    "00-Inbox/2026-04-11-self-improving-ai-systems-with-llms.md",
+    "2026-05-14.md",
+    "00-Inbox/2026-04-11-can-we-build-a-compression-algorithm-that-maintains-quality.md",
+    "00-Inbox/2026-04-11-identify-issue-and-resolve-it.md",
+    "Untitled 1.canvas",
+    "shab-noor-consulting/index.md",
+    "00-Inbox/2026-04-11-building-compression-algorithm-for-quality-maintenance.md",
+    "00-Inbox/2026-04-11-ai-agent-loops-and-self-improvement-using-llms.md",
+    "00-Inbox/2026-04-12-investigating-recent-papers-on-huffman-coding-for-deep-learn.md",
+    "00-Inbox/2026-04-12-compression-algorithms-for-ai-agents.md",
+    "00-Inbox/2026-04-11-autoresearch-karpathy-self-improving-ai-loops.md",
+    "Welcome.md"
+  ]
+}
