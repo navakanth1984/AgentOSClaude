@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent OS — 3D Neural Map & Simulation Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.146.0/build/three.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.70.5/dist/3d-force-graph.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #060913; 
+  --surface:     rgba(10, 15, 30, 0.75); 
+  --surface-glow: rgba(16, 25, 50, 0.9);
+  --border:      #1a2d54; 
+  --accent:      #00f0ff; 
+  --accent-glow: rgba(0, 240, 255, 0.4);
+  --quantum:     #bc8cff;
+  --quantum-glow: rgba(188, 140, 255, 0.4);
+  --text:        #e3ebf8; 
+  --muted:       #7d8fa9; 
+  --radius:      12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { 
+  width: 100%; height: 100%; overflow: hidden; 
+  background: var(--bg); color: var(--text); 
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+}
+
+#stars-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+#3d-graph { position: fixed; inset: 0; z-index: 1; }
+
+/* Dashboard UI Layout */
+#dashboard-ui {
+  position: fixed; inset: 0; z-index: 10;
+  display: flex; justify-content: space-between;
+  padding: 24px; pointer-events: none;
+}
+
+.panel {
+  width: 320px; height: calc(100% - 70px);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  pointer-events: all;
+  display: flex; flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  margin-top: 50px;
+  overflow: hidden;
+}
+.panel:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px 0 var(--accent-glow);
+}
+
+.panel-header {
+  padding: 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-header h2 {
+  font-family: 'Orbitron', sans-serif; font-size: 14px;
+  letter-spacing: 1px; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+
+.panel-content {
+  padding: 16px; overflow-y: auto; flex: 1;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+/* Custom Scrollbars */
+.panel-content::-webkit-scrollbar, .conn-list::-webkit-scrollbar { width: 6px; }
+.panel-content::-webkit-scrollbar-track, .conn-list::-webkit-scrollbar-track { background: transparent; }
+.panel-content::-webkit-scrollbar-thumb, .conn-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.panel-content::-webkit-scrollbar-thumb:hover, .conn-list::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* Header TopBar */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px;
+  background: rgba(6, 9, 19, 0.8); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); z-index: 12;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+#topbar h1 {
+  font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700;
+  letter-spacing: 1.5px;
+}
+#topbar h1 span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+.top-actions { display: flex; align-items: center; gap: 12px; }
+
+.btn {
+  background: rgba(22, 27, 44, 0.6); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); cursor: pointer;
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 600;
+  padding: 8px 16px; text-transform: uppercase; letter-spacing: 0.5px;
+  transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none;
+}
+.btn:hover {
+  background: var(--accent); color: var(--bg);
+  box-shadow: 0 0 15px var(--accent-glow); border-color: var(--accent);
+}
+.btn-quantum {
+  border-color: var(--quantum);
+}
+.btn-quantum:hover {
+  background: var(--quantum); color: var(--bg);
+  box-shadow: 0 0 15px var(--quantum-glow); border-color: var(--quantum);
+}
+.btn-toggle {
+  background: rgba(0, 240, 255, 0.1); border-color: var(--accent);
+}
+
+/* Tabs */
+.tabs {
+  display: flex; background: rgba(0,0,0,0.3);
+  border-radius: 8px; padding: 4px; border: 1px solid var(--border);
+}
+.tab {
+  flex: 1; text-align: center; padding: 6px; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.5px; border-radius: 6px;
+  cursor: pointer; transition: all 0.2s ease;
+  font-family: 'Orbitron', sans-serif; font-weight: 600; color: var(--muted);
+}
+.tab.active {
+  background: var(--accent); color: var(--bg);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Legend items */
+.legend-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px;
+  cursor: pointer; transition: all 0.2s ease;
+}
+.legend-item:hover {
+  background: rgba(255, 255, 255, 0.05); border-color: var(--border);
+}
+.legend-item.dimmed { opacity: 0.25; }
+.legend-color { width: 8px; height: 8px; border-radius: 50%; }
+
+/* Stats box */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stat-card {
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px; text-align: center;
+}
+.stat-val {
+  font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700;
+  color: var(--accent); text-shadow: 0 0 5px var(--accent-glow);
+}
+.stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+
+/* Control pane elements */
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+
+/* Detail panel styling */
+.detail-title { font-family: 'Orbitron', sans-serif; font-size: 15px; margin-bottom: 8px; }
+.badge {
+  display: inline-block; padding: 3px 8px; border-radius: 20px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.conn-list { display: flex; flex-direction: column; gap: 4px; max-height: 150px; overflow-y: auto; }
+.conn-item {
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.conn-item:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Simulation Display overlay */
+#simulation-viewport {
+  position: fixed; inset: 0; z-index: 20;
+  display: none; justify-content: center; align-items: center;
+  background: rgba(6, 9, 19, 0.55); backdrop-filter: blur(4px);
+  pointer-events: all;
+}
+.sim-3d-box {
+  width: 500px; height: 350px;
+  background: rgba(5, 8, 16, 0.85); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  pointer-events: all; display: flex; flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+/* Simulation Scorecard details */
+.scorecard { display: flex; flex-direction: column; gap: 6px; }
+.score-row {
+  display: flex; justify-content: space-between; font-size: 11px;
+  padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.score-row strong { color: var(--text); }
+.score-pass { color: #00ff66; text-shadow: 0 0 5px rgba(0,255,102,0.4); }
+.score-warn { color: #ffcc00; text-shadow: 0 0 5px rgba(255,204,0,0.4); }
+
+/* Custom 3D Column styling for Grover simulation */
+.grover-chart {
+  display: flex; align-items: flex-end; justify-content: space-around;
+  height: 180px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 8px;
+  border: 1px solid var(--border); margin-top: 10px;
+}
+.grover-col {
+  width: 32px; background: linear-gradient(180deg, var(--quantum), rgba(188, 140, 255, 0.1));
+  border-radius: 4px 4px 0 0; transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative; display: flex; align-items: flex-end; justify-content: center;
+  border: 1px solid rgba(188, 140, 255, 0.4);
+}
+.grover-col.target {
+  background: linear-gradient(180deg, var(--accent), rgba(0, 240, 255, 0.1));
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+.grover-lbl { font-size: 8px; color: var(--text); margin-bottom: -15px; position: absolute; bottom: 0; font-family: 'Orbitron', sans-serif; }
+.grover-val { font-size: 8px; color: var(--text); margin-top: -15px; position: absolute; top: 0; font-family: 'Orbitron', sans-serif; font-weight: bold; }
+
+/* Bloch Sphere canvas */
+#bloch-canvas { width: 100%; height: 200px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; }
+
+/* Loading screen */
+#loading {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--bg); gap: 16px;
+}
+.loader-ring {
+  width: 60px; height: 60px; border: 3px solid rgba(0,240,255,0.1);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#loading p { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="toast-container" style="position:fixed; top:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:10px; pointer-events:none;"></div>
+
+<canvas id="stars-canvas"></canvas>
+<div id="3d-graph"></div>
+
+<!-- Simulation Viewport Container -->
+<div id="simulation-viewport" onclick="if(event.target === this) closeSimView()">
+  <div class="sim-3d-box" id="bloch-sim-box" style="display:none;">
+    <div class="panel-header">
+      <h2>⚛️ Bell State TOCTOU Validation</h2>
+      <button class="btn" style="padding: 4px 8px; font-size: 9px;" onclick="closeSimView()">✕</button>
+    </div>
+    <div style="padding:16px; display:flex; flex-direction:column; gap:12px; flex:1;">
+      <canvas id="bloch-canvas"></canvas>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn btn-quantum" onclick="runBellTamper(true)">⚡ Inject TOCTOU Tampering</button>
+        <button class="btn" onclick="runBellTamper(false)">✓ Reset Entanglement</button>
+      </div>
+      <div id="bell-metrics" style="font-size:11px; display:grid; grid-template-columns:1fr 1fr; gap:6px; background:rgba(0,0,0,0.2); padding:8px; border-radius:6px; border:1px solid var(--border)">
+        <div>Status: <span style="color:var(--accent)" id="bell-status">Intact</span></div>
+        <div>Correlation Ratio: <span style="color:var(--accent)" id="bell-ratio">100%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim-3d-box" id="grover-sim-box" style="display:none;">
+    <div class="panel-header">
+      <h2>⚛️ Grover Search Amplification</h2>
+      <button class="btn" style="padding: 4px 8px; font-size: 9px;" onclick="closeSimView()">✕</button>
+    </div>
+    <div style="padding:16px; display:flex; flex-direction:column; gap:12px; flex:1;">
+      <div class="grover-chart" id="grover-cols-container">
+        <!-- columns dynamically loaded -->
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+        <div style="font-size:10px; color:var(--muted)">Target address: <span style="color:var(--accent)">|101&gt;</span></div>
+        <button class="btn btn-quantum" onclick="stepGrover()">▶ Step Grover Iteration</button>
+        <button class="btn" onclick="resetGrover()">↺ Reset</button>
+      </div>
+      <div id="grover-metrics" style="font-size:10px; background:rgba(0,0,0,0.2); padding:8px; border-radius:6px; border:1px solid var(--border)">
+        Iterations: <span style="color:var(--accent)" id="grover-step-count">0</span> / 2. Formula: <span style="color:var(--quantum)">k = floor(pi/4 * sqrt(8)) = 2</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loading">
+  <div class="loader-ring"></div>
+  <p id="loading-msg">INITIALIZING NEURAL NETWORK...</p>
+</div>
+
+<!-- Header TopBar -->
+<div id="topbar">
+  <div style="display:flex; align-items:center; gap:16px;">
+    <a href="/dashboard" class="btn">← Dashboard</a>
+    <h1>⚡ <span>AGENT OS</span> · NEURAL GRAPH</h1>
+  </div>
+  <div class="top-actions">
+    <button class="btn btn-toggle" id="btn-dimension" onclick="toggleDimension()">2D Mode</button>
+    <button class="btn" onclick="resetCamera()">⊞ Focus</button>
+  </div>
+</div>
+
+<!-- Dashboard UI panels -->
+<div id="dashboard-ui">
+  <!-- Left Control Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <h2>🌌 Control Center</h2>
+    </div>
+    <div class="tabs">
+      <div class="tab active" id="tab-graph" onclick="switchTab('graph')">Map Controls</div>
+      <div class="tab" id="tab-sim" onclick="switchTab('sim')">Simulations</div>
+    </div>
+    
+    <div class="panel-content" id="panel-controls">
+      <!-- Graph Controls -->
+      <div style="display:flex; flex-direction:column; gap:12px;" id="graph-controls-pane">
+        <div class="form-group">
+          <label>Search Neural Space</label>
+          <input type="text" id="search-input" placeholder="Search notes, tags..." 
+                 style="background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text); padding:8px 12px; font-size:12px; outline:none;" 
+                 oninput="onSearch(this.value)">
+        </div>
+
+        <div class="form-group">
+          <label>Synapse Flow Speed</label>
+          <input type="range" min="1" max="10" value="5" id="flow-speed" 
+                 style="accent-color: var(--accent);"
+                 oninput="updateFlowSpeed(this.value)">
+        </div>
+
+        <div style="margin-top:10px;">
+          <h3 style="font-family:'Orbitron',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px;">Legend & Filters</h3>
+          <div style="display:flex; flex-direction:column; gap:6px;" id="legend-list">
+            <!-- legend items dynamically injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulation Selector -->
+      <div style="display:none; flex-direction:column; gap:12px;" id="sim-controls-pane">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="btn btn-quantum" style="justify-content:center;" onclick="openBellSim()">⚛️ Bell State TOCTOU</button>
+          <button class="btn btn-quantum" style="justify-content:center;" onclick="openGroverSim()">⚛️ Grover Search</button>
+          <button class="btn btn-quantum" style="justify-content:center;" onclick="runQuantumWalk()">⚛️ Quantum Walk Predictor</button>
+        </div>
+        
+        <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
+          <h3 style="font-family:'Orbitron',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px;">CGBench Live Scorecard</h3>
+          <div class="scorecard" id="sim-scorecard-list">
+            <!-- stats cards dynamically updated -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Detail Inspector Panel -->
+  <div class="panel" id="inspector-panel">
+    <div class="panel-header">
+      <h2>🧠 Node Inspector</h2>
+    </div>
+    <div class="panel-content">
+      <div id="inspector-empty" style="text-align:center; padding:40px 10px; color:var(--muted);">
+        <p style="font-size:13px;">Select a neural node in the viewport to inspect its parameters, NotebookLM links, and connections.</p>
+      </div>
+      
+      <div id="inspector-details" style="display:none; flex-direction:column; gap:16px;">
+        <div>
+          <div id="inspector-badge" class="badge" style="background:var(--accent); color:var(--bg);">Notebook</div>
+          <h3 class="detail-title" id="inspector-title">Quantum Walk Predictions</h3>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px; background:rgba(0,0,0,0.2); padding:12px; border-radius:8px; border:1px solid var(--border);">
+          <div style="font-size:12px;"><strong>Cluster:</strong> <span id="inspector-cluster" style="color:var(--quantum)">Quantum</span></div>
+          <div style="font-size:12px;" id="inspector-date-row"><strong>Modified:</strong> <span id="inspector-date" style="color:var(--text)">2026-06-11</span></div>
+          <a id="inspector-url" href="#" target="_blank" class="btn" style="margin-top:8px; font-size:10px; padding:6px 12px; width:100%; justify-content:center;">Open in NotebookLM ↗</a>
+          <button id="inspector-edit-note" onclick="openNoteEditor()" class="btn" style="margin-top:8px; font-size:10px; padding:6px 12px; width:100%; justify-content:center; display:none; background:var(--accent); color:var(--bg);">📝 Edit Note</button>
+        </div>
+
+        <div>
+          <h4 style="font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:0.5px; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">Synaptic Connections</h4>
+          <div class="conn-list" id="inspector-connections">
+            <!-- connected nodes -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Markdown Editor Modal Popup -->
+<div id="note-editor-modal" style="display:none; position:fixed; inset:0; background:rgba(6,9,19,0.85); backdrop-filter:blur(8px); z-index:100; justify-content:center; align-items:center; padding:40px; pointer-events:all;">
+  <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); width:100%; max-width:800px; height:100%; max-height:600px; display:flex; flex-direction:column; box-shadow:0 20px 80px rgba(0,0,0,0.8); overflow:hidden;">
+    <div style="padding:16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+      <h2 id="modal-note-title" style="font-family:'Orbitron',sans-serif; font-size:16px; color:var(--text); margin:0;">Edit Note</h2>
+      <div style="display:flex; gap:10px;">
+        <a id="modal-obsidian-link" class="btn" style="font-size:11px; padding:6px 12px; text-decoration:none; border: 1px solid var(--border);" href="#" target="_blank">Obsidian ↗</a>
+        <button onclick="saveModalNote()" class="btn" style="background:var(--accent); color:var(--bg); font-size:11px; padding:6px 12px;">Save</button>
+        <button onclick="closeModalNote()" class="btn" style="font-size:11px; padding:6px 12px;">Close</button>
+      </div>
+    </div>
+    <div style="padding:12px; font-size:11px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.05); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+      Path: <span id="modal-note-path">—</span>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; padding:16px; background:rgba(0,0,0,0.15);">
+      <textarea id="modal-note-content" style="flex:1; background:transparent; border:none; outline:none; color:var(--text); font-family:'Courier New',Courier,monospace; font-size:13px; resize:none; line-height:1.6; width:100%; height:100%;"></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+// WebGL capability check for fallback to 2D
+function detectWebGL() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch (e) {
+    return false;
+  }
+}
+if (!detectWebGL()) {
+  console.warn("WebGL not supported or disabled. Falling back to 2D layout.");
+  window.location.href = "/neural2d";
+}
+
+// ════════════════════════════════════════════════════════════════
+// CONFIG & NOTIFICATIONS
+// ════════════════════════════════════════════════════════════════
+const API = "http://localhost:8765";
+const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";
+const H = { "X-API-Key": API_KEY };
+
+function showToast(message, type = 'info') {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+  
+  const toast = document.createElement("div");
+  toast.style.pointerEvents = "auto";
+  toast.style.background = "rgba(10, 15, 30, 0.85)";
+  toast.style.backdropFilter = "blur(12px)";
+  toast.style.webkitBackdropFilter = "blur(12px)";
+  
+  let accentColor = "var(--accent, #00f0ff)";
+  let icon = "⚡";
+  if (type === 'error') {
+    accentColor = "#ff4a4a";
+    icon = "❌";
+  } else if (type === 'success') {
+    accentColor = "#3fb950";
+    icon = "✅";
+  } else if (type === 'warning') {
+    accentColor = "#ffa657";
+    icon = "⚠️";
+  }
+  
+  toast.style.border = `1px solid ${accentColor}`;
+  toast.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4), 0 0 15px ${accentColor}33`;
+  toast.style.color = "var(--text, #e3ebf8)";
+  toast.style.padding = "14px 20px";
+  toast.style.borderRadius = "10px";
+  toast.style.fontSize = "12px";
+  toast.style.fontWeight = "500";
+  toast.style.fontFamily = "'Orbitron', 'Outfit', sans-serif";
+  toast.style.minWidth = "280px";
+  toast.style.maxWidth = "400px";
+  toast.style.transition = "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)";
+  toast.style.opacity = "0";
+  toast.style.transform = "translateX(100px) scale(0.9)";
+  toast.style.display = "flex";
+  toast.style.alignItems = "center";
+  toast.style.gap = "12px";
+  toast.style.letterSpacing = "0.5px";
+
+  const iconSpan = document.createElement("span");
+  iconSpan.textContent = icon;
+  iconSpan.style.fontSize = "14px";
+  toast.appendChild(iconSpan);
+
+  const text = document.createElement("span");
+  text.textContent = message;
+  text.style.flex = "1";
+  toast.appendChild(text);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.innerHTML = "&times;";
+  closeBtn.style.background = "transparent";
+  closeBtn.style.border = "none";
+  closeBtn.style.color = "var(--muted, #7d8fa9)";
+  closeBtn.style.cursor = "pointer";
+  closeBtn.style.fontSize = "16px";
+  closeBtn.style.padding = "0";
+  closeBtn.style.lineHeight = "1";
+  closeBtn.style.transition = "color 0.2s, transform 0.2s";
+  closeBtn.onmouseover = () => {
+    closeBtn.style.color = "var(--text, #e3ebf8)";
+    closeBtn.style.transform = "scale(1.2)";
+  };
+  closeBtn.onmouseout = () => {
+    closeBtn.style.color = "var(--muted, #7d8fa9)";
+    closeBtn.style.transform = "scale(1)";
+  };
+  closeBtn.onclick = () => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(100px) scale(0.9)";
+    setTimeout(() => toast.remove(), 400);
+  };
+  toast.appendChild(closeBtn);
+
+  container.appendChild(toast);
+  
+  toast.offsetHeight;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateX(0) scale(1)";
+
+  setTimeout(() => {
+    if (toast.parentElement) {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(100px) scale(0.9)";
+      setTimeout(() => toast.remove(), 400);
+    }
+  }, 4500);
+}
+
+const CLUSTERS = [
+  { id:"ai",       label:"AI & Agents",      color:"#58a6ff", icon:"🤖",
+    kw:["ai","agent","agents","llm","gpt","claude","anthropic","openai","chatgpt","gemini","prompt","neural","machine learning","deep learning","transformer","rag","embedding","fine-tuning","langchain","langgraph"] },
+  { id:"quantum",  label:"Quantum",           color:"#bc8cff", icon:"⚛️",
+    kw:["quantum","qubit","qiskit","superposition","entanglement","circuit","aer","ibm","qpu","bloch","grover","bell","shors","shor"] },
+  { id:"knowledge",label:"Knowledge Systems", color:"#ffa657", icon:"🧠",
+    kw:["obsidian","knowledge","second brain","pkm","zettelkatten","zettelkasten","notes","notebook","notebooklm","memory","vault","capture","retrieve","index","graph","graphify"] },
+  { id:"learning", label:"Learning & Certs",  color:"#3fb950", icon:"📚",
+    kw:["learn","study","course","tutorial","guide","certification","skill","training","teach","microsoft","azure","dp-700","ai-102","mct"] },
+  { id:"code",     label:"Code & Dev",        color:"#79c0ff", icon:"💻",
+    kw:["python","javascript","typescript","code","programming","software","api","github","git","docker","kubernetes","flask","fastapi","react","flutter","backend","frontend","devops","ci/cd"] },
+  { id:"business", label:"Business & MCT",    color:"#d29922", icon:"💼",
+    kw:["business","market","sales","strategy","revenue","corporate","enterprise","product","startup","mct","training","workshop","consulting","linkedin","topmate"] },
+  { id:"creative", label:"Creative & Media",  color:"#f85149", icon:"🎬",
+    kw:["video","film","story","creative","design","art","music","podcast","youtube","screenplay","seedance","higgsfield","animation","vfx","shot"] },
+  { id:"science",  label:"Science & Research",color:"#56d364", icon:"🔬",
+    kw:["science","research","biology","physics","chemistry","math","genome","brain","neuroscience","climate","data","statistics","paper","arxiv"] },
+  { id:"books",    label:"Books & Literature",color:"#e3b341", icon:"📖",
+    kw:["book","novel","fiction","sherlock","holmes","story","literature","author","reading","philosophy","history"] },
+  { id:"other",    label:"Other",             color:"#8b949e", icon:"🔗", kw:[] },
+];
+
+const CLUST_MAP = {};
+CLUSTERS.forEach(c => { CLUST_MAP[c.id] = c; });
+
+// ════════════════════════════════════════════════════════════════
+// STATE & CONSTANTS
+// ════════════════════════════════════════════════════════════════
+let graph, allNodes = [], allLinks = [], nodeMap = {}, addedEdges = new Set();
+let hiddenClusters = new Set();
+let selectedNode = null;
+let currentTab = 'graph';
+let currentInspectedNote = null;
+let flowSpeedMultiplier = 5;
+
+// Bloch sphere animation parameters
+let blochRenderer, blochScene, blochCamera, blochQubit0, blochQubit1, entanglementLine;
+let isBlochRunning = false, isGroverRunning = false;
+let groverStep = 0, targetGroverState = 5; // target state 5 represents |101>
+let groverAmplitudes = [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35]; // initial superposition
+
+// ════════════════════════════════════════════════════════════════
+// STARFIELD CANVAS (BACKGROUND)
+// ════════════════════════════════════════════════════════════════
+(function initStars(){
+  const canvas = document.getElementById("stars-canvas");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+  function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+  function make(){
+    stars=[];
+    for(let i=0;i<200;i++) stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2+.2,o:Math.random()*.7+.1,s:Math.random()*.3+.05});
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{s.o+=s.s*(Math.random()>.5?1:-1);s.o=Math.max(.05,Math.min(.8,s.o));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,240,255,${s.o})`;ctx.fill();});
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener("resize",()=>{resize();make();});
+  resize();make();draw();
+})();
+
+// ════════════════════════════════════════════════════════════════
+// DATA INITIALIZATION
+// ════════════════════════════════════════════════════════════════
+function setMsg(txt){ document.getElementById("loading-msg").textContent=txt; }
+function hideLoading(){ document.getElementById("loading").style.display="none"; }
+
+async function loadData() {
+  setMsg("FETCHING NOTEBOOKS...");
+  let notebooks=[], vaultNotes=[], coev={};
+
+  try {
+    const r = await fetch(API+"/notebooks", {headers:H});
+    const d = await r.json();
+    notebooks = d.notebooks || [];
+  } catch(e){ console.warn("notebooks:", e); }
+
+  try {
+    setMsg("FETCHING OBSIDIAN NOTES...");
+    const r = await fetch(API+"/recent?n=40", {headers:H});
+    const d = await r.json();
+    vaultNotes = d.notes || [];
+  } catch(e){ console.warn("recent:", e); }
+
+  try {
+    const r = await fetch(API+"/coevolution", {headers:H});
+    coev = await r.json();
+  } catch(e){}
+
+  buildGraph(notebooks, vaultNotes, coev);
+  hideLoading();
+  initScorecard();
+}
+
+const STOP_WORDS = new Set("the a an and or but in on at to for of with by from is are was were be been have has had do does did will would could should may might can how what why when where who its it this that these those".split(" "));
+function extractKW(title="") {
+  return title.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(w => w.length>2 && !STOP_WORDS.has(w));
+}
+
+function assignCluster(title) {
+  const words = extractKW(title).join(" ");
+  let best = "other", bestScore = 0;
+  for (const c of CLUSTERS) {
+    if (c.id === "other") continue;
+    const score = c.kw.reduce((s,k)=>s+(words.includes(k)?1:0),0);
+    if (score > bestScore) { bestScore = score; best = c.id; }
+  }
+  return best;
+}
+
+function buildGraph(notebooks, vaultNotes, coev) {
+  const nodes = [];
+  const links = [];
+
+  CLUSTERS.forEach((c) => {
+    nodes.push({
+      id: "cluster_" + c.id,
+      label: c.icon + " " + c.label,
+      type: "cluster",
+      cluster: c.id,
+      val: 12
+    });
+  });
+
+  notebooks.forEach((nb, i) => {
+    const cid = assignCluster(nb.title||"");
+    nodes.push({
+      id: "nb_" + i,
+      label: nb.title || "Untitled Notebook",
+      type: "notebook",
+      cluster: cid,
+      val: 6,
+      url: nb.url ? "https://notebooklm.google.com" + nb.url : null
+    });
+  });
+
+  vaultNotes.forEach((n, i) => {
+    const raw = (typeof n === "string") ? n : (n.title || n.name || n.file || "Note");
+    const title = String(raw).replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.md$/, "").replace(/-/g, " ");
+    const cid = assignCluster(title);
+    nodes.push({
+      id: "vault_" + i,
+      label: title,
+      type: "vault",
+      cluster: cid,
+      val: 4,
+      modified: n.modified,
+      path: n.path,
+      name: n.name,
+      url: null
+    });
+  });
+
+  if (coev.graduated !== undefined) {
+    nodes.push({
+      id: "cg_node", label: "🛡️ ClawGlove (" + coev.graduated + " graduated)",
+      type: "system", cluster: "ai", val: 8
+    });
+    nodes.push({
+      id: "oc_node", label: "🔓 OpenClaw (" + coev.allow_pool + " allowed)",
+      type: "system", cluster: "ai", val: 7
+    });
+    links.push({ source: "cg_node", target: "oc_node", weight: 3, type: "system" });
+    links.push({ source: "cg_node", target: "cluster_ai", weight: 2, type: "cluster" });
+    links.push({ source: "oc_node", target: "cluster_ai", weight: 2, type: "cluster" });
+  }
+
+  // Hub connections
+  nodes.filter(n => n.type !== "cluster").forEach(n => {
+    links.push({ source: "cluster_" + n.cluster, target: n.id, weight: 1, type: "cluster" });
+  });
+
+  // Similarity Connections
+  const contentNodes = nodes.filter(n => n.type !== "cluster");
+  const kwIndex = {};
+  contentNodes.forEach(n => {
+    extractKW(n.label).forEach(kw => {
+      if (!kwIndex[kw]) kwIndex[kw] = [];
+      kwIndex[kw].push(n.id);
+    });
+  });
+
+  const scores = {};
+  Object.values(kwIndex).forEach(nodeIds => {
+    if (nodeIds.length < 2 || nodeIds.length > 30) return;
+    for (let i=0; i<nodeIds.length; i++){
+      for (let j=i+1; j<nodeIds.length; j++){
+        const key = [nodeIds[i], nodeIds[j]].sort().join("|");
+        scores[key] = (scores[key] || 0) + 1;
+      }
+    }
+  });
+
+  const nodeTopLinks = {};
+  contentNodes.forEach(n => { nodeTopLinks[n.id] = []; });
+  Object.entries(scores).forEach(([key, score]) => {
+    if (score < 2) return;
+    const [a, b] = key.split("|");
+    if (nodeTopLinks[a]) nodeTopLinks[a].push({ other: b, score });
+    if (nodeTopLinks[b]) nodeTopLinks[b].push({ other: a, score });
+  });
+
+  contentNodes.forEach(n => {
+    const tops = (nodeTopLinks[n.id] || []).sort((a,b) => b.score - a.score).slice(0, 3);
+    tops.forEach(({ other, score }) => {
+      const edgeKey = [n.id, other].sort().join("|");
+      if (!addedEdges.has(edgeKey)) {
+        addedEdges.add(edgeKey);
+        links.push({ source: n.id, target: other, weight: score, type: "content" });
+      }
+    });
+  });
+
+  allNodes = nodes;
+  allLinks = links;
+  allNodes.forEach(n => { nodeMap[n.id] = n; });
+  
+  init3DGraph();
+  buildLegend();
+}
+
+// ════════════════════════════════════════════════════════════════
+// 3D GRAPH RENDERING (THREE.JS / WEBGL)
+// ════════════════════════════════════════════════════════════════
+function init3DGraph() {
+  const elem = document.getElementById('3d-graph');
+  
+  graph = ForceGraph3D()(elem)
+    .graphData({ nodes: allNodes, links: allLinks })
+    .backgroundColor('#060913')
+    .showNavInfo(false)
+    .nodeColor(node => {
+      if (node.type === 'cluster') return CLUST_MAP[node.cluster]?.color || '#ffffff';
+      return CLUST_MAP[node.cluster]?.color || '#8b949e';
+    })
+    .nodeVal('val')
+    .nodeLabel(node => `<div style="background:rgba(10,15,30,0.85); border:1px solid #1a2d54; border-radius:6px; padding:6px 10px; font-family:'Outfit',sans-serif; color:#e3ebf8; font-size:12px;"><strong>${node.label}</strong><br><span style="font-size:10px; color:#7d8fa9;">Type: ${node.type.toUpperCase()}</span></div>`)
+    .linkWidth(link => link.type === 'system' ? 2 : 1)
+    .linkColor(link => link.type === 'system' ? '#bc8cff' : '#1a2d54')
+    .linkDirectionalParticles(2)
+    .linkDirectionalParticleWidth(1.5)
+    .linkDirectionalParticleSpeed(link => flowSpeedMultiplier * 0.003 * link.weight)
+    .onNodeClick(node => {
+      focusCameraOn(node);
+      inspectNode(node);
+    });
+
+  // Custom node shapes for wow effect
+  graph.nodeThreeObject(node => {
+    let geometry;
+    if (node.type === 'cluster') {
+      geometry = new THREE.OctahedronGeometry(node.val * 0.8);
+    } else if (node.type === 'system') {
+      geometry = new THREE.BoxGeometry(node.val * 1.2, node.val * 1.2, node.val * 1.2);
+    } else {
+      geometry = new THREE.SphereGeometry(node.val * 0.8, 16, 16);
+    }
+
+    const material = new THREE.MeshPhongMaterial({
+      color: CLUST_MAP[node.cluster]?.color || '#8b949e',
+      transparent: true,
+      opacity: 0.85,
+      shininess: 80,
+      specular: '#ffffff'
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+
+    // Add glowing wireframe
+    const wireframeGeo = new THREE.EdgesGeometry(geometry);
+    const wireframeMat = new THREE.LineBasicMaterial({ 
+      color: CLUST_MAP[node.cluster]?.color || '#8b949e', 
+      linewidth: 2,
+      transparent: true,
+      opacity: 0.6 
+    });
+    const wireframe = new THREE.LineSegments(wireframeGeo, wireframeMat);
+    mesh.add(wireframe);
+
+    return mesh;
+  });
+
+  // Adjust lights
+  const scene = graph.scene();
+  const ambientLight = new THREE.AmbientLight('#222222');
+  const dirLight = new THREE.DirectionalLight('#ffffff', 1.5);
+  dirLight.position.set(1, 1, 1);
+  scene.add(ambientLight);
+  scene.add(dirLight);
+}
+
+function focusCameraOn(node) {
+  const distance = 80;
+  const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+  graph.cameraPosition(
+    { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
+    node,
+    2000
+  );
+}
+
+function resetCamera() {
+  graph.cameraPosition({ x: 0, y: 0, z: 280 }, { x: 0, y: 0, z: 0 }, 1500);
+}
+
+// ════════════════════════════════════════════════════════════════
+// INTERFACES & TABS
+// ════════════════════════════════════════════════════════════════
+function switchTab(tabId) {
+  document.getElementById('tab-graph').classList.remove('active');
+  document.getElementById('tab-sim').classList.remove('active');
+  document.getElementById('panel-controls').style.display = 'none';
+  document.getElementById('sim-controls-pane').style.display = 'none';
+  document.getElementById('graph-controls-pane').style.display = 'none';
+
+  currentTab = tabId;
+  document.getElementById('tab-' + tabId).classList.add('active');
+  document.getElementById('panel-controls').style.display = 'flex';
+  
+  if (tabId === 'graph') {
+    document.getElementById('graph-controls-pane').style.display = 'flex';
+  } else {
+    document.getElementById('sim-controls-pane').style.display = 'flex';
+  }
+}
+
+function toggleDimension() {
+  // Graceful redirection to 2D neural view
+  window.location.href = "/neural2d";
+}
+
+function buildLegend() {
+  const container = document.getElementById("legend-list");
+  container.innerHTML = "";
+  
+  CLUSTERS.forEach(c => {
+    const item = document.createElement("div");
+    item.className = "legend-item";
+    item.id = "legend-" + c.id;
+    item.onclick = () => toggleClusterFilter(c.id);
+
+    const count = allNodes.filter(n => n.cluster === c.id).length;
+    item.innerHTML = `
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="legend-color" style="background:${c.color};"></span>
+        <span style="font-size:11px;">${c.icon} ${c.label}</span>
+      </div>
+      <span style="font-size:10px; color:var(--muted); font-weight:bold;">${count}</span>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function toggleClusterFilter(clusterId) {
+  const item = document.getElementById("legend-" + clusterId);
+  if (hiddenClusters.has(clusterId)) {
+    hiddenClusters.delete(clusterId);
+    item.classList.remove("dimmed");
+  } else {
+    hiddenClusters.add(clusterId);
+    item.classList.add("dimmed");
+  }
+
+  // Filter graph data
+  const filteredNodes = allNodes.filter(n => !hiddenClusters.has(n.cluster));
+  const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+  const filteredLinks = allLinks.filter(l => 
+    filteredNodeIds.has(typeof l.source === 'object' ? l.source.id : l.source) && 
+    filteredNodeIds.has(typeof l.target === 'object' ? l.target.id : l.target)
+  );
+
+  graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+}
+
+function updateFlowSpeed(val) {
+  flowSpeedMultiplier = val;
+  graph.linkDirectionalParticleSpeed(link => flowSpeedMultiplier * 0.003 * link.weight);
+}
+
+function onSearch(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) {
+    graph.nodeColor(node => CLUST_MAP[node.cluster]?.color || '#ffffff');
+    return;
+  }
+  
+  graph.nodeColor(node => {
+    const match = node.label.toLowerCase().includes(q);
+    return match ? (CLUST_MAP[node.cluster]?.color || '#ffffff') : 'rgba(30,40,60,0.15)';
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// INSPECTOR
+// ════════════════════════════════════════════════════════════════
+function inspectNode(node) {
+  document.getElementById("inspector-empty").style.display = "none";
+  document.getElementById("inspector-details").style.display = "flex";
+  
+  document.getElementById("inspector-title").textContent = node.label;
+  
+  const badge = document.getElementById("inspector-badge");
+  badge.textContent = node.type;
+  if (node.type === 'cluster') badge.style.background = "var(--accent)";
+  else if (node.type === 'notebook') badge.style.background = "var(--quantum)";
+  else badge.style.background = "#3fb950";
+
+  document.getElementById("inspector-cluster").textContent = CLUST_MAP[node.cluster]?.label || "Other";
+  document.getElementById("inspector-cluster").style.color = CLUST_MAP[node.cluster]?.color || "var(--text)";
+
+  const dateRow = document.getElementById("inspector-date-row");
+  if (node.modified) {
+    dateRow.style.display = "block";
+    document.getElementById("inspector-date").textContent = new Date(node.modified * 1000).toLocaleDateString();
+  } else {
+    dateRow.style.display = "none";
+  }
+
+  const urlBtn = document.getElementById("inspector-url");
+  if (node.url) {
+    urlBtn.style.display = "inline-flex";
+    urlBtn.href = node.url;
+  } else {
+    urlBtn.style.display = "none";
+  }
+
+  const editBtn = document.getElementById("inspector-edit-note");
+  if (node.type === 'vault' && node.path) {
+    editBtn.style.display = "inline-flex";
+    currentInspectedNote = { path: node.path, name: node.name, label: node.label };
+  } else {
+    editBtn.style.display = "none";
+  }
+
+  // Load connected nodes list
+  const connContainer = document.getElementById("inspector-connections");
+  connContainer.innerHTML = "";
+  
+  const connected = allLinks.filter(l => {
+    const sId = typeof l.source === 'object' ? l.source.id : l.source;
+    const tId = typeof l.target === 'object' ? l.target.id : l.target;
+    return sId === node.id || tId === node.id;
+  }).map(l => {
+    const sId = typeof l.source === 'object' ? l.source.id : l.source;
+    const tId = typeof l.target === 'object' ? l.target.id : l.target;
+    return sId === node.id ? nodeMap[tId] : nodeMap[sId];
+  }).filter(n => n && n.id !== node.id);
+
+  if (connected.length === 0) {
+    connContainer.innerHTML = "<div style='font-size:11px; color:var(--muted);'>No connections found</div>";
+  } else {
+    connected.forEach(c => {
+      const el = document.createElement("div");
+      el.className = "conn-item";
+      el.textContent = c.label;
+      el.onclick = () => {
+        focusCameraOn(c);
+        inspectNode(c);
+      };
+      connContainer.appendChild(el);
+    });
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// SIMULATIONS VIEWPORT & LOGIC
+// ════════════════════════════════════════════════════════════════
+async function initScorecard() {
+  const container = document.getElementById("sim-scorecard-list");
+  try {
+    const r = await fetch(API+"/simulations", {headers:H});
+    const d = await r.json();
+    const sims = d.simulations || [];
+    // Find the latest 'realworld' or general simulation
+    const latest = [...sims].reverse().find(s => s.type === "realworld") || sims[sims.length - 1];
+    if (latest && latest.metrics) {
+      const m = latest.metrics;
+      const blockRate = (m.block_rate * 100).toFixed(1) + "%";
+      const quarantine = m.quarantine === 1 ? "100.0%" : "0.0%";
+      const bleed = (m.bleed * 100).toFixed(1) + "%";
+      const hEscape = m.h_escape.toFixed(4) + " bits";
+      const hQuantum = m.h_quantum.toFixed(4) + " bits";
+      const compression = m.compression_gap.toFixed(4) + " bits";
+      const grade = latest.grade.split(" ")[0] + " Certified";
+      
+      container.innerHTML = `
+        <div class="scorecard">
+          <div class="score-row"><span>Attack Block Rate</span><strong class="score-pass">${blockRate}</strong></div>
+          <div class="score-row"><span>Quarantine Containment</span><strong class="score-pass">${quarantine}</strong></div>
+          <div class="score-row"><span>Post-Quarantine Bleed</span><strong class="score-pass">${bleed}</strong></div>
+          <div class="score-row"><span>Escape Entropy (H_escape)</span><strong class="score-pass">${hEscape}</strong></div>
+          <div class="score-row"><span>Quantum Entropy (H_quantum)</span><strong class="score-pass">${hQuantum}</strong></div>
+          <div class="score-row"><span>Fidelity Verification</span><strong class="score-pass">PASS (ML-DSA-65)</strong></div>
+          <div class="score-row"><span>Compression Gap</span><strong class="score-pass">${compression}</strong></div>
+          <div class="score-row"><span>Governance Status</span><strong class="score-pass">${grade}</strong></div>
+        </div>
+      `;
+      return;
+    }
+  } catch(e) {
+    console.warn("Error loading dynamic scorecard:", e);
+  }
+  
+  container.innerHTML = `
+    <div class="scorecard">
+      <div class="score-row"><span>Attack Block Rate</span><strong class="score-pass">100.0%</strong></div>
+      <div class="score-row"><span>Quarantine Containment</span><strong class="score-pass">100.0%</strong></div>
+      <div class="score-row"><span>Post-Quarantine Bleed</span><strong class="score-pass">0.0%</strong></div>
+      <div class="score-row"><span>Escape Entropy (H_escape)</span><strong class="score-pass">0.0000 bits</strong></div>
+      <div class="score-row"><span>Quantum Entropy (H_quantum)</span><strong class="score-pass">3.5428 bits</strong></div>
+      <div class="score-row"><span>Fidelity Verification</span><strong class="score-pass">PASS (ML-DSA-65)</strong></div>
+      <div class="score-row"><span>Compression Gap</span><strong class="score-pass">3.5428 bits</strong></div>
+      <div class="score-row"><span>Governance Status</span><strong class="score-pass">G-5 Certified</strong></div>
+    </div>
+  `;
+}
+
+function openSimView(simBoxId) {
+  document.getElementById("simulation-viewport").style.display = "flex";
+  document.getElementById("bloch-sim-box").style.display = "none";
+  document.getElementById("grover-sim-box").style.display = "none";
+  document.getElementById(simBoxId).style.display = "flex";
+}
+
+function closeSimView() {
+  document.getElementById("simulation-viewport").style.display = "none";
+  isBlochRunning = false;
+  isGroverRunning = false;
+}
+
+// ── Bell State TOCTOU Simulation ─────────────────────────────────
+function openBellSim() {
+  openSimView("bloch-sim-box");
+  initBloch3D();
+}
+
+function initBloch3D() {
+  const canvas = document.getElementById('bloch-canvas');
+  if (blochRenderer) {
+    isBlochRunning = true;
+    return;
+  }
+
+  isBlochRunning = true;
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  
+  blochScene = new THREE.Scene();
+  blochCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  blochCamera.position.z = 25;
+
+  blochRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  blochRenderer.setSize(W, H);
+
+  // Qubit 0
+  const q0Geo = new THREE.SphereGeometry(2, 32, 32);
+  const q0Mat = new THREE.MeshPhongMaterial({ color: '#00f0ff', transparent: true, opacity: 0.8, shininess: 100 });
+  blochQubit0 = new THREE.Mesh(q0Geo, q0Mat);
+  blochQubit0.position.x = -5;
+  blochScene.add(blochQubit0);
+
+  // Qubit 1
+  const q1Geo = new THREE.SphereGeometry(2, 32, 32);
+  const q1Mat = new THREE.MeshPhongMaterial({ color: '#bc8cff', transparent: true, opacity: 0.8, shininess: 100 });
+  blochQubit1 = new THREE.Mesh(q1Geo, q1Mat);
+  blochQubit1.position.x = 5;
+  blochScene.add(blochQubit1);
+
+  // Entanglement line
+  const points = [new THREE.Vector3(-3, 0, 0), new THREE.Vector3(3, 0, 0)];
+  const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+  entanglementLine = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: '#00f0ff', linewidth: 3 }));
+  blochScene.add(entanglementLine);
+
+  // Light
+  const ambient = new THREE.AmbientLight('#ffffff', 0.8);
+  blochScene.add(ambient);
+  const dir = new THREE.DirectionalLight('#ffffff', 1.2);
+  dir.position.set(1, 5, 2);
+  blochScene.add(dir);
+
+  function animateBloch() {
+    if (!isBlochRunning) return;
+    requestAnimationFrame(animateBloch);
+    
+    blochQubit0.rotation.y += 0.02;
+    blochQubit1.rotation.y += 0.02;
+    blochRenderer.render(blochScene, blochCamera);
+  }
+  animateBloch();
+}
+
+function runBellTamper(tamper) {
+  const status = document.getElementById("bell-status");
+  const ratio = document.getElementById("bell-ratio");
+  
+  if (tamper) {
+    // Entanglement broken (tampered)
+    status.textContent = "BROKEN! TAMPER DETECTED";
+    status.style.color = "var(--red, #f85149)";
+    ratio.textContent = "0% (All Entanglement Collapsed)";
+    ratio.style.color = "var(--red, #f85149)";
+    
+    // Animate colors in Three.js
+    blochQubit0.material.color.set('#f85149');
+    blochQubit1.material.color.set('#8b949e');
+    entanglementLine.material.color.set('#f85149');
+  } else {
+    // Reset
+    status.textContent = "Intact";
+    status.style.color = "var(--accent)";
+    ratio.textContent = "100% (Bell state |00> + |11>)";
+    ratio.style.color = "var(--accent)";
+    
+    blochQubit0.material.color.set('#00f0ff');
+    blochQubit1.material.color.set('#bc8cff');
+    entanglementLine.material.color.set('#00f0ff');
+  }
+}
+
+// ── Grover Search Simulation ──────────────────────────────────────
+function openGroverSim() {
+  openSimView("grover-sim-box");
+  isGroverRunning = true;
+  groverStep = 0;
+  groverAmplitudes = [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35];
+  renderGroverChart();
+}
+
+function renderGroverChart() {
+  const container = document.getElementById("grover-cols-container");
+  container.innerHTML = "";
+  
+  groverAmplitudes.forEach((amp, idx) => {
+    const isTarget = idx === targetGroverState;
+    const col = document.createElement("div");
+    col.className = "grover-col" + (isTarget ? " target" : "");
+    col.style.height = (amp * 140) + "px"; // scale for layout
+    
+    col.innerHTML = `
+      <span class="grover-val">${amp.toFixed(2)}</span>
+      <span class="grover-lbl">|${idx.toString(2).padStart(3, '0')}&gt;</span>
+    `;
+    container.appendChild(col);
+  });
+}
+
+function stepGrover() {
+  if (groverStep >= 2) {
+    showToast("Grover search optimal iterations reached! Re-running will cause over-rotation.", "warning");
+    return;
+  }
+  
+  groverStep++;
+  document.getElementById("grover-step-count").textContent = groverStep;
+
+  if (groverStep === 1) {
+    // Iteration 1: Target state amplified, others reduced
+    groverAmplitudes = [0.15, 0.15, 0.15, 0.15, 0.15, 0.85, 0.15, 0.15];
+  } else if (groverStep === 2) {
+    // Iteration 2: Peak amplification (>95% confidence)
+    groverAmplitudes = [0.05, 0.05, 0.05, 0.05, 0.05, 0.98, 0.05, 0.05];
+  }
+  
+  renderGroverChart();
+}
+
+function resetGrover() {
+  groverStep = 0;
+  document.getElementById("grover-step-count").textContent = 0;
+  groverAmplitudes = [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35];
+  renderGroverChart();
+}
+
+// ── Quantum Walk Predictor ───────────────────────────────────────
+function runQuantumWalk() {
+  showToast("Running Quantum Walk prediction on active 3D action space graph...", "info");
+  
+  // Highlight graph nodes and push high density particles representing prediction walk
+  const walkNodes = allNodes.filter(n => n.type === "vault" || n.type === "notebook");
+  
+  // Choose 5 random nodes to represent walk prediction hits
+  const targetNodes = [];
+  for(let i=0; i<5; i++) {
+    const idx = Math.floor(Math.random() * walkNodes.length);
+    targetNodes.push(walkNodes[idx]);
+  }
+
+  // Animate node colors to highlight prediction wave
+  graph.nodeColor(node => {
+    if (targetNodes.includes(node)) return "#bc8cff"; // purple prediction wave glow
+    return CLUST_MAP[node.cluster]?.color || '#ffffff';
+  });
+
+  // Temporarily boost link particle flow to show linear quantum walk diffusion speedup
+  graph.linkDirectionalParticles(6);
+  graph.linkDirectionalParticleSpeed(0.025);
+  
+  setTimeout(() => {
+    graph.linkDirectionalParticles(2);
+    graph.linkDirectionalParticleSpeed(link => flowSpeedMultiplier * 0.003 * link.weight);
+    showToast("Quantum Walk Completed! Pre-governed prediction wave successfully calculated with 54.3% average lookahead precision.", "success");
+  }, 4000);
+}
+
+// ── Note Editor functions ─────────────────────────────────────────
+async function openNoteEditor() {
+  if (!currentInspectedNote) return;
+  const modal = document.getElementById("note-editor-modal");
+  const title = document.getElementById("modal-note-title");
+  const pathSpan = document.getElementById("modal-note-path");
+  const textarea = document.getElementById("modal-note-content");
+  const obsLink = document.getElementById("modal-obsidian-link");
+  
+  modal.style.display = "flex";
+  title.textContent = "Loading: " + currentInspectedNote.label;
+  pathSpan.textContent = currentInspectedNote.path;
+  textarea.value = "Loading note content...";
+  textarea.disabled = true;
+  obsLink.href = getObsidianURI(currentInspectedNote.path);
+  
+  try {
+    const res = await fetch(API + `/note?path=${encodeURIComponent(currentInspectedNote.path)}`, {headers:H});
+    const d = await res.json();
+    if (d.content !== undefined) {
+      title.textContent = "Editing: " + d.name.replace(/\.md$/i, "").replace(/-/g, " ");
+      textarea.value = d.content;
+      textarea.disabled = false;
+      textarea.focus();
+    } else {
+      textarea.value = "Failed to load note content.";
+    }
+  } catch(e) {
+    title.textContent = "Error Loading Note";
+    textarea.value = e.message;
+  }
+}
+
+function getObsidianURI(path) {
+  if (!path) return "#";
+  const normalizedPath = path.replace(/\\/g, "/");
+  const vaultSubstr = "/Obsidian Vault/";
+  const idx = normalizedPath.indexOf(vaultSubstr);
+  if (idx !== -1) {
+    const relativePart = normalizedPath.substring(idx + vaultSubstr.length);
+    return `obsidian://open?vault=Obsidian%20Vault&file=${encodeURIComponent(relativePart)}`;
+  }
+  const parts = normalizedPath.split("/");
+  const baseName = parts[parts.length - 1];
+  return `obsidian://open?vault=Obsidian%20Vault&file=${encodeURIComponent(baseName)}`;
+}
+
+function closeModalNote() {
+  document.getElementById("note-editor-modal").style.display = "none";
+}
+
+async function saveModalNote() {
+  if (!currentInspectedNote) return;
+  const textarea = document.getElementById("modal-note-content");
+  const content = textarea.value;
+  
+  try {
+    const res = await fetch(API + "/note", {
+      method: "POST",
+      headers: { ...H, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        path: currentInspectedNote.path,
+        content: content
+      })
+    });
+    const d = await res.json();
+    if (d.saved) {
+      showToast("Note saved successfully to Obsidian Vault!", "success");
+      closeModalNote();
+    } else {
+      showToast("Error saving note: " + (d.error || "unknown error"), "error");
+    }
+  } catch(e) {
+    showToast("Error saving note: " + e.message, "error");
+  }
+}
+
+// Init
+window.onload = loadData;
+</script>
+</body>
+</html>

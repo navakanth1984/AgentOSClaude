@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent OS — Neural Knowledge Graph</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+:root {
+  --bg:     #080c10; --surface: #0d1117; --border: #21262d;
+  --text:   #e6edf3; --muted:  #8b949e; --accent: #58a6ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+/* Starfield canvas behind everything */
+#stars-canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* SVG graph */
+#graph-svg{position:fixed;inset:0;z-index:1}
+
+/* UI overlay */
+#ui{position:fixed;z-index:10;top:0;left:0;right:0;pointer-events:none}
+
+/* Top bar */
+#topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;
+  background:rgba(13,17,23,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  pointer-events:all;
+  gap:12px;
+}
+#topbar h1{font-size:15px;font-weight:700;white-space:nowrap}
+#topbar h1 span{color:var(--accent)}
+#search-wrap{flex:1;max-width:320px}
+#search{width:100%;background:#161b22;border:1px solid var(--border);border-radius:6px;color:var(--text);padding:6px 10px;font-size:13px;outline:none}
+#search:focus{border-color:var(--accent)}
+#stats{font-size:11px;color:var(--muted);white-space:nowrap}
+.top-btn{background:#161b22;border:1px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-size:12px;padding:5px 12px;white-space:nowrap}
+.top-btn:hover{border-color:var(--accent);color:var(--accent)}
+#back-btn{text-decoration:none}
+
+/* Category legend */
+#legend{
+  position:fixed;bottom:20px;left:20px;z-index:10;
+  background:rgba(13,17,23,.88);backdrop-filter:blur(10px);
+  border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;min-width:160px;
+  pointer-events:all;
+}
+#legend h3{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.legend-item{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer;font-size:12px;user-select:none}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-item.dimmed{opacity:.3}
+
+/* Detail panel */
+#detail{
+  position:fixed;right:20px;top:70px;z-index:10;width:280px;
+  background:rgba(13,17,23,.92);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:10px;
+  padding:16px;display:none;
+  pointer-events:all;max-height:calc(100vh - 100px);overflow-y:auto;
+}
+#detail h2{font-size:14px;font-weight:700;line-height:1.4;margin-bottom:8px}
+.detail-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;margin-bottom:8px}
+.detail-row{font-size:12px;color:var(--muted);margin-bottom:4px}
+.detail-row strong{color:var(--text)}
+#detail-connections{margin-top:10px;font-size:11px}
+#detail-connections h4{color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.conn-item{padding:4px 6px;background:#161b22;border-radius:4px;margin-bottom:3px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conn-item:hover{border:1px solid var(--accent);margin:-1px}
+#detail-close{position:absolute;top:10px;right:12px;cursor:pointer;color:var(--muted);font-size:16px;line-height:1}
+#detail-close:hover{color:var(--text)}
+#nb-link{display:inline-block;margin-top:8px;font-size:12px;color:var(--accent);text-decoration:none}
+#nb-link:hover{text-decoration:underline}
+
+/* Loading overlay */
+#loading{
+  position:fixed;inset:0;z-index:20;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--bg);
+  gap:16px;
+}
+#loading p{color:var(--muted);font-size:13px}
+.loader-ring{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Tooltip */
+#tooltip{
+  position:fixed;z-index:30;pointer-events:none;
+  background:rgba(22,27,34,.95);border:1px solid var(--border);
+  border-radius:6px;padding:6px 10px;font-size:12px;
+  max-width:220px;display:none;line-height:1.4;
+}
+
+/* Node label (in SVG) */
+.node-label{font-size:9px;fill:#8b949e;pointer-events:none;dominant-baseline:central;text-anchor:middle}
+.node-label.visible{fill:var(--text)}
+
+/* Controls */
+#controls{position:fixed;bottom:20px;right:20px;z-index:10;display:flex;flex-direction:column;gap:6px;pointer-events:all}
+.ctrl-btn{width:36px;height:36px;background:rgba(13,17,23,.88);border:1px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.ctrl-btn:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div id="loading">
+  <div class="loader-ring"></div>
+  <p id="loading-msg">Loading knowledge graph…</p>
+</div>
+
+<svg id="graph-svg">
+  <defs>
+    <!-- Hub glow: wide outer bloom + tight inner halo -->
+    <filter id="glow-hub" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur-wide"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur-tight"/>
+      <feMerge>
+        <feMergeNode in="blur-wide"/>
+        <feMergeNode in="blur-tight"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Notebook glow: medium halo -->
+    <filter id="glow-node" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur-wide"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur-tight"/>
+      <feMerge>
+        <feMergeNode in="blur-wide"/>
+        <feMergeNode in="blur-tight"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Vault note glow: sharp ring -->
+    <filter id="glow-vault" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Selected node: intense bloom -->
+    <filter id="glow-selected" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5"  result="b2"/>
+      <feMerge>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 -3 6 6" refX="6" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0,-3L6,0L0,3" fill="#30363d"/>
+    </marker>
+  </defs>
+  <g id="graph-root">
+    <g id="g-hulls"></g>
+    <g id="g-links"></g>
+    <g id="g-nodes"></g>
+    <g id="g-labels"></g>
+    <g id="g-particles"></g>
+  </g>
+</svg>
+
+<div id="ui">
+  <div id="topbar">
+    <a href="/dashboard" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#161b22;border:1px solid #30363d;border-radius:6px;color:#8b949e;font-size:12px;text-decoration:none;white-space:nowrap;flex-shrink:0"
+       onmouseover="this.style.color='#58a6ff';this.style.borderColor='#58a6ff'"
+       onmouseout="this.style.color='#8b949e';this.style.borderColor='#30363d'">
+      ← Dashboard
+    </a>
+    <h1 style="flex-shrink:0">⚡ <span>Agent OS</span> · Neural Map</h1>
+    <div id="search-wrap" style="flex:1;max-width:280px">
+      <input id="search" placeholder="Search notebooks, notes…" oninput="onSearch(this.value)" />
+    </div>
+    <span id="stats" style="flex-shrink:0">Loading…</span>
+    <button class="top-btn" onclick="resetZoom()" style="flex-shrink:0">⊞ Fit</button>
+    <button class="top-btn" onclick="toggleLayout()" style="flex-shrink:0">⊚ Radial</button>
+    <button class="top-btn" onclick="window.location.href='/neural'" style="flex-shrink:0">🌌 3D Mode</button>
+  </div>
+</div>
+
+<div id="legend">
+  <h3>Categories</h3>
+  <div id="legend-items"></div>
+</div>
+
+<div id="detail">
+  <span id="detail-close" onclick="closeDetail()">✕</span>
+  <h2 id="detail-title"></h2>
+  <div id="detail-badge" class="detail-badge"></div>
+  <div class="detail-row"><strong>Type:</strong> <span id="detail-type"></span></div>
+  <div class="detail-row"><strong>Cluster:</strong> <span id="detail-cluster"></span></div>
+  <div class="detail-row"><strong>Connections:</strong> <span id="detail-conn-count"></span></div>
+  <a id="nb-link" href="#" target="_blank">Open in NotebookLM ↗</a>
+  <div id="detail-connections">
+    <h4>Connected to</h4>
+    <div id="detail-conn-list"></div>
+  </div>
+</div>
+
+<div id="tooltip"></div>
+
+<div id="controls">
+  <button class="ctrl-btn" onclick="zoomBy(1.3)" title="Zoom in">+</button>
+  <button class="ctrl-btn" onclick="zoomBy(0.77)" title="Zoom out">−</button>
+  <button class="ctrl-btn" onclick="resetZoom()" title="Fit">⊡</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════════════════════════
+const API     = "http://localhost:8765";
+const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";
+const H       = { "X-API-Key": API_KEY };
+
+// ── Cluster definitions ──────────────────────────────────────────
+const CLUSTERS = [
+  { id:"ai",       label:"AI & Agents",      color:"#58a6ff", icon:"🤖",
+    kw:["ai","agent","agents","llm","gpt","claude","anthropic","openai","chatgpt","gemini","prompt","neural","machine learning","deep learning","transformer","rag","embedding","fine-tuning","langchain","langgraph"] },
+  { id:"quantum",  label:"Quantum",           color:"#bc8cff", icon:"⚛️",
+    kw:["quantum","qubit","qiskit","superposition","entanglement","circuit","aer","ibm","qpu","bloch","grover","bell","shors","shor"] },
+  { id:"knowledge",label:"Knowledge Systems", color:"#ffa657", icon:"🧠",
+    kw:["obsidian","knowledge","second brain","pkm","zettelkatten","zettelkasten","notes","notebook","notebooklm","memory","vault","capture","retrieve","index","graph","graphify"] },
+  { id:"learning", label:"Learning & Certs",  color:"#3fb950", icon:"📚",
+    kw:["learn","study","course","tutorial","guide","certification","skill","training","teach","microsoft","azure","dp-700","ai-102","mct"] },
+  { id:"code",     label:"Code & Dev",        color:"#79c0ff", icon:"💻",
+    kw:["python","javascript","typescript","code","programming","software","api","github","git","docker","kubernetes","flask","fastapi","react","flutter","backend","frontend","devops","ci/cd"] },
+  { id:"business", label:"Business & MCT",    color:"#d29922", icon:"💼",
+    kw:["business","market","sales","strategy","revenue","corporate","enterprise","product","startup","mct","training","workshop","consulting","linkedin","topmate"] },
+  { id:"creative", label:"Creative & Media",  color:"#f85149", icon:"🎬",
+    kw:["video","film","story","creative","design","art","music","podcast","youtube","screenplay","seedance","higgsfield","animation","vfx","shot"] },
+  { id:"science",  label:"Science & Research",color:"#56d364", icon:"🔬",
+    kw:["science","research","biology","physics","chemistry","math","genome","brain","neuroscience","climate","data","statistics","paper","arxiv"] },
+  { id:"books",    label:"Books & Literature",color:"#e3b341", icon:"📖",
+    kw:["book","novel","fiction","sherlock","holmes","story","literature","author","reading","philosophy","history"] },
+  { id:"other",    label:"Other",             color:"#8b949e", icon:"🔗", kw:[] },
+];
+
+const CLUST_MAP = {};
+CLUSTERS.forEach(c => { CLUST_MAP[c.id] = c; });
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let simulation, zoomBehavior, svgSel, rootG;
+let allNodes = [], allLinks = [];
+let nodeMap = {};
+let hiddenClusters = new Set();
+let selectedNode = null;
+let layoutMode = 0; // 0=force, 1=radial
+
+// ════════════════════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════════════════════
+const STOP_WORDS = new Set("the a an and or but in on at to for of with by from is are was were be been have has had do does did will would could should may might can how what why when where who its it this that these those".split(" "));
+
+function extractKW(title="") {
+  return title.toLowerCase()
+    .replace(/[^a-z0-9\s]/g," ")
+    .split(/\s+/)
+    .filter(w => w.length>2 && !STOP_WORDS.has(w));
+}
+
+function assignCluster(title) {
+  const words = extractKW(title).join(" ");
+  let best = "other", bestScore = 0;
+  for (const c of CLUSTERS) {
+    if (c.id === "other") continue;
+    const score = c.kw.reduce((s,k)=>s+(words.includes(k)?1:0),0);
+    if (score > bestScore) { bestScore = score; best = c.id; }
+  }
+  return best;
+}
+
+// ════════════════════════════════════════════════════════════════
+// STARFIELD
+// ════════════════════════════════════════════════════════════════
+(function initStars(){
+  const canvas = document.getElementById("stars-canvas");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+  function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+  function make(){
+    stars=[];
+    for(let i=0;i<200;i++) stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2+.2,o:Math.random()*.7+.1,s:Math.random()*.3+.05});
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{s.o+=s.s*(Math.random()>.5?1:-1);s.o=Math.max(.05,Math.min(.8,s.o));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,210,255,${s.o})`;ctx.fill();});
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener("resize",()=>{resize();make();});
+  resize();make();draw();
+})();
+
+// ════════════════════════════════════════════════════════════════
+// DATA LOADING
+// ════════════════════════════════════════════════════════════════
+async function loadData() {
+  setMsg("Loading notebooks…");
+  let notebooks=[], vaultNotes=[], coev={};
+
+  try {
+    const r = await fetch(API+"/notebooks", {headers:H});
+    const d = await r.json();
+    notebooks = d.notebooks || [];
+  } catch(e){ console.warn("notebooks:", e); }
+
+  try {
+    const r = await fetch(API+"/recent?n=30", {headers:H});
+    const d = await r.json();
+    vaultNotes = d.notes || [];
+  } catch(e){ console.warn("recent:", e); }
+
+  try {
+    const r = await fetch(API+"/coevolution", {headers:H});
+    coev = await r.json();
+  } catch(e){}
+
+  return buildGraph(notebooks, vaultNotes, coev);
+}
+
+function buildGraph(notebooks, vaultNotes, coev) {
+  setMsg("Building graph…");
+  const nodes = [];
+  const links = [];
+
+  // ── Cluster hub nodes ──────────────────────────────────────────
+  CLUSTERS.forEach((c, i) => {
+    nodes.push({
+      id:    "cluster_"+c.id,
+      label: c.icon+" "+c.label,
+      type:  "cluster",
+      cluster: c.id,
+      r:     28,
+      fixed: false,
+      url:   null,
+    });
+  });
+
+  // ── Notebook nodes ─────────────────────────────────────────────
+  notebooks.forEach((nb, i) => {
+    const cid = assignCluster(nb.title||"");
+    nodes.push({
+      id:      "nb_"+i,
+      label:   nb.title || "Untitled",
+      type:    "notebook",
+      cluster: cid,
+      r:       7,
+      url:     nb.url ? "https://notebooklm.google.com"+nb.url : null,
+    });
+  });
+
+  // ── Vault note nodes ───────────────────────────────────────────
+  vaultNotes.forEach((n, i) => {
+    // /recent returns { path, name, modified } — use name, strip date prefix and .md
+    const raw   = (typeof n === "string") ? n : (n.title || n.name || n.file || "Note");
+    const title = String(raw).replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.md$/, "").replace(/-/g, " ");
+    const cid   = assignCluster(title);
+    nodes.push({
+      id:      "vault_"+i,
+      label:   title,
+      type:    "vault",
+      cluster: cid,
+      r:       6,
+      url:     null,
+      modified: n.modified,
+    });
+  });
+
+  // ── Add cluster system data ────────────────────────────────────
+  if (coev.graduated !== undefined) {
+    nodes.push({
+      id:"cg_node", label:"🛡️ ClawGlove\n"+coev.graduated+" graduated",
+      type:"system", cluster:"ai", r:14, url:null,
+    });
+    nodes.push({
+      id:"oc_node", label:"🔓 OpenClaw\n"+coev.allow_pool+" allow",
+      type:"system", cluster:"ai", r:12, url:null,
+    });
+    links.push({source:"cg_node", target:"oc_node", weight:3, type:"system"});
+    links.push({source:"cg_node", target:"cluster_ai", weight:2, type:"cluster"});
+    links.push({source:"oc_node", target:"cluster_ai", weight:2, type:"cluster"});
+  }
+
+  // ── Hub → content links ────────────────────────────────────────
+  nodes.filter(n=>n.type!=="cluster").forEach(n=>{
+    links.push({source:"cluster_"+n.cluster, target:n.id, weight:1, type:"cluster"});
+  });
+
+  // ── Content ↔ content links (inverted keyword index) ──────────
+  setMsg("Computing connections…");
+  const contentNodes = nodes.filter(n=>n.type!=="cluster");
+  const kwIndex = {};  // keyword → [node_id]
+  contentNodes.forEach(n=>{
+    extractKW(n.label).forEach(kw=>{
+      if (!kwIndex[kw]) kwIndex[kw]=[];
+      kwIndex[kw].push(n.id);
+    });
+  });
+
+  // For each node, find similar nodes via keyword overlap
+  const nodeKW = {};
+  contentNodes.forEach(n=>{ nodeKW[n.id]=new Set(extractKW(n.label)); });
+
+  const scores = {};  // "a|b" → score
+  Object.values(kwIndex).forEach(nodeIds=>{
+    if (nodeIds.length < 2 || nodeIds.length > 40) return; // skip too-rare or too-common
+    for (let i=0;i<nodeIds.length;i++){
+      for (let j=i+1;j<nodeIds.length;j++){
+        const key = [nodeIds[i],nodeIds[j]].sort().join("|");
+        scores[key]=(scores[key]||0)+1;
+      }
+    }
+  });
+
+  // Per-node: keep top 4 strongest connections
+  const nodeTopLinks = {};
+  contentNodes.forEach(n=>{ nodeTopLinks[n.id]=[]; });
+  Object.entries(scores).forEach(([key,score])=>{
+    if (score<2) return;
+    const [a,b]=key.split("|");
+    if (nodeTopLinks[a]) nodeTopLinks[a].push({other:b,score});
+    if (nodeTopLinks[b]) nodeTopLinks[b].push({other:a,score});
+  });
+
+  const addedEdges = new Set();
+  contentNodes.forEach(n=>{
+    const tops=(nodeTopLinks[n.id]||[]).sort((a,b)=>b.score-a.score).slice(0,4);
+    tops.forEach(({other,score})=>{
+      const edgeKey=[n.id,other].sort().join("|");
+      if(!addedEdges.has(edgeKey)){
+        addedEdges.add(edgeKey);
+        links.push({source:n.id, target:other, weight:score, type:"content"});
+      }
+    });
+  });
+
+  setMsg(`${nodes.length} nodes · ${links.length} links`);
+  return { nodes, links };
+}
+
+// ════════════════════════════════════════════════════════════════
+// D3 RENDER
+// ════════════════════════════════════════════════════════════════
+function render({nodes, links}) {
+  allNodes = nodes;
+  allLinks = links;
+  nodes.forEach(n=>{ nodeMap[n.id]=n; });
+
+  const W = innerWidth, H = innerHeight;
+  svgSel = d3.select("#graph-svg")
+    .attr("width", W).attr("height", H);
+
+  // Pre-scatter nodes so they don't all start at (0,0) in the corner
+  // Cluster hubs go to a ring, content nodes get random positions spread across the viewport
+  const CLUSTER_IDS = CLUSTERS.map(c => "cluster_"+c.id);
+  const clusterCount = CLUSTER_IDS.length;
+  nodes.forEach((n, i) => {
+    if (n.type === "cluster") {
+      const idx = CLUSTER_IDS.indexOf(n.id);
+      const angle = (2 * Math.PI * idx / clusterCount) - Math.PI / 2;
+      const r = Math.min(W, H) * 0.3;
+      n.x = W/2 + r * Math.cos(angle);
+      n.y = H/2 + r * Math.sin(angle);
+    } else {
+      // Scatter content nodes randomly with some padding from edges
+      n.x = 80 + Math.random() * (W - 160);
+      n.y = 80 + Math.random() * (H - 160);
+    }
+  });
+
+  // Zoom
+  zoomBehavior = d3.zoom()
+    .scaleExtent([0.05, 8])
+    .on("zoom", e=>{ rootG.attr("transform", e.transform); });
+  svgSel.call(zoomBehavior);
+  rootG = d3.select("#graph-root");
+
+  // Force simulation — stronger centering so nodes don't drift to corner
+  simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d=>d.id)
+      .distance(d => d.type==="cluster" ? 110 : d.type==="system" ? 60 : 55)
+      .strength(d => d.type==="cluster" ? 0.3 : d.type==="system" ? 0.8 : 0.12))
+    .force("charge", d3.forceManyBody()
+      .strength(d => d.type==="cluster" ? -1200 : d.r * -40))
+    .force("center", d3.forceCenter(W/2, H/2).strength(0.08))
+    .force("collision", d3.forceCollide(d=>d.r * 2.8).strength(0.8))
+    .alphaDecay(0.018)
+    .on("tick", ticked);
+
+  drawLegend();
+  drawLinks();
+  drawNodes();
+  drawLabels();
+  startParticles();
+  // Wire click-outside-to-close after svgSel is defined
+  svgSel.on("click", closeDetail);
+}
+
+// ── Links ──────────────────────────────────────────────────────
+function drawLinks() {
+  const g = d3.select("#g-links");
+  g.selectAll("line").data(allLinks).join("line")
+    .attr("class", d=>"link link-"+d.type)
+    .attr("stroke", d=>{
+      if (d.type==="cluster") return "#3d444d";
+      if (d.type==="system")  return "#58a6ff";
+      const ca = nodeMap[typeof d.source==="object"?d.source.id:d.source]?.cluster;
+      return CLUST_MAP[ca]?.color || "#888";   // full color, no alpha suffix
+    })
+    .attr("stroke-width", d => d.type==="system" ? 2.5 : d.type==="cluster" ? 0.8 : Math.min(d.weight*.8+.6, 3))
+    .attr("stroke-opacity", d => d.type==="cluster" ? 0.5 : 0.9)
+    .attr("stroke-dasharray", null);  // solid lines — dashes were making them disappear
+}
+
+// ── Nodes ──────────────────────────────────────────────────────
+function drawNodes() {
+  const g = d3.select("#g-nodes");
+
+  const drag = d3.drag()
+    .on("start", (e,d)=>{ if(!e.active) simulation.alphaTarget(.2).restart(); d.fx=d.x; d.fy=d.y; })
+    .on("drag",  (e,d)=>{ d.fx=e.x; d.fy=e.y; })
+    .on("end",   (e,d)=>{ if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; });
+
+  g.selectAll("circle").data(allNodes).join("circle")
+    .attr("class", "node")
+    .attr("r", d=>d.r)
+    .attr("fill", d=>{
+      const col = CLUST_MAP[d.cluster].color;
+      if (d.type==="cluster") return col;          // solid vivid color for hubs
+      if (d.type==="vault")   return "#ffffff";    // bright white for vault notes
+      if (d.type==="system")  return "#58a6ff";
+      return col;                                  // solid cluster color for notebooks
+    })
+    .attr("fill-opacity", d=>{
+      if (d.type==="cluster") return 0.25;         // tinted glass look for big hubs
+      if (d.type==="vault")   return 0.95;
+      if (d.type==="system")  return 1;
+      return 0.85;                                 // nearly solid for notebooks
+    })
+    .attr("stroke", d=>{
+      const col = CLUST_MAP[d.cluster].color;
+      if (d.type==="cluster") return col;
+      if (d.type==="vault")   return "#ffffff";
+      if (d.type==="system")  return "#58a6ff";
+      return col;
+    })
+    .attr("stroke-opacity", 1)
+    .attr("stroke-width", d => d.type==="cluster" ? 2.5 : d.type==="vault" ? 2 : 1.5)
+    .attr("filter", d => {
+      if (d.type==="cluster") return "url(#glow-hub)";
+      if (d.type==="vault")   return "url(#glow-vault)";
+      if (d.type==="system")  return "url(#glow-hub)";
+      return "url(#glow-node)";
+    })
+    .style("cursor","pointer")
+    .call(drag)
+    .on("mouseover", showTooltip)
+    .on("mousemove", moveTooltip)
+    .on("mouseout",  hideTooltip)
+    .on("click",     onNodeClick);
+
+  // Pulse animation on cluster nodes
+  function pulse(){
+    g.selectAll("circle").filter(d=>d.type==="cluster")
+      .transition().duration(1800).ease(d3.easeSinInOut)
+      .attr("r", d=>d.r*1.12)
+      .transition().duration(1800).ease(d3.easeSinInOut)
+      .attr("r", d=>d.r)
+      .on("end", pulse);
+  }
+  pulse();
+}
+
+// ── Labels ─────────────────────────────────────────────────────
+function drawLabels() {
+  const g = d3.select("#g-labels");
+  g.selectAll("text").data(allNodes.filter(d=>d.type==="cluster")).join("text")
+    .attr("class","node-label visible")
+    .attr("font-size","11px")
+    .attr("fill", d=>CLUST_MAP[d.cluster].color)
+    .attr("font-weight","600")
+    .text(d=>d.label)
+    .attr("filter","url(#glow-soft)");
+}
+
+// ── Tick ───────────────────────────────────────────────────────
+function ticked() {
+  d3.select("#g-links").selectAll("line")
+    .attr("x1",d=>d.source?.x??0).attr("y1",d=>d.source?.y??0)
+    .attr("x2",d=>d.target?.x??0).attr("y2",d=>d.target?.y??0);
+
+  d3.select("#g-nodes").selectAll("circle")
+    .attr("cx",d=>d.x??0).attr("cy",d=>d.y??0);
+
+  d3.select("#g-labels").selectAll("text")
+    .attr("x",d=>d.x??0).attr("y",d=>(d.y??0)+d.r+13);
+}
+
+// ════════════════════════════════════════════════════════════════
+// ANIMATED PARTICLES (flowing along content edges)
+// ════════════════════════════════════════════════════════════════
+let particles = [];
+function startParticles() {
+  const pGroup = d3.select("#g-particles");
+  const contentLinks = allLinks.filter(d=>d.type==="content");
+
+  function spawnParticle() {
+    if (contentLinks.length===0) return;
+    const link = contentLinks[Math.floor(Math.random()*contentLinks.length)];
+    const srcNode = typeof link.source==="object" ? link.source : nodeMap[link.source];
+    if (!srcNode || hiddenClusters.has(srcNode.cluster)) return;
+    const color = CLUST_MAP[srcNode.cluster]?.color || "#58a6ff";
+    particles.push({ link, t:0, color, speed: 0.008+Math.random()*0.006 });
+  }
+
+  setInterval(spawnParticle, 180);
+
+  function animateParticles() {
+    particles = particles.filter(p=>p.t<1);
+    particles.forEach(p=>{ p.t+=p.speed; });
+
+    pGroup.selectAll("circle.particle")
+      .data(particles)
+      .join("circle")
+      .attr("class","particle")
+      .attr("r", 2.5)
+      .attr("fill", p=>p.color)
+      .attr("opacity", p=>0.8*(1-p.t))
+      .attr("cx", p=>{
+        const s = typeof p.link.source==="object" ? p.link.source : nodeMap[p.link.source];
+        const t = typeof p.link.target==="object" ? p.link.target : nodeMap[p.link.target];
+        if(!s||!t||s.x==null||t.x==null) return 0;
+        return s.x + (t.x - s.x)*p.t;
+      })
+      .attr("cy", p=>{
+        const s = typeof p.link.source==="object" ? p.link.source : nodeMap[p.link.source];
+        const t = typeof p.link.target==="object" ? p.link.target : nodeMap[p.link.target];
+        if(!s||!t||s.y==null||t.y==null) return 0;
+        return s.y + (t.y - s.y)*p.t;
+      });
+
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+}
+
+// ════════════════════════════════════════════════════════════════
+// LEGEND
+// ════════════════════════════════════════════════════════════════
+function drawLegend() {
+  const container = document.getElementById("legend-items");
+  container.innerHTML = CLUSTERS.map(c=>`
+    <div class="legend-item" id="leg-${c.id}" onclick="toggleCluster('${c.id}')">
+      <div class="legend-dot" style="background:${c.color};box-shadow:0 0 5px ${c.color}44"></div>
+      <span>${c.icon} ${c.label}</span>
+    </div>`).join("");
+}
+
+function toggleCluster(cid) {
+  if (hiddenClusters.has(cid)) {
+    hiddenClusters.delete(cid);
+    document.getElementById("leg-"+cid)?.classList.remove("dimmed");
+  } else {
+    hiddenClusters.add(cid);
+    document.getElementById("leg-"+cid)?.classList.add("dimmed");
+  }
+
+  const show = n => !hiddenClusters.has(n.cluster);
+  d3.select("#g-nodes").selectAll("circle")
+    .attr("opacity", d=>show(d)?1:0.08);
+  d3.select("#g-links").selectAll("line")
+    .attr("opacity", d=>{
+      const s=typeof d.source==="object"?d.source:nodeMap[d.source];
+      const t=typeof d.target==="object"?d.target:nodeMap[d.target];
+      return (show(s)&&show(t))?1:0.06;
+    });
+  d3.select("#g-labels").selectAll("text")
+    .attr("opacity", d=>show(d)?1:0.08);
+}
+
+// ════════════════════════════════════════════════════════════════
+// TOOLTIP
+// ════════════════════════════════════════════════════════════════
+const tip = document.getElementById("tooltip");
+function showTooltip(e,d) {
+  tip.style.display="block";
+  tip.textContent=d.label;
+  tip.style.borderColor=CLUST_MAP[d.cluster]?.color||"#30363d";
+}
+function moveTooltip(e) { tip.style.left=(e.clientX+12)+"px"; tip.style.top=(e.clientY-28)+"px"; }
+function hideTooltip() { tip.style.display="none"; }
+
+// ════════════════════════════════════════════════════════════════
+// NODE CLICK — detail panel + highlight
+// ════════════════════════════════════════════════════════════════
+function onNodeClick(e, d) {
+  e.stopPropagation();
+  selectedNode = d;
+  hideTooltip();
+
+  // Find connected nodes
+  const connectedIds = new Set();
+  allLinks.forEach(l=>{
+    const s=typeof l.source==="object"?l.source.id:l.source;
+    const t=typeof l.target==="object"?l.target.id:l.target;
+    if(s===d.id&&l.type!=="cluster") connectedIds.add(t);
+    if(t===d.id&&l.type!=="cluster") connectedIds.add(s);
+  });
+
+  // Highlight
+  d3.select("#g-nodes").selectAll("circle")
+    .attr("opacity", n=>n.id===d.id||connectedIds.has(n.id)?1:0.22)
+    .attr("r", n=>n.id===d.id?n.r*1.5:n.r)
+    .attr("filter", n=>{
+      if (n.id===d.id) return "url(#glow-selected)";
+      if (n.type==="cluster") return "url(#glow-hub)";
+      if (n.type==="vault") return "url(#glow-vault)";
+      return connectedIds.has(n.id) ? "url(#glow-node)" : null;
+    });
+
+  d3.select("#g-links").selectAll("line")
+    .attr("opacity", l=>{
+      const s=typeof l.source==="object"?l.source.id:l.source;
+      const t=typeof l.target==="object"?l.target.id:l.target;
+      return (s===d.id||t===d.id)?1:0.2;
+    })
+    .attr("stroke-width", l=>{
+      const s=typeof l.source==="object"?l.source.id:l.source;
+      const t=typeof l.target==="object"?l.target.id:l.target;
+      return (s===d.id||t===d.id)?3:0.8;
+    });
+
+  // Detail panel
+  const clust = CLUST_MAP[d.cluster];
+  document.getElementById("detail-title").textContent = d.label;
+  document.getElementById("detail-badge").textContent = clust.icon+" "+clust.label;
+  document.getElementById("detail-badge").style.background = clust.color+"33";
+  document.getElementById("detail-badge").style.color = clust.color;
+  document.getElementById("detail-type").textContent = {notebook:"📓 Notebook", vault:"📝 Vault Note", cluster:"🏷️ Category Hub", system:"⚙️ System"}[d.type]||d.type;
+  document.getElementById("detail-cluster").textContent = clust.label;
+  document.getElementById("detail-conn-count").textContent = connectedIds.size;
+
+  const nbLink = document.getElementById("nb-link");
+  if (d.url) { nbLink.href=d.url; nbLink.style.display="block"; }
+  else nbLink.style.display="none";
+
+  const connNodes = [...connectedIds].map(id=>nodeMap[id]).filter(Boolean).slice(0,12);
+  document.getElementById("detail-conn-list").innerHTML = connNodes.map(n=>`
+    <div class="conn-item" onclick="focusNode('${n.id}')" title="${n.label}"
+         style="border-left:2px solid ${CLUST_MAP[n.cluster]?.color||'#30363d'}">
+      ${n.label.slice(0,45)}${n.label.length>45?"…":""}
+    </div>`).join("");
+
+  document.getElementById("detail").style.display="block";
+}
+
+function focusNode(id) {
+  const n = nodeMap[id];
+  if (!n) return;
+  const W=innerWidth, H2=innerHeight;
+  const t = d3.zoomIdentity.translate(W/2-n.x*2, H2/2-n.y*2).scale(2);
+  svgSel.transition().duration(600).call(zoomBehavior.transform, t);
+  onNodeClick(new MouseEvent("click"), n);
+}
+
+function closeDetail() {
+  selectedNode=null;
+  document.getElementById("detail").style.display="none";
+  d3.select("#g-nodes").selectAll("circle")
+    .attr("opacity",1)
+    .attr("r", d=>d.r)
+    .attr("filter", d=>{
+      if (d.type==="cluster") return "url(#glow-hub)";
+      if (d.type==="vault")   return "url(#glow-vault)";
+      if (d.type==="system")  return "url(#glow-hub)";
+      return "url(#glow-node)";
+    });
+  d3.select("#g-links").selectAll("line")
+    .attr("opacity", d=>d.type==="cluster"?0.5:0.9)
+    .attr("stroke-width", d=>d.type==="system"?2.5:d.type==="cluster"?0.8:Math.min(d.weight*.8+.6,3));
+}
+
+// click-outside handler is wired inside render() after svgSel is set
+
+// ════════════════════════════════════════════════════════════════
+// SEARCH
+// ════════════════════════════════════════════════════════════════
+function onSearch(q) {
+  q=q.toLowerCase().trim();
+  if(!q){ clearSearch(); return; }
+  const match=n=>n.label.toLowerCase().includes(q);
+  d3.select("#g-nodes").selectAll("circle")
+    .attr("opacity",d=>match(d)?1:0.18)
+    .attr("r",d=>match(d)?d.r*1.35:d.r)
+    .attr("filter",d=>{
+      if (!match(d)) return null;
+      if (d.type==="cluster") return "url(#glow-hub)";
+      if (d.type==="vault")   return "url(#glow-vault)";
+      return "url(#glow-selected)";
+    });
+  d3.select("#g-links").selectAll("line").attr("opacity",.2);
+}
+function clearSearch(){
+  d3.select("#g-nodes").selectAll("circle").attr("opacity",1).attr("r",d=>d.r)
+    .attr("filter",d=>{
+      if (d.type==="cluster") return "url(#glow-hub)";
+      if (d.type==="vault")   return "url(#glow-vault)";
+      if (d.type==="system")  return "url(#glow-hub)";
+      return "url(#glow-node)";
+    });
+  d3.select("#g-links").selectAll("line")
+    .attr("opacity",d=>d.type==="cluster"?0.25:0.55);
+}
+document.getElementById("search").addEventListener("keydown",e=>{if(e.key==="Escape"){e.target.value="";clearSearch();}});
+
+// ════════════════════════════════════════════════════════════════
+// ZOOM CONTROLS
+// ════════════════════════════════════════════════════════════════
+function zoomBy(factor) {
+  svgSel.transition().duration(300).call(zoomBehavior.scaleBy, factor);
+}
+function resetZoom() {
+  if (!allNodes.length) return;
+  const W = innerWidth, H = innerHeight;
+  // Compute bounding box of all nodes with valid positions
+  const xs = allNodes.map(n=>n.x).filter(v=>v!=null);
+  const ys = allNodes.map(n=>n.y).filter(v=>v!=null);
+  if (!xs.length) {
+    svgSel.transition().duration(600).call(zoomBehavior.transform, d3.zoomIdentity.translate(W*.1,H*.1).scale(.8));
+    return;
+  }
+  const x0=Math.min(...xs)-40, y0=Math.min(...ys)-40;
+  const x1=Math.max(...xs)+40, y1=Math.max(...ys)+40;
+  const scale = Math.min(.95, Math.min(W/(x1-x0), H/(y1-y0)));
+  const tx = (W - scale*(x1+x0))/2;
+  const ty = (H - scale*(y1+y0))/2;
+  svgSel.transition().duration(700).call(zoomBehavior.transform,
+    d3.zoomIdentity.translate(tx,ty).scale(scale));
+}
+
+// ════════════════════════════════════════════════════════════════
+// LAYOUT TOGGLE
+// ════════════════════════════════════════════════════════════════
+function toggleLayout() {
+  layoutMode = 1 - layoutMode;
+  if (layoutMode===1) {
+    // Radial: pin cluster nodes in a circle
+    const W=innerWidth, H2=innerHeight;
+    const cx=W/2, cy=H2/2, radius=Math.min(W,H2)*0.3;
+    const clusterNodes=allNodes.filter(n=>n.type==="cluster");
+    clusterNodes.forEach((n,i)=>{
+      const angle=2*Math.PI*i/clusterNodes.length - Math.PI/2;
+      n.fx=cx+radius*Math.cos(angle);
+      n.fy=cy+radius*Math.sin(angle);
+    });
+    simulation.alpha(0.5).restart();
+  } else {
+    allNodes.filter(n=>n.type==="cluster").forEach(n=>{ n.fx=null; n.fy=null; });
+    simulation.alpha(0.5).restart();
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// STATS
+// ════════════════════════════════════════════════════════════════
+function updateStats() {
+  const nb=allNodes.filter(n=>n.type==="notebook").length;
+  const vt=allNodes.filter(n=>n.type==="vault").length;
+  const lk=allLinks.filter(l=>l.type==="content").length;
+  document.getElementById("stats").textContent=`${nb} notebooks · ${vt} vault notes · ${lk} connections`;
+}
+
+function setMsg(m){ document.getElementById("loading-msg").textContent=m; }
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+window.addEventListener("resize",()=>{
+  if(!simulation) return;
+  svgSel?.attr("width", innerWidth).attr("height", innerHeight);
+  simulation.force("center", d3.forceCenter(innerWidth/2, innerHeight/2)).alpha(.1).restart();
+});
+
+(async()=>{
+  try {
+    if (typeof d3 === 'undefined') {
+      setMsg("D3 library failed to load — check internet connection");
+      return;
+    }
+    const graph = await loadData();
+    setMsg("Rendering " + graph.nodes.length + " nodes…");
+    render(graph);
+    updateStats();
+    document.getElementById("loading").style.display="none";
+    setTimeout(resetZoom, 800);
+  } catch(e){
+    console.error(e);
+    const msg = e?.message || String(e);
+    document.getElementById("loading-msg").innerHTML =
+      '<span style="color:#f85149">⚠ ' + msg + '</span><br><small style="color:#8b949e">Check browser console (F12) for details</small>';
+    // Show a retry button
+    const btn = document.createElement('button');
+    btn.textContent = '↻ Retry';
+    btn.style = 'margin-top:12px;padding:8px 20px;background:#161b22;border:1px solid #58a6ff;border-radius:6px;color:#58a6ff;cursor:pointer;font-size:13px';
+    btn.onclick = () => location.reload();
+    document.getElementById("loading").appendChild(btn);
+  }
+})();
+</script>
+</body>
+</html>

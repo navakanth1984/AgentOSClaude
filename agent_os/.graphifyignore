@@ -1,0 +1,13 @@
+browser_session/
+__pycache__/
+*.pyc
+*.pyo
+notebook_cache.json
+session_log.json
+asset_library/
+*.mp3
+*.mp4
+*.wav
+*.png
+*.jpg
+*.jpeg

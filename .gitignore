@@ -89,3 +89,26 @@ lib/
 *.weights
 *.h5
 *.pb
+
+# Agent OS specific ignores
+agent_os/browser_session/
+agent_os/.graphify/
+agent_os/*.log
+agent_os/*_log.json
+agent_os/*_err*.txt
+agent_os/*_out*.txt
+agent_os/ngrok_url.txt
+agent_os/notebook_cache.json
+agent_os/pqc_keys/
+agent_os/coevolution_log.json
+agent_os/omi_log.json
+agent_os/quantum_usage.json
+agent_os/battle_log.json
+agent_os/lead_behind_*.txt
+agent_os/live_*.txt
+agent_os/stress_*.txt
+agent_os/dashboard_debug.txt
+agent_os/dashboard_screenshot.png
+agent_os/neural_3d_screenshot.png
+agent_os/Screenshot *.png
+

@@ -1,0 +1,15 @@
+playwright>=1.40.0
+requests>=2.31.0
+cryptography>=42.0.0
+numpy>=1.26.0
+matplotlib>=3.8.0
+sympy>=1.12
+
+# Quantum Computing dependencies
+qiskit>=1.0.0
+qiskit-aer>=0.14.0
+qiskit-ibm-runtime>=0.23.0
+
+# Post-Quantum Cryptography dependencies
+kyber-py>=0.1.0
+dilithium-py>=0.1.0
