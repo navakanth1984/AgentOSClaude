@@ -1080,13 +1080,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
     <div style="margin-top:3px;font-size:12px;color:var(--muted)">
       <span id="status-dot" class="pulse-dot"></span>
       <span id="status-label">Connecting…</span>
-      &nbsp;·&nbsp; localhost:8765
+      &nbsp;·&nbsp; <span id="mode-label">loading…</span>
     </div>
   </div>
   <div style="text-align:right;display:flex;align-items:center;gap:12px">
     <a href="/neural" class="btn" style="border-color: var(--accent); background: rgba(0, 240, 255, 0.08);">
       🧠 Neural Map
     </a>
+    <button onclick="logout()" class="btn" style="border-color: #ff4a4a; background: rgba(255, 74, 74, 0.08);">
+      🔒 Lock
+    </button>
     <div>
       <div style="font-size:11px;color:var(--muted)" id="last-update">—</div>
       <div style="margin-top:4px">
@@ -1634,10 +1637,26 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   resize();make();draw();
 })();
 
-const API    = "http://localhost:8765";
+const API    = window.location.origin;
 const APIKEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";
-const H      = { "X-API-Key": APIKEY, "Content-Type": "application/json" };
-const HG     = { "X-API-Key": APIKEY };
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlKey = urlParams.get("key");
+if (urlKey) {
+  localStorage.setItem("agent_os_key", urlKey);
+  const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+  window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
+}
+
+let activeKey = localStorage.getItem("agent_os_key") || APIKEY;
+
+function getHeaders(isPost = false) {
+  const headers = { "X-API-Key": activeKey };
+  if (isPost) {
+    headers["Content-Type"] = "application/json";
+  }
+  return headers;
+}
 
 function showToast(message, type = 'info') {
   const container = document.getElementById("toast-container");
@@ -1753,12 +1772,12 @@ function fmtDate(s) {
 }
 
 async function apiFetch(path, opts={}) {
-  const r = await fetch(API+path, { headers: HG, ...opts });
+  const r = await fetch(API+path, { headers: getHeaders(false), ...opts });
   if (!r.ok) { const e=await r.json().catch(()=>({error:r.status})); throw new Error(e.error||r.status); }
   return r.json();
 }
 async function apiPost(path, body) {
-  const r = await fetch(API+path, { method:"POST", headers:H, body:JSON.stringify(body) });
+  const r = await fetch(API+path, { method:"POST", headers:getHeaders(true), body:JSON.stringify(body) });
   const d = await r.json();
   if (!r.ok) throw new Error(d.error||r.status);
   return d;
@@ -2568,10 +2587,193 @@ async function qDailySeed() {
   } catch(e) { out.className = "output error"; out.textContent = "Error: " + e.message; }
 }
 
+async function validateAndSaveKey(key) {
+  const errorEl = document.getElementById("lock-error");
+  if (errorEl) errorEl.style.display = "none";
+  
+  try {
+    const r = await fetch(API + "/health", { headers: { "X-API-Key": key } });
+    if (r.status === 200 || r.status === 403) {
+      activeKey = key;
+      localStorage.setItem("agent_os_key", key);
+      
+      const lockScreen = document.getElementById("lock-screen");
+      if (lockScreen) {
+        lockScreen.style.opacity = "0";
+        setTimeout(() => lockScreen.remove(), 400);
+      }
+      showToast("Access Authorized!", "success");
+      initDashboard();
+    } else {
+      throw new Error("Unauthorized");
+    }
+  } catch (e) {
+    if (errorEl) {
+      errorEl.textContent = "Invalid API Key. Please try again.";
+      errorEl.style.display = "block";
+    }
+    const card = document.querySelector(".lock-card");
+    if (card) {
+      card.style.animation = "shake 0.5s ease";
+      setTimeout(() => card.style.animation = "", 500);
+    }
+  }
+}
+
+function showLockScreen() {
+  if (document.getElementById("lock-screen")) return;
+  
+  const lock = document.createElement("div");
+  lock.id = "lock-screen";
+  lock.innerHTML = `
+    <style>
+      #lock-screen {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at center, rgba(8, 12, 24, 0.98) 0%, rgba(3, 3, 6, 1) 100%);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999999;
+        font-family: 'Orbitron', 'Outfit', sans-serif;
+        color: #e3ebf8;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+      }
+      .lock-card {
+        background: rgba(16, 22, 46, 0.55);
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        box-shadow: 0 0 50px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05);
+        border-radius: 20px;
+        padding: 40px 30px;
+        width: 90%;
+        max-width: 420px;
+        text-align: center;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+      }
+      .lock-logo {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        background: linear-gradient(90deg, #00f0ff, #7000ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 15px;
+      }
+      .lock-desc {
+        font-size: 13px;
+        color: #7d8fa9;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        font-family: 'Outfit', sans-serif;
+      }
+      .lock-input {
+        width: 100%;
+        padding: 14px 20px;
+        background: rgba(8, 10, 20, 0.75);
+        border: 1px solid rgba(0, 240, 255, 0.25);
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Outfit', sans-serif;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 15px;
+        outline: none;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .lock-input:focus {
+        border-color: #00f0ff;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      }
+      .lock-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(90deg, #00f0ff, #7000ff);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        letter-spacing: 1.5px;
+        box-shadow: 0 4px 15px rgba(0, 240, 255, 0.15);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .lock-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+      }
+      .lock-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+      .lock-error {
+        color: #ff4a4a;
+        font-size: 12px;
+        margin-top: 10px;
+        display: none;
+        font-family: 'Outfit', sans-serif;
+      }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-8px); }
+        40%, 80% { transform: translateX(8px); }
+      }
+    </style>
+    <div class="lock-card">
+      <div class="lock-logo">AGENT OS</div>
+      <div class="lock-desc">Enter your API Key to access the control dashboard. Reviewers can use their designated read-only key.</div>
+      <input type="password" id="lock-key-input" class="lock-input" placeholder="API Key" autocomplete="current-password">
+      <button id="lock-submit-btn" class="lock-btn">AUTHORIZE</button>
+      <div id="lock-error" class="lock-error"></div>
+    </div>
+  `;
+  document.body.appendChild(lock);
+
+  const input = document.getElementById("lock-key-input");
+  const btn = document.getElementById("lock-submit-btn");
+
+  const submit = async () => {
+    const key = input.value.trim();
+    if (!key) return;
+    btn.disabled = true;
+    await validateAndSaveKey(key);
+    btn.disabled = false;
+  };
+
+  btn.addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") submit();
+  });
+  input.focus();
+}
+
+function logout() {
+  localStorage.removeItem("agent_os_key");
+  showToast("Logged out.", "info");
+  setTimeout(() => window.location.reload(), 500);
+}
+
+function initDashboard() {
+  document.getElementById("mode-label").textContent = API.includes("localhost") || API.includes("127.0.0.1") ? "local" : "cloud";
+  pollStatus();
+  loadRecentNotes();
+  if (window.pollInterval) clearInterval(window.pollInterval);
+  window.pollInterval = setInterval(pollStatus, 5000);
+}
+
 // ── Init ───────────────────────────────────────────────────────
-pollStatus();
-loadRecentNotes();
-setInterval(pollStatus, 5000);
+if (activeKey) {
+  initDashboard();
+} else {
+  showLockScreen();
+}
 </script>
 </body>
 </html>

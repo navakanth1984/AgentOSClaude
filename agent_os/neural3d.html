@@ -441,8 +441,20 @@ if (!detectWebGL()) {
 // ════════════════════════════════════════════════════════════════
 // CONFIG & NOTIFICATIONS
 // ════════════════════════════════════════════════════════════════
-const API = "http://localhost:8765";
-const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";
+const API = window.location.origin;
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlKey = urlParams.get("key");
+if (urlKey) {
+  localStorage.setItem("agent_os_key", urlKey);
+  const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+  window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
+}
+
+const API_KEY = localStorage.getItem("agent_os_key") || "";
+if (!API_KEY) {
+  window.location.href = "/dashboard";
+}
 const H = { "X-API-Key": API_KEY };
 
 function showToast(message, type = 'info') {

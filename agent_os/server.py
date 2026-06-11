@@ -70,6 +70,7 @@ if _env_path.exists():
 # API key for external access — read from .env
 # Localhost callers (same PC) are always allowed without a key
 _API_KEY = os.environ.get("AGENT_OS_API_KEY", "")
+_REVIEW_API_KEY = os.environ.get("AGENT_OS_REVIEW_KEY", "agent-os-review")
 
 
 def json_response(data: dict | list) -> bytes:
@@ -103,20 +104,28 @@ class AgentOSHandler(BaseHTTPRequestHandler):
     def _check_auth(self) -> bool:
         """
         Auth logic:
-          - If AGENT_OS_API_KEY is set in .env:
-              ALL requests must include the correct X-API-Key header.
-              (ngrok proxies look like localhost, so we can't trust IP alone)
+          - If AGENT_OS_API_KEY is set in env:
+              Requests must include a valid X-API-Key matching either:
+                - Master Key (_API_KEY): full read/write access.
+                - Review Key (_REVIEW_API_KEY): read-only access (GET allowed, POST blocked).
           - If AGENT_OS_API_KEY is NOT set:
               All requests allowed — local-only dev mode.
-
-        Returns True if allowed, False if rejected (sends 401 automatically).
         """
         if not _API_KEY:
-            # No key configured — open access (local dev mode)
             return True
 
         provided = self.headers.get("X-API-Key", "")
+        
+        # 1. Master Key Auth
         if provided == _API_KEY:
+            return True
+            
+        # 2. Review Key Auth
+        if _REVIEW_API_KEY and provided == _REVIEW_API_KEY:
+            # Check if this is a write request (POST)
+            if self.command == "POST":
+                self._send(403, {"error": "Write permission denied (Review Mode)"})
+                return False
             return True
 
         self._send(401, {"error": "Missing or invalid X-API-Key header"})
@@ -217,8 +226,10 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(404, {"error": "dashboard.html not found"})
                 return
             html = dash.read_text(encoding="utf-8")
-            if _API_KEY:
+            if _API_KEY and not is_cloud_mode():
                 html = html.replace('const APIKEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";', f'const APIKEY = "{_API_KEY}";')
+            else:
+                html = html.replace('const APIKEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";', 'const APIKEY = "";')
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -232,8 +243,10 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(404, {"error": "neural3d.html not found"})
                 return
             html = neural.read_text(encoding="utf-8")
-            if _API_KEY:
+            if _API_KEY and not is_cloud_mode():
                 html = html.replace('const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";', f'const API_KEY = "{_API_KEY}";')
+            else:
+                html = html.replace('const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";', 'const API_KEY = "";')
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -247,8 +260,10 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(404, {"error": "neural.html not found"})
                 return
             html = neural.read_text(encoding="utf-8")
-            if _API_KEY:
+            if _API_KEY and not is_cloud_mode():
                 html = html.replace('const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";', f'const API_KEY = "{_API_KEY}";')
+            else:
+                html = html.replace('const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";', 'const API_KEY = "";')
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Access-Control-Allow-Origin", "*")
