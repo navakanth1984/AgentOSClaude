@@ -319,6 +319,72 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             notes = list_recent_notes(n)
             self._send(200, {"notes": notes})
 
+        elif path == "/debug_vault":
+            # Diagnostic endpoint
+            import subprocess
+            from pathlib import Path
+            import os
+            
+            repo_url = os.environ.get("VAULT_REPO_URL", "")
+            masked_url = ""
+            if repo_url:
+                if "@" in repo_url:
+                    parts = repo_url.split("@")
+                    masked_url = "https://<TOKEN_MASKED>@" + parts[-1]
+                else:
+                    masked_url = repo_url
+            
+            vault_repo_path_exists = False
+            vault_path_exists = False
+            git_status = ""
+            git_remote = ""
+            vault_clone_files = []
+            
+            try:
+                from vault_sync import VAULT_REPO_PATH, get_vault_path
+                vpath = get_vault_path()
+                vault_path_exists = vpath.exists()
+                vault_repo_path_exists = VAULT_REPO_PATH.exists()
+                
+                if vault_repo_path_exists:
+                    r = subprocess.run(["git", "status"], cwd=str(VAULT_REPO_PATH), capture_output=True, text=True, timeout=5)
+                    git_status = (r.stdout or "") + "\n" + (r.stderr or "")
+                    
+                    r2 = subprocess.run(["git", "remote", "-v"], cwd=str(VAULT_REPO_PATH), capture_output=True, text=True, timeout=5)
+                    remote_lines = []
+                    for line in ((r2.stdout or "") + "\n" + (r2.stderr or "")).splitlines():
+                        if "@" in line:
+                            parts = line.split("@")
+                            remote_lines.append(parts[0][:15] + "...@" + parts[-1])
+                        else:
+                            remote_lines.append(line)
+                    git_remote = "\n".join(remote_lines)
+                    
+                    for root, dirs, files in os.walk(str(VAULT_REPO_PATH)):
+                        depth = root.replace(str(VAULT_REPO_PATH), "").count(os.sep)
+                        if depth > 2:
+                            continue
+                        for f in files[:10]:
+                            vault_clone_files.append(os.path.join(root, f))
+                        if len(vault_clone_files) > 100:
+                            break
+            except Exception as e:
+                git_status = f"Error: {e}"
+                
+            self._send(200, {
+                "has_vault_sync": _HAS_VAULT_SYNC,
+                "is_cloud_mode": is_cloud_mode(),
+                "vault_path": str(VAULT_PATH),
+                "vault_path_exists": vault_path_exists,
+                "vault_repo_path_exists": vault_repo_path_exists,
+                "vault_repo_url_configured": bool(repo_url),
+                "vault_repo_url": masked_url,
+                "git_status": git_status.strip(),
+                "git_remote": git_remote.strip(),
+                "vault_clone_files_sample": vault_clone_files[:50]
+            })
+
+
         elif path == "/note":
             note_path = params.get("path", [""])[0]
             if not note_path:
