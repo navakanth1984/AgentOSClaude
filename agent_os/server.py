@@ -337,7 +337,6 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         elif path == "/debug_vault":
             # Diagnostic endpoint
             import subprocess
-            from pathlib import Path
             import os
             
             repo_url = os.environ.get("VAULT_REPO_URL", "")
