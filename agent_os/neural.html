@@ -103,6 +103,97 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 #controls{position:fixed;bottom:20px;right:20px;z-index:10;display:flex;flex-direction:column;gap:6px;pointer-events:all}
 .ctrl-btn{width:36px;height:36px;background:rgba(13,17,23,.88);border:1px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
 .ctrl-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ═══ MOBILE RESPONSIVENESS (iOS & Android) ═══ */
+@media (max-width: 768px) {
+  #topbar {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  #topbar h1 {
+    font-size: 13px;
+    order: 1;
+    white-space: nowrap;
+  }
+  #topbar a {
+    order: 0;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  #topbar button:last-child {
+    /* 3D Mode button */
+    order: 2;
+    margin-left: auto;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  #search-wrap {
+    order: 3;
+    max-width: 100% !important;
+    width: 100% !important;
+    flex: unset !important;
+    margin: 4px 0;
+  }
+  #search {
+    padding: 8px 12px;
+    font-size: 15px; /* prevent iOS zoom */
+  }
+  #stats {
+    order: 4;
+    font-size: 10px;
+    margin-right: auto;
+    align-self: center;
+  }
+  .top-btn {
+    order: 5;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  /* Legend as small collapsed element */
+  #legend {
+    left: 10px;
+    bottom: 10px;
+    min-width: 120px;
+    max-width: 150px;
+    padding: 8px;
+    font-size: 11px;
+  }
+  #legend h3 {
+    font-size: 9px;
+    margin-bottom: 4px;
+  }
+  .legend-item {
+    font-size: 10px;
+    gap: 6px;
+  }
+  
+  body.detail-open #legend {
+    display: none !important;
+  }
+
+  /* Detail panel as bottom sheet */
+  #detail {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    top: auto !important;
+    width: auto !important;
+    max-height: 40% !important;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
+  }
+
+  /* Controls (zoom buttons) shift up when detail is open */
+  #controls {
+    bottom: 20px;
+    right: 10px;
+  }
+  body.detail-open #controls {
+    bottom: calc(40% + 20px);
+  }
+}
 </style>
 </head>
 <body>
@@ -774,6 +865,7 @@ function onNodeClick(e, d) {
     </div>`).join("");
 
   document.getElementById("detail").style.display="block";
+  document.body.classList.add("detail-open");
 }
 
 function focusNode(id) {
@@ -788,6 +880,7 @@ function focusNode(id) {
 function closeDetail() {
   selectedNode=null;
   document.getElementById("detail").style.display="none";
+  document.body.classList.remove("detail-open");
   d3.select("#g-nodes").selectAll("circle")
     .attr("opacity",1)
     .attr("r", d=>d.r)

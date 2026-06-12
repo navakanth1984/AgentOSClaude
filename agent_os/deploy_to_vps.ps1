@@ -4,7 +4,7 @@
 
 $ErrorActionPreference = "Stop"
 
-# ── 1. Configuration & Input ──────────────────────────────────
+# === 1. Configuration & Input ===
 Write-Host "`n================================================" -ForegroundColor Cyan
 Write-Host "   Agent OS - Windows to VPS Deployer           " -ForegroundColor Cyan
 Write-Host "================================================`n" -ForegroundColor Cyan
@@ -18,7 +18,7 @@ $vpsPath = "/opt/agent_os"
 $zipName = "agent_os_deploy.zip"
 $localZipPath = Join-Path $PSScriptRoot $zipName
 
-# ── 2. Create ZIP Archive of Files ────────────────────────────
+# === 2. Create ZIP Archive of Files ===
 Write-Host "[1/4] Packaging deployment archive..." -ForegroundColor Green
 
 # Remove any old zip if exists
@@ -82,9 +82,9 @@ foreach ($f in $files) {
 Compress-Archive -Path "$tempDir\*" -DestinationPath $localZipPath -Force
 Remove-Item $tempDir -Recurse -Force
 
-Write-Host "  ✓ Archive created successfully: $zipName ($((Get-Item $localZipPath).Length / 1KB -as [int]) KB)" -ForegroundColor Green
+Write-Host "  [+] Archive created successfully: $zipName ($([int]((Get-Item $localZipPath).Length / 1KB)) KB)" -ForegroundColor Green
 
-# ── 3. Transfer Archive via SCP ───────────────────────────────
+# === 3. Transfer Archive via SCP ===
 Write-Host "`n[2/4] Uploading archive to VPS ($vpsIp)..." -ForegroundColor Green
 try {
     scp.exe -o ConnectTimeout=10 $localZipPath "$($targetHost):/tmp/$zipName"
@@ -98,7 +98,7 @@ try {
 # Clean up local zip
 Remove-Item $localZipPath
 
-# ── 4. Unpack and Run deploy.sh on VPS ────────────────────────
+# === 4. Unpack and Run deploy.sh on VPS ===
 Write-Host "`n[3/4] Running remote deployment script..." -ForegroundColor Green
 
 $remoteScript = @'
@@ -130,7 +130,7 @@ EOF
     Exit
 }
 
-# ── 5. Setup Configuration Reminder ──────────────────────────
+# === 5. Setup Configuration Reminder ===
 Write-Host "`n================================================" -ForegroundColor Cyan
 Write-Host "   Deployment successfully finished!            " -ForegroundColor Green
 Write-Host "================================================" -ForegroundColor Cyan

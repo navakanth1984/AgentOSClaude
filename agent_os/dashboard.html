@@ -66,6 +66,12 @@ body{
   color:var(--accent);
   text-shadow: 0 0 10px var(--accent-glow);
 }
+.topbar-actions {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .pulse-dot{
   width:10px;
   height:10px;
@@ -545,7 +551,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   .topbar h1 {
     font-size: 17px;
   }
-  .topbar > div:last-child {
+  .topbar-actions {
     width: 100%;
     display: flex !important;
     flex-wrap: wrap;
@@ -787,6 +793,22 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   }
   .topbar h1 span {
     font-size: 15px;
+  }
+  .topbar-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .topbar-actions > div {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    border-top: 1px dashed var(--border);
+    padding-top: 8px;
   }
 
   /* ── Grid: single column on phones ── */
@@ -1083,7 +1105,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       &nbsp;·&nbsp; <span id="mode-label">loading…</span>
     </div>
   </div>
-  <div style="text-align:right;display:flex;align-items:center;gap:12px">
+  <div class="topbar-actions">
     <a href="/neural" class="btn" style="border-color: var(--accent); background: rgba(0, 240, 255, 0.08);">
       🧠 Neural Map
     </a>

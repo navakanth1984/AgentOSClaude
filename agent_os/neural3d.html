@@ -248,6 +248,82 @@ html, body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 #loading p { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--muted); }
+
+/* ═══ MOBILE RESPONSIVENESS (iOS & Android) ═══ */
+@media (max-width: 768px) {
+  #topbar {
+    height: auto !important;
+    padding: 8px 12px !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  #topbar h1 {
+    font-size: 14px !important;
+    text-align: center !important;
+  }
+  .top-actions {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+  .top-actions .btn {
+    padding: 6px 10px !important;
+    font-size: 10px !important;
+    min-height: unset !important;
+  }
+
+  #dashboard-ui {
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    padding: 10px !important;
+    height: 100% !important;
+    pointer-events: none !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 42% !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    pointer-events: all !important;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.6) !important;
+  }
+
+  /* Control Panel visibility on mobile: hide when inspector is open */
+  body.inspector-open .panel:first-child {
+    display: none !important;
+  }
+  
+  /* Inspector Panel visibility on mobile: hide when no node is selected */
+  body:not(.inspector-open) #inspector-panel {
+    display: none !important;
+  }
+
+  /* Compact padding in panels for mobile */
+  .panel-header {
+    padding: 10px 12px !important;
+  }
+  .panel-content {
+    padding: 10px 12px !important;
+    gap: 12px !important;
+  }
+  .tabs {
+    margin-bottom: 10px !important;
+  }
+  .tab {
+    padding: 6px 8px !important;
+    font-size: 9px !important;
+  }
+  input[type="text"] {
+    font-size: 15px !important; /* prevent iOS zoom */
+    padding: 8px 10px !important;
+  }
+  .btn {
+    padding: 8px 10px !important;
+    font-size: 10px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -371,8 +447,9 @@ html, body {
 
   <!-- Right Detail Inspector Panel -->
   <div class="panel" id="inspector-panel">
-    <div class="panel-header">
+    <div class="panel-header" style="display:flex; justify-content:space-between; align-items:center; width:100%">
       <h2>🧠 Node Inspector</h2>
+      <button onclick="closeInspector()" class="btn" style="padding:4px 8px; font-size:10px; margin:0; min-height:unset; height:auto; width:auto; border-color:var(--border);">Close</button>
     </div>
     <div class="panel-content">
       <div id="inspector-empty" style="text-align:center; padding:40px 10px; color:var(--muted);">
@@ -945,9 +1022,16 @@ function onSearch(query) {
 // ════════════════════════════════════════════════════════════════
 // INSPECTOR
 // ════════════════════════════════════════════════════════════════
+function closeInspector() {
+  document.getElementById("inspector-empty").style.display = "block";
+  document.getElementById("inspector-details").style.display = "none";
+  document.body.classList.remove("inspector-open");
+}
+
 function inspectNode(node) {
   document.getElementById("inspector-empty").style.display = "none";
   document.getElementById("inspector-details").style.display = "flex";
+  document.body.classList.add("inspector-open");
   
   document.getElementById("inspector-title").textContent = node.label;
   
