@@ -27,3 +27,7 @@ Multi-layer model: tenant → capacity → workspace (Admin/Member/Contributor/V
 ## Neural links
 Neurons: [[Data Security]] · [[OneLake]] · [[Warehouse]]
 Skill groups: [[Configure Security and Governance]]
+
+## Deep notes
+- [[UNIT Security — Fabric Security Model]]
+- [[UNIT Security — Granular Permissions & OneLake Security]]

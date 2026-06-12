@@ -27,3 +27,7 @@ Sources: Event Hubs, IoT Hub, Kafka, CDC, sample data. Destinations: Eventhouse,
 ## Neural links
 Neurons: [[Eventstream]] · [[Real-Time Intelligence]] · [[Eventhouse & KQL]]
 Skill groups: [[Ingest and Transform Streaming Data]] · [[Monitor Fabric Items]]
+
+## Deep notes
+- [[UNIT Eventstream — Sources & Destinations]]
+- [[UNIT Eventstream — Transformations & Windows]]

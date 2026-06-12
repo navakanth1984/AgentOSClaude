@@ -31,3 +31,9 @@ Spark pools (starter vs custom), environments, runtime version, high-concurrency
 ## Neural links
 Neurons: [[Spark]] · [[Lakehouse]]
 Skill groups: [[Configure Workspace Settings]] · [[Ingest and Transform Batch Data]] · [[Orchestrate Processes]]
+
+## Deep notes
+- [[UNIT Spark — Prepare to Use Spark]]
+- [[UNIT Spark — Notebooks vs Spark Jobs]]
+- [[UNIT Spark — DataFrames]]
+- [[UNIT Spark — Spark SQL & Catalog]]

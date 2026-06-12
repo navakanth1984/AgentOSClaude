@@ -30,3 +30,7 @@ DDM masks at query time (default/email/partial/random masks). RLS = security pre
 ## Neural links
 Neurons: [[Data Security]] · [[Warehouse]]
 Skill groups: [[Configure Security and Governance]]
+
+## Deep notes
+- [[UNIT DW Security — Dynamic Data Masking]]
+- [[UNIT DW Security — Row-Level Security]]

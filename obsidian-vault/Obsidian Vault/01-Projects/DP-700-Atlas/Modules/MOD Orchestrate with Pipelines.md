@@ -29,3 +29,8 @@ Pipelines = activities (Copy Data, Notebook, Dataflow, stored proc) + control fl
 ## Neural links
 Neurons: [[Pipelines]] · [[Dataflow Gen2]] · [[Spark]]
 Skill groups: [[Orchestrate Processes]] · [[Design Loading Patterns]] · [[Monitor Fabric Items]]
+
+## Deep notes
+- [[UNIT Pipelines — Core Concepts]]
+- [[UNIT Pipelines — Copy Data Activity]]
+- [[UNIT Pipelines — Run, Schedule, Monitor]]

@@ -29,3 +29,7 @@ Git integration (Azure DevOps/GitHub) at workspace level: connect, commit, updat
 ## Neural links
 Neurons: [[Deployment & Source Control]] · [[Pipelines]] · [[Warehouse]]
 Skill groups: [[Lifecycle Management]]
+
+## Deep notes
+- [[UNIT CICD — Git Integration]]
+- [[UNIT CICD — Deployment Pipelines]]

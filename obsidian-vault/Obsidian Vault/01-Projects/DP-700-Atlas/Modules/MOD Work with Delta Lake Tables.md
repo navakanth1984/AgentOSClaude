@@ -31,3 +31,9 @@ Delta = Parquet + transaction log (_delta_log): ACID, time travel (DESCRIBE HIST
 ## Neural links
 Neurons: [[Lakehouse]] · [[Spark]] · [[OneLake]]
 Skill groups: [[Optimize Performance]] · [[Ingest and Transform Streaming Data]]
+
+## Deep notes
+- [[UNIT Delta — Understand Delta Lake]]
+- [[UNIT Delta — Create Delta Tables]]
+- [[UNIT Delta — Optimize Delta Tables]]
+- [[UNIT Delta — Streaming with Delta]]

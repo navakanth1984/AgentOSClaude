@@ -31,3 +31,7 @@ Full T-SQL read/write warehouse over OneLake (Delta under the hood). Star schema
 ## Neural links
 Neurons: [[Warehouse]] · [[Semantic Model]] · [[OneLake]]
 Skill groups: [[Design Loading Patterns]] · [[Ingest and Transform Batch Data]]
+
+## Deep notes
+- [[UNIT Warehouse — Fabric Warehouse Fundamentals]]
+- [[UNIT Warehouse — Model Data]]

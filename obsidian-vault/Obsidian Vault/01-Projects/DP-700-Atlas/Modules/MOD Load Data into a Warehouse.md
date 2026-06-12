@@ -29,3 +29,7 @@ Full vs incremental loads; staging tables. COPY INTO from ADLS/Blob, CREATE TABL
 ## Neural links
 Neurons: [[Warehouse]] · [[Pipelines]] · [[Dataflow Gen2]]
 Skill groups: [[Design Loading Patterns]] · [[Ingest and Transform Batch Data]]
+
+## Deep notes
+- [[UNIT Warehouse — Load Strategies & SCDs]]
+- [[UNIT Warehouse — Load with T-SQL]]

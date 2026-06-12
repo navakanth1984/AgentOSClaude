@@ -25,7 +25,7 @@
 
 ## My Obsidian Vault
 
-- **Path:** `C:\Users\navka\OneDrive\Documents\Obsidian Vault\`
+- **Path:** `C:\Users\navka\navakanth001\obsidian-vault\Obsidian Vault\`
 - **Structure:**
   ```
   00-Inbox/          ← all captures land here first
@@ -93,12 +93,39 @@ source: "URL or description"
 
 ---
 
+## Session-Start Routine (Mandatory — Every Session)
+
+At the **beginning of every new session**, execute these steps in order:
+
+### Step 1: Context Restore
+- List the last 5 saved session files in `C:\Users\navka\navakanth001\memory_os\session_memory\`
+- Ask which session context to restore/pick up from
+
+### Step 2: Model Economics Checkpoint (🔄 Autonomous)
+- Read `memory_os/strategic_profile.md` for current focus
+- Read `memory_os/long_term_knowledge/model-routing-corrections.md` for routing history
+- Show a **quick routing summary** for today's session:
+  - What model is currently active?
+  - Is it the right tier for the planned work?
+  - Any routing corrections from previous sessions?
+- If the user's first task is a Tier 1-2 task but a Tier 5 model is active, **proactively suggest switching**
+- If the user forgets or skips this, **remind them once** — "Quick model check: you're on [model]. Right tier for today's work?"
+
+### Step 3: Read Context Files
+- Read this file (CLAUDE.md) — never ask to re-explain setup
+- Read `model-router` skill for routing thresholds
+
+---
+
 ## Things Claude Should Always Do
 
-- Read this file at session start — never ask me to re-explain my setup
+- Follow the Session-Start Routine above — this is non-negotiable
+- Run the Model Economics Checkpoint autonomously — don't wait for the user to ask
 - When touching the vault, always confirm the file path before writing
 - Suggest tagging and linking notes to relevant projects
 - If I share a YouTube URL, offer to create a vault note from it
+- At the end of every session or when the user indicates they are closing/leaving, automatically run `session_end.py` to save the conversation context to Obsidian and `memory_os` without waiting for a reminder.
+- Log model usage at session end: what model was used, what tier tasks were done, any routing corrections
 
 ---
 
@@ -108,7 +135,9 @@ source: "URL or description"
 - Add boilerplate comments to code I didn't ask for
 - Ask clarifying questions for simple tasks — just do it
 - Create files outside the vault structure without asking
+- Skip the Model Economics Checkpoint at session start
+- Use a Tier 5 model for Tier 1-2 tasks without flagging the cost waste
 
 ---
 
-*Last updated: 2026-04-11*
+*Last updated: 2026-06-12*

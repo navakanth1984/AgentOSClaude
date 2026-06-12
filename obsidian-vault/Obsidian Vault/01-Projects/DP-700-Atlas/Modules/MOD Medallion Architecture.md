@@ -29,3 +29,7 @@ Bronze = raw as-ingested; Silver = validated/deduplicated/conformed; Gold = busi
 ## Neural links
 Neurons: [[Lakehouse]] · [[Semantic Model]] · [[Data Security]]
 Skill groups: [[Design Loading Patterns]] · [[Ingest and Transform Batch Data]]
+
+## Deep notes
+- [[UNIT Medallion — Bronze Silver Gold]]
+- [[UNIT Medallion — Implement in Fabric]]

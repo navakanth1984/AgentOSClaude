@@ -27,3 +27,7 @@ Eventhouse contains KQL databases; OneLake availability toggle. KQL: where/summa
 ## Neural links
 Neurons: [[Eventhouse & KQL]] · [[Real-Time Intelligence]] · [[OneLake]]
 Skill groups: [[Ingest and Transform Streaming Data]] · [[Optimize Performance]]
+
+## Deep notes
+- [[UNIT Eventhouse — Get Started & KQL Basics]]
+- [[UNIT Eventhouse — Materialized Views & Functions]]

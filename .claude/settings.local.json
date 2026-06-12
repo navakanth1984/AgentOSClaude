@@ -1,4 +1,26 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(python server.py)",
+      "Bash(curl -s http://localhost:8765/health)",
+      "Bash(python -m json.tool)",
+      "Bash(curl -s http://localhost:8765/status)",
+      "Bash(curl -s \"http://localhost:8765/recent?n=3\")",
+      "Bash(curl -s \"http://localhost:8765/search?q=Agent+OS\")",
+      "Bash(curl -s -X POST http://localhost:8765/save -H 'Content-Type: application/json' -d '{\"title\":\"API Test Note\",\"idea\":\"Server endpoint test from smoke test\",\"tags\":[\"test\",\"agent-os\"]}')",
+      "Bash(python test_layer2.py)",
+      "Bash(python test_layer3.py)",
+      "Bash(python \"C:\\\\Users\\\\navka\\\\navakanth001\\\\agent_os\\\\test_layer2.py\")",
+      "Bash(python \"C:\\\\Users\\\\navka\\\\navakanth001\\\\agent_os\\\\test_layer3.py\")",
+      "Bash(python \"C:\\\\Users\\\\navka\\\\navakanth001\\\\agent_os\\\\server.py\")",
+      "Bash(python -c ' *)",
+      "Bash(kill %1)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8765)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8765/dashboard)",
+      "Bash(python3 -c ' *)"
+    ]
+  },
   "disabledMcpjsonServers": [
     "notebooklm",
     "firecrawl",

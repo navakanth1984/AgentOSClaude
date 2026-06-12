@@ -27,3 +27,7 @@ Capacity Metrics app: CU consumption, smoothing/throttling. DMVs: sys.dm_exec_co
 ## Neural links
 Neurons: [[Warehouse]]
 Skill groups: [[Monitor Fabric Items]] · [[Identify and Resolve Errors]] · [[Optimize Performance]]
+
+## Deep notes
+- [[UNIT DW Monitor — DMVs]]
+- [[UNIT DW Monitor — Query Insights]]

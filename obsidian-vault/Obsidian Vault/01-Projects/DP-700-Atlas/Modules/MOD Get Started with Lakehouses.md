@@ -29,3 +29,7 @@ Lakehouse = data lake flexibility + warehouse analytics over Delta tables. Table
 ## Neural links
 Neurons: [[Lakehouse]] · [[OneLake]] · [[Spark]]
 Skill groups: [[Ingest and Transform Batch Data]]
+
+## Deep notes
+- [[UNIT Lakehouse — Features & Capabilities]]
+- [[UNIT Lakehouse — Ingest & Transform]]

@@ -27,3 +27,6 @@ Power Query Online: 150+ connectors, M language, visual transformations, data de
 ## Neural links
 Neurons: [[Dataflow Gen2]] · [[Pipelines]]
 Skill groups: [[Ingest and Transform Batch Data]] · [[Orchestrate Processes]]
+
+## Deep notes
+- [[UNIT Dataflow Gen2 — Understand]]

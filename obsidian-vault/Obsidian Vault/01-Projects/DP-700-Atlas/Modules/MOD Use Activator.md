@@ -27,3 +27,6 @@ Event detection engine: objects, properties, rules (conditions over events/value
 ## Neural links
 Neurons: [[Real-Time Intelligence]] · [[Eventstream]]
 Skill groups: [[Monitor Fabric Items]]
+
+## Deep notes
+- [[UNIT Activator — Rules]]

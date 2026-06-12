@@ -27,3 +27,6 @@ Monitoring Hub aggregates run history for pipelines, dataflows, notebooks, seman
 ## Neural links
 Neurons: [[Pipelines]] · [[Dataflow Gen2]] · [[Spark]] · [[Semantic Model]] · [[Real-Time Intelligence]]
 Skill groups: [[Monitor Fabric Items]] · [[Identify and Resolve Errors]]
+
+## Deep notes
+- [[UNIT Monitor — Monitoring Hub]]
