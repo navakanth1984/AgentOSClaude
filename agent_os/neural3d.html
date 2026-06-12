@@ -451,11 +451,12 @@ if (urlKey) {
   window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
 }
 
-const API_KEY = localStorage.getItem("agent_os_key") || "";
-if (!API_KEY) {
+const API_KEY = "e84c2337a06d5d5f46406911060bdae59f41ce2c6e276ce87de502ff34526f8b";
+const active_key = localStorage.getItem("agent_os_key") || API_KEY;
+if (!active_key) {
   window.location.href = "/dashboard";
 }
-const H = { "X-API-Key": API_KEY };
+const H = { "X-API-Key": active_key };
 
 function showToast(message, type = 'info') {
   const container = document.getElementById("toast-container");

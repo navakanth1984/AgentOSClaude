@@ -90,6 +90,9 @@ lib/
 *.h5
 *.pb
 
+# Agent OS asset library DOM dumps (contain embedded third-party keys)
+agent_os/asset_library/*_dom.html
+
 # Agent OS specific ignores
 agent_os/browser_session/
 agent_os/.graphify/

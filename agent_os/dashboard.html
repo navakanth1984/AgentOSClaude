@@ -1649,6 +1649,9 @@ if (urlKey) {
 }
 
 let activeKey = localStorage.getItem("agent_os_key") || APIKEY;
+if (activeKey) {
+  localStorage.setItem("agent_os_key", activeKey);
+}
 
 function getHeaders(isPost = false) {
   const headers = { "X-API-Key": activeKey };

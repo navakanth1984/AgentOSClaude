@@ -146,6 +146,10 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         If LOCAL_BRIDGE_URL is set in environment, forwards vault/notebook requests to the local bridge.
         Returns True if request was forwarded (handled), False otherwise.
         """
+        if os.name == "nt":
+            # Running locally on Windows: we are the bridge/local server, so do not forward to another bridge.
+            return False
+
         bridge_url = os.environ.get("LOCAL_BRIDGE_URL")
         bridge_key = os.environ.get("LOCAL_BRIDGE_KEY", _API_KEY)
         if not bridge_url:
@@ -337,7 +341,6 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         elif path == "/debug_vault":
             # Diagnostic endpoint
             import subprocess
-            import os
             
             repo_url = os.environ.get("VAULT_REPO_URL", "")
             masked_url = ""
