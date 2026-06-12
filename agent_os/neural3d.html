@@ -92,6 +92,7 @@ html, body {
   letter-spacing: 1.5px;
 }
 #topbar h1 span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+.topbar-brand { display: flex; align-items: center; gap: 16px; }
 .top-actions { display: flex; align-items: center; gap: 12px; }
 
 .btn {
@@ -250,26 +251,37 @@ html, body {
 #loading p { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--muted); }
 
 /* ═══ MOBILE RESPONSIVENESS (iOS & Android) ═══ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #topbar {
     height: auto !important;
-    padding: 8px 12px !important;
+    padding: 10px 14px !important;
     flex-direction: column !important;
-    gap: 8px !important;
+    gap: 10px !important;
     align-items: stretch !important;
   }
+  .topbar-brand {
+    width: 100% !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    flex-direction: row !important;
+  }
   #topbar h1 {
-    font-size: 14px !important;
-    text-align: center !important;
+    font-size: 12px !important;
+    letter-spacing: 0.5px !important;
+    text-align: right !important;
+    margin: 0 !important;
   }
   .top-actions {
     justify-content: space-between !important;
     width: 100% !important;
+    gap: 8px !important;
   }
-  .top-actions .btn {
+  .top-actions .btn, .topbar-brand .btn {
     padding: 6px 10px !important;
     font-size: 10px !important;
     min-height: unset !important;
+    flex: 1 !important;
+    justify-content: center !important;
   }
 
   #dashboard-ui {
@@ -283,7 +295,7 @@ html, body {
   .panel {
     width: 100% !important;
     height: auto !important;
-    max-height: 42% !important;
+    max-height: 45% !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     pointer-events: all !important;
@@ -322,6 +334,33 @@ html, body {
   .btn {
     padding: 8px 10px !important;
     font-size: 10px !important;
+  }
+
+  /* Prevent simulation dialog overflow */
+  .sim-3d-box {
+    width: 95% !important;
+    max-width: 95vw !important;
+    height: auto !important;
+    max-height: 90vh !important;
+  }
+
+  /* Grover column scalability */
+  .grover-col {
+    width: 10% !important;
+  }
+  .grover-lbl, .grover-val {
+    font-size: 7px !important;
+  }
+
+  /* Note Editor Modal mobile overrides */
+  #note-editor-modal {
+    padding: 10px !important;
+  }
+  #note-editor-modal > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 95% !important;
+    max-height: 95% !important;
   }
 }
 </style>
@@ -380,7 +419,7 @@ html, body {
 
 <!-- Header TopBar -->
 <div id="topbar">
-  <div style="display:flex; align-items:center; gap:16px;">
+  <div class="topbar-brand">
     <a href="/dashboard" class="btn">← Dashboard</a>
     <h1>⚡ <span>AGENT OS</span> · NEURAL GRAPH</h1>
   </div>

@@ -40,7 +40,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 #stats{font-size:11px;color:var(--muted);white-space:nowrap}
 .top-btn{background:#161b22;border:1px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-size:12px;padding:5px 12px;white-space:nowrap}
 .top-btn:hover{border-color:var(--accent);color:var(--accent)}
-#back-btn{text-decoration:none}
+.back-btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);flex-shrink:0}
+.back-btn:hover{color:var(--accent);border-color:var(--accent)}
 
 /* Category legend */
 #legend{
@@ -105,69 +106,71 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .ctrl-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ═══ MOBILE RESPONSIVENESS (iOS & Android) ═══ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #topbar {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 8px 10px;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    padding: 8px 12px !important;
   }
   #topbar h1 {
-    font-size: 13px;
-    order: 1;
-    white-space: nowrap;
+    font-size: 12px !important;
+    letter-spacing: 0.5px !important;
+    order: 1 !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    flex-shrink: 1 !important;
   }
-  #topbar a {
-    order: 0;
-    font-size: 11px;
-    padding: 4px 8px;
+  .back-btn {
+    order: 0 !important;
+    font-size: 11px !important;
+    padding: 4px 8px !important;
   }
-  #topbar button:last-child {
-    /* 3D Mode button */
-    order: 2;
-    margin-left: auto;
-    font-size: 11px;
-    padding: 4px 8px;
+  .mode-toggle-btn {
+    order: 2 !important;
+    margin-left: auto !important;
+    font-size: 11px !important;
+    padding: 4px 8px !important;
   }
   #search-wrap {
-    order: 3;
+    order: 3 !important;
     max-width: 100% !important;
     width: 100% !important;
     flex: unset !important;
-    margin: 4px 0;
+    margin: 4px 0 !important;
   }
   #search {
-    padding: 8px 12px;
-    font-size: 15px; /* prevent iOS zoom */
+    padding: 8px 12px !important;
+    font-size: 15px !important; /* prevent iOS zoom */
   }
   #stats {
-    order: 4;
-    font-size: 10px;
-    margin-right: auto;
-    align-self: center;
+    order: 4 !important;
+    font-size: 10px !important;
+    margin-right: auto !important;
+    align-self: center !important;
   }
-  .top-btn {
-    order: 5;
-    font-size: 11px;
-    padding: 4px 8px;
+  .top-btn:not(.back-btn):not(.mode-toggle-btn) {
+    order: 5 !important;
+    font-size: 11px !important;
+    padding: 4px 8px !important;
   }
 
   /* Legend as small collapsed element */
   #legend {
-    left: 10px;
-    bottom: 10px;
-    min-width: 120px;
-    max-width: 150px;
-    padding: 8px;
-    font-size: 11px;
+    left: 10px !important;
+    bottom: 10px !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+    padding: 8px !important;
+    font-size: 11px !important;
   }
   #legend h3 {
-    font-size: 9px;
-    margin-bottom: 4px;
+    font-size: 9px !important;
+    margin-bottom: 4px !important;
   }
   .legend-item {
-    font-size: 10px;
-    gap: 6px;
+    font-size: 10px !important;
+    gap: 6px !important;
   }
   
   body.detail-open #legend {
@@ -182,16 +185,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
     top: auto !important;
     width: auto !important;
     max-height: 40% !important;
-    box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.5) !important;
   }
 
   /* Controls (zoom buttons) shift up when detail is open */
   #controls {
-    bottom: 20px;
-    right: 10px;
+    bottom: 20px !important;
+    right: 10px !important;
   }
   body.detail-open #controls {
-    bottom: calc(40% + 20px);
+    bottom: calc(40% + 20px) !important;
   }
 }
 </style>
@@ -260,19 +263,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 
 <div id="ui">
   <div id="topbar">
-    <a href="/dashboard" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#161b22;border:1px solid #30363d;border-radius:6px;color:#8b949e;font-size:12px;text-decoration:none;white-space:nowrap;flex-shrink:0"
-       onmouseover="this.style.color='#58a6ff';this.style.borderColor='#58a6ff'"
-       onmouseout="this.style.color='#8b949e';this.style.borderColor='#30363d'">
-      ← Dashboard
-    </a>
-    <h1 style="flex-shrink:0">⚡ <span>Agent OS</span> · Neural Map</h1>
-    <div id="search-wrap" style="flex:1;max-width:280px">
+    <a href="/dashboard" class="top-btn back-btn">← Dashboard</a>
+    <h1>⚡ <span>Agent OS</span> · Neural Map</h1>
+    <div id="search-wrap">
       <input id="search" placeholder="Search notebooks, notes…" oninput="onSearch(this.value)" />
     </div>
-    <span id="stats" style="flex-shrink:0">Loading…</span>
-    <button class="top-btn" onclick="resetZoom()" style="flex-shrink:0">⊞ Fit</button>
-    <button class="top-btn" onclick="toggleLayout()" style="flex-shrink:0">⊚ Radial</button>
-    <button class="top-btn" onclick="window.location.href='/neural'" style="flex-shrink:0">🌌 3D Mode</button>
+    <span id="stats">Loading…</span>
+    <button class="top-btn fit-btn" onclick="resetZoom()">⊞ Fit</button>
+    <button class="top-btn layout-btn" onclick="toggleLayout()">⊚ Radial</button>
+    <button class="top-btn mode-toggle-btn" onclick="window.location.href='/neural'">🌌 3D Mode</button>
   </div>
 </div>
 
