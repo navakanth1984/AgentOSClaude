@@ -1,6 +1,5 @@
 project-includes = [
-    "**/*.py*",
-    "**/*.ipynb",
+    "agent_os/**/*.py",
 ]
 project-excludes = [
     "**/node_modules/**",
@@ -13,6 +12,7 @@ project-excludes = [
 ]
 search-path = [
     ".",
+    "agent_os",
     "daava_production/scripts",
 ]
 python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"

@@ -29,8 +29,8 @@ from pathlib import Path
 
 # Force UTF-8 console output on Windows
 if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
 
 sys.path.insert(0, str(Path(__file__).parent))
 from openrouter_client import call_openrouter_async
@@ -90,6 +90,66 @@ async def _swarm_agent(
             break
 
     return {"agent_id": agent_id, "role": role, "task": task, "result": "", "error": last_error}
+
+
+# ── Quantum result renderer ───────────────────────────────────────────────────
+
+def _render_quantum_result(qr: dict) -> str:
+    """
+    Convert QuantumResearchAgent dict output into readable Markdown.
+    Prevents raw JSON from appearing in the Obsidian note.
+    """
+    exp = qr.get("experimental", {})
+    analysis = qr.get("analysis", {})
+
+    counts = exp.get("counts", {})
+    total_shots = exp.get("shots", 1)
+    counts_table = "\n".join(
+        f"| `|{state}⟩` | {count} | {count/total_shots*100:.1f}% |"
+        for state, count in sorted(counts.items())
+    )
+
+    code = analysis.get("code_snippet", "")
+    # Fix known bad backend string from LLM hallucination
+    code = code.replace("'qer_simulator'", "'aer_simulator'")
+    code = code.replace('"qer_simulator"', '"aer_simulator"')
+    # Modernise deprecated Qiskit 0.x pattern
+    if "Aer.get_backend" in code:
+        code = (
+            "from qiskit_aer import AerSimulator\n\n"
+            + code.replace("from qiskit import Aer, execute\n", "")
+                  .replace("from qiskit import QuantumCircuit, Aer, execute\n",
+                           "from qiskit import QuantumCircuit\n")
+                  .replace("Aer.get_backend('aer_simulator')", "AerSimulator()")
+                  .replace("execute(qc, backend, shots=1024).result()", "backend.run(qc, shots=1024).result()")
+        )
+
+    apps = analysis.get("applications", [])
+    apps_md = "\n".join(f"- {a}" for a in apps) if apps else "- See analysis above"
+
+    circuit_str = exp.get("circuit_str", "")
+    circuit_block = f"\n```\n{circuit_str}\n```\n" if circuit_str else ""
+
+    return f"""**Backend:** {exp.get("backend", "AerSimulator")} | **Circuit:** {exp.get("label", "unknown")} | **Qubits:** {exp.get("num_qubits", "?")} | **Shots:** {total_shots} | **Runtime:** {exp.get("elapsed_ms", "?")}ms
+{circuit_block}
+### Measurement Results
+
+| State | Count | Probability |
+|-------|-------|-------------|
+{counts_table}
+
+### Analysis
+{analysis.get("summary", "")}
+
+{analysis.get("concept", "")}
+
+### Agent OS Applications
+{apps_md}
+
+### Working Code (Qiskit 1.x)
+```python
+{code}
+```"""
 
 
 # ── Main swarm orchestrator ───────────────────────────────────────────────────
@@ -191,7 +251,7 @@ async def run_swarm(
             "agent_id": len(AGENT_ROLES) + 1,
             "role":     "Quantum Agent",
             "task":     "Run real quantum circuit + analysis",
-            "result":   json.dumps(quantum_result, default=str),
+            "result":   _render_quantum_result(quantum_result),
             "error":    None,
         }]
 
@@ -230,7 +290,7 @@ async def run_swarm(
 
     note_content = f"""---
 date: {date_str}
-tags: [swarm, agent-os, research, notebooklm, {slug}]
+tags: [swarm, agent-os, research, notebooklm]
 project: "AI-Automation"
 source: "Agent OS Swarm ({len(successful)} agents) + NotebookLM ({len(matched_notebooks)} notebooks)"
 ---
@@ -260,7 +320,7 @@ Deep multi-angle research on: **{topic}**
     return {
         "topic":           topic,
         "model":           model,
-        "agents":          len(AGENT_ROLES),
+        "agents":          len(results),
         "successful":      len(successful),
         "notebooks_found": len(matched_notebooks),
         "notebooks":       [nb.get("title") for nb in matched_notebooks],
