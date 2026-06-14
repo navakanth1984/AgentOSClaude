@@ -52,6 +52,8 @@ COMMANDS = {
     "assets":     "List files in the asset library",
     "notebook":   "NotebookLM: list | studio <url> | generate <url> | screenshot <url>",
     "hermes":     "Hermes video agent: load <file> | generate <file> (Step 4)",
+    "cloud":      "Cloud Agent: self-correcting task execution in background",
+    "creative":   "Creative: screenplay | audiography | prompt (AI filmmaking tools)",
     "session":    "Save the current session summary to Obsidian",
     "quit":       "Exit Agent OS",
 }
@@ -276,6 +278,143 @@ async def cmd_notebook(args: list[str]):
         print(f"\n  [Agent OS] Audio saved to asset library and noted in Obsidian.")
 
 
+def cmd_cloud(args: list[str]):
+    """Cloud Agent: self-correcting task execution in background."""
+    if not args:
+        print("  Usage: cloud \"<task description>\" [--model <model_id>]")
+        return
+
+    import threading
+    import subprocess
+
+    # Find and extract --model if present
+    model = "google/gemini-2.5-flash"
+    task_words = []
+    i = 0
+    while i < len(args):
+        if args[i] == "--model" and i + 1 < len(args):
+            model = args[i+1]
+            i += 2
+        else:
+            task_words.append(args[i])
+            i += 1
+
+    task_desc = " ".join(task_words)
+    # Remove outer quotes if present
+    if (task_desc.startswith('"') and task_desc.endswith('"')) or (task_desc.startswith("'") and task_desc.endswith("'")):
+        task_desc = task_desc[1:-1]
+
+    runner_path = Path(__file__).parent / "cloud_agent_runner.py"
+
+    log(f"Cloud task started: '{task_desc}'")
+
+    def bg_run():
+        try:
+            cmd_to_run = [sys.executable, str(runner_path), task_desc, "--model", model]
+            res = subprocess.run(cmd_to_run, stdin=subprocess.DEVNULL, capture_output=True, text=True)
+            if res.returncode == 0:
+                log(f"Cloud task completed successfully: '{task_desc}'")
+            else:
+                log(f"Cloud task failed with exit code {res.returncode}: '{task_desc}'. Error: {res.stderr.strip()}")
+        except Exception as e:
+            log(f"Error running cloud agent: {e}")
+
+    t = threading.Thread(target=bg_run)
+    t.daemon = True
+    t.start()
+    print(f"  [Agent OS] Started cloud task in background: '{task_desc}'")
+
+
+def cmd_creative(args: list[str]):
+    """Creative filmmaking pipeline commands. Usage: creative screenplay | audiography | prompt | novelist <prompt/script> [--model <model_id>]"""
+    if not args:
+        print("  Usage: creative screenplay | audiography | prompt | novelist \"<content/prompt>\" [--model <model_id>]")
+        return
+
+    sub = args[0].lower()
+    content_args = args[1:]
+    
+    # Parse --model if specified
+    model = None
+    if "--model" in content_args:
+        try:
+            m_idx = content_args.index("--model")
+            if m_idx + 1 < len(content_args):
+                model = content_args[m_idx + 1]
+                content_args = content_args[:m_idx] + content_args[m_idx+2:]
+        except ValueError:
+            pass
+
+    content = " ".join(content_args).strip()
+    if (content.startswith('"') and content.endswith('"')) or (content.startswith("'") and content.endswith("'")):
+        content = content[1:-1]
+
+    if not content:
+        print(f"  Error: Missing prompt/text content for 'creative {sub}'")
+        return
+
+    from creative_pipeline import generate_screenplay, generate_audiography, generate_visual_prompt
+
+    try:
+        res = None
+        is_screenplay = False
+        if sub == "screenplay":
+            print(f"[Creative] Writing screenplay with AI...")
+            res = generate_screenplay(content, model=model)
+            print("\n--- SCREENPLAY OUTPUT ---\n")
+            print(res)
+            print("\n--- END OF SCREENPLAY ---")
+            is_screenplay = True
+        elif sub == "audiography":
+            print(f"[Creative] Designing soundscape with AI...")
+            res = generate_audiography(content, model=model)
+            print("\n--- AUDIOGRAPHY OUTPUT ---\n")
+            print(res)
+            print("\n--- END OF AUDIOGRAPHY ---")
+        elif sub == "prompt":
+            print(f"[Creative] Designing visual prompt with AI...")
+            res = generate_visual_prompt(content, model=model)
+            print("\n--- VISUAL PROMPT OUTPUT ---\n")
+            print(res)
+            print("\n--- END OF PROMPT ---")
+        elif sub == "novelist":
+            print(f"[Creative] Running Novelist Swarm Team (Writer -> Critic -> Rewriter)...")
+            from novelist_swarm import run_novelist_swarm
+            import asyncio
+            results = asyncio.run(run_novelist_swarm(content, model=model))
+            res = (
+                f"# NOVEL DRAFT WRITER\n\n{results['draft']}\n\n"
+                f"# LITERARY CRITIQUE\n\n{results['critique']}\n\n"
+                f"# FINAL POLISHED NOVEL CHAPTER\n\n{results['polish']}"
+            )
+            print("\n--- NOVELIST SWARM OUTPUT ---\n")
+            print(res)
+            print("\n--- END OF NOVELIST SWARM ---")
+            is_screenplay = False
+        else:
+            print(f"  Unknown creative subcommand: '{sub}'. Choose: screenplay, audiography, prompt, novelist.")
+            return
+
+        if res:
+            # Export to output/ directory
+            from creative_exporter import export_document
+            out_dir = Path(__file__).parent / "output"
+            out_dir.mkdir(parents=True, exist_ok=True)
+            import hashlib
+            short_hash = hashlib.md5(content.encode("utf-8")).hexdigest()[:6]
+            base_name = f"{sub}_{short_hash}"
+            base_path = out_dir / base_name
+            
+            print(f"\n[Creative] Exporting formats (MD, HTML, DOCX, PDF)...")
+            export_results = export_document(res, str(base_path), is_screenplay=is_screenplay)
+            print(f"[Creative] Exported successfully to output/ directory:")
+            for fmt, p in export_results.items():
+                print(f"  - {fmt.upper()}: {p}")
+
+    except Exception as e:
+        print(f"[ERROR] Error in creative pipeline: {e}")
+
+
 # ─── Main Loop ────────────────────────────────────────────────
 
 def run():
@@ -326,9 +465,44 @@ def run():
             asyncio.run(cmd_notebook(args))
         elif cmd == "hermes":
             cmd_hermes(args)
+        elif cmd == "cloud":
+            cmd_cloud(args)
+        elif cmd == "creative":
+            cmd_creative(args)
         else:
             print(f"  Unknown command: '{cmd}'. Type 'help' for options.")
 
 
 if __name__ == "__main__":
-    run()
+    import sys
+    if len(sys.argv) > 1:
+        cmd = sys.argv[1].lower()
+        args = sys.argv[2:]
+        if cmd == "help":
+            show_help()
+        elif cmd == "status":
+            show_status()
+        elif cmd == "context":
+            cmd_context(args)
+        elif cmd == "save":
+            cmd_save(args)
+        elif cmd == "search":
+            cmd_search(args)
+        elif cmd == "recent":
+            cmd_recent(args)
+        elif cmd == "assets":
+            cmd_assets(args)
+        elif cmd == "session":
+            cmd_session(args)
+        elif cmd == "notebook":
+            asyncio.run(cmd_notebook(args))
+        elif cmd == "hermes":
+            cmd_hermes(args)
+        elif cmd == "cloud":
+            cmd_cloud(args)
+        elif cmd == "creative":
+            cmd_creative(args)
+        else:
+            print(f"  Unknown command: '{cmd}'.")
+    else:
+        run()

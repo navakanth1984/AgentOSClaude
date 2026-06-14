@@ -2,15 +2,31 @@
 import json
 import sys
 import time
+import os
 import urllib.request
 import urllib.error
+from pathlib import Path
 
+# Load env variables from .env if present
+env_path = Path(__file__).parent / ".env"
+if env_path.exists():
+    with open(env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
+API_KEY = os.environ.get("AGENT_OS_API_KEY", "")
 BASE = "http://localhost:8765"
 PASS = 0
 FAIL = 0
 
 def get(path, timeout=30):
-    with urllib.request.urlopen(f"{BASE}{path}", timeout=timeout) as r:
+    req = urllib.request.Request(f"{BASE}{path}")
+    if API_KEY:
+        req.add_header("X-API-Key", API_KEY)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.loads(r.read())
 
 def post(path, body, timeout=120):
@@ -19,6 +35,8 @@ def post(path, body, timeout=120):
         f"{BASE}{path}", data=data,
         headers={"Content-Type": "application/json"}
     )
+    if API_KEY:
+        req.add_header("X-API-Key", API_KEY)
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.loads(r.read())
 
@@ -44,7 +62,7 @@ try:
     t0 = time.time()
     r = post("/swarm", {
         "topic": "Obsidian knowledge management workflow",
-        "model": "google/gemma-4-31b-it:free",
+        "model": "google/gemini-2.5-flash",
     }, timeout=120)
     elapsed = round(time.time() - t0, 1)
     print(f"  Time: {elapsed}s")
@@ -85,7 +103,7 @@ try:
     r = post("/goal", {
         "goal": "Research what PARA method is and save a summary note",
         "max_steps": 3,
-        "model": "google/gemma-4-31b-it:free",
+        "model": "google/gemini-2.5-flash",
     }, timeout=180)
     elapsed = round(time.time() - t0, 1)
     print(f"  Time: {elapsed}s")

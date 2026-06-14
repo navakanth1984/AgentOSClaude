@@ -31,6 +31,7 @@ import os
 import urllib.parse
 from pathlib import Path
 from datetime import datetime
+from typing import Optional
 
 # Import our bridge
 import sys
@@ -53,6 +54,7 @@ except ImportError:
 
 PORT = int(os.environ.get("PORT", 8765))
 ASSET_LIBRARY = Path(__file__).parent / "asset_library"
+OUTPUT_DIR = Path(__file__).parent / "output"
 NOTEBOOK_CACHE = Path(__file__).parent / "notebook_cache.json"  # written by notebooklm_agent.py
 
 # ── Load .env for API key ──────────────────────────────────────────────────────
@@ -115,6 +117,13 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             return True
 
         provided = self.headers.get("X-API-Key", "")
+        if not provided:
+            try:
+                parsed = urllib.parse.urlparse(self.path)
+                params = urllib.parse.parse_qs(parsed.query)
+                provided = params.get("key", [""])[0]
+            except Exception:
+                pass
         
         # 1. Master Key Auth
         if provided == _API_KEY:
@@ -128,7 +137,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 return False
             return True
 
-        self._send(401, {"error": "Missing or invalid X-API-Key header"})
+        self._send(401, {"error": "Missing or invalid X-API-Key header or key parameter"})
         return False
 
     def _send(self, code: int, data: dict | list | str):
@@ -141,7 +150,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         else:
             self.wfile.write(json.dumps({"result": data}).encode())
 
-    def _forward_to_bridge(self, method: str, path: str, body_data: dict = None) -> bool:
+    def _forward_to_bridge(self, method: str, path: str, body_data: Optional[dict] = None) -> bool:
         """
         If LOCAL_BRIDGE_URL is set in environment, forwards vault/notebook requests to the local bridge.
         Returns True if request was forwarded (handled), False otherwise.
@@ -213,6 +222,62 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         params = urllib.parse.parse_qs(parsed.query)
         path = parsed.path
+
+        # Handle static file downloads/serving for exports and assets
+        if path.startswith("/asset_library/") or path.startswith("/output/"):
+            if not self._check_auth():
+                return
+            
+            # Map path to file
+            if path.startswith("/asset_library/"):
+                file_rel = urllib.parse.unquote(path[len("/asset_library/"):])
+                target_file = (ASSET_LIBRARY / file_rel).resolve()
+                parent_dir = ASSET_LIBRARY.resolve()
+            else:
+                file_rel = urllib.parse.unquote(path[len("/output/"):])
+                target_file = (OUTPUT_DIR / file_rel).resolve()
+                parent_dir = OUTPUT_DIR.resolve()
+                
+            # Security check: check if target_file is within parent_dir
+            if parent_dir not in target_file.parents:
+                self._send(403, {"error": "Forbidden: Path is outside allowed directories"})
+                return
+                
+            if not target_file.exists() or not target_file.is_file():
+                self._send(404, {"error": f"File not found: {file_rel}"})
+                return
+                
+            # Determine content type
+            ext = target_file.suffix.lower()
+            if ext == ".pdf":
+                content_type = "application/pdf"
+            elif ext == ".docx":
+                content_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            elif ext == ".html":
+                content_type = "text/html; charset=utf-8"
+            elif ext == ".md":
+                content_type = "text/markdown; charset=utf-8"
+            elif ext in [".png", ".jpg", ".jpeg"]:
+                content_type = f"image/{ext[1:]}"
+            else:
+                content_type = "application/octet-stream"
+                
+            try:
+                self.send_response(200)
+                self.send_header("Content-Type", content_type)
+                self.send_header("Access-Control-Allow-Origin", "*")
+                # Add content-disposition to trigger download for binary files
+                if ext in [".pdf", ".docx", ".md"]:
+                    self.send_header("Content-Disposition", f"attachment; filename=\"{target_file.name}\"")
+                self.send_header("Content-Length", str(target_file.stat().st_size))
+                self.end_headers()
+                
+                with open(target_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+            except Exception as e:
+                self._send(500, {"error": f"Error serving file: {str(e)}"})
+                return
 
         # Cloud mode: use Git sync for vault access, or forward to ngrok bridge as fallback
         if path in ["/recent", "/search", "/note", "/context", "/notebooks"]:
@@ -408,10 +473,11 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(400, {"error": "Missing 'path' parameter"})
                 return
             try:
-                # Security check: ensure path is under VAULT_PATH
-                resolved_vault = VAULT_PATH.resolve()
-                resolved_note = Path(note_path).resolve()
-                if resolved_vault not in resolved_note.parents:
+                # Security check: ensure path is under VAULT_PATH (casing and slash-insensitive for Windows)
+                resolved_vault_str = str(VAULT_PATH.resolve()).lower().replace("\\", "/").rstrip("/") + "/"
+                resolved_note_str = str(Path(note_path).resolve()).lower().replace("\\", "/").replace("\\\\", "/")
+                resolved_note = Path(note_path)
+                if not resolved_note_str.startswith(resolved_vault_str):
                     self._send(403, {"error": "Forbidden: Path is outside the Obsidian Vault"})
                     return
                 if not resolved_note.exists() or not resolved_note.is_file():
@@ -454,6 +520,35 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 "cached_at": data.get("cached_at", "unknown"),
                 "filtered": len(mine),
             })
+
+        elif path == "/cloud/status":
+            job_id = params.get("job_id", [""])[0].strip()
+            scratch_dir = Path(__file__).parent / "scratch"
+            if job_id:
+                # Security cleaning to prevent path traversal
+                job_id = "".join(c for c in job_id if c.isalnum()).strip()
+                status_file = scratch_dir / f"status_{job_id}.json"
+                if not status_file.exists():
+                    self._send(404, {"error": f"Job {job_id} not found"})
+                    return
+                try:
+                    job_data = json.loads(status_file.read_text(encoding="utf-8"))
+                    self._send(200, job_data)
+                except Exception as e:
+                    self._send(500, {"error": f"Error reading job status: {str(e)}"})
+            else:
+                if not scratch_dir.exists():
+                    self._send(200, {"jobs": []})
+                    return
+                jobs = []
+                for f in scratch_dir.glob("status_*.json"):
+                    try:
+                        job_data = json.loads(f.read_text(encoding="utf-8"))
+                        jobs.append(job_data)
+                    except Exception:
+                        pass
+                jobs.sort(key=lambda j: j.get("last_updated", ""), reverse=True)
+                self._send(200, {"jobs": jobs})
 
         elif path == "/assets":
             if not ASSET_LIBRARY.exists():
@@ -770,11 +865,11 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 return
 
         if path == "/save":
-            title   = body.get("title", "Quick Note")
-            idea    = body.get("idea", "")
-            details = body.get("details", idea)
+            title   = str(body.get("title") or "Quick Note")
+            idea    = str(body.get("idea") or "")
+            details = str(body.get("details") or idea)
             tags    = body.get("tags", ["agent-os"])
-            folder  = body.get("folder", "inbox")
+            folder  = str(body.get("folder") or "inbox")
             steps   = body.get("next_steps", ["Review this note"])
 
             file_path = save_note(
@@ -794,9 +889,10 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(400, {"error": "Missing 'path' parameter"})
                 return
             try:
-                resolved_vault = VAULT_PATH.resolve()
-                resolved_note = Path(note_path).resolve()
-                if resolved_vault not in resolved_note.parents:
+                resolved_vault_str = str(VAULT_PATH.resolve()).lower().replace("\\", "/").rstrip("/") + "/"
+                resolved_note_str = str(Path(note_path).resolve()).lower().replace("\\", "/").replace("\\\\", "/")
+                resolved_note = Path(note_path)
+                if not resolved_note_str.startswith(resolved_vault_str):
                     self._send(403, {"error": "Forbidden: Path is outside the Obsidian Vault"})
                     return
                 resolved_note.write_text(content, encoding="utf-8")
@@ -871,6 +967,138 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 self._send(500, {"error": str(e)})
 
+        elif path == "/cloud":
+            # Cloud Agent trigger endpoint
+            # Body: {"task": "...", "model": "google/gemini-2.5-flash"}
+            task = body.get("task", "").strip()
+            if not task:
+                self._send(400, {"error": "Missing 'task' field"})
+                return
+            model = body.get("model", "google/gemini-2.5-flash")
+
+            import uuid
+            job_id = uuid.uuid4().hex[:8]
+
+            import threading
+            import subprocess
+            runner_path = Path(__file__).parent / "cloud_agent_runner.py"
+
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] Cloud task {job_id} started via HTTP: '{task}'")
+
+            def bg_run():
+                try:
+                    cmd_to_run = [sys.executable, str(runner_path), str(task), "--model", str(model), "--job_id", str(job_id)]
+                    res = subprocess.run(cmd_to_run, stdin=subprocess.DEVNULL, capture_output=True, text=True)
+                    if res.returncode == 0:
+                        print(f"[{datetime.now().strftime('%H:%M:%S')}] Cloud task {job_id} completed successfully via HTTP: '{task}'")
+                    else:
+                        print(f"[{datetime.now().strftime('%H:%M:%S')}] Cloud task {job_id} failed via HTTP: '{task}'. Error: {res.stderr.strip()}")
+                except Exception as e:
+                    print(f"Error running cloud agent {job_id}: {e}")
+
+            t = threading.Thread(target=bg_run)
+            t.daemon = True
+            t.start()
+            self._send(200, {"started": True, "task": task, "model": model, "job_id": job_id})
+
+        elif path == "/creative/screenplay":
+            prompt = body.get("prompt", "").strip()
+            context = body.get("context", "").strip()
+            model = body.get("model")
+            if not prompt:
+                self._send(400, {"error": "Missing 'prompt' field"})
+                return
+            try:
+                from creative_pipeline import generate_screenplay
+                result = generate_screenplay(prompt, context, model)
+                self._send(200, {"result": result})
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
+        elif path == "/creative/audiography":
+            scene_script = body.get("scene_script", "").strip()
+            context = body.get("context", "").strip()
+            model = body.get("model")
+            if not scene_script:
+                self._send(400, {"error": "Missing 'scene_script' field"})
+                return
+            try:
+                from creative_pipeline import generate_audiography
+                result = generate_audiography(scene_script, context, model)
+                self._send(200, {"result": result})
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
+        elif path == "/creative/prompt":
+            scene_or_shot = body.get("scene_or_shot", "").strip()
+            context = body.get("context", "").strip()
+            model = body.get("model")
+            if not scene_or_shot:
+                self._send(400, {"error": "Missing 'scene_or_shot' field"})
+                return
+            try:
+                from creative_pipeline import generate_visual_prompt
+                result = generate_visual_prompt(scene_or_shot, context, model)
+                self._send(200, {"result": result})
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
+        elif path == "/creative/novelist":
+            prompt = body.get("prompt", "").strip()
+            context = body.get("context", "").strip()
+            model = body.get("model")
+            if not prompt:
+                self._send(400, {"error": "Missing 'prompt' field"})
+                return
+            try:
+                from novelist_swarm import run_novelist_swarm
+                import asyncio
+                results = asyncio.run(run_novelist_swarm(prompt, context, model))
+                
+                # Combined output structure showing draft, critique, and final polish
+                combined_output = (
+                    f"# NOVEL DRAFT WRITER\n\n{results['draft']}\n\n"
+                    f"# LITERARY CRITIQUE\n\n{results['critique']}\n\n"
+                    f"# FINAL POLISHED NOVEL CHAPTER\n\n{results['polish']}"
+                )
+                self._send(200, {"result": combined_output})
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
+        elif path == "/creative/export":
+            content = body.get("content", "").strip()
+            filename = body.get("filename", "creative_work").strip()
+            is_screenplay = bool(body.get("is_screenplay", True))
+            if not content:
+                self._send(400, {"error": "Missing 'content' field"})
+                return
+            # Clean filename to prevent directory traversal
+            filename = "".join(c for c in filename if c.isalnum() or c in ("-", "_")).strip()
+            if not filename:
+                filename = "creative_work"
+            try:
+                from creative_exporter import export_document
+                # Ensure the asset library directory exists
+                ASSET_LIBRARY.mkdir(parents=True, exist_ok=True)
+                base_path = ASSET_LIBRARY / filename
+                results = export_document(content, str(base_path), is_screenplay)
+                
+                # Map absolute file paths to web accessible URLs
+                web_results = {}
+                for key_format, abs_path in results.items():
+                    if abs_path and os.path.exists(abs_path):
+                        p_file = Path(abs_path).name
+                        web_results[key_format] = f"/asset_library/{p_file}"
+                    else:
+                        web_results[key_format] = abs_path
+                        
+                self._send(200, {
+                    "success": True,
+                    "results": web_results
+                })
+            except Exception as e:
+                self._send(500, {"error": f"Export failed: {str(e)}"})
+
         elif path == "/tune":
             # BIT Tune endpoint — CDLC Observe → feedback loop
             # POST /tune  body: {"n": 50}   (optional: last N log entries to analyse)
@@ -913,6 +1141,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                     prompt = f"Recent workflow runs ({len(recent)} total):\n\n{digest}"
                     # Try primary model with 3 retries (exponential backoff), then fallback model
                     TUNE_MODELS = [
+                        "google/gemini-2.5-flash",
                         "google/gemma-4-31b-it:free",
                         "moonshotai/kimi-k2.6:free",
                         "nvidia/nemotron-3-super-120b-a12b:free",
@@ -988,7 +1217,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                     result = qe.factor(N, a=int(a) if a else None)
 
                 elif circuit == "custom":
-                    from qiskit import qasm2
+                    from qiskit import qasm2  # type: ignore
                     qasm_str = body.get("qasm", "")
                     qc = qasm2.loads(qasm_str)
                     result = qe.run_circuit(qc, shots=shots, backend=backend,

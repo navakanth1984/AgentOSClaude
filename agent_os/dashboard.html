@@ -1150,12 +1150,14 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   <div class="tab active" onclick="switchTab('swarm')">🤖 Swarm Research</div>
   <div class="tab" onclick="switchTab('notebooks')">📓 NotebookLM</div>
   <div class="tab" onclick="switchTab('goal')">🎯 Goal Runner</div>
+  <div class="tab" onclick="switchTab('cloud')">☁️ Cloud Agent</div>
   <div class="tab" onclick="switchTab('search')">🔍 Vault Search</div>
   <div class="tab" onclick="switchTab('save')">💾 Save Note</div>
   <div class="tab" onclick="switchTab('tune')">🔧 BIT Tune</div>
   <div class="tab" onclick="switchTab('system')">📊 System</div>
   <div class="tab" onclick="switchTab('simulations')">⚔️ Simulations</div>
   <div class="tab" onclick="switchTab('quantum')">⚛️ Quantum</div>
+  <div class="tab" onclick="switchTab('creative')">🎬 Filmmaking</div>
 </div>
 
 <!-- ══ TAB: SWARM ══════════════════════════════════════════════ -->
@@ -1255,7 +1257,38 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       </div>
     </div>
     <div id="goal-status" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
-    <div id="goal-output" class="output empty">Goal execution output will appear here.</div>
+  </div>
+</div>
+
+<!-- ══ TAB: CLOUD ══════════════════════════════════════════════ -->
+<div id="tab-cloud" class="tab-content">
+  <div class="panel">
+    <h2>☁️ Stateful Cloud Agent <span class="badge badge-purple">self-correcting loop</span></h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">
+      Trigger a stateful Cloud Agent task. It runs in the background using a self-correcting execution loop (up to 5 attempts).
+    </p>
+    <div class="row">
+      <div class="field">
+        <label>Task Description</label>
+        <textarea id="cloud-task-text" rows="2" placeholder="e.g. Write a script to fetch weather and email summary"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div style="width:280px">
+        <label>Model</label>
+        <select id="cloud-model">
+          <option value="google/gemini-2.5-flash" selected>Gemini 2.5 Flash</option>
+          <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
+          <option value="deepseek/deepseek-chat">DeepSeek V3</option>
+        </select>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button class="btn btn-purple" id="cloud-btn" onclick="runCloud()">▶ Run Cloud Agent</button>
+      </div>
+    </div>
+    <div id="cloud-status" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
+    <div id="cloud-output" class="output empty">Cloud Agent execution logs will appear in server terminal. Start the task to see initial status.</div>
   </div>
 </div>
 
@@ -1635,6 +1668,63 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   </div>
 </div>
 
+<!-- ══ TAB: CREATIVE / FILMMAKING ════════════════════════════════ -->
+<div id="tab-creative" class="tab-content">
+  <div class="panel">
+    <h2>🎬 AI Filmmaking Studio</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">
+      Generate screenplays, design atmospheric soundscapes (Biryani Method, Dolby Atmos, VFX Sound Defense), and engineer visual prompts using local (Ollama) or online (Gemini/OpenRouter) models.
+    </p>
+    
+    <div class="row" style="margin-bottom:14px;gap:15px">
+      <div style="width:250px">
+        <label>Creative Mode</label>
+        <select id="creative-mode" onchange="updateCreativeLabels()">
+          <option value="screenplay">Screenplay Writer</option>
+          <option value="audiography">Director of Audiography (Sound Design)</option>
+          <option value="prompt">Visual Prompt Builder</option>
+          <option value="novelist">Novelist Swarm (Draft → Critique → Polish)</option>
+        </select>
+      </div>
+      <div style="width:250px">
+        <label>Model (Local Ollama auto-fallback)</label>
+        <select id="creative-model">
+          <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (Default)</option>
+          <option value="meta-llama/llama-3.1-70b-instruct">Llama 3.1 70B (NIM)</option>
+          <option value="anthropic/claude-sonnet-4.5">Claude 3.5 Sonnet</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:14px">
+      <label id="creative-input-label">Enter prompt or scene concept</label>
+      <textarea id="creative-input" rows="8" placeholder="e.g. A tense standoff in a neon-lit alley in downtown Hyderabad..." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:10px;font-family:inherit"></textarea>
+    </div>
+
+    <div class="field" style="margin-bottom:14px">
+      <label>Optional Context (Character details, previous scenes, or visual metronome)</label>
+      <textarea id="creative-context" rows="4" placeholder="e.g. Character Arjun is hoarse and restrained. Color palette is warm vermillion." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:10px;font-family:inherit"></textarea>
+    </div>
+
+    <div class="row" style="align-items:center">
+      <button class="btn" id="creative-btn" onclick="runCreative()">▶ Generate</button>
+      <span id="creative-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
+    </div>
+
+    <div style="margin-top:20px">
+      <div style="display:flex;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap">
+        <h3>Output</h3>
+        <button class="btn btn-outline" id="creative-save-btn" onclick="saveCreativeToVault()" style="margin-left:auto;padding:4px 12px;font-size:11px" disabled>💾 Save to Vault</button>
+        <button class="btn btn-outline" id="creative-export-md" onclick="exportCreative('md')" style="padding:4px 12px;font-size:11px" disabled>📄 MD</button>
+        <button class="btn btn-outline" id="creative-export-html" onclick="exportCreative('html')" style="padding:4px 12px;font-size:11px" disabled>🌐 HTML</button>
+        <button class="btn btn-outline" id="creative-export-docx" onclick="exportCreative('docx')" style="padding:4px 12px;font-size:11px" disabled>📝 DOCX</button>
+        <button class="btn btn-outline" id="creative-export-pdf" onclick="exportCreative('pdf')" style="padding:4px 12px;font-size:11px" disabled>📕 PDF</button>
+      </div>
+      <pre id="creative-output" class="output empty" style="max-height:400px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">Output will appear here.</pre>
+    </div>
+  </div>
+</div>
+
 <footer>Agent OS · ClawGlove + OpenClaw · Navakanth Reddy Dumpa &nbsp;|&nbsp; Auto-refresh 5s</footer>
 
 <script>
@@ -1811,7 +1901,7 @@ async function apiPost(path, body) {
 // ── Tabs ───────────────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll(".tab").forEach((t,i) => {
-    const names = ["swarm","notebooks","goal","search","save","tune","system","simulations","quantum"];
+    const names = ["swarm","notebooks","goal","cloud","search","save","tune","system","simulations","quantum","creative"];
     t.classList.toggle("active", names[i]===name);
   });
   document.querySelectorAll(".tab-content").forEach(c => {
@@ -2105,6 +2195,80 @@ async function runGoal() {
     el("goal-status").textContent = "✗ Failed";
   }
   btn.disabled = false;
+}
+
+// ── Cloud Agent runner ──────────────────────────────────────────
+async function runCloud() {
+  const task = el("cloud-task-text").value.trim();
+  if (!task) { showToast("Enter a task description first.", "warning"); return; }
+  const model = el("cloud-model").value;
+
+  const btn = el("cloud-btn"); btn.disabled = true;
+  const out = el("cloud-output"); out.className="output running";
+  el("cloud-status").innerHTML = '<span class="spinner"></span> Starting background Cloud Agent...';
+  out.textContent = "Triggering background runner...";
+
+  try {
+    const result = await apiPost("/cloud", { task, model });
+    const jobId = result.job_id;
+    
+    if (jobId) {
+      out.textContent = `Cloud Agent triggered successfully (Job ID: ${jobId}). Waiting for execution logs...`;
+      el("cloud-status").innerHTML = `<span class="spinner"></span> Running (Job: ${jobId})...`;
+      
+      // Clear any existing cloud poll interval
+      if (window.cloudPollInterval) clearInterval(window.cloudPollInterval);
+      
+      let attempts = 0;
+      window.cloudPollInterval = setInterval(async () => {
+        try {
+          const statusRes = await apiFetch(`/cloud/status?job_id=${jobId}`);
+          if (statusRes.error) {
+            // Might not have created the file yet on the first poll
+            attempts++;
+            if (attempts > 5) {
+              clearInterval(window.cloudPollInterval);
+              out.className = "output error";
+              out.textContent = "Error: Failed to fetch agent progress updates.";
+              el("cloud-status").textContent = "✗ Log Fetch Failed";
+              btn.disabled = false;
+            }
+            return;
+          }
+          
+          const logText = (statusRes.logs || []).join("\n");
+          out.textContent = logText || "Initializing agent execution...";
+          out.scrollTop = out.scrollHeight; // Auto scroll to bottom
+          
+          if (statusRes.status === "SUCCESS") {
+            clearInterval(window.cloudPollInterval);
+            out.className = "output success";
+            el("cloud-status").textContent = "✓ Success";
+            showToast("Cloud Agent task completed successfully!", "success");
+            btn.disabled = false;
+          } else if (statusRes.status === "FAILED") {
+            clearInterval(window.cloudPollInterval);
+            out.className = "output error";
+            el("cloud-status").textContent = "✗ Failed";
+            showToast("Cloud Agent task failed.", "error");
+            btn.disabled = false;
+          }
+        } catch (err) {
+          console.error("Error polling cloud status:", err);
+        }
+      }, 2000);
+    } else {
+      out.className = "output success";
+      out.textContent = `Cloud Agent background process successfully started!\n\nTask: ${task}\nModel: ${model}\n\nExecution is running asynchronously. Check the server console or Obsidian bridge / memory logs for completion.`;
+      el("cloud-status").textContent = `✓ Started background agent`;
+      btn.disabled = false;
+    }
+  } catch(e) {
+    out.className = "output error";
+    out.textContent = "Error: "+e.message;
+    el("cloud-status").textContent = "✗ Failed to trigger";
+    btn.disabled = false;
+  }
 }
 
 // ── Search ─────────────────────────────────────────────────────
@@ -2791,6 +2955,160 @@ function initDashboard() {
   loadRecentNotes();
   if (window.pollInterval) clearInterval(window.pollInterval);
   window.pollInterval = setInterval(pollStatus, 5000);
+}
+
+// ── Creative Filmmaking Tab ────────────────────────────────────
+function updateCreativeLabels() {
+  const mode = el("creative-mode").value;
+  const label = el("creative-input-label");
+  const input = el("creative-input");
+  
+  if (mode === "screenplay") {
+    label.textContent = "Enter prompt or scene concept";
+    input.placeholder = "e.g. A tense standoff in a neon-lit alley in downtown Hyderabad...";
+  } else if (mode === "audiography") {
+    label.textContent = "Paste Screenplay Script to Design Sound For";
+    input.placeholder = "Paste script lines here...";
+  } else if (mode === "prompt") {
+    label.textContent = "Enter scene or shot description to build visual prompts";
+    input.placeholder = "e.g. Close-up on Arjun's eyes reflecting fire...";
+  } else if (mode === "novelist") {
+    label.textContent = "Enter Novel Concept or Plot Outline";
+    input.placeholder = "e.g. Arjun discovers a hidden drawer in his grandfather's antique desk, revealing a coded journal from 1947...";
+  }
+}
+
+async function runCreative() {
+  const mode = el("creative-mode").value;
+  const input = el("creative-input").value.trim();
+  if (!input) { showToast("Enter input text first.", "warning"); return; }
+  const context = el("creative-context").value.trim();
+  const model = el("creative-model").value;
+
+  const btn = el("creative-btn"); btn.disabled = true;
+  const out = el("creative-output"); out.className="output running";
+  out.textContent = "";
+  el("creative-status").innerHTML = '<span class="spinner"></span> Working...';
+  el("creative-save-btn").disabled = true;
+  el("creative-export-md").disabled = true;
+  el("creative-export-html").disabled = true;
+  el("creative-export-docx").disabled = true;
+  el("creative-export-pdf").disabled = true;
+
+  try {
+    let endpoint = "";
+    let body = {};
+    if (mode === "screenplay") {
+      endpoint = "/creative/screenplay";
+      body = { prompt: input, context, model };
+    } else if (mode === "audiography") {
+      endpoint = "/creative/audiography";
+      body = { scene_script: input, context, model };
+    } else if (mode === "prompt") {
+      endpoint = "/creative/prompt";
+      body = { scene_or_shot: input, context, model };
+    } else if (mode === "novelist") {
+      endpoint = "/creative/novelist";
+      body = { prompt: input, context, model };
+    }
+
+    const result = await apiPost(endpoint, body);
+
+    if (result.error) {
+      out.className = "output error";
+      out.textContent = "Error: " + result.error;
+      el("creative-status").textContent = "✗ Failed";
+    } else {
+      out.className = "output success";
+      out.textContent = result.result;
+      el("creative-status").textContent = "✓ Complete";
+      el("creative-save-btn").disabled = false;
+      el("creative-export-md").disabled = false;
+      el("creative-export-html").disabled = false;
+      el("creative-export-docx").disabled = false;
+      el("creative-export-pdf").disabled = false;
+    }
+  } catch (e) {
+    out.className = "output error";
+    out.textContent = "Request failed: " + e.message;
+    el("creative-status").textContent = "✗ Connection Error";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function saveCreativeToVault() {
+  const mode = el("creative-mode").value;
+  const content = el("creative-output").textContent;
+  if (!content) return;
+  
+  const title = `Creative Studio ${mode.charAt(0).toUpperCase() + mode.slice(1)} - ${new Date().toISOString().slice(0,10)}`;
+  const idea = `Generated filmmaking content using AI Filmmaking tab in Mode: ${mode}.`;
+  
+  try {
+    const res = await apiPost("/save", {
+      title,
+      idea,
+      details: content,
+      tags: ["ai-filmmaking", mode, "creative-studio"],
+      folder: "ai"
+    });
+    if (res.saved) {
+      showToast("Saved note to Obsidian!", "success");
+      el("creative-save-btn").disabled = true;
+    } else {
+      showToast("Save failed: " + (res.error || "unknown"), "error");
+    }
+  } catch (e) {
+    showToast("Error saving note: " + e.message, "error");
+  }
+}
+
+async function exportCreative(format) {
+  const content = el("creative-output").textContent;
+  if (!content) return;
+  const mode = el("creative-mode").value;
+  const is_screenplay = (mode === "screenplay");
+  
+  // Create a clean filename base
+  const dateStr = new Date().toISOString().slice(0,10);
+  const filename = `${mode}_export_${dateStr}`;
+  
+  try {
+    el("creative-status").innerHTML = `<span class="spinner"></span> Exporting ${format.toUpperCase()}...`;
+    
+    // Call our new POST endpoint /creative/export
+    const res = await apiPost("/creative/export", {
+      content,
+      filename,
+      is_screenplay
+    });
+    
+    if (res.success && res.results && res.results[format]) {
+      el("creative-status").textContent = `✓ Exported ${format.toUpperCase()}`;
+      // Construct the download URL. Since we need auth, append ?key=APIKEY
+      let downloadUrl = `${res.results[format]}`;
+      if (APIKEY) {
+        downloadUrl += (downloadUrl.includes("?") ? "&" : "?") + `key=${APIKEY}`;
+      }
+      
+      // Navigate or trigger download
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = "";  // Browser handles the filename sent in Content-Disposition
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
+      showToast(`Exported ${format.toUpperCase()} successfully!`, "success");
+    } else {
+      el("creative-status").textContent = "✗ Export Failed";
+      showToast("Export failed: " + (res.error || "unknown"), "error");
+    }
+  } catch (e) {
+    el("creative-status").textContent = "✗ Export Error";
+    showToast("Export failed: " + e.message, "error");
+  }
 }
 
 // ── Init ───────────────────────────────────────────────────────

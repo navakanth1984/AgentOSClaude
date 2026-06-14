@@ -1,16 +1,32 @@
 """Layer 3: Live HTTP endpoint tests against running server."""
 import json
 import sys
+import os
 import urllib.request
 import urllib.error
+from pathlib import Path
 
+# Load env variables from .env if present
+env_path = Path(__file__).parent / ".env"
+if env_path.exists():
+    with open(env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
+API_KEY = os.environ.get("AGENT_OS_API_KEY", "")
 BASE = "http://localhost:8765"
 PASS = 0
 FAIL = 0
 
 def get(path):
     url = f"{BASE}{path}"
-    with urllib.request.urlopen(url, timeout=10) as r:
+    req = urllib.request.Request(url)
+    if API_KEY:
+        req.add_header("X-API-Key", API_KEY)
+    with urllib.request.urlopen(req, timeout=10) as r:
         return json.loads(r.read())
 
 def post(path, body):
@@ -19,6 +35,8 @@ def post(path, body):
         f"{BASE}{path}", data=data,
         headers={"Content-Type": "application/json"}
     )
+    if API_KEY:
+        req.add_header("X-API-Key", API_KEY)
     with urllib.request.urlopen(req, timeout=10) as r:
         return json.loads(r.read())
 
@@ -170,15 +188,25 @@ try:
 except Exception as e:
     err("/logs", e)
 
-# --- POST /tune (BIT Tune — no API key needed, just structure check)
+# --- POST /cloud (should trigger background runner successfully)
 try:
-    r = post("/tune", {"n": 3})
-    check("/tune has suggestions key",     "suggestions" in r, r.keys())
-    check("/tune has patterns key",        "patterns" in r, r.keys())
-    check("/tune analysed is int",         isinstance(r.get("analysed", 0), int), r.get("analysed"))
-    print(f"         /tune: analysed={r.get('analysed')}  suggestions={len(r.get('suggestions',[]))}")
+    r = post("/cloud", {
+        "task": "Write a file named http_cloud_test.txt with the text 'HTTP Cloud Test' and print 'Success'",
+        "model": "google/gemini-2.5-flash"
+    })
+    check("/cloud returns started=True", r.get("started") is True, r)
+    check("/cloud returns task", "task" in r, r)
 except Exception as e:
-    err("/tune", e)
+    err("/cloud", e)
+
+# --- POST /cloud missing task (should 400)
+try:
+    r = post("/cloud", {})
+    err("/cloud empty task should 400", Exception(f"got 200 with: {r}"))
+except urllib.error.HTTPError as e:
+    check("/cloud empty task returns 400", e.code == 400, e.code)
+except Exception as e:
+    err("/cloud empty task", e)
 
 print()
 print(f"Layer 3 done:  {PASS} passed,  {FAIL} failed")
