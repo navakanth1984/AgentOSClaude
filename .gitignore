@@ -54,8 +54,8 @@ openclaw/
 openclaw_sandbox/
 puli_meka/
 Veritas_AI/
-bin/
-lib/
+/bin/
+/lib/
 
 # Binaries and Large Assets
 *.exe
