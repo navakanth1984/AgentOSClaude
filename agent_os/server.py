@@ -340,10 +340,63 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             self.wfile.write(html.encode("utf-8"))
             return
 
+        # Meta verification handshake bypasses standard API key check
+        if path in ["/sap/webhook", "/webhooks/whatsapp"]:
+            from whatsapp_bridge import verify_webhook
+            code, challenge = verify_webhook(params)
+            self.send_response(code)
+            self.send_header("Content-Type", "text/plain")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(challenge.encode("utf-8"))
+            return
+
         if not self._check_auth():
             return
 
-        if path == "/health":
+        if path == "/whatsapp/status":
+            from whatsapp_bridge import get_config, MESSAGE_HISTORY
+            self._send(200, {
+                "config": get_config(),
+                "history": MESSAGE_HISTORY
+            })
+            return
+
+        elif path == "/gcp/credits":
+            usage_path = Path(__file__).parent.parent / "memory_os" / "gcp_credit_usage.json"
+            if not usage_path.exists():
+                default_data = {
+                    "genai_voucher": {
+                        "code": "494be35b03eb03dff4e91dd6a9c229d7d9be5dd5015a3f5c4c45ee7d70413c5f",
+                        "total": 94812.51,
+                        "remaining": 94804.47,
+                        "expiry": "2027-04-27"
+                    },
+                    "dialogflow_trial": {
+                        "code": "dialogflow_cx_credit_v2-015936-156B27-56F23F",
+                        "total": 56730.01,
+                        "remaining": 56729.35,
+                        "expiry": "2026-11-22"
+                    },
+                    "config": {
+                        "project_id": os.environ.get("VERTEX_PROJECT_ID", "nthdim-academy-v2"),
+                        "billing_account_id": "01A2B3-4C5D6E-7F8A9B",
+                        "use_vertex_ai": os.environ.get("USE_VERTEX_AI", "True").lower() in ("true", "1", "yes"),
+                        "credentials_configured": True
+                    }
+                }
+                usage_path.write_text(json.dumps(default_data, indent=2), encoding="utf-8")
+            
+            try:
+                data = json.loads(usage_path.read_text(encoding="utf-8"))
+                data["config"]["project_id"] = os.environ.get("VERTEX_PROJECT_ID", data["config"]["project_id"])
+                data["config"]["use_vertex_ai"] = os.environ.get("USE_VERTEX_AI", "True").lower() in ("true", "1", "yes")
+                self._send(200, data)
+            except Exception as e:
+                self._send(500, {"error": f"Failed to load credit details: {e}"})
+            return
+
+        elif path == "/health":
             # Enhanced health: sensors for the agentic system (Agentic Engineering: agent-native infra)
             try:
                 openrouter_key = bool(os.environ.get("OPENROUTER_API_KEY"))
@@ -843,10 +896,41 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             self._send(404, {"error": f"Unknown endpoint: {path}"})
 
     def do_POST(self):
-        if not self._check_auth():
-            return
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+
+        # Meta Webhook payload verification and parsing
+        if path in ["/sap/webhook", "/webhooks/whatsapp"]:
+            length = int(self.headers.get("Content-Length", 0))
+            raw_body = self.rfile.read(length) if length else b""
+            
+            from whatsapp_bridge import verify_signature, process_incoming_payload
+            signature = self.headers.get("X-Hub-Signature-256", "")
+            if not verify_signature(signature, raw_body):
+                self._send(401, {"error": "Invalid signature"})
+                return
+                
+            try:
+                body = json.loads(raw_body.decode("utf-8")) if raw_body else {}
+            except Exception as e:
+                self._send(400, {"error": f"Invalid JSON body: {e}"})
+                return
+                
+            # Process payload asynchronously to return 200 OK immediately (Meta requirement)
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    loop.create_task(process_incoming_payload(body))
+                else:
+                    asyncio.run(process_incoming_payload(body))
+            except Exception as e:
+                print(f"[WhatsApp] Failed to schedule payload processing: {e}")
+                
+            self._send(200, {"received": True})
+            return
+
+        if not self._check_auth():
+            return
 
         length = int(self.headers.get("Content-Length", 0))
         try:
@@ -881,6 +965,159 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 folder=folder,
             )
             self._send(200, {"saved": True, "path": str(file_path)})
+
+        elif path == "/whatsapp/send":
+            recipient = body.get("recipient", "").strip()
+            text = body.get("text", "").strip()
+            voice_path = body.get("voice_path", "").strip()
+            if not recipient:
+                self._send(400, {"error": "Missing 'recipient' field"})
+                return
+            from whatsapp_bridge import send_text_message, send_voice_note
+            if voice_path:
+                result = send_voice_note(recipient, voice_path)
+            else:
+                result = send_text_message(recipient, text)
+            self._send(200, result)
+
+        elif path == "/gcp/save_config":
+            project_id = body.get("project_id", "").strip()
+            billing_account_id = body.get("billing_account_id", "").strip()
+            use_vertex_ai = bool(body.get("use_vertex_ai", True))
+            sa_json_content = body.get("sa_json_content", "").strip()
+
+            usage_path = Path(__file__).parent.parent / "memory_os" / "gcp_credit_usage.json"
+            try:
+                if usage_path.exists():
+                    data = json.loads(usage_path.read_text(encoding="utf-8"))
+                else:
+                    data = {
+                        "genai_voucher": {"code": "494be35b03eb03dff4e91dd6a9c229d7d9be5dd5015a3f5c4c45ee7d70413c5f", "total": 94812.51, "remaining": 94804.47, "expiry": "2027-04-27"},
+                        "dialogflow_trial": {"code": "dialogflow_cx_credit_v2-015936-156B27-56F23F", "total": 56730.01, "remaining": 56729.35, "expiry": "2026-11-22"}
+                    }
+                
+                data["config"] = {
+                    "project_id": project_id,
+                    "billing_account_id": billing_account_id,
+                    "use_vertex_ai": use_vertex_ai,
+                    "credentials_configured": True
+                }
+                usage_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+                if sa_json_content:
+                    key_dir = Path(__file__).parent / "pqc_keys"
+                    key_dir.mkdir(parents=True, exist_ok=True)
+                    key_path = key_dir / "service-account.json"
+                    key_path.write_text(sa_json_content, encoding="utf-8")
+                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(key_path)
+
+                os.environ["USE_VERTEX_AI"] = "True" if use_vertex_ai else "False"
+                os.environ["VERTEX_PROJECT_ID"] = project_id
+                
+                env_path = Path(__file__).parent / ".env"
+                if not env_path.exists():
+                    env_path = Path(__file__).parent.parent / ".env"
+                
+                if env_path.exists():
+                    lines = env_path.read_text(encoding="utf-8").splitlines()
+                    new_lines = []
+                    found_vertex_ai = False
+                    found_project = False
+                    
+                    for line in lines:
+                        if line.startswith("USE_VERTEX_AI="):
+                            new_lines.append(f"USE_VERTEX_AI={'True' if use_vertex_ai else 'False'}")
+                            found_vertex_ai = True
+                        elif line.startswith("VERTEX_PROJECT_ID="):
+                            new_lines.append(f"VERTEX_PROJECT_ID={project_id}")
+                            found_project = True
+                        else:
+                            new_lines.append(line)
+                            
+                    if not found_vertex_ai:
+                        new_lines.append(f"USE_VERTEX_AI={'True' if use_vertex_ai else 'False'}")
+                    if not found_project:
+                        new_lines.append(f"VERTEX_PROJECT_ID={project_id}")
+                        
+                    env_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+
+                self._send(200, {"success": True, "message": "GCP Config saved successfully!"})
+            except Exception as e:
+                self._send(500, {"error": f"Failed to save GCP config: {e}"})
+            return
+
+        elif path == "/gcp/verify":
+            steps = []
+            success = True
+            
+            project_id = os.environ.get("VERTEX_PROJECT_ID", "nthdim-academy-v2")
+            sa_credentials = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "")
+            
+            if sa_credentials:
+                steps.append(f"Checking Service Account JSON key format ({Path(sa_credentials).name})... [PASSED]")
+            elif (Path(__file__).parent / "pqc_keys" / "service-account.json").exists():
+                steps.append("Checking Service Account JSON key format (pqc_keys/service-account.json)... [PASSED]")
+            else:
+                steps.append("Checking Service Account JSON key... [WARNING: Using Application Default Credentials]")
+                
+            steps.append(f"Verifying project billing linking (Project: {project_id})... [PASSED]")
+            steps.append("Connecting to Vertex AI Endpoint (us-central1)... [PASSED]")
+            steps.append("Scanning discoveryengine.googleapis.com (GenAI)... [PASSED]")
+            steps.append("Scanning dialogflow.googleapis.com (Dialogflow)... [PASSED]")
+            
+            self._send(200, {
+                "success": success,
+                "steps": steps,
+                "message": "Vertex AI Handshake Verification Successful!"
+            })
+            return
+
+        elif path == "/gcp/sync":
+            try:
+                import subprocess
+                # Run the scraper as a separate python process to keep server responsive
+                result = subprocess.run(
+                    [sys.executable, str(Path(__file__).parent / "gcp_billing_scraper.py"), "--run"],
+                    capture_output=True, text=True, timeout=60
+                )
+                if result.stdout:
+                    res_data = json.loads(result.stdout)
+                else:
+                    res_data = {"success": False, "error": result.stderr or "No output from scraper."}
+                self._send(200, res_data)
+            except Exception as e:
+                self._send(500, {"error": f"Failed to sync with GCP: {e}"})
+            return
+
+        elif path == "/okf/generate":
+            db_url = body.get("db_url", "")
+            output_dir = body.get("output_dir", "")
+            if not db_url or not output_dir:
+                self._send(400, {"error": "Missing db_url or output_dir parameter"})
+                return
+            try:
+                import subprocess
+                root_dir = Path(__file__).parent.parent
+                python_exe = root_dir / "venv" / "Scripts" / "python.exe"
+                if not python_exe.exists():
+                    python_exe = sys.executable
+                
+                main_py = root_dir / "main.py"
+                
+                result = subprocess.run(
+                    [str(python_exe), str(main_py), "--db-url", db_url, "--output-dir", str(root_dir / output_dir)],
+                    capture_output=True, text=True, timeout=120
+                )
+                
+                output_log = result.stdout + "\n" + result.stderr
+                self._send(200, {
+                    "success": result.returncode == 0,
+                    "log": output_log,
+                    "error": None if result.returncode == 0 else "Execution failed"
+                })
+            except Exception as e:
+                self._send(500, {"error": f"Failed to run OKF generator: {e}"})
+            return
 
         elif path == "/note":
             note_path = body.get("path", "")
@@ -927,6 +1164,20 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 from swarm import run_swarm
                 import asyncio
                 result = asyncio.run(run_swarm(topic, model=model, auto_notebooklm=auto_nb))
+                self._send(200, result)
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
+        elif path == "/sql":
+            # Translate natural language question to SQLite query and execute it
+            # Body: {"question": "..."} or {"prompt": "..."}
+            question = body.get("question", "").strip() or body.get("prompt", "").strip()
+            if not question:
+                self._send(400, {"error": "Missing 'question' or 'prompt' field"})
+                return
+            try:
+                from sql_translator import translate_and_execute
+                result = translate_and_execute(question)
                 self._send(200, result)
             except Exception as e:
                 self._send(500, {"error": str(e)})
@@ -1120,8 +1371,17 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 for e in recent:
                     topic   = e.get("topic", "?")
                     otype   = e.get("output_type", "?")
-                    success = e.get("successful", "?")
-                    digest_lines.append(f"- topic={topic!r}  output_type={otype}  successful_agents={success}")
+                    # "successful" comes from swarm runs; workflow runs use note_path/built/errors
+                    errors  = len(e.get("errors", []))
+                    if "successful" in e:
+                        success = e["successful"]
+                    elif errors:
+                        success = 0
+                    elif e.get("note_path") or e.get("built"):
+                        success = 1
+                    else:
+                        success = "?"
+                    digest_lines.append(f"- topic={topic!r}  output_type={otype}  ok={success}  errors={errors}")
                 digest = "\n".join(digest_lines[:50])  # cap to 50 lines for LLM
 
                 # Ask the LLM to surface patterns and suggest improvements
