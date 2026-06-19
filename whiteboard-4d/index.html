@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BLEUBOARD — 3D Creative Whiteboard</title>
-<meta name="description" content="BLEUBOARD — place, draw and annotate in 3D space. A Minecraft-style creative whiteboard.">
+<title>BLEUBOARD — 4D Creative Whiteboard</title>
+<meta name="description" content="BLEUBOARD — a 4D creative whiteboard. Draw 3D strokes, place extruded 3D text, images and live video, link ideas, and animate through the 4th dimension.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{overflow:hidden;width:100%;height:100%;background:#00000d;-webkit-tap-highlight-color:transparent;user-select:none;}
 body{font-family:'Segoe UI',system-ui,sans-serif;color:#fff;}
-canvas{position:fixed;inset:0;touch-action:none;display:block;}
+canvas#c{position:fixed;inset:0;touch-action:none;display:block;}
 
-/* ══════════════════════════════════════════════════
-   TOP BAR — logo + always-visible color pickers
-══════════════════════════════════════════════════ */
+/* ════════ TOP BAR ════════ */
 #topbar{
   position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;height:50px;
@@ -22,804 +20,570 @@ canvas{position:fixed;inset:0;touch-action:none;display:block;}
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
 }
 .tb-logo{
-  padding:0 14px;font-size:15px;font-weight:900;
-  color:#5af;letter-spacing:3px;white-space:nowrap;flex-shrink:0;
-  border-right:1px solid rgba(80,160,255,0.12);height:100%;
-  display:flex;align-items:center;gap:6px;
-  text-transform:uppercase;
+  padding:0 14px;font-size:15px;font-weight:900;color:#5af;letter-spacing:3px;
+  white-space:nowrap;flex-shrink:0;border-right:1px solid rgba(80,160,255,0.12);
+  height:100%;display:flex;align-items:center;gap:6px;text-transform:uppercase;
 }
 .tb-logo span{font-size:18px;}
-.tb-logo em{color:#7df;font-style:normal;font-size:10px;font-weight:400;
-  letter-spacing:1px;opacity:0.7;margin-top:2px;}
-
-/* Colour pickers always pinned right */
-.tb-pickers{
-  display:flex;align-items:center;gap:12px;
-  padding:0 14px;margin-left:auto;flex-shrink:0;
-}
+.tb-logo em{color:#7df;font-style:normal;font-size:10px;font-weight:400;letter-spacing:1px;opacity:0.7;margin-top:2px;}
+.tb-pickers{display:flex;align-items:center;gap:10px;padding:0 12px;margin-left:auto;flex-shrink:0;}
 .cpick{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
-.cpick label{font-size:9px;color:#669;letter-spacing:0.8px;text-transform:uppercase;
-  cursor:pointer;pointer-events:none;}
-input[type=color]{
-  width:32px;height:26px;border:1.5px solid rgba(80,160,255,0.3);
-  border-radius:5px;background:none;cursor:pointer;padding:1px;
-  transition:border-color 0.2s;
-}
+.cpick label{font-size:9px;color:#669;letter-spacing:0.8px;text-transform:uppercase;pointer-events:none;}
+input[type=color]{width:30px;height:24px;border:1.5px solid rgba(80,160,255,0.3);border-radius:5px;background:none;cursor:pointer;padding:1px;transition:border-color .2s;}
 input[type=color]:hover{border-color:#5af;}
+.tb-hud{padding:0 12px;font-size:10px;color:#446;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:1px solid rgba(80,160,255,.08);display:none;}
+@media(min-width:680px){.tb-hud{display:block;}}
 
-.tb-hud{
-  padding:0 12px;font-size:10px;color:#446;letter-spacing:0.3px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  border-left:1px solid rgba(80,160,255,0.08);
-  display:none; /* hidden on mobile, shown on desktop */
-}
-@media(min-width:640px){.tb-hud{display:block;}}
-
-/* ══════════════════════════════════════════════════
-   BOTTOM BAR — primary tools (mobile-first)
-══════════════════════════════════════════════════ */
+/* ════════ BOTTOM / SIDE TOOL BAR ════════ */
 #bottombar{
   position:fixed;bottom:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-around;
-  height:62px;padding:0 4px;
-  background:rgba(0,4,20,0.97);
+  height:64px;padding:0 2px;background:rgba(0,4,20,0.97);
   border-top:1px solid rgba(80,160,255,0.14);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  gap:2px;
+  gap:1px;overflow-x:auto;scrollbar-width:none;
 }
+#bottombar::-webkit-scrollbar{display:none;}
 .tb{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;flex:1;min-width:44px;min-height:50px;
-  border:none;background:none;color:#557;
-  cursor:pointer;border-radius:8px;font-size:18px;
-  transition:background 0.12s,color 0.12s;
-  touch-action:manipulation;padding:4px 2px;
-  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  flex:1 0 auto;min-width:46px;min-height:52px;border:none;background:none;color:#557;
+  cursor:pointer;border-radius:8px;font-size:17px;transition:background .12s,color .12s;
+  touch-action:manipulation;padding:4px 3px;position:relative;
 }
-.tb .tb-label{font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
-.tb:hover{background:rgba(40,80,200,0.3);color:#99c;}
-.tb.active{color:#7df;background:rgba(20,70,200,0.4);}
-.tb.active::after{
-  content:'';position:absolute;bottom:-1px;left:20%;right:20%;
-  height:2px;background:#5af;border-radius:2px;
-}
-.tb.danger.active{color:#f88;background:rgba(160,30,30,0.4);}
+.tb .tb-label{font-size:8.5px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;}
+.tb:hover{background:rgba(40,80,200,.3);color:#99c;}
+.tb.active{color:#7df;background:rgba(20,70,200,.4);}
+.tb.active::after{content:'';position:absolute;bottom:-1px;left:18%;right:18%;height:2px;background:#5af;border-radius:2px;}
+.tb.danger.active{color:#f88;background:rgba(160,30,30,.4);}
 .tb.danger.active::after{background:#f55;}
+.tb.toggle.on{color:#c9f;background:rgba(110,40,200,.4);}
+.tb.toggle.on::after{content:'';position:absolute;bottom:-1px;left:18%;right:18%;height:2px;background:#b6f;border-radius:2px;}
 
-/* Desktop: move bottom bar into a compact left sidebar instead */
-@media(min-width:760px){
-  #bottombar{
-    top:50px;bottom:0;left:0;right:auto;
-    width:68px;height:auto;
-    flex-direction:column;justify-content:flex-start;
-    padding:10px 0;gap:2px;
-    border-top:none;border-right:1px solid rgba(80,160,255,0.12);
-  }
-  .tb{flex:0 0 auto;width:60px;min-height:56px;border-radius:10px;margin:2px 4px;}
-  canvas{left:68px;}
-  #hud{left:78px;}
+@media(min-width:820px){
+  #bottombar{top:50px;bottom:0;left:0;right:auto;width:72px;height:auto;
+    flex-direction:column;justify-content:flex-start;padding:10px 0;gap:2px;
+    border-top:none;border-right:1px solid rgba(80,160,255,.12);overflow-y:auto;overflow-x:hidden;}
+  .tb{flex:0 0 auto;width:64px;min-height:54px;border-radius:10px;margin:1px 4px;}
+  canvas#c{left:72px;}
+  #hud{left:82px;}
 }
 
-/* ══════════════════════════════════════════════════
-   UTILITY PANEL (Reset / Clear / Export) — top-right area on desktop, hidden on mobile until ☰ opened
-══════════════════════════════════════════════════ */
-#utils{
-  position:fixed;top:58px;right:10px;z-index:200;
-  display:flex;flex-direction:column;gap:5px;
-}
-.ubtn{
-  padding:6px 12px;border:1px solid rgba(80,160,255,0.2);
-  background:rgba(4,12,44,0.9);color:#668;border-radius:6px;
-  cursor:pointer;font-size:11px;white-space:nowrap;
-  touch-action:manipulation;transition:background 0.1s,color 0.1s;
-  backdrop-filter:blur(10px);
-}
-.ubtn:hover{background:rgba(20,60,180,0.55);color:#99d;}
-@media(max-width:759px){#utils{display:none;}}
+/* ════════ UTILITY BUTTONS ════════ */
+#utils{position:fixed;top:58px;right:10px;z-index:200;display:flex;flex-direction:column;gap:5px;}
+.ubtn{padding:6px 12px;border:1px solid rgba(80,160,255,.2);background:rgba(4,12,44,.9);color:#668;
+  border-radius:6px;cursor:pointer;font-size:11px;white-space:nowrap;touch-action:manipulation;
+  transition:background .1s,color .1s;backdrop-filter:blur(10px);}
+.ubtn:hover{background:rgba(20,60,180,.55);color:#99d;}
+@media(max-width:819px){#utils{top:auto;bottom:72px;right:8px;}}
 
-/* ══════════════════════════════════════════════════
-   HUD
-══════════════════════════════════════════════════ */
-#hud{
-  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
-  z-index:200;pointer-events:none;
-  background:rgba(0,4,20,0.82);border:1px solid rgba(80,160,255,0.1);
-  border-radius:20px;padding:4px 14px;font-size:10px;color:#446;
-  white-space:nowrap;letter-spacing:0.3px;
-  backdrop-filter:blur(8px);
-  transition:opacity 0.3s;
-}
-@media(min-width:760px){
-  #hud{bottom:10px;left:88px;transform:none;}
-}
+/* ════════ HUD ════════ */
+#hud{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;
+  background:rgba(0,4,20,.82);border:1px solid rgba(80,160,255,.1);border-radius:20px;
+  padding:4px 14px;font-size:10px;color:#446;white-space:nowrap;letter-spacing:.3px;backdrop-filter:blur(8px);}
+@media(min-width:820px){#hud{bottom:10px;left:82px;transform:none;}}
 
-/* ══════════════════════════════════════════════════
-   GHOST TOOLTIP
-══════════════════════════════════════════════════ */
-#tip{
-  position:fixed;z-index:400;pointer-events:none;
-  background:rgba(0,6,28,0.9);border:1px solid rgba(80,160,255,0.22);
-  border-radius:5px;padding:3px 8px;font-size:10px;color:#99c;
-  display:none;transform:translate(12px,-110%);
-  backdrop-filter:blur(8px);
-}
+/* ════════ TOOLTIP ════════ */
+#tip{position:fixed;z-index:400;pointer-events:none;background:rgba(0,6,28,.9);
+  border:1px solid rgba(80,160,255,.22);border-radius:5px;padding:3px 8px;font-size:10px;color:#99c;
+  display:none;transform:translate(12px,-110%);backdrop-filter:blur(8px);}
 
-/* ══════════════════════════════════════════════════
-   TEXT INPUT OVERLAY
-══════════════════════════════════════════════════ */
+/* ════════ TEXT INPUT ════════ */
 #text-overlay{position:fixed;z-index:500;display:none;flex-direction:column;gap:4px;}
-#text-input{
-  padding:9px 13px;min-width:220px;
-  background:rgba(2,8,40,0.97);border:1.5px solid #5af;
-  border-radius:8px;color:#eef;font-size:15px;outline:none;
-  box-shadow:0 0 20px rgba(80,160,255,0.25);
-  backdrop-filter:blur(14px);
-}
+#text-input{padding:9px 13px;min-width:220px;background:rgba(2,8,40,.97);border:1.5px solid #5af;
+  border-radius:8px;color:#eef;font-size:15px;outline:none;box-shadow:0 0 20px rgba(80,160,255,.25);backdrop-filter:blur(14px);}
 .text-hint{font-size:10px;color:#336;padding-left:4px;}
 
-/* ══════════════════════════════════════════════════
-   CONNECT BANNER
-══════════════════════════════════════════════════ */
-#conn-banner{
-  position:fixed;top:58px;left:50%;transform:translateX(-50%);
-  z-index:200;pointer-events:none;
-  background:rgba(0,12,50,0.95);border:1px solid #5af;
-  border-radius:8px;padding:7px 18px;font-size:12px;color:#7df;display:none;
-  backdrop-filter:blur(10px);
-}
+/* ════════ BANNERS ════════ */
+#conn-banner{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;
+  background:rgba(0,12,50,.95);border:1px solid #5af;border-radius:8px;padding:7px 18px;font-size:12px;color:#7df;display:none;backdrop-filter:blur(10px);}
+#mode-tip{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:150;pointer-events:none;
+  background:rgba(0,8,36,.88);border:1px solid rgba(80,160,255,.18);border-radius:8px;padding:6px 16px;
+  font-size:11px;color:#6af;backdrop-filter:blur(8px);opacity:0;transition:opacity .4s;letter-spacing:.3px;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
+#mode-tip.show{opacity:1;}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:600;pointer-events:none;
+  background:rgba(0,12,46,.95);border:1px solid rgba(120,80,255,.4);border-radius:10px;padding:8px 18px;
+  font-size:12px;color:#c9f;backdrop-filter:blur(10px);opacity:0;transition:opacity .35s;}
+#toast.show{opacity:1;}
 
-/* ══════════════════════════════════════════════════
-   ONBOARDING GUIDE OVERLAY
-══════════════════════════════════════════════════ */
-#guide-overlay{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(0,4,22,0.88);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);
-}
-#guide-card{
-  background:rgba(4,14,54,0.98);
-  border:1px solid rgba(80,160,255,0.3);
-  border-radius:16px;padding:32px 36px;
-  max-width:480px;width:90%;text-align:center;
-  box-shadow:0 0 60px rgba(40,100,255,0.18);
-}
-#guide-card h1{font-size:28px;font-weight:900;letter-spacing:4px;color:#5af;margin-bottom:6px;}
-#guide-card .sub{font-size:12px;color:#446;letter-spacing:1px;margin-bottom:28px;}
-.guide-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;text-align:left;}
-.gs{display:flex;align-items:flex-start;gap:14px;}
-.gs-icon{font-size:22px;flex-shrink:0;width:34px;text-align:center;}
-.gs-text{font-size:13px;line-height:1.6;color:#99b;}
-.gs-text strong{color:#ccf;font-size:14px;display:block;margin-bottom:2px;}
-.guide-start{
-  width:100%;padding:13px;font-size:15px;font-weight:700;letter-spacing:2px;
-  background:linear-gradient(135deg,rgba(30,80,220,0.8),rgba(60,20,180,0.8));
-  border:1px solid #5af;border-radius:9px;color:#7df;cursor:pointer;
-  transition:background 0.2s,box-shadow 0.2s;
-  touch-action:manipulation;
-}
-.guide-start:hover{background:linear-gradient(135deg,rgba(40,100,255,0.9),rgba(80,30,220,0.9));box-shadow:0 0 20px rgba(80,160,255,0.35);}
-.guide-skip{margin-top:12px;font-size:11px;color:#334;cursor:pointer;background:none;border:none;}
+/* ════════ GUIDE ════════ */
+#guide-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,4,22,.9);
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);overflow-y:auto;padding:20px;}
+#guide-card{background:rgba(4,14,54,.98);border:1px solid rgba(80,160,255,.3);border-radius:16px;
+  padding:30px 34px;max-width:520px;width:100%;box-shadow:0 0 60px rgba(40,100,255,.18);}
+#guide-card h1{font-size:26px;font-weight:900;letter-spacing:4px;color:#5af;margin-bottom:4px;text-align:center;}
+#guide-card .sub{font-size:11px;color:#446;letter-spacing:1px;margin-bottom:24px;text-align:center;}
+.guide-steps{display:flex;flex-direction:column;gap:13px;margin-bottom:24px;}
+.gs{display:flex;align-items:flex-start;gap:13px;}
+.gs-icon{font-size:20px;flex-shrink:0;width:30px;text-align:center;}
+.gs-text{font-size:12.5px;line-height:1.55;color:#99b;}
+.gs-text strong{color:#ccf;font-size:13.5px;display:block;margin-bottom:1px;}
+.gs-text b{color:#7df;}
+.guide-start{width:100%;padding:13px;font-size:15px;font-weight:700;letter-spacing:2px;
+  background:linear-gradient(135deg,rgba(30,80,220,.85),rgba(80,20,200,.85));border:1px solid #5af;
+  border-radius:9px;color:#9cf;cursor:pointer;transition:box-shadow .2s;touch-action:manipulation;}
+.guide-start:hover{box-shadow:0 0 22px rgba(80,160,255,.4);}
+.guide-skip{display:block;margin:12px auto 0;font-size:11px;color:#334;cursor:pointer;background:none;border:none;}
 .guide-skip:hover{color:#668;}
 
-/* Context tips per mode */
-#mode-tip{
-  position:fixed;top:58px;left:50%;transform:translateX(-50%);
-  z-index:150;pointer-events:none;
-  background:rgba(0,8,36,0.88);border:1px solid rgba(80,160,255,0.18);
-  border-radius:8px;padding:6px 16px;font-size:11px;color:#6af;
-  backdrop-filter:blur(8px);opacity:0;
-  transition:opacity 0.4s;letter-spacing:0.3px;
-  white-space:nowrap;
-}
-#mode-tip.show{opacity:1;}
-
-#img-input{display:none;}
+#video-input,#img-input{display:none;}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ TOP BAR ═══════════════ -->
+<!-- ════════ TOP BAR ════════ -->
 <div id="topbar">
-  <div class="tb-logo">
-    <span>⬡</span>
-    <div>BLEUBOARD<em>3D Creative Whiteboard</em></div>
-  </div>
+  <div class="tb-logo"><span>⬡</span><div>BLEUBOARD<em>4D Creative Whiteboard</em></div></div>
   <div class="tb-pickers">
-    <div class="cpick" title="Block / stroke colour">
-      <label for="pick-block">Block</label>
-      <input type="color" id="pick-block" value="#00ccff">
-    </div>
-    <div class="cpick" title="Background colour">
-      <label for="pick-bg">Board BG</label>
-      <input type="color" id="pick-bg" value="#00000d">
-    </div>
+    <div class="cpick" title="Stroke / object colour"><label for="pick-ink">Ink</label><input type="color" id="pick-ink" value="#00ccff"></div>
+    <div class="cpick" title="Board background colour"><label for="pick-bg">Board BG</label><input type="color" id="pick-bg" value="#00000d"></div>
   </div>
-  <div class="tb-hud" id="hud-desktop">NAV · 0 blocks</div>
+  <div class="tb-hud" id="hud-desktop">NAV · 0 objects</div>
 </div>
 
-<!-- ═══════════════ BOTTOM BAR (tools) ═══════════════ -->
+<!-- ════════ TOOL BAR ════════ -->
 <div id="bottombar">
-  <button class="tb active" data-mode="nav"     title="Orbit / zoom / pan">🎮<span class="tb-label">Nav</span></button>
-  <button class="tb"        data-mode="place"   title="Click surface to place block">🟦<span class="tb-label">Place</span></button>
-  <button class="tb"        data-mode="draw"    title="Drag to paint blocks">✏️<span class="tb-label">Draw</span></button>
-  <button class="tb danger" data-mode="erase"   title="Click block to remove">✂️<span class="tb-label">Erase</span></button>
-  <button class="tb"        data-mode="text"    title="Click surface to add label">T<span class="tb-label">Label</span></button>
-  <button class="tb"        data-mode="image"   title="Click surface to place image">🖼<span class="tb-label">Image</span></button>
+  <button class="tb active" data-mode="nav"    title="Orbit / zoom / pan">🎮<span class="tb-label">Nav</span></button>
+  <button class="tb"        data-mode="draw"   title="Draw freehand 3D strokes">✏️<span class="tb-label">Draw</span></button>
+  <button class="tb"        data-mode="text"   title="Place extruded 3D text">🅣<span class="tb-label">3D Text</span></button>
+  <button class="tb"        data-mode="image"  title="Place an image">🖼<span class="tb-label">Image</span></button>
+  <button class="tb"        data-mode="video"  title="Place animated video">🎬<span class="tb-label">Video</span></button>
+  <button class="tb"        data-mode="block"  title="Place a 3D block">🟦<span class="tb-label">Block</span></button>
   <button class="tb"        data-mode="connect" title="Link two objects">🔗<span class="tb-label">Link</span></button>
-  <button class="tb"        id="btn-guide"      title="Show guide">❓<span class="tb-label">Guide</span></button>
+  <button class="tb danger" data-mode="erase"  title="Delete an object">✂️<span class="tb-label">Erase</span></button>
+  <button class="tb toggle" id="btn-4d"        title="Toggle 4D time animation for new objects">⏱<span class="tb-label">4D</span></button>
+  <button class="tb"        id="btn-guide"     title="Show the guide">❓<span class="tb-label">Guide</span></button>
 </div>
 
-<!-- ═══════════════ UTILITY BUTTONS (desktop only) ═══════════════ -->
+<!-- ════════ UTILITIES ════════ -->
 <div id="utils">
   <button class="ubtn" id="btn-reset">⟳ Reset view</button>
   <button class="ubtn" id="btn-clear">🗑 Clear all</button>
   <button class="ubtn" id="btn-export">💾 Export JSON</button>
 </div>
 
-<!-- Canvas -->
 <canvas id="c"></canvas>
 
-<!-- Context tip banner -->
 <div id="mode-tip"></div>
 <div id="conn-banner">Click first object → then second to connect</div>
-<div id="hud">NAV · 0 blocks · 0 labels · 0 links</div>
+<div id="hud">NAV · 0 objects</div>
 <div id="tip"></div>
+<div id="toast"></div>
 
-<!-- Text input -->
 <div id="text-overlay">
-  <input id="text-input" type="text" placeholder="Type label and press Enter…" autocomplete="off" spellcheck="false">
-  <span class="text-hint">Esc to cancel</span>
+  <input id="text-input" type="text" placeholder="Type text and press Enter…" autocomplete="off" spellcheck="false">
+  <span class="text-hint">Esc to cancel · becomes extruded 3D text</span>
 </div>
 
-<!-- File input -->
 <input type="file" id="img-input" accept="image/*">
+<input type="file" id="video-input" accept="video/*">
 
-<!-- ═══════════════ ONBOARDING GUIDE ═══════════════ -->
+<!-- ════════ GUIDE ════════ -->
 <div id="guide-overlay">
   <div id="guide-card">
     <h1>BLEUBOARD</h1>
-    <p class="sub">3D CREATIVE WHITEBOARD</p>
+    <p class="sub">4D CREATIVE WHITEBOARD</p>
     <div class="guide-steps">
-      <div class="gs">
-        <div class="gs-icon">🟦</div>
-        <div class="gs-text">
-          <strong>Place blocks in 3D space</strong>
-          Tap <b>Place</b> then click any surface — the floor, the back wall, or an existing block. A coloured block appears exactly there.
-        </div>
-      </div>
-      <div class="gs">
-        <div class="gs-icon">✏️</div>
-        <div class="gs-text">
-          <strong>Draw trails of blocks</strong>
-          Tap <b>Draw</b> and drag across the scene to paint a connected trail of voxels — like drawing in 3D space.
-        </div>
-      </div>
-      <div class="gs">
-        <div class="gs-icon">T</div>
-        <div class="gs-text">
-          <strong>Add floating labels</strong>
-          Tap <b>Label</b> then click any surface. Type your text and press Enter — it floats in 3D at that spot.
-        </div>
-      </div>
-      <div class="gs">
-        <div class="gs-icon">🔗</div>
-        <div class="gs-text">
-          <strong>Connect objects</strong>
-          Tap <b>Link</b> then click two labels or blocks to draw a bezier arc between them.
-        </div>
-      </div>
-      <div class="gs">
-        <div class="gs-icon">🎮</div>
-        <div class="gs-text">
-          <strong>Navigate freely</strong>
-          In <b>Nav</b> mode: drag to orbit, scroll/pinch to zoom, right-drag to pan. Always orbit around your creation.
-        </div>
-      </div>
+      <div class="gs"><div class="gs-icon">✏️</div><div class="gs-text"><strong>Draw in 3D space</strong>Tap <b>Draw</b>, then drag anywhere — your stroke becomes a glowing 3D tube floating in space at the depth you started from.</div></div>
+      <div class="gs"><div class="gs-icon">🅣</div><div class="gs-text"><strong>Real 3D text</strong>Tap <b>3D Text</b>, click a spot, type — it appears as solid <b>extruded</b> lettering you can orbit around, not a flat label.</div></div>
+      <div class="gs"><div class="gs-icon">🎬</div><div class="gs-text"><strong>Images &amp; live video</strong><b>Image</b> and <b>Video</b> place media on floating panels in the scene. Videos play and loop right on the board.</div></div>
+      <div class="gs"><div class="gs-icon">🟦</div><div class="gs-text"><strong>Place objects like Minecraft</strong>Click any surface — floor, back wall, or an existing object — and the new thing lands exactly on that face.</div></div>
+      <div class="gs"><div class="gs-icon">🔗</div><div class="gs-text"><strong>Connect ideas</strong>Tap <b>Link</b>, click two objects, and a bezier arc joins them. Build a 3D mind-map.</div></div>
+      <div class="gs"><div class="gs-icon">⏱</div><div class="gs-text"><strong>The 4th dimension</strong>Toggle <b>4D</b> on, then create. New objects gently drift through time — oscillating in the W axis like the tesseract behind you.</div></div>
     </div>
     <button class="guide-start" id="guide-start-btn">START CREATING →</button>
     <button class="guide-skip" id="guide-skip-btn">Skip (don't show again)</button>
   </div>
 </div>
 
-<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<!-- ════════ THREE.JS ════════ -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/loaders/FontLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/geometries/TextGeometry.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
-//  BLEUBOARD v1 — 3D Creative Whiteboard
+//  BLEUBOARD — 4D Creative Whiteboard
 // ═══════════════════════════════════════════════════════════
 
-// ── Renderer ────────────────────────────────────────────────
+// ── Renderer ───────────────────────────────────────────────
 const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-// ── Scene ────────────────────────────────────────────────────
+// ── Scene ──────────────────────────────────────────────────
 const scene = new THREE.Scene();
 let bgCol = new THREE.Color(0x00000d);
 scene.background = bgCol;
-scene.fog = new THREE.FogExp2(bgCol.clone(), 0.011);
+scene.fog = new THREE.FogExp2(bgCol.clone(), 0.010);
 
-// ── Camera ───────────────────────────────────────────────────
-const HOME_POS    = new THREE.Vector3(12, 10, 18);
-const HOME_TARGET = new THREE.Vector3(0, 2, 0);
-const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.05, 10000);
+// ── Camera & controls ──────────────────────────────────────
+const HOME_POS = new THREE.Vector3(12, 10, 20);
+const HOME_TGT = new THREE.Vector3(0, 3, 0);
+const camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.05, 10000);
 camera.position.copy(HOME_POS);
-
-// ── Controls ─────────────────────────────────────────────────
 const controls = new THREE.OrbitControls(camera, canvas);
-controls.enableDamping  = true;
-controls.dampingFactor  = 0.07;
-controls.minDistance    = 0.5;
-controls.maxDistance    = 2000;
-controls.target.copy(HOME_TARGET);
-controls.enabled = true;
+controls.enableDamping = true; controls.dampingFactor = 0.07;
+controls.minDistance = 0.5; controls.maxDistance = 2000;
+controls.target.copy(HOME_TGT);
 
-// ── Lights ───────────────────────────────────────────────────
+// ── Lights ─────────────────────────────────────────────────
 scene.add(new THREE.AmbientLight(0x1a2a55, 2.8));
 const sun = new THREE.DirectionalLight(0xffffff, 2.0);
-sun.position.set(15, 30, 10);
-sun.castShadow = true;
+sun.position.set(15, 30, 10); sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-['left','right','top','bottom'].forEach((k,i) => sun.shadow.camera[k] = (i<2?-1:1)*40);
 sun.shadow.camera.far = 200;
+sun.shadow.camera.left = sun.shadow.camera.bottom = -45;
+sun.shadow.camera.right = sun.shadow.camera.top = 45;
 scene.add(sun);
-const fill = new THREE.PointLight(0x4488ff, 1.2, 80);
-fill.position.set(-10, 8, 5);
-scene.add(fill);
+const fill = new THREE.PointLight(0x4488ff, 1.2, 90);
+fill.position.set(-10, 8, 5); scene.add(fill);
 
-// ── Raycaster ────────────────────────────────────────────────
-const raycaster = new THREE.Raycaster();
-const mouse2D   = new THREE.Vector2();
+// ── Raycaster ──────────────────────────────────────────────
+const ray = new THREE.Raycaster();
+const m2 = new THREE.Vector2();
+function setMouse(cx, cy){ const r = canvas.getBoundingClientRect(); m2.x = (cx-r.left)/r.width*2-1; m2.y = -((cy-r.top)/r.height)*2+1; }
+function getHit(cx, cy){ setMouse(cx,cy); ray.setFromCamera(m2, camera); return ray.intersectObjects(placeTargets.filter(o=>o!==ghost), true)[0] || null; }
+function hitToPos(hit){ if(!hit) return null; const n=hit.face?hit.face.normal.clone().transformDirection(hit.object.matrixWorld):new THREE.Vector3(0,1,0); const raw=hit.point.clone().addScaledVector(n, 0.5); return { x:Math.round(raw.x), y:Math.round(raw.y), z:Math.round(raw.z) }; }
+// Free (un-snapped) point just off the surface — for media/text/strokes
+function hitToFree(hit){ if(!hit) return null; const n=hit.face?hit.face.normal.clone().transformDirection(hit.object.matrixWorld):new THREE.Vector3(0,0,1); return hit.point.clone().addScaledVector(n, 0.05); }
 
-function setMouse(cx, cy) {
-  const r = canvas.getBoundingClientRect();
-  mouse2D.x =  (cx / r.width)  * 2 - 1;
-  mouse2D.y = -(cy / r.height) * 2 + 1;
-}
-
-function getHit(cx, cy) {
-  setMouse(cx, cy);
-  raycaster.setFromCamera(mouse2D, camera);
-  return raycaster.intersectObjects(placeTargets.filter(m => m !== ghost), true)[0] || null;
-}
-
-function hitToNewPos(hit) {
-  if (!hit) return null;
-  const norm = hit.face.normal.clone().transformDirection(hit.object.matrixWorld);
-  const raw  = hit.point.clone().addScaledVector(norm, 0.5);
-  return { x: Math.round(raw.x), y: Math.round(raw.y), z: Math.round(raw.z) };
-}
-
-// ── Placeable surfaces ───────────────────────────────────────
+// ── Placeable surfaces ─────────────────────────────────────
 const placeTargets = [];
 
-// Floor
-const floorGeo = new THREE.PlaneGeometry(100, 100);
-floorGeo.rotateX(-Math.PI / 2);
-const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({
-  color: 0x08182e, roughness: 0.95, transparent: true, opacity: 0.7,
-}));
-floor.receiveShadow = true;
-floor.name = 'floor';
-scene.add(floor);
-placeTargets.push(floor);
+const floorGeo = new THREE.PlaneGeometry(120,120); floorGeo.rotateX(-Math.PI/2);
+const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({ color:0x08182e, roughness:.95, transparent:true, opacity:.7 }));
+floor.receiveShadow = true; floor.name = 'floor'; scene.add(floor); placeTargets.push(floor);
 
-const grid = new THREE.GridHelper(100, 100, 0x0d2044, 0x060f20);
-grid.material.transparent = true;
-grid.material.opacity = 0.55;
-scene.add(grid);
+const grid = new THREE.GridHelper(120,120, 0x0d2044, 0x060f20);
+grid.material.transparent = true; grid.material.opacity = .5; scene.add(grid);
 
-// Back wall (the "board")
-const wallGeo = new THREE.PlaneGeometry(40, 20);
-const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({
-  color: 0x0c1e3a, roughness: 0.9, transparent: true, opacity: 0.5, side: THREE.FrontSide,
-}));
-wall.position.set(0, 10, -8);
-wall.name = 'wall';
-wall.receiveShadow = true;
-scene.add(wall);
-placeTargets.push(wall);
+const wallGeo = new THREE.PlaneGeometry(44,22);
+const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({ color:0x0c1e3a, roughness:.9, transparent:true, opacity:.5, side:THREE.FrontSide }));
+wall.position.set(0,11,-9); wall.name='wall'; wall.receiveShadow=true; scene.add(wall); placeTargets.push(wall);
+const wEdge = new THREE.LineSegments(new THREE.EdgesGeometry(wallGeo), new THREE.LineBasicMaterial({ color:0x1a4080, transparent:true, opacity:.6 }));
+wEdge.position.copy(wall.position); scene.add(wEdge);
 
-// Wall edge glow
-const wEdge = new THREE.LineSegments(
-  new THREE.EdgesGeometry(wallGeo),
-  new THREE.LineBasicMaterial({ color: 0x1a4080, transparent: true, opacity: 0.6 })
-);
-wEdge.position.copy(wall.position);
-scene.add(wEdge);
+// ── Stars ──────────────────────────────────────────────────
+(function(){const N=7000,p=new Float32Array(N*3),c=new Float32Array(N*3);
+for(let i=0;i<N;i++){const r=600+Math.random()*1400,t=Math.random()*Math.PI*2,a=Math.acos(2*Math.random()-1);
+p[i*3]=r*Math.sin(a)*Math.cos(t);p[i*3+1]=r*Math.sin(a)*Math.sin(t);p[i*3+2]=r*Math.cos(a);
+const b=.3+Math.random()*.7;c[i*3]=b*(.7+Math.random()*.3);c[i*3+1]=c[i*3];c[i*3+2]=b;}
+const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));
+scene.add(new THREE.Points(g,new THREE.PointsMaterial({size:.4,vertexColors:true,sizeAttenuation:true,transparent:true,opacity:.7})));})();
 
-// ── Stars ────────────────────────────────────────────────────
-(function(){
-  const N=7000,p=new Float32Array(N*3),c=new Float32Array(N*3);
-  for(let i=0;i<N;i++){
-    const r=600+Math.random()*1400,t=Math.random()*Math.PI*2,a=Math.acos(2*Math.random()-1);
-    p[i*3]=r*Math.sin(a)*Math.cos(t);p[i*3+1]=r*Math.sin(a)*Math.sin(t);p[i*3+2]=r*Math.cos(a);
-    const b=0.3+Math.random()*0.7;
-    c[i*3]=b*(0.7+Math.random()*0.3);c[i*3+1]=c[i*3];c[i*3+2]=b;
-  }
-  const g=new THREE.BufferGeometry();
-  g.setAttribute('position',new THREE.BufferAttribute(p,3));
-  g.setAttribute('color',new THREE.BufferAttribute(c,3));
-  scene.add(new THREE.Points(g,new THREE.PointsMaterial({size:0.4,vertexColors:true,sizeAttenuation:true,transparent:true,opacity:0.7})));
-})();
+// ── 4D Tesseract backdrop ──────────────────────────────────
+const tGrp = new THREE.Group(); tGrp.position.set(0,11,-130); scene.add(tGrp);
+const v4=[]; for(let x of[-1,1])for(let y of[-1,1])for(let z of[-1,1])for(let w of[-1,1])v4.push([x,y,z,w]);
+const e4=[]; for(let i=0;i<16;i++)for(let j=i+1;j<16;j++){let d=0;for(let k=0;k<4;k++)d+=Math.abs(v4[i][k]-v4[j][k]);if(d===2)e4.push([i,j]);}
+function proj4(v,wx,wy){let[x,y,z,w]=v;let x2=x*Math.cos(wx)-w*Math.sin(wx),w2=x*Math.sin(wx)+w*Math.cos(wx);let y2=y*Math.cos(wy)-w2*Math.sin(wy),w3=y*Math.sin(wy)+w2*Math.cos(wy);const d=2.8/(2.8-w3);return new THREE.Vector3(x2*d*20,y2*d*20,z*d*20);}
+const eObjs=e4.map(()=>{const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(6),3));tGrp.add(new THREE.Line(geo,new THREE.LineBasicMaterial({color:0x0c2850,transparent:true,opacity:.5})));return{geo};});
+function updTess(t){const p=v4.map(v=>proj4(v,t*.25,t*.15));e4.forEach(([i,j],k)=>{const a=p[i],b=p[j],at=eObjs[k].geo.attributes.position;at.setXYZ(0,a.x,a.y,a.z);at.setXYZ(1,b.x,b.y,b.z);at.needsUpdate=true;});tGrp.rotation.y=t*.06;}
 
-// ── 4D Tesseract ─────────────────────────────────────────────
-const tGrp = new THREE.Group(); tGrp.position.set(0,10,-120); scene.add(tGrp);
-const v4=[];
-for(let x of[-1,1])for(let y of[-1,1])for(let z of[-1,1])for(let w of[-1,1])v4.push([x,y,z,w]);
-const e4=[];
-for(let i=0;i<16;i++)for(let j=i+1;j<16;j++){let d=0;for(let k=0;k<4;k++)d+=Math.abs(v4[i][k]-v4[j][k]);if(d===2)e4.push([i,j]);}
-function proj4(v,wx,wy){let[x,y,z,w]=v;let x2=x*Math.cos(wx)-w*Math.sin(wx),w2=x*Math.sin(wx)+w*Math.cos(wx);let y2=y*Math.cos(wy)-w2*Math.sin(wy),w3=y*Math.sin(wy)+w2*Math.cos(wy);const d=2.8/(2.8-w3);return new THREE.Vector3(x2*d*18,y2*d*18,z*d*18);}
-const eObjs=e4.map(()=>{const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(6),3));const l=new THREE.Line(geo,new THREE.LineBasicMaterial({color:0x0c2850,transparent:true,opacity:0.5}));tGrp.add(l);return{geo};});
-function updateTesseract(t){const p=v4.map(v=>proj4(v,t*0.25,t*0.15));e4.forEach(([i,j],k)=>{const a=p[i],b=p[j],at=eObjs[k].geo.attributes.position;at.setXYZ(0,a.x,a.y,a.z);at.setXYZ(1,b.x,b.y,b.z);at.needsUpdate=true;});tGrp.rotation.y=t*0.06;}
+// ── Ghost preview ──────────────────────────────────────────
+const ghost = new THREE.Mesh(new THREE.BoxGeometry(1.04,1.04,1.04), new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true, opacity:.22, depthWrite:false }));
+ghost.visible = false; scene.add(ghost);
 
-// ── Ghost preview block ────────────────────────────────────────
-const ghost = new THREE.Mesh(
-  new THREE.BoxGeometry(1.04,1.04,1.04),
-  new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.22,depthWrite:false})
-);
-ghost.visible = false;
-scene.add(ghost);
+// ═══════════════════════════════════════════════════════════
+//  OBJECT REGISTRY  — every creatable thing is an "object"
+//  { id, root (Object3D), type, label, color, fourD, wPhase, baseY }
+// ═══════════════════════════════════════════════════════════
+let idCtr = 0;
+const objects = [];
+const links = [];
 
-// ── Voxel system ──────────────────────────────────────────────
-const voxels = new Map();
-
-function addVoxel(gx,gy,gz,hex){
-  const key=`${gx},${gy},${gz}`;
-  if(voxels.has(key))return;
-  const geo=new THREE.BoxGeometry(1,1,1);
-  const col=new THREE.Color(hex);
-  const mat=new THREE.MeshStandardMaterial({color:col,emissive:col.clone().multiplyScalar(0.07),roughness:0.55,metalness:0.05});
-  const m=new THREE.Mesh(geo,mat);
-  m.position.set(gx,gy,gz); m.castShadow=true; m.receiveShadow=true;
-  m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo),new THREE.LineBasicMaterial({color:0x000000,transparent:true,opacity:0.25})));
-  scene.add(m); placeTargets.push(m);
-  voxels.set(key,{mesh:m,color:hex,gx,gy,gz});
+function register(root, type, label, color){
+  const id = idCtr++;
+  const o = { id, root, type, label, color, fourD: fourDOn, wPhase: Math.random()*Math.PI*2, basePos: root.position.clone() };
+  objects.push(o);
+  scene.add(root);
+  if (fourDOn) toast('4D object created — it will drift through time');
   updateHUD();
+  return o;
 }
 
-function removeVoxel(mesh){
-  const entry=[...voxels.values()].find(v=>v.mesh===mesh);
-  if(!entry)return;
-  scene.remove(mesh); mesh.geometry.dispose();
-  voxels.delete(`${entry.gx},${entry.gy},${entry.gz}`);
-  const i=placeTargets.indexOf(mesh); if(i>-1)placeTargets.splice(i,1);
-  updateHUD();
+// ── 3D Text (extruded) ─────────────────────────────────────
+let FONT = null;
+new THREE.FontLoader().load('https://cdn.jsdelivr.net/npm/three@0.146.0/examples/fonts/helvetiker_bold.typeface.json',
+  f => { FONT = f; },
+  undefined,
+  () => toast('Font failed to load — 3D text unavailable'));
+
+function addText3D(text, pos, hex){
+  if(!FONT){ toast('Font still loading — try again in a moment'); return; }
+  const geo = new THREE.TextGeometry(text, { font:FONT, size:1.1, height:0.28, curveSegments:6, bevelEnabled:true, bevelThickness:0.04, bevelSize:0.03, bevelSegments:2 });
+  geo.computeBoundingBox();
+  const w = geo.boundingBox.max.x - geo.boundingBox.min.x;
+  geo.translate(-w/2, 0, 0); // centre horizontally
+  const col = new THREE.Color(hex);
+  const mat = new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.18), roughness:0.35, metalness:0.25 });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  const root = new THREE.Group(); root.position.copy(pos); root.add(mesh);
+  root.userData.billboardY = true; // face camera horizontally
+  register(root, 'text', text, hex);
 }
 
-// ── Text / image nodes ────────────────────────────────────────
-let nodeIdCtr=0;
-const nodes=[];
-const links=[];
+// ── Freehand 3D stroke (tube) ──────────────────────────────
+let drawPlane = new THREE.Plane();
+let drawPts = [];
+let drawing = false;
 
-function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function makeSprite(text,hex){
-  const W=512,H=128;
-  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
-  const c=cv.getContext('2d');
-  c.fillStyle='rgba(0,6,24,0.84)';rr(c,4,4,W-8,H-8,14);c.fill();
-  c.strokeStyle=hex;c.lineWidth=2.5;rr(c,4,4,W-8,H-8,14);c.stroke();
-  c.fillStyle=hex;c.font='bold 38px "Segoe UI",Arial';
-  c.textAlign='center';c.textBaseline='middle';c.fillText(text,W/2,H/2);
-  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),transparent:true,depthTest:false}));
-  sp.scale.set(8,2,1);return sp;
+function beginStroke(cx, cy){
+  const hit = getHit(cx, cy);
+  // anchor depth: the hit point, else the controls target
+  const anchor = hit ? hit.point.clone() : controls.target.clone();
+  // plane facing the camera, through the anchor — lets us draw a flat ribbon in 3D
+  const nrm = new THREE.Vector3(); camera.getWorldDirection(nrm);
+  drawPlane.setFromNormalAndCoplanarPoint(nrm, anchor);
+  drawing = true; drawPts = [];
+  addStrokePoint(cx, cy);
 }
-
-function addAnchor(hex){
-  const c=new THREE.Color(hex);
-  return new THREE.Mesh(new THREE.SphereGeometry(0.2,10,10),
-    new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:0.8,roughness:0.3}));
+function planePoint(cx, cy){
+  setMouse(cx,cy); ray.setFromCamera(m2, camera);
+  const p = new THREE.Vector3();
+  return ray.ray.intersectPlane(drawPlane, p) ? p : null;
 }
-
-function regNode(mesh,type,label,hex){
-  const id=nodeIdCtr++;
-  nodes.push({id,mesh,type,label,color:hex});
-  if(!scene.getObjectById(mesh.id))scene.add(mesh);
-  updateHUD();return id;
+function addStrokePoint(cx, cy){
+  const p = planePoint(cx, cy); if(!p) return;
+  if(drawPts.length===0 || p.distanceTo(drawPts[drawPts.length-1]) > 0.12) drawPts.push(p);
 }
-
-function addLabelNode(text,pos,hex){
-  const g=new THREE.Group();g.position.copy(pos);
-  const sp=makeSprite(text,hex);sp.position.set(0,1.4,0);
-  const anch=addAnchor(hex);
-  g.add(sp,anch);scene.add(g);
-  placeTargets.push(anch);
-  regNode(g,'label',text,hex);
+function endStroke(){
+  drawing = false;
+  if(drawPts.length < 2){ drawPts=[]; return; }
+  const curve = new THREE.CatmullRomCurve3(drawPts);
+  const seg = Math.min(400, Math.max(20, drawPts.length*6));
+  const geo = new THREE.TubeGeometry(curve, seg, 0.07, 8, false);
+  const col = new THREE.Color(ink);
+  const mat = new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.4), roughness:0.4 });
+  const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = true;
+  const root = new THREE.Group(); root.add(mesh);
+  register(root, 'stroke', 'Stroke', ink);
+  drawPts = [];
 }
+// live preview line while drawing
+const liveGeo = new THREE.BufferGeometry();
+const liveLine = new THREE.Line(liveGeo, new THREE.LineBasicMaterial({ color:0x9cf, transparent:true, opacity:0.9 }));
+scene.add(liveLine);
+function updateLive(){ if(drawing && drawPts.length){ liveGeo.setFromPoints(drawPts); liveLine.visible=true; } else liveLine.visible=false; }
 
-function addImageNode(url,pos,hex){
-  new THREE.TextureLoader().load(url,tex=>{
-    const ar=tex.image.width/tex.image.height;
-    const w=6,h=w/ar;
-    const g=new THREE.Group();g.position.copy(pos);
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide,transparent:true}));
-    const bdr=new THREE.Mesh(new THREE.PlaneGeometry(w+0.2,h+0.2),new THREE.MeshBasicMaterial({color:new THREE.Color(hex),transparent:true,opacity:0.35,side:THREE.DoubleSide}));
-    bdr.position.z=-0.02;
-    g.add(m,bdr);scene.add(g);
-    regNode(g,'image','Image',hex);
+// ── Image panel ────────────────────────────────────────────
+function addImage(url, pos, hex){
+  new THREE.TextureLoader().load(url, tex => {
+    const ar = tex.image.width/tex.image.height, w=6, h=w/ar;
+    const root = new THREE.Group(); root.position.copy(pos);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({ map:tex, side:THREE.DoubleSide, transparent:true }));
+    const bdr = new THREE.Mesh(new THREE.PlaneGeometry(w+.2,h+.2), new THREE.MeshBasicMaterial({ color:new THREE.Color(hex), transparent:true, opacity:.4, side:THREE.DoubleSide }));
+    bdr.position.z=-0.02; root.add(m, bdr);
+    root.userData.billboardY = true;
+    register(root, 'image', 'Image', hex);
   });
 }
 
-// ── Links ─────────────────────────────────────────────────────
-function objCenter(id){const n=nodes.find(n=>n.id===id);const v=new THREE.Vector3();if(n)n.mesh.getWorldPosition(v);return v;}
+// ── Animated video panel ───────────────────────────────────
+function addVideo(url, pos, hex){
+  const vid = document.createElement('video');
+  vid.src = url; vid.loop = true; vid.muted = true; vid.playsInline = true; vid.crossOrigin = 'anonymous';
+  vid.play().catch(()=>{});
+  vid.addEventListener('loadeddata', () => {
+    const ar = (vid.videoWidth/vid.videoHeight) || 16/9, w=7, h=w/ar;
+    const tex = new THREE.VideoTexture(vid); tex.minFilter = THREE.LinearFilter;
+    const root = new THREE.Group(); root.position.copy(pos);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({ map:tex, side:THREE.DoubleSide }));
+    const bdr = new THREE.Mesh(new THREE.PlaneGeometry(w+.25,h+.25), new THREE.MeshBasicMaterial({ color:new THREE.Color(hex), transparent:true, opacity:.5, side:THREE.DoubleSide }));
+    bdr.position.z=-0.02; root.add(m, bdr);
+    root.userData.billboardY = true;
+    const o = register(root, 'video', 'Video', hex);
+    o.video = vid;
+  }, { once:true });
+}
 
-function createLink(nA,nB){
-  const a=objCenter(nA.id),b=objCenter(nB.id);
-  const mid=a.clone().lerp(b,0.5).add(new THREE.Vector3(0,2,0));
-  const pts=new THREE.QuadraticBezierCurve3(a,mid,b).getPoints(60);
-  const geo=new THREE.BufferGeometry().setFromPoints(pts);
-  const line=new THREE.Line(geo,new THREE.LineBasicMaterial({color:0x4488ff,transparent:true,opacity:0.65}));
+// ── Block (voxel) ──────────────────────────────────────────
+function addBlock(gx,gy,gz,hex){
+  const geo = new THREE.BoxGeometry(1,1,1); const col = new THREE.Color(hex);
+  const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(.07), roughness:.55, metalness:.05 }));
+  mesh.castShadow = mesh.receiveShadow = true;
+  mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color:0x000000, transparent:true, opacity:.25 })));
+  const root = new THREE.Group(); root.position.set(gx,gy,gz); root.add(mesh);
+  const o = register(root, 'block', 'Block', hex);
+  placeTargets.push(mesh); o.collider = mesh;
+}
+
+// ── Links ──────────────────────────────────────────────────
+function center(o){ const v=new THREE.Vector3(); o.root.getWorldPosition(v); return v; }
+function createLink(a, b){
+  const pa=center(a), pb=center(b), mid=pa.clone().lerp(pb,.5).add(new THREE.Vector3(0,2,0));
+  const geo=new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(pa,mid,pb).getPoints(60));
+  const line=new THREE.Line(geo, new THREE.LineBasicMaterial({ color:0x4488ff, transparent:true, opacity:.65 }));
   scene.add(line);
-  const lbl=makeSprite(`${nA.label}↔${nB.label}`,'#4488ff');
-  lbl.scale.set(6,1,1);lbl.position.copy(mid).add(new THREE.Vector3(0,0.7,0));
-  scene.add(lbl);
-  links.push({line,geo,lbl,fromId:nA.id,toId:nB.id});
+  links.push({ line, geo, a:a.id, b:b.id }); updateHUD();
+}
+function refreshLinks(){
+  links.forEach(lk=>{ const a=objects.find(o=>o.id===lk.a), b=objects.find(o=>o.id===lk.b); if(!a||!b) return;
+    const pa=center(a), pb=center(b), mid=pa.clone().lerp(pb,.5).add(new THREE.Vector3(0,2,0));
+    lk.geo.setFromPoints(new THREE.QuadraticBezierCurve3(pa,mid,pb).getPoints(60)); });
+}
+
+// ── Pick an object by pointer ──────────────────────────────
+function objAt(cx, cy){
+  setMouse(cx,cy); ray.setFromCamera(m2, camera);
+  const meshes=[]; objects.forEach(o=>o.root.traverse(c=>{ if(c.isMesh) meshes.push(c); }));
+  const hit = ray.intersectObjects(meshes, false)[0]; if(!hit) return null;
+  return objects.find(o=>{ let f=false; o.root.traverse(c=>{ if(c===hit.object) f=true; }); return f; }) || null;
+}
+function removeObj(o){
+  scene.remove(o.root);
+  o.root.traverse(c=>{ if(c.geometry) c.geometry.dispose(); });
+  if(o.video){ o.video.pause(); o.video.src=''; }
+  if(o.collider){ const i=placeTargets.indexOf(o.collider); if(i>-1) placeTargets.splice(i,1); }
+  const i=objects.indexOf(o); if(i>-1) objects.splice(i,1);
+  // drop links referencing it
+  for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].geo.dispose(); links.splice(k,1); } }
   updateHUD();
 }
 
-function refreshLinks(){
-  links.forEach(lk=>{
-    const nA=nodes.find(n=>n.id===lk.fromId),nB=nodes.find(n=>n.id===lk.toId);
-    if(!nA||!nB)return;
-    const a=objCenter(nA.id),b=objCenter(nB.id);
-    const mid=a.clone().lerp(b,0.5).add(new THREE.Vector3(0,2,0));
-    lk.geo.setFromPoints(new THREE.QuadraticBezierCurve3(a,mid,b).getPoints(60));
-    if(lk.lbl)lk.lbl.position.copy(mid).add(new THREE.Vector3(0,0.7,0));
-  });
-}
-
-function nodeAtPointer(cx,cy){
-  setMouse(cx,cy);raycaster.setFromCamera(mouse2D,camera);
-  const meshes=[];nodes.forEach(n=>n.mesh.traverse(c=>{if(c.isMesh||c.isSprite)meshes.push(c);}));
-  const hits=raycaster.intersectObjects(meshes,false);if(!hits.length)return null;
-  const h=hits[0].object;
-  return nodes.find(n=>{let f=false;n.mesh.traverse(c=>{if(c===h)f=true;});return f;})||null;
-}
-
-// ── State ─────────────────────────────────────────────────────
-let mode='nav', blockColor='#00ccff', isPainting=false, connectFirst=null;
-let textSurfacePos=null, imgSurfacePos=null;
+// ═══════════════════════════════════════════════════════════
+//  STATE & INTERACTION
+// ═══════════════════════════════════════════════════════════
+let mode='nav', ink='#00ccff', fourDOn=false, connectFirst=null;
+let pendingPos=null; // surface point awaiting text/image/video
 
 const PRESETS=['#00ccff','#ff4466','#44ff88','#ffcc00','#ff8800','#cc66ff','#ffffff','#ff6644','#00ffcc'];
+const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan',
+  draw:'✏️ Drag to draw a 3D stroke at the depth you start from',
+  text:'🅣 Click a spot → type → Enter for extruded 3D text',
+  image:'🖼 Click a surface → choose an image file',
+  video:'🎬 Click a surface → choose a video (plays & loops)',
+  block:'🟦 Click any surface → block lands on that face',
+  connect:'🔗 Click one object, then another to link them',
+  erase:'✂️ Click any object to delete it' };
 
-const MODE_TIPS = {
-  nav:     '🎮 Drag to orbit · Scroll to zoom · Two-finger pan',
-  place:   '🟦 Click any surface — block appears on that face',
-  draw:    '✏️ Drag across surfaces to paint a trail of blocks',
-  erase:   '✂️ Click any block to remove it',
-  text:    'T Click any surface → type your label → Enter',
-  image:   '🖼 Click any surface → choose an image file',
-  connect: '🔗 Click a label, then another to connect them',
-};
-
-function showModeTip(m){
-  const el=document.getElementById('mode-tip');
-  el.textContent=MODE_TIPS[m]||'';
-  el.classList.add('show');
-  clearTimeout(el._t);
-  el._t=setTimeout(()=>el.classList.remove('show'),3200);
-}
+function showModeTip(m){ const el=document.getElementById('mode-tip'); el.textContent=TIPS[m]||''; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),3200); }
+function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2600); }
 
 function setMode(m){
   mode=m;
-  document.querySelectorAll('.tb[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  document.querySelectorAll('.tb[data-mode]').forEach(b=>b.classList.toggle('active', b.dataset.mode===m));
   controls.enabled=(m==='nav');
-  ghost.visible=false; isPainting=false;
-  const cb=document.getElementById('conn-banner');
-  cb.style.display=(m==='connect')?'block':'none';
-  if(m!=='connect')connectFirst=null;
-  const cursors={nav:'grab',place:'crosshair',draw:'crosshair',erase:'no-drop',text:'text',image:'cell',connect:'pointer'};
-  canvas.style.cursor=cursors[m]||'default';
-  showModeTip(m);
-  updateHUD();
+  ghost.visible=false; drawing=false; drawPts=[]; liveLine.visible=false;
+  document.getElementById('conn-banner').style.display=(m==='connect')?'block':'none';
+  if(m!=='connect') connectFirst=null;
+  canvas.style.cursor={ nav:'grab', draw:'crosshair', text:'text', image:'cell', video:'cell', block:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  showModeTip(m); updateHUD();
 }
 
-// ── Pointer events ────────────────────────────────────────────
-let mdPt=null,mdTime=0;
-
+let mdPt=null, mdT=0;
 function onDown(cx,cy){
-  mdPt={x:cx,y:cy};mdTime=Date.now();
-  if(mode==='place'){const h=getHit(cx,cy);const p=hitToNewPos(h);if(p)addVoxel(p.x,p.y,p.z,blockColor);}
-  if(mode==='draw'){isPainting=true;const h=getHit(cx,cy);const p=hitToNewPos(h);if(p)addVoxel(p.x,p.y,p.z,blockColor);}
-  if(mode==='erase'){const h=getHit(cx,cy);if(h&&h.object!==floor&&h.object!==wall)removeVoxel(h.object);}
+  mdPt={x:cx,y:cy}; mdT=Date.now();
+  if(mode==='draw') beginStroke(cx,cy);
+  if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p) addBlock(p.x,p.y,p.z,ink); }
+  if(mode==='erase'){ const o=objAt(cx,cy); if(o) removeObj(o); }
 }
-
 function onMove(cx,cy){
-  // Update ghost
-  if(mode==='place'||mode==='draw'){
-    const h=getHit(cx,cy);const p=hitToNewPos(h);
-    if(p){ghost.position.set(p.x,p.y,p.z);ghost.material.color.set(blockColor);ghost.visible=true;}
-    else ghost.visible=false;
-  } else ghost.visible=false;
+  if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p){ ghost.position.set(p.x,p.y,p.z); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
+  else ghost.visible=false;
+  if(mode==='draw' && drawing) addStrokePoint(cx,cy);
 
-  // Tooltip on block hover
   const tip=document.getElementById('tip');
-  if(['place','draw','erase'].includes(mode)){
-    const h=getHit(cx,cy);
-    if(h){
-      const name=h.object.name==='floor'?'Floor':h.object.name==='wall'?'Board Wall':'Block';
-      tip.textContent=name;tip.style.display='block';
-      tip.style.left=cx+'px';tip.style.top=cy+'px';
-    } else tip.style.display='none';
+  if(['block','erase'].includes(mode)){ const h=getHit(cx,cy);
+    if(h){ tip.textContent=h.object.name==='floor'?'Floor':h.object.name==='wall'?'Board Wall':'Object'; tip.style.display='block'; tip.style.left=cx+'px'; tip.style.top=cy+'px'; }
+    else tip.style.display='none';
   } else tip.style.display='none';
-
-  // Draw dragging
-  if(mode==='draw'&&isPainting){
-    const h=getHit(cx,cy);const p=hitToNewPos(h);if(p)addVoxel(p.x,p.y,p.z,blockColor);
-  }
 }
-
 function onUp(cx,cy){
-  isPainting=false;
-  const dx=cx-(mdPt?.x||0),dy=cy-(mdPt?.y||0);
-  if(Date.now()-mdTime>320||Math.hypot(dx,dy)>14)return;
-  if(mode==='text'){
-    const h=getHit(cx,cy);
-    if(h){const p=hitToNewPos(h)||{x:h.point.x,y:h.point.y,z:h.point.z};showTextInput(cx,cy,new THREE.Vector3(p.x,p.y,p.z));}
-    return;
-  }
-  if(mode==='image'){
-    const h=getHit(cx,cy);
-    if(h){const p=hitToNewPos(h)||{x:h.point.x,y:h.point.y,z:h.point.z};imgSurfacePos=new THREE.Vector3(p.x,p.y,p.z);document.getElementById('img-input').click();}
-    return;
-  }
-  if(mode==='connect'){
-    const node=nodeAtPointer(cx,cy);if(!node)return;
-    if(!connectFirst){connectFirst=node;document.getElementById('conn-banner').textContent=`"${node.label}" selected — click another object`;}
-    else if(connectFirst.id!==node.id){createLink(connectFirst,node);connectFirst=null;document.getElementById('conn-banner').textContent='Click first object → then second to connect';}
-  }
+  if(mode==='draw'){ endStroke(); return; }
+  const moved = Math.hypot(cx-(mdPt?.x||0), cy-(mdPt?.y||0));
+  if(Date.now()-mdT>320 || moved>14) return; // treat as drag, ignore
+  if(mode==='text'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; showTextInput(cx,cy); } }
+  if(mode==='image'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; document.getElementById('img-input').click(); } }
+  if(mode==='video'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; document.getElementById('video-input').click(); } }
+  if(mode==='connect'){ const o=objAt(cx,cy); if(!o) return;
+    if(!connectFirst){ connectFirst=o; document.getElementById('conn-banner').textContent=`"${o.label}" selected — click another object`; }
+    else if(connectFirst.id!==o.id){ createLink(connectFirst,o); connectFirst=null; document.getElementById('conn-banner').textContent='Click first object → then second to connect'; } }
 }
 
 // Mouse
-canvas.addEventListener('mousedown',e=>{if(e.button===0)onDown(e.clientX,e.clientY);});
-canvas.addEventListener('mousemove',e=>onMove(e.clientX,e.clientY));
-canvas.addEventListener('mouseup',  e=>{if(e.button===0)onUp(e.clientX,e.clientY);});
-
+canvas.addEventListener('mousedown', e=>{ if(e.button===0) onDown(e.clientX,e.clientY); });
+canvas.addEventListener('mousemove', e=> onMove(e.clientX,e.clientY));
+canvas.addEventListener('mouseup',   e=>{ if(e.button===0) onUp(e.clientX,e.clientY); });
 // Touch
 let _tid=null;
-canvas.addEventListener('touchstart',e=>{if(e.touches.length>1)return;e.preventDefault();const t=e.touches[0];_tid=t.identifier;onDown(t.clientX,t.clientY);},{passive:false});
-canvas.addEventListener('touchmove', e=>{if(e.touches.length>1)return;e.preventDefault();const t=[...e.touches].find(x=>x.identifier===_tid)||e.touches[0];onMove(t.clientX,t.clientY);},{passive:false});
-canvas.addEventListener('touchend',  e=>{const t=[...e.changedTouches].find(x=>x.identifier===_tid);if(!t)return;_tid=null;onUp(t.clientX,t.clientY);},{passive:false});
+canvas.addEventListener('touchstart', e=>{ if(e.touches.length>1) return; e.preventDefault(); const t=e.touches[0]; _tid=t.identifier; onDown(t.clientX,t.clientY); }, {passive:false});
+canvas.addEventListener('touchmove',  e=>{ if(e.touches.length>1) return; e.preventDefault(); const t=[...e.touches].find(x=>x.identifier===_tid)||e.touches[0]; onMove(t.clientX,t.clientY); }, {passive:false});
+canvas.addEventListener('touchend',   e=>{ const t=[...e.changedTouches].find(x=>x.identifier===_tid); if(!t) return; _tid=null; onUp(t.clientX,t.clientY); }, {passive:false});
 
-// ── Text input ────────────────────────────────────────────────
-function showTextInput(cx,cy,wp){
-  textSurfacePos=wp;
-  const el=document.getElementById('text-overlay');
-  el.style.display='flex';
-  el.style.left=Math.min(cx,innerWidth-240)+'px';
-  el.style.top=Math.min(cy,innerHeight-70)+'px';
-  document.getElementById('text-input').value='';
-  requestAnimationFrame(()=>document.getElementById('text-input').focus());
-}
-document.getElementById('text-input').addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.target.value.trim()&&textSurfacePos){
-    addLabelNode(e.target.value.trim(),textSurfacePos,blockColor);
-    document.getElementById('text-overlay').style.display='none';
-    textSurfacePos=null;
-  }
-  if(e.key==='Escape'){document.getElementById('text-overlay').style.display='none';textSurfacePos=null;}
+// ── Text input overlay ─────────────────────────────────────
+function showTextInput(cx,cy){ const el=document.getElementById('text-overlay'); el.style.display='flex';
+  el.style.left=Math.min(cx, innerWidth-240)+'px'; el.style.top=Math.min(cy, innerHeight-80)+'px';
+  const inp=document.getElementById('text-input'); inp.value=''; requestAnimationFrame(()=>inp.focus()); }
+document.getElementById('text-input').addEventListener('keydown', e=>{
+  if(e.key==='Enter' && e.target.value.trim() && pendingPos){ addText3D(e.target.value.trim(), pendingPos, ink); document.getElementById('text-overlay').style.display='none'; pendingPos=null; }
+  if(e.key==='Escape'){ document.getElementById('text-overlay').style.display='none'; pendingPos=null; }
   e.stopPropagation();
 });
+document.getElementById('img-input').addEventListener('change', e=>{ const f=e.target.files[0]; if(f&&pendingPos){ addImage(URL.createObjectURL(f), pendingPos, ink); pendingPos=null; } e.target.value=''; });
+document.getElementById('video-input').addEventListener('change', e=>{ const f=e.target.files[0]; if(f&&pendingPos){ addVideo(URL.createObjectURL(f), pendingPos, ink); pendingPos=null; } e.target.value=''; });
 
-document.getElementById('img-input').addEventListener('change',e=>{
-  const f=e.target.files[0];
-  if(f&&imgSurfacePos){addImageNode(URL.createObjectURL(f),imgSurfacePos,blockColor);imgSurfacePos=null;}
-  e.target.value='';
-});
+// ── Camera fly ─────────────────────────────────────────────
+function flyTo(pos,tgt,dur=900){ const sp=camera.position.clone(), st=controls.target.clone(), t0=performance.now();
+  (function tick(now){ const t=Math.min((now-t0)/dur,1), e=t<.5?2*t*t:-1+(4-2*t)*t; camera.position.lerpVectors(sp,pos,e); controls.target.lerpVectors(st,tgt,e); if(t<1) requestAnimationFrame(tick); })(performance.now()); }
 
-// ── Camera fly ────────────────────────────────────────────────
-function flyTo(pos,target,dur=900){
-  const sp=camera.position.clone(),st=controls.target.clone();
-  const t0=performance.now();
-  (function tick(now){
-    const t=Math.min((now-t0)/dur,1),e=t<0.5?2*t*t:-1+(4-2*t)*t;
-    camera.position.lerpVectors(sp,pos,e);controls.target.lerpVectors(st,target,e);
-    if(t<1)requestAnimationFrame(tick);
-  })(performance.now());
-}
+// ── Colour pickers ─────────────────────────────────────────
+document.getElementById('pick-ink').addEventListener('input', e=>{ ink=e.target.value; ghost.material.color.set(ink); });
+document.getElementById('pick-bg').addEventListener('input', e=>{ const col=new THREE.Color(e.target.value); scene.background=col; scene.fog.color.copy(col); grid.material.color.set(col.clone().multiplyScalar(1.5)); });
 
-// ── Colour pickers ────────────────────────────────────────────
-document.getElementById('pick-block').addEventListener('input',e=>{
-  blockColor=e.target.value;
-  ghost.material.color.set(blockColor);
+// ── Toolbar ────────────────────────────────────────────────
+document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
+document.getElementById('btn-4d').addEventListener('click', e=>{ fourDOn=!fourDOn; e.currentTarget.classList.toggle('on',fourDOn); toast(fourDOn?'4D mode ON — new objects drift through time':'4D mode off'); });
+document.getElementById('btn-reset').addEventListener('click', ()=>flyTo(HOME_POS,HOME_TGT));
+document.getElementById('btn-clear').addEventListener('click', ()=>{ [...objects].forEach(removeObj); toast('Board cleared'); });
+document.getElementById('btn-export').addEventListener('click', ()=>{
+  const data={ objects: objects.map(o=>({ id:o.id, type:o.type, label:o.label, color:o.color, fourD:o.fourD, pos:o.root.position.toArray() })), links: links.map(l=>({ a:l.a, b:l.b })) };
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download=`bleuboard-${Date.now()}.json`; a.click();
 });
-document.getElementById('pick-bg').addEventListener('input',e=>{
-  const col=new THREE.Color(e.target.value);
-  scene.background=col;
-  scene.fog.color.copy(col);
-  grid.material.color.set(col.clone().multiplyScalar(1.5));
-});
-
-// ── Utility buttons ───────────────────────────────────────────
-document.getElementById('btn-reset').addEventListener('click',()=>flyTo(HOME_POS,HOME_TARGET));
-document.getElementById('btn-clear').addEventListener('click',()=>{
-  [...voxels.values()].forEach(v=>{scene.remove(v.mesh);v.mesh.geometry.dispose();placeTargets.splice(placeTargets.indexOf(v.mesh),1);});
-  voxels.clear();
-  nodes.forEach(n=>scene.remove(n.mesh));
-  links.forEach(lk=>{scene.remove(lk.line);if(lk.lbl)scene.remove(lk.lbl);lk.geo.dispose();});
-  nodes.length=0;links.length=0;
-  updateHUD();
-});
-document.getElementById('btn-export').addEventListener('click',()=>{
-  const data={voxels:[...voxels.values()].map(({gx,gy,gz,color})=>({gx,gy,gz,color})),
-    labels:nodes.map(n=>({id:n.id,type:n.type,label:n.label,color:n.color})),
-    links:links.map(lk=>({from:lk.fromId,to:lk.toId}))};
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-  a.download=`bleuboard-${Date.now()}.json`;a.click();
-});
-
-// ── Guide button ──────────────────────────────────────────────
-document.getElementById('btn-guide').addEventListener('click',()=>{
-  document.getElementById('guide-overlay').style.display='flex';
-});
-document.getElementById('guide-start-btn').addEventListener('click',()=>{
-  document.getElementById('guide-overlay').style.display='none';
-  setMode('place');
-});
-document.getElementById('guide-skip-btn').addEventListener('click',()=>{
-  document.getElementById('guide-overlay').style.display='none';
-  localStorage.setItem('bleuboard_guided','1');
-});
-
-// Tool buttons
-document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+document.getElementById('btn-guide').addEventListener('click', ()=>document.getElementById('guide-overlay').style.display='flex');
+document.getElementById('guide-start-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; setMode('draw'); });
+document.getElementById('guide-skip-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; localStorage.setItem('bleuboard_guided','1'); });
 
 // Keyboard
-window.addEventListener('keydown',e=>{
-  if(document.activeElement===document.getElementById('text-input'))return;
-  const km={n:'nav',p:'place',d:'draw',e:'erase',t:'text',i:'image',c:'connect'};
-  if(km[e.key])setMode(km[e.key]);
-  if(e.key==='r')flyTo(HOME_POS,HOME_TARGET);
-  if(e.key==='Escape'){setMode('nav');document.getElementById('guide-overlay').style.display='none';}
-  const n=parseInt(e.key);
-  if(n>=1&&n<=PRESETS.length){blockColor=PRESETS[n-1];document.getElementById('pick-block').value=blockColor;ghost.material.color.set(blockColor);}
+window.addEventListener('keydown', e=>{
+  if(document.activeElement===document.getElementById('text-input')) return;
+  const km={ n:'nav', d:'draw', t:'text', i:'image', v:'video', b:'block', c:'connect', e:'erase' };
+  if(km[e.key]) setMode(km[e.key]);
+  if(e.key==='r') flyTo(HOME_POS,HOME_TGT);
+  if(e.key==='f'){ document.getElementById('btn-4d').click(); }
+  if(e.key==='Escape'){ setMode('nav'); document.getElementById('guide-overlay').style.display='none'; }
+  const n=parseInt(e.key); if(n>=1&&n<=PRESETS.length){ ink=PRESETS[n-1]; document.getElementById('pick-ink').value=ink; ghost.material.color.set(ink); }
 });
 
-// Resize
-window.addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
-});
+window.addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
 
-// ── HUD ───────────────────────────────────────────────────────
-function updateHUD(){
-  const txt=`${mode.toUpperCase()} · ${voxels.size} blocks · ${nodes.length} labels · ${links.length} links`;
-  document.getElementById('hud').textContent=txt;
-  document.getElementById('hud-desktop').textContent=txt;
-}
+// ── HUD ────────────────────────────────────────────────────
+function updateHUD(){ const txt=`${mode.toUpperCase()} · ${objects.length} objects · ${links.length} links${fourDOn?' · 4D':''}`; document.getElementById('hud').textContent=txt; document.getElementById('hud-desktop').textContent=txt; }
 
-// ── Render loop ───────────────────────────────────────────────
+// ── Render loop ────────────────────────────────────────────
 const clock=new THREE.Clock();
 function animate(){
   requestAnimationFrame(animate);
   const t=clock.getElapsedTime();
   controls.update();
-  updateTesseract(t);
+  updTess(t);
   refreshLinks();
-  fill.intensity=1.1+Math.sin(t*0.85)*0.3;
-  fill.position.x=Math.sin(t*0.28)*12;
-  fill.position.z=Math.cos(t*0.28)*12;
+  updateLive();
+  fill.intensity=1.1+Math.sin(t*.85)*.3; fill.position.x=Math.sin(t*.28)*12; fill.position.z=Math.cos(t*.28)*12;
+  // billboard + 4D drift
+  objects.forEach(o=>{
+    if(o.root.userData.billboardY){ const dx=camera.position.x-o.root.position.x, dz=camera.position.z-o.root.position.z; o.root.rotation.y=Math.atan2(dx,dz); }
+    if(o.fourD){ const off=Math.sin(t*1.1 + o.wPhase); o.root.position.x = o.basePos.x + off*2.2; o.root.position.y = o.basePos.y + Math.cos(t*0.9 + o.wPhase)*0.8; const s=1+off*0.12; o.root.scale.setScalar(s); }
+  });
   renderer.render(scene,camera);
 }
 
-// ── Boot ──────────────────────────────────────────────────────
-setMode('nav');
-updateHUD();
-animate();
-
-// Show guide on first visit
-if(!localStorage.getItem('bleuboard_guided')){
-  document.getElementById('guide-overlay').style.display='flex';
-} else {
-  document.getElementById('guide-overlay').style.display='none';
-}
+// ── Boot ───────────────────────────────────────────────────
+setMode('nav'); updateHUD(); animate();
+document.getElementById('guide-overlay').style.display = localStorage.getItem('bleuboard_guided') ? 'none' : 'flex';
 </script>
 </body>
 </html>
