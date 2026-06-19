@@ -386,7 +386,7 @@ function addImage(url, pos, hex){
 function addVideo(url, pos, hex){
   const vid = document.createElement('video');
   vid.src = url; vid.loop = true; vid.muted = true; vid.playsInline = true; vid.crossOrigin = 'anonymous';
-  vid.play().catch(()=>{});
+  vid.play().catch(()=> toast('Tap the video panel to play'));
   vid.addEventListener('loadeddata', () => {
     const ar = (vid.videoWidth/vid.videoHeight) || 16/9, w=7, h=w/ar;
     const tex = new THREE.VideoTexture(vid); tex.minFilter = THREE.LinearFilter;
@@ -394,9 +394,16 @@ function addVideo(url, pos, hex){
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({ map:tex, side:THREE.DoubleSide }));
     const bdr = new THREE.Mesh(new THREE.PlaneGeometry(w+.25,h+.25), new THREE.MeshBasicMaterial({ color:new THREE.Color(hex), transparent:true, opacity:.5, side:THREE.DoubleSide }));
     bdr.position.z=-0.02; root.add(m, bdr);
+    // play/pause indicator (a translucent triangle shown when paused)
+    const tri = new THREE.Shape(); tri.moveTo(-0.5,0.7); tri.lineTo(-0.5,-0.7); tri.lineTo(0.7,0); tri.lineTo(-0.5,0.7);
+    const icon = new THREE.Mesh(new THREE.ShapeGeometry(tri), new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true, opacity:0.9, side:THREE.DoubleSide, depthTest:false }));
+    icon.position.z = 0.05; icon.visible = false; root.add(icon);
     root.userData.billboardY = true;
     const o = register(root, 'video', 'Video', hex);
-    o.video = vid;
+    o.video = vid; o.playIcon = icon;
+    vid.addEventListener('play',  ()=> icon.visible = false);
+    vid.addEventListener('pause', ()=> icon.visible = true);
+    icon.visible = vid.paused;
   }, { once:true });
 }
 
@@ -496,6 +503,7 @@ function onUp(cx,cy){
   if(mode==='draw'){ endStroke(); return; }
   const moved = Math.hypot(cx-(mdPt?.x||0), cy-(mdPt?.y||0));
   if(Date.now()-mdT>320 || moved>14) return; // treat as drag, ignore
+  if(mode==='nav'){ const o=objAt(cx,cy); if(o&&o.type==='video'&&o.video){ if(o.video.paused){ o.video.play().catch(()=>toast('Browser blocked playback')); } else o.video.pause(); } return; }
   if(mode==='text'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; showTextInput(cx,cy); } }
   if(mode==='image'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; document.getElementById('img-input').click(); } }
   if(mode==='video'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; document.getElementById('video-input').click(); } }
