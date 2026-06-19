@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BLEUBOARD — 4D Creative Whiteboard</title>
-<meta name="description" content="BLEUBOARD — a 4D creative whiteboard. Draw 3D strokes, place extruded 3D text, images and live video, link ideas, and animate through the 4th dimension.">
+<title>BLEUUBOARD — 4D Creative Whiteboard</title>
+<meta name="description" content="BLEUUBOARD — a 4D creative whiteboard. Draw 3D strokes, place extruded 3D text, images and live video, link ideas, and animate through the 4th dimension.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{overflow:hidden;width:100%;height:100%;background:#00000d;-webkit-tap-highlight-color:transparent;user-select:none;}
@@ -264,7 +264,7 @@ input[type=color]:hover{border-color:#5af;}
 
 <!-- ════════ TOP BAR ════════ -->
 <div id="topbar">
-  <div class="tb-logo"><span>⬡</span><div>BLEUBOARD<em>4D Creative Whiteboard · <span style="color:#f90;letter-spacing:1px;">ALPHA</span></em></div></div>
+  <div class="tb-logo"><span>⬡</span><div>BLEUUBOARD<em>4D Creative Whiteboard · <span style="color:#f90;letter-spacing:1px;">ALPHA</span></em></div></div>
   <div class="tb-pickers">
     <div class="cpick" title="Stroke / object colour"><label for="pick-ink">Ink</label><input type="color" id="pick-ink" value="#00ccff"></div>
     <div class="cpick" title="Board background colour"><label for="pick-bg">Board BG</label><input type="color" id="pick-bg" value="#00000d"></div>
@@ -358,7 +358,7 @@ input[type=color]:hover{border-color:#5af;}
     <!-- Step 1 — Welcome -->
     <div class="gstep active" id="gstep-0">
       <div class="gstep-icon">⬡</div>
-      <h1>BLEUBOARD</h1>
+      <h1>BLEUUBOARD</h1>
       <p class="gstep-sub">4D Creative Whiteboard &nbsp;·&nbsp; <span style="color:#f90;letter-spacing:2px;font-size:9px;">ALPHA</span></p>
       <p class="gstep-desc">A living canvas where you draw 3D strokes, place shapes, images, video and animated critters — then push everything into the 4th dimension.</p>
       <div class="gstep-pills">
@@ -429,7 +429,7 @@ input[type=color]:hover{border-color:#5af;}
 <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/loaders/OBJLoader.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
-//  BLEUBOARD — 4D Creative Whiteboard
+//  BLEUUBOARD — 4D Creative Whiteboard
 // ═══════════════════════════════════════════════════════════
 
 // ── Renderer ───────────────────────────────────────────────
@@ -872,7 +872,7 @@ async function startRecording(withMic, withCam){
                : MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus') ? 'video/webm;codecs=vp8,opus' : 'video/webm';
     mediaRec=new MediaRecorder(combined,{ mimeType:mime }); recChunks=[];
     mediaRec.ondataavailable=e=>{ if(e.data && e.data.size) recChunks.push(e.data); };
-    mediaRec.onstop=()=>{ const blob=new Blob(recChunks,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`bleuboard-presentation-${Date.now()}.webm`; a.click(); toast('Presentation saved (.webm)'); };
+    mediaRec.onstop=()=>{ const blob=new Blob(recChunks,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`bleuuboard-presentation-${Date.now()}.webm`; a.click(); toast('Presentation saved (.webm)'); };
     mediaRec.start(200);
     recActive=true; recStart=Date.now();
     document.getElementById('rec-dot').style.display='flex';
@@ -1118,7 +1118,7 @@ document.getElementById('btn-reset').addEventListener('click', ()=>flyTo(HOME_PO
 document.getElementById('btn-clear').addEventListener('click', ()=>{ [...objects].forEach(removeObj); toast('Board cleared'); });
 document.getElementById('btn-export').addEventListener('click', ()=>{
   const data={ objects: objects.map(o=>({ id:o.id, type:o.type, label:o.label, color:o.color, fourD:o.fourD, pos:o.root.position.toArray() })), links: links.map(l=>({ a:l.a, b:l.b })) };
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download=`bleuboard-${Date.now()}.json`; a.click();
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download=`bleuuboard-${Date.now()}.json`; a.click();
 });
 document.getElementById('btn-import').addEventListener('click', ()=>document.getElementById('import-input').click());
 document.getElementById('import-input').addEventListener('change', e=>{
@@ -1169,7 +1169,7 @@ function goGuideStep(next, direction){
 document.getElementById('guide-next').addEventListener('click', ()=> goGuideStep(guideStep+1, 'fwd'));
 document.getElementById('guide-back').addEventListener('click', ()=> goGuideStep(guideStep-1, 'back'));
 document.getElementById('guide-start-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; setMode('draw'); });
-document.getElementById('guide-skip-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; localStorage.setItem('bleuboard_guided','1'); });
+document.getElementById('guide-skip-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; localStorage.setItem('bleuuboard_guided','1'); });
 document.getElementById('btn-guide').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='flex'; goGuideStep(0,'fwd'); });
 
 // Keyboard
@@ -1239,7 +1239,7 @@ function animate(){
 
 // ── Boot ───────────────────────────────────────────────────
 setMode('nav'); updateHUD(); animate();
-document.getElementById('guide-overlay').style.display = localStorage.getItem('bleuboard_guided') ? 'none' : 'flex';
+document.getElementById('guide-overlay').style.display = localStorage.getItem('bleuuboard_guided') ? 'none' : 'flex';
 </script>
 </body>
 </html>
