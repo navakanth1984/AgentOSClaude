@@ -24,6 +24,7 @@ class NTHBrainEngine {
         this.strokeTelemetry = [];
         this.currentStroke = null;
         this.isDrawing = false;
+        this.interactionMode = 'draw'; // 'draw' or 'rotate'
         
         // 3D/4D Render State
         this.scene = null;
@@ -136,6 +137,7 @@ class NTHBrainEngine {
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
         this.controls.maxPolarAngle = Math.PI; // Full polar range to allow rotating under the grid floor
+        this.controls.enabled = false; // Disabled by default, activated in ORBIT MODE
 
         // 3. Grid & Drawing Plane Scaffolding
         const grid = new THREE.GridHelper(24, 24, 0x6366f1, 0x1e293b);
@@ -253,6 +255,26 @@ class NTHBrainEngine {
 
     // Bind event listeners for drawing, controls, and exporting telemetry
     initEventListeners() {
+        // Mode Selector Events
+        const btnDraw = document.getElementById('btn-mode-draw');
+        const btnRotate = document.getElementById('btn-mode-rotate');
+
+        btnDraw.addEventListener('click', () => {
+            this.interactionMode = 'draw';
+            this.controls.enabled = false;
+            btnDraw.classList.add('active');
+            btnRotate.classList.remove('active');
+            this.logSwarmMessage("System", "Switched to DRAW MODE. Canvas orbit locked.");
+        });
+
+        btnRotate.addEventListener('click', () => {
+            this.interactionMode = 'rotate';
+            this.controls.enabled = true;
+            btnRotate.classList.add('active');
+            btnDraw.classList.remove('active');
+            this.logSwarmMessage("System", "Switched to ORBIT MODE. Swipe or drag to rotate view 360°.");
+        });
+
         // Canvas Drawing Events
         this.canvas.addEventListener('mousedown', (e) => this.startStroke(e));
         this.canvas.addEventListener('mousemove', (e) => this.drawStroke(e));
@@ -322,7 +344,7 @@ class NTHBrainEngine {
 
     // 3D Raycast Draw Operations
     startStroke(e) {
-        // OrbitControls must be disabled while drawing on the canvas to avoid conflict
+        if (this.interactionMode !== 'draw') return;
         this.controls.enabled = false;
         this.isDrawing = true;
         this.updateMouseVector(e);
@@ -353,7 +375,7 @@ class NTHBrainEngine {
     }
 
     drawStroke(e) {
-        if (!this.isDrawing) return;
+        if (this.interactionMode !== 'draw' || !this.isDrawing) return;
         this.updateMouseVector(e);
 
         this.raycaster.setFromCamera(this.mouseVector, this.camera);
@@ -385,9 +407,9 @@ class NTHBrainEngine {
     }
 
     endStroke() {
-        if (!this.isDrawing) return;
+        if (this.interactionMode !== 'draw' || !this.isDrawing) return;
         this.isDrawing = false;
-        this.controls.enabled = true; // Enable rotation control back
+        this.controls.enabled = (this.interactionMode === 'rotate');
 
         if (this.currentStroke && this.currentStroke.points.length > 1) {
             const originalLength = this.currentStroke.points.length;
@@ -531,7 +553,8 @@ class NTHBrainEngine {
 
         // Remove 4D splat particle flow networks
         this.particleSystems.forEach(sys => {
-            this.scene.remove(sys.points);
+            if (sys.mesh) this.scene.remove(sys.mesh);
+            if (sys.points) this.scene.remove(sys.points);
         });
         this.particleSystems = [];
 
