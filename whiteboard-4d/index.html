@@ -106,24 +106,117 @@ input[type=color]:hover{border-color:#5af;}
 #toast.show{opacity:1;}
 
 /* ════════ GUIDE ════════ */
-#guide-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,4,22,.9);
-  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);overflow-y:auto;padding:20px;}
-#guide-card{background:rgba(4,14,54,.98);border:1px solid rgba(80,160,255,.3);border-radius:16px;
-  padding:30px 34px;max-width:520px;width:100%;box-shadow:0 0 60px rgba(40,100,255,.18);}
-#guide-card h1{font-size:26px;font-weight:900;letter-spacing:4px;color:#5af;margin-bottom:4px;text-align:center;}
-#guide-card .sub{font-size:11px;color:#446;letter-spacing:1px;margin-bottom:24px;text-align:center;}
-.guide-steps{display:flex;flex-direction:column;gap:13px;margin-bottom:24px;}
-.gs{display:flex;align-items:flex-start;gap:13px;}
-.gs-icon{font-size:20px;flex-shrink:0;width:30px;text-align:center;}
-.gs-text{font-size:12.5px;line-height:1.55;color:#99b;}
-.gs-text strong{color:#ccf;font-size:13.5px;display:block;margin-bottom:1px;}
-.gs-text b{color:#7df;}
-.guide-start{width:100%;padding:13px;font-size:15px;font-weight:700;letter-spacing:2px;
-  background:linear-gradient(135deg,rgba(30,80,220,.85),rgba(80,20,200,.85));border:1px solid #5af;
-  border-radius:9px;color:#9cf;cursor:pointer;transition:box-shadow .2s;touch-action:manipulation;}
-.guide-start:hover{box-shadow:0 0 22px rgba(80,160,255,.4);}
-.guide-skip{display:block;margin:12px auto 0;font-size:11px;color:#334;cursor:pointer;background:none;border:none;}
-.guide-skip:hover{color:#668;}
+#guide-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:linear-gradient(175deg,rgba(0,2,18,.97) 0%,rgba(0,8,36,.94) 100%);
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:16px;overflow-y:auto;
+}
+#guide-card{
+  background:rgba(4,14,54,.99);
+  border:1px solid rgba(80,160,255,.22);
+  border-radius:22px;
+  padding:36px 40px 26px;
+  max-width:540px;width:100%;
+  box-shadow:0 0 90px rgba(30,90,255,.13),inset 0 1px 0 rgba(120,180,255,.08);
+  animation:gCardIn .45s cubic-bezier(.22,1,.36,1);
+}
+@keyframes gCardIn{from{opacity:0;transform:translateY(22px) scale(.97);}to{opacity:1;transform:none;}}
+
+/* Progress dots */
+.guide-dots{display:flex;gap:8px;justify-content:center;margin-bottom:30px;}
+.gdot{width:7px;height:7px;border-radius:50%;background:rgba(80,160,255,.18);
+  transition:background .3s,transform .3s,width .3s;}
+.gdot.active{background:#5af;transform:scale(1.3);width:22px;border-radius:4px;}
+
+/* Steps */
+.gstep{display:none;}
+.gstep.active{display:block;animation:gStepIn .28s ease;}
+@keyframes gStepIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:none;}}
+.gstep.back-anim{animation:gStepBack .28s ease;}
+@keyframes gStepBack{from{opacity:0;transform:translateX(-16px);}to{opacity:1;transform:none;}}
+
+/* Step hero icon */
+.gstep-icon{font-size:56px;text-align:center;margin-bottom:12px;line-height:1.1;}
+#guide-card h1{font-size:32px;font-weight:900;letter-spacing:5px;color:#5af;text-align:center;margin-bottom:5px;}
+#guide-card h2{font-size:20px;font-weight:800;color:#d0d8ff;text-align:center;margin-bottom:18px;letter-spacing:.4px;}
+.gstep-sub{font-size:10.5px;color:#3a4a70;letter-spacing:2.5px;text-align:center;
+  text-transform:uppercase;margin-bottom:16px;}
+.gstep-desc{font-size:13.5px;color:#8899bb;line-height:1.7;text-align:center;margin-bottom:22px;max-width:360px;margin-left:auto;margin-right:auto;}
+
+/* Quick-glance pill row (step 1) */
+.gstep-pills{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-bottom:4px;}
+.gpill{display:flex;align-items:center;gap:7px;background:rgba(20,50,120,.55);
+  border:1px solid rgba(80,160,255,.18);border-radius:30px;padding:7px 14px;
+  font-size:12.5px;color:#99b;transition:border-color .15s,background .15s;}
+.gpill span{font-size:18px;}
+.gpill:hover{border-color:#5af;background:rgba(30,70,180,.55);}
+
+/* Feature list */
+.glist{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:4px;}
+.glist li{font-size:13px;color:#8899bb;line-height:1.55;
+  padding:10px 14px;background:rgba(10,28,80,.45);border-radius:9px;
+  border-left:3px solid rgba(80,160,255,.3);transition:border-color .15s;}
+.glist li:hover{border-left-color:#5af;}
+.glist li b{color:#ccd6ff;}
+
+/* Navigation row */
+.guide-nav{display:flex;justify-content:space-between;align-items:center;margin-top:26px;gap:10px;}
+.gnav-back{background:none;border:1px solid rgba(80,160,255,.18);color:#3a4a70;border-radius:9px;
+  padding:10px 20px;cursor:pointer;font-size:13px;font-weight:600;
+  transition:border-color .15s,color .15s;touch-action:manipulation;min-width:80px;}
+.gnav-back:hover{border-color:rgba(80,160,255,.5);color:#7090c0;}
+.gnav-next{flex:1;background:linear-gradient(135deg,rgba(25,75,210,.9),rgba(75,15,195,.9));
+  border:1px solid rgba(80,160,255,.55);color:#b0ccff;border-radius:9px;
+  padding:11px 24px;cursor:pointer;font-size:14px;font-weight:800;letter-spacing:1.5px;
+  transition:box-shadow .2s,border-color .2s;touch-action:manipulation;}
+.gnav-next:hover{box-shadow:0 0 26px rgba(80,160,255,.4);border-color:#7af;}
+
+/* Final CTA button */
+.guide-start{width:100%;margin-top:20px;padding:15px;font-size:15px;font-weight:900;
+  letter-spacing:3px;background:linear-gradient(135deg,rgba(25,75,210,.95),rgba(75,15,195,.95));
+  border:1px solid #6af;border-radius:11px;color:#c0d8ff;cursor:pointer;
+  touch-action:manipulation;animation:startPulse 2.2s ease-in-out infinite;}
+@keyframes startPulse{
+  0%,100%{box-shadow:0 0 16px rgba(80,160,255,.3),inset 0 1px 0 rgba(255,255,255,.06);}
+  50%{box-shadow:0 0 38px rgba(80,160,255,.65),inset 0 1px 0 rgba(255,255,255,.1);}
+}
+.guide-start:hover{animation:none;box-shadow:0 0 44px rgba(80,160,255,.7);}
+
+.guide-skip{display:block;margin:13px auto 0;font-size:11px;color:#2a3650;
+  cursor:pointer;background:none;border:none;transition:color .15s;letter-spacing:.4px;}
+.guide-skip:hover{color:#5a709a;}
+
+/* Progress label */
+.guide-progress{text-align:center;font-size:10px;color:#2a3650;letter-spacing:.8px;
+  margin-bottom:20px;text-transform:uppercase;}
+
+/* ── Responsive ── */
+@media(max-width:560px){
+  #guide-card{padding:24px 18px 20px;border-radius:16px;}
+  #guide-card h1{font-size:26px;letter-spacing:4px;}
+  #guide-card h2{font-size:17px;}
+  .gstep-icon{font-size:42px;}
+  .gstep-desc{font-size:12.5px;}
+  .glist li{font-size:12px;padding:8px 11px;}
+  .gpill{font-size:11.5px;padding:6px 11px;}
+  .gnav-next{font-size:13px;padding:10px 16px;}
+  #guide-card{max-height:90vh;overflow-y:auto;}
+}
+@media(min-width:820px){
+  #guide-card{padding:40px 48px 30px;}
+  .gstep-icon{font-size:64px;margin-bottom:16px;}
+  .gstep-desc{font-size:14.5px;}
+}
+@media(max-height:620px){
+  #guide-overlay{align-items:flex-start;padding-top:6px;}
+  #guide-card{padding:18px 28px 16px;}
+  .gstep-icon{font-size:34px;margin-bottom:8px;}
+  .guide-dots{margin-bottom:16px;}
+  .glist{gap:7px;}
+  .glist li{padding:7px 11px;}
+}
 
 /* ════════ PALETTE (shapes / stickers) ════════ */
 #palette{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:250;
@@ -253,22 +346,77 @@ input[type=color]:hover{border-color:#5af;}
 <!-- ════════ GUIDE ════════ -->
 <div id="guide-overlay">
   <div id="guide-card">
-    <h1>BLEUBOARD</h1>
-    <p class="sub">4D CREATIVE WHITEBOARD</p>
-    <div class="guide-steps">
-      <div class="gs"><div class="gs-icon">✏️</div><div class="gs-text"><strong>Draw in 3D space</strong>Tap <b>Draw</b>, then drag anywhere — your stroke becomes a glowing 3D tube floating in space at the depth you started from.</div></div>
-      <div class="gs"><div class="gs-icon">🅣</div><div class="gs-text"><strong>Real 3D text</strong>Tap <b>3D Text</b>, click a spot, type — it appears as solid <b>extruded</b> lettering you can orbit around, not a flat label.</div></div>
-      <div class="gs"><div class="gs-icon">🎬</div><div class="gs-text"><strong>Images &amp; live video</strong><b>Image</b> and <b>Video</b> place media on floating panels in the scene. Videos play and loop right on the board.</div></div>
-      <div class="gs"><div class="gs-icon">🟦</div><div class="gs-text"><strong>Place objects like Minecraft</strong>Click any surface — floor, back wall, or an existing object — and the new thing lands exactly on that face.</div></div>
-      <div class="gs"><div class="gs-icon">🔷</div><div class="gs-text"><strong>Shapes &amp; stickers</strong>Tap <b>Shapes</b> for 3D solids and 2D flats, or <b>Stickers</b> for emoji, animals &amp; birds. Pick one from the palette, click a surface. In Nav mode, tap any object to make it <b>bounce</b>.</div></div>
-      <div class="gs"><div class="gs-icon">🦩</div><div class="gs-text"><strong>Living 3D critters &amp; uploads</strong>Tap <b>Critters</b> for animated models (flamingo, parrot, stork, horse), or use <b>📦 Upload 3D model</b> to drop in your own GLB / GLTF / OBJ files. Add <b>🔊 Audio</b> that plays spatially in 3D too.</div></div>
-      <div class="gs"><div class="gs-icon">✋</div><div class="gs-text"><strong>Move things in 3D space</strong>Tap <b>Move</b>, then drag any object to reposition it; roll the mouse-wheel to push it deeper or pull it closer. Works on everything you create.</div></div>
-      <div class="gs"><div class="gs-icon">🔴</div><div class="gs-text"><strong>Record a presentation</strong><b>🖥 Share a window</b> drops a live screen/app window into the board. <b>🔴 Presentation</b> records the whole board to video with your mic and an optional webcam picture-in-picture.</div></div>
-      <div class="gs"><div class="gs-icon">🔗</div><div class="gs-text"><strong>Connect ideas</strong>Tap <b>Link</b>, click two objects, and a bezier arc joins them. Build a 3D mind-map.</div></div>
-      <div class="gs"><div class="gs-icon">⏱</div><div class="gs-text"><strong>The 4th dimension</strong>Toggle <b>4D</b> on, then create. New objects gently drift through time — oscillating in the W axis like the tesseract behind you.</div></div>
+
+    <!-- Progress dots -->
+    <div class="guide-dots">
+      <span class="gdot active"></span>
+      <span class="gdot"></span>
+      <span class="gdot"></span>
+      <span class="gdot"></span>
     </div>
-    <button class="guide-start" id="guide-start-btn">START CREATING →</button>
-    <button class="guide-skip" id="guide-skip-btn">Skip (don't show again)</button>
+
+    <!-- Step 1 — Welcome -->
+    <div class="gstep active" id="gstep-0">
+      <div class="gstep-icon">⬡</div>
+      <h1>BLEUBOARD</h1>
+      <p class="gstep-sub">4D Creative Whiteboard</p>
+      <p class="gstep-desc">A living canvas where you draw 3D strokes, place shapes, images, video and animated critters — then push everything into the 4th dimension.</p>
+      <div class="gstep-pills">
+        <div class="gpill"><span>✏️</span>Draw</div>
+        <div class="gpill"><span>🟦</span>Build</div>
+        <div class="gpill"><span>🎬</span>Media</div>
+        <div class="gpill"><span>🦩</span>Critters</div>
+        <div class="gpill"><span>⏱</span>4D Time</div>
+      </div>
+    </div>
+
+    <!-- Step 2 — Draw & Build -->
+    <div class="gstep" id="gstep-1">
+      <div class="gstep-icon">✏️</div>
+      <h2>Draw &amp; Build in 3D</h2>
+      <ul class="glist">
+        <li><b>Draw</b> — drag anywhere to paint glowing 3D tubes in space</li>
+        <li><b>3D Text</b> — click a spot, type, get solid extruded letters</li>
+        <li><b>Block</b> — click any surface to stack voxels like Minecraft</li>
+        <li><b>Shapes</b> — 12 solids + 8 flat shapes placed on any face</li>
+        <li><b>Stickers</b> — 48 emoji &amp; animals as floating sprites</li>
+      </ul>
+    </div>
+
+    <!-- Step 3 — Media & Critters -->
+    <div class="gstep" id="gstep-2">
+      <div class="gstep-icon">🦩</div>
+      <h2>Media &amp; Living Objects</h2>
+      <ul class="glist">
+        <li><b>Image</b> — drop any photo as a floating 3D panel</li>
+        <li><b>Video</b> — plays &amp; loops on the board (tap to pause)</li>
+        <li><b>Audio</b> — spatial sound that fades with distance in 3D</li>
+        <li><b>Critters</b> — flamingo, parrot, stork &amp; horse with real animations</li>
+        <li><b>4D toggle ⏱</b> — new objects drift through time like a tesseract</li>
+      </ul>
+    </div>
+
+    <!-- Step 4 — Move, Resize & Present -->
+    <div class="gstep" id="gstep-3">
+      <div class="gstep-icon">🚀</div>
+      <h2>Move, Resize &amp; Present</h2>
+      <ul class="glist">
+        <li><b>Move ✋</b> — drag to reposition · scroll = depth</li>
+        <li><b>Shift+scroll</b> or <b>+ / −</b> keys to grow or shrink any object</li>
+        <li><b>Link 🔗</b> — click two objects to draw a bezier arc between them</li>
+        <li><b>🖥 Share a window</b> — drops a live screen into the board</li>
+        <li><b>🔴 Record</b> — capture the board + mic + webcam picture-in-picture</li>
+      </ul>
+      <button class="guide-start" id="guide-start-btn">START CREATING →</button>
+    </div>
+
+    <!-- Back / Next navigation -->
+    <div class="guide-nav" id="guide-nav">
+      <button class="gnav-back" id="guide-back">← Back</button>
+      <button class="gnav-next" id="guide-next">Next →</button>
+    </div>
+
+    <button class="guide-skip" id="guide-skip-btn">Skip — don't show again</button>
   </div>
 </div>
 
@@ -999,9 +1147,30 @@ document.getElementById('btn-window').addEventListener('click', ()=>addScreenWin
 document.getElementById('btn-rec').addEventListener('click', ()=>document.getElementById('rec-panel').classList.toggle('show'));
 document.getElementById('rec-start').addEventListener('click', ()=>startRecording(document.getElementById('rec-mic').checked, document.getElementById('rec-cam').checked));
 document.getElementById('rec-stop').addEventListener('click', ()=>stopRecording());
-document.getElementById('btn-guide').addEventListener('click', ()=>document.getElementById('guide-overlay').style.display='flex');
+// ── Guide step navigation ──────────────────────────────────
+let guideStep = 0;
+const GUIDE_TOTAL = 4;
+
+function goGuideStep(next, direction){
+  const steps = document.querySelectorAll('.gstep');
+  const dots  = document.querySelectorAll('.gdot');
+  steps[guideStep].classList.remove('active');
+  guideStep = Math.max(0, Math.min(GUIDE_TOTAL-1, next));
+  steps[guideStep].classList.remove('back-anim');
+  steps[guideStep].classList.add('active', direction==='back' ? 'back-anim' : '');
+  // remove animation class after it fires so re-entry works
+  setTimeout(()=> steps[guideStep].classList.remove('back-anim'), 320);
+  dots.forEach((d,i)=> d.classList.toggle('active', i===guideStep));
+  const isLast = guideStep === GUIDE_TOTAL-1;
+  document.getElementById('guide-nav').style.display = isLast ? 'none' : 'flex';
+  document.getElementById('guide-back').style.visibility = guideStep===0 ? 'hidden' : 'visible';
+}
+
+document.getElementById('guide-next').addEventListener('click', ()=> goGuideStep(guideStep+1, 'fwd'));
+document.getElementById('guide-back').addEventListener('click', ()=> goGuideStep(guideStep-1, 'back'));
 document.getElementById('guide-start-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; setMode('draw'); });
 document.getElementById('guide-skip-btn').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='none'; localStorage.setItem('bleuboard_guided','1'); });
+document.getElementById('btn-guide').addEventListener('click', ()=>{ document.getElementById('guide-overlay').style.display='flex'; goGuideStep(0,'fwd'); });
 
 // Keyboard
 window.addEventListener('keydown', e=>{
