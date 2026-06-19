@@ -792,11 +792,17 @@ canvas {
 
 /* Responsive Layout for Mobile Viewports */
 @media (max-width: 768px) {
+    body {
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+
     .app-container {
         grid-template-columns: 1fr;
         grid-template-rows: auto 450px auto;
-        overflow-y: auto;
+        overflow-y: visible;
         height: auto;
+        width: 100vw;
     }
     
     .sidebar {
@@ -851,5 +857,19 @@ canvas {
     
     .hud-item strong {
         font-size: 0.8rem;
+    }
+}
+
+/* Responsive scrolling for smaller desktop screens */
+@media (max-height: 820px) and (min-width: 769px) {
+    body {
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+    
+    .app-container {
+        grid-template-rows: 550px 220px;
+        overflow-y: visible;
+        height: auto;
     }
 }
