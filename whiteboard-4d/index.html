@@ -125,6 +125,29 @@ input[type=color]:hover{border-color:#5af;}
 .guide-skip{display:block;margin:12px auto 0;font-size:11px;color:#334;cursor:pointer;background:none;border:none;}
 .guide-skip:hover{color:#668;}
 
+/* ════════ PALETTE (shapes / stickers) ════════ */
+#palette{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:250;
+  display:none;background:rgba(2,10,40,.97);border:1px solid rgba(80,160,255,.3);
+  border-radius:14px;padding:10px;max-width:92vw;width:max-content;
+  box-shadow:0 0 30px rgba(20,60,180,.25);backdrop-filter:blur(16px);}
+#palette.show{display:block;}
+#palette .pal-title{font-size:9px;color:#669;letter-spacing:1px;text-transform:uppercase;margin:0 2px 7px;}
+#palette .pal-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-height:160px;overflow-y:auto;}
+@media(max-width:520px){#palette .pal-grid{grid-template-columns:repeat(6,1fr);}}
+.pal-item{width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  font-size:21px;background:rgba(12,28,70,.7);border:1px solid rgba(80,160,255,.18);
+  border-radius:8px;cursor:pointer;transition:background .1s,border-color .1s;touch-action:manipulation;color:#9bf;}
+.pal-item:hover{background:rgba(35,90,200,.5);}
+.pal-item.sel{border-color:#5af;background:rgba(20,80,230,.55);box-shadow:0 0 8px rgba(80,180,255,.3);}
+.pal-item svg{width:24px;height:24px;}
+@media(min-width:820px){#palette{left:80px;bottom:60px;transform:none;}}
+
+/* ════════ SCENE COLOUR PANEL ════════ */
+#scene-panel{display:none;flex-direction:column;gap:7px;margin-top:5px;
+  background:rgba(4,12,44,.95);border:1px solid rgba(80,160,255,.2);border-radius:8px;padding:9px 11px;backdrop-filter:blur(10px);}
+#scene-panel.show{display:flex;}
+#scene-panel .srow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;color:#779;letter-spacing:.5px;}
+
 #video-input,#img-input{display:none;}
 </style>
 </head>
@@ -148,6 +171,8 @@ input[type=color]:hover{border-color:#5af;}
   <button class="tb"        data-mode="image"  title="Place an image">🖼<span class="tb-label">Image</span></button>
   <button class="tb"        data-mode="video"  title="Place animated video">🎬<span class="tb-label">Video</span></button>
   <button class="tb"        data-mode="block"  title="Place a 3D block">🟦<span class="tb-label">Block</span></button>
+  <button class="tb"        data-mode="shape"  title="Place 3D & 2D shapes">🔷<span class="tb-label">Shapes</span></button>
+  <button class="tb"        data-mode="sticker" title="Place emoji, animals, birds & icons">🦋<span class="tb-label">Stickers</span></button>
   <button class="tb"        data-mode="connect" title="Link two objects">🔗<span class="tb-label">Link</span></button>
   <button class="tb danger" data-mode="erase"  title="Delete an object">✂️<span class="tb-label">Erase</span></button>
   <button class="tb toggle" id="btn-4d"        title="Toggle 4D time animation for new objects">⏱<span class="tb-label">4D</span></button>
@@ -157,8 +182,20 @@ input[type=color]:hover{border-color:#5af;}
 <!-- ════════ UTILITIES ════════ -->
 <div id="utils">
   <button class="ubtn" id="btn-reset">⟳ Reset view</button>
+  <button class="ubtn" id="btn-scene">🎨 Scene colors</button>
+  <div id="scene-panel">
+    <div class="srow"><span>Wall</span><input type="color" id="pick-wall" value="#0c1e3a"></div>
+    <div class="srow"><span>Floor</span><input type="color" id="pick-floor" value="#08182e"></div>
+    <div class="srow"><span>Board BG</span><input type="color" id="pick-bg2" value="#00000d"></div>
+  </div>
   <button class="ubtn" id="btn-clear">🗑 Clear all</button>
   <button class="ubtn" id="btn-export">💾 Export JSON</button>
+</div>
+
+<!-- ════════ PALETTE ════════ -->
+<div id="palette">
+  <div class="pal-title" id="pal-title">Shapes</div>
+  <div class="pal-grid" id="pal-grid"></div>
 </div>
 
 <canvas id="c"></canvas>
@@ -187,6 +224,7 @@ input[type=color]:hover{border-color:#5af;}
       <div class="gs"><div class="gs-icon">🅣</div><div class="gs-text"><strong>Real 3D text</strong>Tap <b>3D Text</b>, click a spot, type — it appears as solid <b>extruded</b> lettering you can orbit around, not a flat label.</div></div>
       <div class="gs"><div class="gs-icon">🎬</div><div class="gs-text"><strong>Images &amp; live video</strong><b>Image</b> and <b>Video</b> place media on floating panels in the scene. Videos play and loop right on the board.</div></div>
       <div class="gs"><div class="gs-icon">🟦</div><div class="gs-text"><strong>Place objects like Minecraft</strong>Click any surface — floor, back wall, or an existing object — and the new thing lands exactly on that face.</div></div>
+      <div class="gs"><div class="gs-icon">🔷</div><div class="gs-text"><strong>Shapes &amp; stickers</strong>Tap <b>Shapes</b> for 3D solids and 2D flats, or <b>Stickers</b> for emoji, animals &amp; birds. Pick one from the palette, click a surface. In Nav mode, tap any object to make it <b>bounce</b>.</div></div>
       <div class="gs"><div class="gs-icon">🔗</div><div class="gs-text"><strong>Connect ideas</strong>Tap <b>Link</b>, click two objects, and a bezier arc joins them. Build a 3D mind-map.</div></div>
       <div class="gs"><div class="gs-icon">⏱</div><div class="gs-text"><strong>The 4th dimension</strong>Toggle <b>4D</b> on, then create. New objects gently drift through time — oscillating in the W axis like the tesseract behind you.</div></div>
     </div>
@@ -418,6 +456,82 @@ function addBlock(gx,gy,gz,hex){
   placeTargets.push(mesh); o.collider = mesh;
 }
 
+// ── Surface helper: world point + normal under the pointer ─
+function hitToSurface(cx, cy){
+  const h = getHit(cx, cy); if(!h) return null;
+  const n = h.face ? h.face.normal.clone().transformDirection(h.object.matrixWorld) : new THREE.Vector3(0,1,0);
+  return { point: h.point.clone(), normal: n };
+}
+
+// ── Shape library (3D solids + 2D flats) ───────────────────
+const SHAPES = {
+  // 3D solids — radius ~0.9 for consistent sizing
+  cube:    { d3:true,  icon:'⬛', make:()=>new THREE.BoxGeometry(1.4,1.4,1.4) },
+  sphere:  { d3:true,  icon:'⬤', make:()=>new THREE.SphereGeometry(0.9,32,24) },
+  cone:    { d3:true,  icon:'🔺', make:()=>new THREE.ConeGeometry(0.9,1.6,32) },
+  cylinder:{ d3:true,  icon:'🛢', make:()=>new THREE.CylinderGeometry(0.7,0.7,1.5,32) },
+  torus:   { d3:true,  icon:'🍩', make:()=>new THREE.TorusGeometry(0.7,0.28,16,40) },
+  knot:    { d3:true,  icon:'🪢', make:()=>new THREE.TorusKnotGeometry(0.6,0.22,80,12) },
+  ico:     { d3:true,  icon:'🔶', make:()=>new THREE.IcosahedronGeometry(0.95,0) },
+  dodeca:  { d3:true,  icon:'⬡', make:()=>new THREE.DodecahedronGeometry(0.95,0) },
+  octa:    { d3:true,  icon:'💠', make:()=>new THREE.OctahedronGeometry(0.95,0) },
+  tetra:   { d3:true,  icon:'△', make:()=>new THREE.TetrahedronGeometry(1.05,0) },
+  prism:   { d3:true,  icon:'🔻', make:()=>new THREE.CylinderGeometry(0.85,0.85,1.4,3) },
+  capsule: { d3:true,  icon:'💊', make:()=>new THREE.CylinderGeometry(0.5,0.5,1.3,20) },
+  // 2D flats — built from THREE.Shape, placed as billboards
+  circle:  { d3:false, icon:'⭕', make:()=>new THREE.CircleGeometry(0.95,48) },
+  square:  { d3:false, icon:'⬜', make:()=>new THREE.PlaneGeometry(1.7,1.7) },
+  triangle:{ d3:false, icon:'▲', make:()=>flatShape(s=>{s.moveTo(0,1);s.lineTo(-0.95,-0.7);s.lineTo(0.95,-0.7);s.closePath();}) },
+  star:    { d3:false, icon:'⭐', make:()=>starGeo(5,1,0.45) },
+  heart:   { d3:false, icon:'❤️', make:()=>heartGeo() },
+  hexagon: { d3:false, icon:'⬢', make:()=>polyGeo(6,1) },
+  pentagon:{ d3:false, icon:'⬠', make:()=>polyGeo(5,1) },
+  diamond: { d3:false, icon:'🔷', make:()=>polyGeo(4,1) },
+};
+function flatShape(fn){ const s=new THREE.Shape(); fn(s); return new THREE.ShapeGeometry(s); }
+function polyGeo(n,r){ return flatShape(s=>{ for(let i=0;i<n;i++){ const a=Math.PI/2 + i*2*Math.PI/n; const x=Math.cos(a)*r, y=Math.sin(a)*r; i?s.lineTo(x,y):s.moveTo(x,y);} s.closePath(); }); }
+function starGeo(pts,ro,ri){ return flatShape(s=>{ for(let i=0;i<pts*2;i++){ const r=i%2?ri:ro; const a=Math.PI/2 + i*Math.PI/pts; const x=Math.cos(a)*r, y=Math.sin(a)*r; i?s.lineTo(x,y):s.moveTo(x,y);} s.closePath(); }); }
+function heartGeo(){ return flatShape(s=>{ s.moveTo(0,0.35); s.bezierCurveTo(0,0.7,-0.5,1.0,-0.75,0.55); s.bezierCurveTo(-1.0,0.1,-0.4,-0.2,0,-0.7); s.bezierCurveTo(0.4,-0.2,1.0,0.1,0.75,0.55); s.bezierCurveTo(0.5,1.0,0,0.7,0,0.35); }); }
+
+function addShape(key, surf, hex){
+  const def = SHAPES[key]; if(!def) return;
+  const col = new THREE.Color(hex);
+  const mat = def.d3
+    ? new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.12), roughness:0.4, metalness:0.2 })
+    : new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.25), roughness:0.5, side:THREE.DoubleSide });
+  const mesh = new THREE.Mesh(def.make(), mat); mesh.castShadow = true;
+  const root = new THREE.Group();
+  root.position.copy(surf.point).addScaledVector(surf.normal, def.d3 ? 1.0 : 0.05);
+  root.add(mesh);
+  if(!def.d3) root.userData.billboardY = true;   // flat shapes face camera
+  else        root.userData.spin = true;         // solids gently rotate
+  const o = register(root, 'shape', key, hex);
+  o.is3D = def.d3;
+}
+
+// ── Sticker library (emoji: faces, animals, birds, nature) ─
+const STICKERS = ['😀','😎','🥳','🤖','👽','💀','❤️','🔥','⭐','🌟','✨','⚡','💎','🎈','🚀','🌈',
+  '🦅','🐦','🕊️','🦜','🦢','🦋','🐝','🐞','🐱','🐶','🦊','🐼','🦁','🐯','🐰','🐸',
+  '🐢','🐙','🐠','🦈','🌳','🌲','🌸','🌺','🍄','🍎','🌙','☀️','☁️','💧','🎵','💡'];
+
+function emojiTexture(ch){
+  const S=256, cv=document.createElement('canvas'); cv.width=cv.height=S;
+  const ctx=cv.getContext('2d');
+  ctx.font='200px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(ch, S/2, S/2+12);
+  const tex=new THREE.CanvasTexture(cv); tex.minFilter=THREE.LinearFilter; return tex;
+}
+function addSticker(ch, surf){
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map:emojiTexture(ch), transparent:true, depthTest:true }));
+  sp.scale.set(3,3,1);
+  const root = new THREE.Group();
+  root.position.copy(surf.point).addScaledVector(surf.normal, 1.6);
+  root.add(sp);
+  const o = register(root, 'sticker', ch, ink);
+  o.sprite = sp;
+}
+
 // ── Links ──────────────────────────────────────────────────
 function center(o){ const v=new THREE.Vector3(); o.root.getWorldPosition(v); return v; }
 function createLink(a, b){
@@ -456,6 +570,7 @@ function removeObj(o){
 // ═══════════════════════════════════════════════════════════
 let mode='nav', ink='#00ccff', fourDOn=false, connectFirst=null;
 let pendingPos=null; // surface point awaiting text/image/video
+let curShape='sphere', curSticker='🦋';
 
 const PRESETS=['#00ccff','#ff4466','#44ff88','#ffcc00','#ff8800','#cc66ff','#ffffff','#ff6644','#00ffcc'];
 const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan',
@@ -464,6 +579,8 @@ const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan',
   image:'🖼 Click a surface → choose an image file',
   video:'🎬 Click a surface → choose a video (plays & loops)',
   block:'🟦 Click any surface → block lands on that face',
+  shape:'🔷 Pick a shape below, then click a surface to place it',
+  sticker:'🦋 Pick an emoji below, then click a surface to place it',
   connect:'🔗 Click one object, then another to link them',
   erase:'✂️ Click any object to delete it' };
 
@@ -477,8 +594,36 @@ function setMode(m){
   ghost.visible=false; drawing=false; drawPts=[]; liveLine.visible=false;
   document.getElementById('conn-banner').style.display=(m==='connect')?'block':'none';
   if(m!=='connect') connectFirst=null;
-  canvas.style.cursor={ nav:'grab', draw:'crosshair', text:'text', image:'cell', video:'cell', block:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  canvas.style.cursor={ nav:'grab', draw:'crosshair', text:'text', image:'cell', video:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  // palette
+  const pal=document.getElementById('palette');
+  if(m==='shape'){ buildPalette('shape'); pal.classList.add('show'); }
+  else if(m==='sticker'){ buildPalette('sticker'); pal.classList.add('show'); }
+  else pal.classList.remove('show');
   showModeTip(m); updateHUD();
+}
+
+// ── Palette builder ────────────────────────────────────────
+function buildPalette(kind){
+  const grid=document.getElementById('pal-grid'); const title=document.getElementById('pal-title');
+  grid.innerHTML='';
+  if(kind==='shape'){
+    title.textContent='Shapes — 3D solids & 2D flats';
+    Object.keys(SHAPES).forEach(key=>{
+      const b=document.createElement('div'); b.className='pal-item'+(key===curShape?' sel':'');
+      b.textContent=SHAPES[key].icon; b.title=key;
+      b.onclick=()=>{ curShape=key; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+      grid.appendChild(b);
+    });
+  } else {
+    title.textContent='Stickers — emoji, animals, birds & icons';
+    STICKERS.forEach(ch=>{
+      const b=document.createElement('div'); b.className='pal-item'+(ch===curSticker?' sel':'');
+      b.textContent=ch;
+      b.onclick=()=>{ curSticker=ch; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+      grid.appendChild(b);
+    });
+  }
 }
 
 let mdPt=null, mdT=0;
@@ -486,15 +631,18 @@ function onDown(cx,cy){
   mdPt={x:cx,y:cy}; mdT=Date.now();
   if(mode==='draw') beginStroke(cx,cy);
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p) addBlock(p.x,p.y,p.z,ink); }
+  if(mode==='shape'){ const s=hitToSurface(cx,cy); if(s) addShape(curShape, s, ink); }
+  if(mode==='sticker'){ const s=hitToSurface(cx,cy); if(s) addSticker(curSticker, s); }
   if(mode==='erase'){ const o=objAt(cx,cy); if(o) removeObj(o); }
 }
 function onMove(cx,cy){
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p){ ghost.position.set(p.x,p.y,p.z); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
+  else if(mode==='shape'||mode==='sticker'){ const s=hitToSurface(cx,cy); if(s){ ghost.position.copy(s.point).addScaledVector(s.normal,0.6); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
   else ghost.visible=false;
   if(mode==='draw' && drawing) addStrokePoint(cx,cy);
 
   const tip=document.getElementById('tip');
-  if(['block','erase'].includes(mode)){ const h=getHit(cx,cy);
+  if(['block','shape','sticker','erase'].includes(mode)){ const h=getHit(cx,cy);
     if(h){ tip.textContent=h.object.name==='floor'?'Floor':h.object.name==='wall'?'Board Wall':'Object'; tip.style.display='block'; tip.style.left=cx+'px'; tip.style.top=cy+'px'; }
     else tip.style.display='none';
   } else tip.style.display='none';
@@ -503,7 +651,10 @@ function onUp(cx,cy){
   if(mode==='draw'){ endStroke(); return; }
   const moved = Math.hypot(cx-(mdPt?.x||0), cy-(mdPt?.y||0));
   if(Date.now()-mdT>320 || moved>14) return; // treat as drag, ignore
-  if(mode==='nav'){ const o=objAt(cx,cy); if(o&&o.type==='video'&&o.video){ if(o.video.paused){ o.video.play().catch(()=>toast('Browser blocked playback')); } else o.video.pause(); } return; }
+  if(mode==='nav'){ const o=objAt(cx,cy); if(!o) return;
+    if(o.type==='video'&&o.video){ if(o.video.paused){ o.video.play().catch(()=>toast('Browser blocked playback')); } else o.video.pause(); }
+    else { o.bounce = performance.now(); } // tap to bounce — interactive feedback
+    return; }
   if(mode==='text'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; showTextInput(cx,cy); } }
   if(mode==='image'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; document.getElementById('img-input').click(); } }
   if(mode==='video'){ const f=hitToFree(getHit(cx,cy)); if(f){ pendingPos=f; document.getElementById('video-input').click(); } }
@@ -540,7 +691,12 @@ function flyTo(pos,tgt,dur=900){ const sp=camera.position.clone(), st=controls.t
 
 // ── Colour pickers ─────────────────────────────────────────
 document.getElementById('pick-ink').addEventListener('input', e=>{ ink=e.target.value; ghost.material.color.set(ink); });
-document.getElementById('pick-bg').addEventListener('input', e=>{ const col=new THREE.Color(e.target.value); scene.background=col; scene.fog.color.copy(col); grid.material.color.set(col.clone().multiplyScalar(1.5)); });
+function setBG(hex){ const col=new THREE.Color(hex); scene.background=col; scene.fog.color.copy(col); grid.material.color.set(col.clone().multiplyScalar(1.5)); document.getElementById('pick-bg').value=hex; document.getElementById('pick-bg2').value=hex; }
+document.getElementById('pick-bg').addEventListener('input', e=>setBG(e.target.value));
+document.getElementById('pick-bg2').addEventListener('input', e=>setBG(e.target.value));
+document.getElementById('pick-wall').addEventListener('input', e=>{ const col=new THREE.Color(e.target.value); wall.material.color.copy(col); wEdge.material.color.copy(col.clone().multiplyScalar(1.8)); });
+document.getElementById('pick-floor').addEventListener('input', e=>{ floor.material.color.set(e.target.value); });
+document.getElementById('btn-scene').addEventListener('click', ()=>document.getElementById('scene-panel').classList.toggle('show'));
 
 // ── Toolbar ────────────────────────────────────────────────
 document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
@@ -558,7 +714,7 @@ document.getElementById('guide-skip-btn').addEventListener('click', ()=>{ docume
 // Keyboard
 window.addEventListener('keydown', e=>{
   if(document.activeElement===document.getElementById('text-input')) return;
-  const km={ n:'nav', d:'draw', t:'text', i:'image', v:'video', b:'block', c:'connect', e:'erase' };
+  const km={ n:'nav', d:'draw', t:'text', i:'image', v:'video', b:'block', s:'shape', k:'sticker', c:'connect', e:'erase' };
   if(km[e.key]) setMode(km[e.key]);
   if(e.key==='r') flyTo(HOME_POS,HOME_TGT);
   if(e.key==='f'){ document.getElementById('btn-4d').click(); }
@@ -581,10 +737,14 @@ function animate(){
   refreshLinks();
   updateLive();
   fill.intensity=1.1+Math.sin(t*.85)*.3; fill.position.x=Math.sin(t*.28)*12; fill.position.z=Math.cos(t*.28)*12;
-  // billboard + 4D drift
+  // billboard + spin + 4D drift + bounce
   objects.forEach(o=>{
     if(o.root.userData.billboardY){ const dx=camera.position.x-o.root.position.x, dz=camera.position.z-o.root.position.z; o.root.rotation.y=Math.atan2(dx,dz); }
-    if(o.fourD){ const off=Math.sin(t*1.1 + o.wPhase); o.root.position.x = o.basePos.x + off*2.2; o.root.position.y = o.basePos.y + Math.cos(t*0.9 + o.wPhase)*0.8; const s=1+off*0.12; o.root.scale.setScalar(s); }
+    if(o.root.userData.spin && o.root.children[0]){ o.root.children[0].rotation.y += 0.01; o.root.children[0].rotation.x += 0.004; }
+    let scale = 1;
+    if(o.fourD){ const off=Math.sin(t*1.1 + o.wPhase); o.root.position.x = o.basePos.x + off*2.2; o.root.position.y = o.basePos.y + Math.cos(t*0.9 + o.wPhase)*0.8; scale *= 1+off*0.12; }
+    if(o.bounce){ const e=(performance.now()-o.bounce)/600; if(e>=1){ o.bounce=null; } else { scale *= 1 + Math.sin(e*Math.PI)*0.45; } }
+    o.root.scale.setScalar(scale);
   });
   renderer.render(scene,camera);
 }
