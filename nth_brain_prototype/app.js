@@ -135,9 +135,12 @@ class NTHBrainEngine {
         // 2. Camera Controls
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.05;
+        this.controls.dampingFactor = 0.08; // Slightly more responsive damping
         this.controls.maxPolarAngle = Math.PI; // Full polar range to allow rotating under the grid floor
-        this.controls.enabled = false; // Disabled by default, activated in ORBIT MODE
+        this.controls.enabled = true; // Always enabled to support zoom/pinch operations
+        this.controls.enableRotate = false; // Start in DRAW MODE, so orbit rotation is locked
+        this.controls.enablePan = false; // Start in DRAW MODE, so panning is locked
+        this.controls.enableZoom = true; // Always allow zoom/pinch gestures for zoom sensitivity
 
         // 3. Grid & Drawing Plane Scaffolding
         const grid = new THREE.GridHelper(24, 24, 0x6366f1, 0x1e293b);
@@ -261,25 +264,30 @@ class NTHBrainEngine {
 
         btnDraw.addEventListener('click', () => {
             this.interactionMode = 'draw';
-            this.controls.enabled = false;
+            this.controls.enableRotate = false;
+            this.controls.enablePan = false;
+            this.controls.enableZoom = true;
             btnDraw.classList.add('active');
             btnRotate.classList.remove('active');
-            this.logSwarmMessage("System", "Switched to DRAW MODE. Canvas orbit locked.");
+            this.logSwarmMessage("System", "Switched to DRAW MODE. Zoom is active; swipe/drag to draw coordinates.");
         });
 
         btnRotate.addEventListener('click', () => {
             this.interactionMode = 'rotate';
-            this.controls.enabled = true;
+            this.controls.enableRotate = true;
+            this.controls.enablePan = true;
+            this.controls.enableZoom = true;
             btnRotate.classList.add('active');
             btnDraw.classList.remove('active');
-            this.logSwarmMessage("System", "Switched to ORBIT MODE. Swipe or drag to rotate view 360°.");
+            this.logSwarmMessage("System", "Switched to ORBIT MODE. Drag/swipe to rotate 360°, pinch/scroll to zoom.");
         });
 
-        // Canvas Drawing Events
-        this.canvas.addEventListener('mousedown', (e) => this.startStroke(e));
-        this.canvas.addEventListener('mousemove', (e) => this.drawStroke(e));
-        this.canvas.addEventListener('mouseup', () => this.endStroke());
-        this.canvas.addEventListener('mouseleave', () => this.endStroke());
+        // Canvas Drawing Events (Unified Mouse & Touch Pointer Events)
+        this.canvas.addEventListener('pointerdown', (e) => this.startStroke(e));
+        this.canvas.addEventListener('pointermove', (e) => this.drawStroke(e));
+        this.canvas.addEventListener('pointerup', () => this.endStroke());
+        this.canvas.addEventListener('pointercancel', () => this.endStroke());
+        this.canvas.addEventListener('pointerleave', () => this.endStroke());
 
         // Fog controls
         const fogSlider = document.getElementById('fog-slider');
@@ -345,7 +353,14 @@ class NTHBrainEngine {
     // 3D Raycast Draw Operations
     startStroke(e) {
         if (this.interactionMode !== 'draw') return;
-        this.controls.enabled = false;
+        
+        // Prevent default touch gestures (scrolling) during active drawing
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+
+        // Disable camera zoom only while actively drawing a stroke line
+        this.controls.enableZoom = false;
         this.isDrawing = true;
         this.updateMouseVector(e);
 
@@ -376,6 +391,12 @@ class NTHBrainEngine {
 
     drawStroke(e) {
         if (this.interactionMode !== 'draw' || !this.isDrawing) return;
+        
+        // Prevent default touch/drag events from scrolling page
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+
         this.updateMouseVector(e);
 
         this.raycaster.setFromCamera(this.mouseVector, this.camera);
@@ -409,7 +430,9 @@ class NTHBrainEngine {
     endStroke() {
         if (this.interactionMode !== 'draw' || !this.isDrawing) return;
         this.isDrawing = false;
-        this.controls.enabled = (this.interactionMode === 'rotate');
+        
+        // Restore zoom capability
+        this.controls.enableZoom = true;
 
         if (this.currentStroke && this.currentStroke.points.length > 1) {
             const originalLength = this.currentStroke.points.length;

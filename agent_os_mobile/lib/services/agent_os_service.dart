@@ -70,4 +70,32 @@ class AgentOSService {
       };
     }
   }
+
+  /// Translate natural language question into SQL and run query against jobs.db
+  Future<Map<String, dynamic>> runSQLQuery({
+    required String question,
+  }) async {
+    final payload = {
+      'question': question,
+    };
+    final body = jsonEncode(payload);
+
+    final url = Uri.parse('$baseUrl/sql');
+    try {
+      final response = await http.post(url, headers: _headers, body: body);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        return {
+          'success': false,
+          'error': 'SQL execution failed with status: ${response.statusCode}'
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'error': 'Network error: $e'
+      };
+    }
+  }
 }

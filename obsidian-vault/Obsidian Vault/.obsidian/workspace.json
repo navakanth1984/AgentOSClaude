@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00-Inbox/2026-06-07-agent-os-blueprint-6-steps.md",
+                "file": "01-Projects/AI-Automation/2026-06-17-session-skill-usage-efficiency-snapshot.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-06-07-agent-os-blueprint-6-steps"
+              "title": "2026-06-17-session-skill-usage-efficiency-snapshot"
             }
           }
         ]
@@ -183,8 +183,11 @@
       "bases:Create new base": false
     }
   },
-  "active": "bd07f0cb50d25c9d",
+  "active": "49ac6c39817550f0",
   "lastOpenFiles": [
+    "Untitled 1.canvas",
+    "2026-06-14.md",
+    "00-Inbox/2026-06-07-agent-os-blueprint-6-steps.md",
     "00-Inbox/2026-06-06-api-test-note.md",
     "01-Projects/AI-Automation/2026-06-06-session-agent-os-complete-build.md",
     "01-Projects/AI-Automation/2026-06-06-agent-os-setup.md",
@@ -200,7 +203,6 @@
     "2026-05-14.md",
     "00-Inbox/2026-04-11-can-we-build-a-compression-algorithm-that-maintains-quality.md",
     "00-Inbox/2026-04-11-identify-issue-and-resolve-it.md",
-    "Untitled 1.canvas",
     "shab-noor-consulting/index.md",
     "00-Inbox/2026-04-11-building-compression-algorithm-for-quality-maintenance.md",
     "00-Inbox/2026-04-11-ai-agent-loops-and-self-improvement-using-llms.md",

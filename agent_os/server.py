@@ -1089,6 +1089,70 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(500, {"error": f"Failed to sync with GCP: {e}"})
             return
 
+        elif path == "/jules/run":
+            task = body.get("task", "").strip()
+            if not task:
+                self._send(400, {"error": "Missing task parameter"})
+                return
+            try:
+                import subprocess
+                # Check auth first
+                cmd = ["jules", "remote", "list", "--session"]
+                res = subprocess.run(cmd, capture_output=True, text=True, timeout=15, shell=True)
+                if "forgot to login" in res.stdout or "forgot to login" in res.stderr:
+                    self._send(401, {"error": "Jules CLI is not authenticated. Please run 'jules login' in terminal first."})
+                    return
+
+                # Start the session
+                cmd_new = ["jules", "new", f'"{task}"']
+                res_new = subprocess.run(cmd_new, capture_output=True, text=True, timeout=30, shell=True)
+                combined = res_new.stdout + "\n" + res_new.stderr
+                
+                # Parse session id
+                import re
+                match = re.search(r"session[s]?/(\d+)", combined)
+                if not match:
+                    match = re.search(r"session\s+(\d+)", combined, re.IGNORECASE)
+                session_id = match.group(1) if match else ""
+                if not session_id:
+                    numbers = re.findall(r"\b\d{6,8}\b", combined)
+                    session_id = numbers[0] if numbers else ""
+
+                if res_new.returncode != 0 and not session_id:
+                    self._send(500, {"error": f"Failed to start Jules: {combined}"})
+                    return
+
+                self._send(200, {
+                    "success": True,
+                    "session_id": session_id,
+                    "output": combined
+                })
+            except Exception as e:
+                self._send(500, {"error": f"Jules API Exception: {e}"})
+            return
+
+        elif path == "/jules/status":
+            session_id = body.get("session_id", "").strip()
+            try:
+                import subprocess
+                cmd = ["jules", "remote", "list", "--session"]
+                res = subprocess.run(cmd, capture_output=True, text=True, timeout=20, shell=True)
+                
+                lines = (res.stdout + "\n" + res.stderr).splitlines()
+                session_line = None
+                for line in lines:
+                    if session_id in line:
+                        session_line = line
+                        break
+                
+                if session_line:
+                    self._send(200, {"success": True, "session_id": session_id, "line": session_line})
+                else:
+                    self._send(200, {"success": False, "message": f"Session {session_id} not found in remote list.", "raw": res.stdout})
+            except Exception as e:
+                self._send(500, {"error": f"Failed to fetch status: {e}"})
+            return
+
         elif path == "/okf/generate":
             db_url = body.get("db_url", "")
             output_dir = body.get("output_dir", "")

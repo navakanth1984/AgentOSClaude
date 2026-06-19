@@ -46,6 +46,8 @@ AGENT_ROLES = [
     ("Trends Agent",     "Describe the latest developments, trends, or future directions for this topic."),
 ]
 
+# Shared semaphore to prevent overwhelming free-tier API limits (max 2 concurrent requests)
+_SWARM_SEMAPHORE = asyncio.Semaphore(2)
 
 # ── Single agent coroutine ────────────────────────────────────────────────────
 
@@ -71,25 +73,78 @@ async def _swarm_agent(
     )
     user = f"Topic: {topic}\n\nYour task: {task}"
 
-    last_error = None
-    for attempt in range(max_retries):
-        try:
-            content = await call_openrouter_async(model, system, user, api_key, max_tokens=600)
-            return {"agent_id": agent_id, "role": role, "task": task, "result": content, "error": None}
-        except urllib.error.HTTPError as e:
-            last_error = str(e)
-            if e.code == 429 and attempt < max_retries - 1:
-                # Robust linear backoff + jitter for free tiers: 6s, 11s, 16s, etc.
-                wait = (5 * (attempt + 1)) + random.uniform(1, 4)
-                print(f"[Swarm] Agent #{agent_id} rate-limited, retry {attempt+1}/{max_retries-1} in {wait:.1f}s")
-                await asyncio.sleep(wait)
-            else:
+    async with _SWARM_SEMAPHORE:
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                # Use max_tokens=800 for research agents
+                content = await call_openrouter_async(model, system, user, api_key, max_tokens=800)
+                return {"agent_id": agent_id, "role": role, "task": task, "result": content, "error": None}
+            except urllib.error.HTTPError as e:
+                last_error = str(e)
+                if e.code == 429 and attempt < max_retries - 1:
+                    # Exponential backoff with jitter: 4s, 8s, 16s, 32s...
+                    wait = (2 ** (attempt + 2)) + random.uniform(1, 3)
+                    print(f"[Swarm] Agent #{agent_id} rate-limited (429), retry {attempt+1}/{max_retries-1} in {wait:.1f}s")
+                    await asyncio.sleep(wait)
+                elif e.code == 402:
+                    print(f"[Swarm] Agent #{agent_id} failed: Payment Required (402). Skipping OpenRouter primary.")
+                    break
+                else:
+                    break
+            except Exception as e:
+                last_error = str(e)
                 break
-        except Exception as e:
-            last_error = str(e)
-            break
 
     return {"agent_id": agent_id, "role": role, "task": task, "result": "", "error": last_error}
+
+
+# ── Synthesis Agent ───────────────────────────────────────────────────────────
+
+async def _synthesis_agent(
+    topic: str,
+    agent_results: list[dict],
+    api_key: str,
+    model: str,
+) -> str:
+    """
+    Final stage agent that reads all sub-agent reports and produces
+     a cohesive executive summary and unified strategy.
+    """
+    print(f"[Swarm] Running Synthesis Agent...")
+    
+    # Compile reports into one context string
+    reports = ""
+    for r in agent_results:
+        if not r.get("error") and r.get("result"):
+            reports += f"\n--- {r['role']} Report ---\n{r['result']}\n"
+            
+    if not reports:
+        return "Synthesis failed: No successful agent reports to summarize."
+
+    system = (
+        "You are the Swarm Synthesis Lead. Your job is to take multiple research reports "
+        "on a topic and produce a high-level Executive Summary. "
+        "Identify the 'Golden Thread' connecting all reports, resolve any contradictions, "
+        "and provide 3 'Strategic Takeaways' that a decision-maker can act on immediately."
+    )
+    user = (
+        f"Topic: {topic}\n\n"
+        "Here are the research reports from the swarm agents:\n"
+        f"{reports}\n\n"
+        "Please provide:\n"
+        "1. Executive Summary (2 paragraphs)\n"
+        "2. The Golden Thread (1 paragraph)\n"
+        "3. 3 Strategic Takeaways (bullet points)"
+    )
+    
+    try:
+        # Synthesis needs more context/tokens
+        content = await call_openrouter_async(model, system, user, api_key, max_tokens=1000)
+        return content
+    except Exception as e:
+        print(f"[Swarm] Synthesis error: {e}")
+        return f"Synthesis unavailable due to error: {e}"
 
 
 # ── Quantum result renderer ───────────────────────────────────────────────────
@@ -264,7 +319,10 @@ async def run_swarm(
     if not successful:
         return {"error": "All swarm agents failed", "results": results}
 
-    # ── E. Build merged Obsidian note ─────────────────────────────────────────
+    # ── E. Synthesis Stage ───────────────────────────────────────────────────
+    synthesis = await _synthesis_agent(topic, successful, api_key, model)
+
+    # ── F. Build merged Obsidian note ─────────────────────────────────────────
     date_str = datetime.now().strftime("%Y-%m-%d")
     slug = re.sub(r"[^a-z0-9]+", "-", topic.lower()).strip("-")[:50]
     filename = f"{date_str}-swarm-{slug}.md"
@@ -299,6 +357,9 @@ source: "Agent OS Swarm ({len(successful)} agents) + NotebookLM ({len(matched_no
 
 > **Internet research** (OpenRouter/{model}) + **Your NotebookLM notebooks** combined.
 > Generated by {len(successful)} parallel AI sub-agents.
+
+## Executive Strategy
+{synthesis}
 
 ## Key Idea
 Deep multi-angle research on: **{topic}**

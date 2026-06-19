@@ -44,25 +44,94 @@ class _AgentDashboardState extends State<AgentDashboard> {
     });
   }
 
+  String _formatSQLResult(Map<String, dynamic> result) {
+    if (result['success'] == false) {
+      return '✗ SQL Query Generation/Execution Failed:\n\n'
+          'Error: ${result['error']}\n'
+          'Generated SQL: ${result['sql'] ?? 'None'}\n'
+          'Attempts: ${result['attempts']}';
+    }
+
+    final String sql = result['sql'] ?? '';
+    final List<dynamic> columns = result['columns'] ?? [];
+    final List<dynamic> rows = result['results'] ?? [];
+    final int attempts = result['attempts'] ?? 1;
+
+    if (columns.isEmpty) {
+      return '✓ Query Executed Successfully (No columns returned).\n\n'
+          'SQL: $sql\n'
+          'Attempts: $attempts';
+    }
+
+    // Format Markdown Table
+    final buffer = StringBuffer();
+    buffer.writeln('✓ Query Executed Successfully! (Attempts: $attempts)\n');
+    buffer.writeln('Generated SQL:');
+    buffer.writeln('  $sql\n');
+    buffer.writeln('Results:\n');
+
+    // Header row
+    buffer.write('| ');
+    for (final col in columns) {
+      buffer.write('$col | ');
+    }
+    buffer.writeln();
+
+    // Separator row
+    buffer.write('| ');
+    for (int i = 0; i < columns.length; i++) {
+      buffer.write('--- | ');
+    }
+    buffer.writeln();
+
+    // Data rows
+    if (rows.isEmpty) {
+      buffer.writeln('| (No rows returned) |');
+    } else {
+      for (final row in rows) {
+        buffer.write('| ');
+        for (final val in row as List<dynamic>) {
+          buffer.write('${val ?? "NULL"} | ');
+        }
+        buffer.writeln();
+      }
+    }
+
+    return buffer.toString();
+  }
+
   Future<void> _executeSwarm() async {
     if (_promptController.text.isEmpty) return;
 
     setState(() {
       _isConnecting = true;
-      _outputText = 'Launching Swarm Agents on the backend...';
+      _outputText = _selectedMode == 'sql' 
+          ? 'Translating and executing query on backend...'
+          : 'Launching Swarm Agents on the backend...';
     });
 
-    final result = await _apiService.runSwarm(
-      prompt: _promptController.text,
-      mode: _selectedMode,
-    );
+    Map<String, dynamic> result;
+    if (_selectedMode == 'sql') {
+      result = await _apiService.runSQLQuery(
+        question: _promptController.text,
+      );
+    } else {
+      result = await _apiService.runSwarm(
+        prompt: _promptController.text,
+        mode: _selectedMode,
+      );
+    }
 
     setState(() {
       _isConnecting = false;
-      if (result['success'] == true) {
-        _outputText = '✓ Swarm Complete!\n\nSaved Note: ${result['note_path']}\n\nKey Concept:\n${result['output'] ?? 'No text generated.'}';
+      if (_selectedMode == 'sql') {
+        _outputText = _formatSQLResult(result);
       } else {
-        _outputText = '✗ Swarm Execution Failed:\n${result['error'] ?? 'Unknown error'}';
+        if (result['success'] == true) {
+          _outputText = '✓ Swarm Complete!\n\nSaved Note: ${result['note_path']}\n\nKey Concept:\n${result['output'] ?? 'No text generated.'}';
+        } else {
+          _outputText = '✗ Swarm Execution Failed:\n${result['error'] ?? 'Unknown error'}';
+        }
       }
     });
   }
@@ -121,62 +190,91 @@ class _AgentDashboardState extends State<AgentDashboard> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Swarm Configuration
-                  const Text('Select Creative Pipeline', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-                  Row(
+                  // Swarm/SQL Mode Configuration
+                  const Text('Select Operation Mode', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 8,
                     children: [
-                      Radio<String>(
-                        value: 'novelist',
-                        groupValue: _selectedMode,
-                        activeColor: Colors.cyanAccent,
-                        onChanged: (val) => setState(() => _selectedMode = val!),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'novelist',
+                            groupValue: _selectedMode,
+                            activeColor: Colors.cyanAccent,
+                            onChanged: (val) => setState(() => _selectedMode = val!),
+                          ),
+                          const Text('Novelist Swarm', style: TextStyle(color: Colors.white)),
+                        ],
                       ),
-                      const Text('Novelist Swarm', style: TextStyle(color: Colors.white)),
-                      const SizedBox(width: 20),
-                      Radio<String>(
-                        value: 'screenplay',
-                        groupValue: _selectedMode,
-                        activeColor: Colors.cyanAccent,
-                        onChanged: (val) => setState(() => _selectedMode = val!),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'screenplay',
+                            groupValue: _selectedMode,
+                            activeColor: Colors.cyanAccent,
+                            onChanged: (val) => setState(() => _selectedMode = val!),
+                          ),
+                          const Text('Screenplay Swarm', style: TextStyle(color: Colors.white)),
+                        ],
                       ),
-                      const Text('Screenplay Swarm', style: TextStyle(color: Colors.white)),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'sql',
+                            groupValue: _selectedMode,
+                            activeColor: Colors.cyanAccent,
+                            onChanged: (val) => setState(() => _selectedMode = val!),
+                          ),
+                          const Text('SQL Query', style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-
-                  // Prompt Entry Input Box
-                  TextField(
-                    controller: _promptController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: 'Enter creative concept details...',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: const Color(0xFF1E1E30),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.cyanAccent),
-                      ),
-                    ),
-                    maxLines: 4,
-                  ),
                   const SizedBox(height: 16),
-
-                  // Launch Swarm Button
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.cyanAccent,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    onPressed: _executeSwarm,
-                    child: const Text('Launch Swarm', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  ),
+ 
+                   // Prompt Entry Input Box
+                   TextField(
+                     controller: _promptController,
+                     style: const TextStyle(color: Colors.white),
+                     decoration: InputDecoration(
+                       hintText: _selectedMode == 'sql'
+                           ? 'Ask a database question (e.g., "how many failed jobs are there?")'
+                           : 'Enter creative concept details...',
+                       hintStyle: const TextStyle(color: Colors.grey),
+                       filled: true,
+                       fillColor: const Color(0xFF1E1E30),
+                       border: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(12),
+                         borderSide: BorderSide.none,
+                       ),
+                       focusedBorder: OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(12),
+                         borderSide: const BorderSide(color: Colors.cyanAccent),
+                       ),
+                     ),
+                     maxLines: 4,
+                   ),
+                   const SizedBox(height: 16),
+ 
+                   // Launch/Run Button
+                   ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                       backgroundColor: Colors.cyanAccent,
+                       foregroundColor: Colors.black,
+                       padding: const EdgeInsets.symmetric(vertical: 16),
+                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                     ),
+                     onPressed: _executeSwarm,
+                     child: Text(
+                       _selectedMode == 'sql' ? 'Run Query' : 'Launch Swarm',
+                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                     ),
+                   ),
                   const SizedBox(height: 24),
 
                   // Console/Output Log Panel

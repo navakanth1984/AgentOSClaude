@@ -40,11 +40,14 @@ source: "Agent OS Setup"
 - **agent_os.py** — CLI command loop
 
 ## Current Focus (update this section each session)
-- **Agent OS dashboard is LIVE** — Flutter running in Chrome, 261 notebooks loaded
-- Server on localhost:8765 — all endpoints working (health, status, notebooks, context, search, save)
-- Next: test `notebook generate` audio download via network interception
-- Next: wire Hermes when API/webhook available
-- Next: get Flutter running on Windows desktop (needs Windows 10 SDK in VS 2026)
+- Phase 1 Implementation of NTH Brain Phenotype MVP v0.1: Design database schemas for coordinate logging (`student_mind_graph.py`, `interaction_logger.py`, `schema.sql`).
+- Write rolling-window algorithms to calculate student exploration velocity and pause duration metrics.
+- Track empirical measurements for learner independence and cognitive load reduction ($C_E$).
+
+## Operational Infrastructure
+- **AntigravityUsageMonitor** — 5-hour scheduled background cost and economics check.
+- **Agent OS** — Centralized execution, session archiving (`session_end.py`), and memory bridge.
+- **Obsidian Sync** — Vault bridging for session notes and profile context.
 
 ## What's Built (Agent OS v1.0)
 - `obsidian_bridge.py` — vault read/write, hybrid context (core + recent 5)

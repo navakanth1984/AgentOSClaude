@@ -18,7 +18,20 @@
       "Bash(netstat -ano)",
       "Bash(findstr :8765)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8765/dashboard)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(\"novel_env/Scripts/python.exe\" TranceSQL/tests/stress_test.py)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(\"novel_env/Scripts/pip.exe\" install *)",
+      "Bash(\"C:/Users/navka/navakanth001/novel_env/Scripts/mkdocs.exe\" build *)",
+      "Bash(\"../novel_env/Scripts/twine.exe\" --version)",
+      "Bash(\"../novel_env/Scripts/twine.exe\" upload *)",
+      "Bash(git remote *)",
+      "Bash(git push *)"
     ]
   },
   "disabledMcpjsonServers": [

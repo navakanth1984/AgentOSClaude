@@ -21,6 +21,15 @@ import asyncio
 import urllib.request
 from typing import Optional
 
+# Check GenAI SDK availability for Vertex AI routing
+try:
+    from google import genai
+    from google.genai import types
+    _GENAI_SDK_AVAILABLE = True
+except ImportError:
+    _GENAI_SDK_AVAILABLE = False
+
+_VERTEX_CLIENT = None
 
 def call_openrouter(
     model: str,
@@ -31,10 +40,40 @@ def call_openrouter(
     temperature: float = 0.3,
 ) -> str:
     """
-    Single synchronous LLM call via urllib. Directs natively to Google Gemini API
-    if GEMINI_API_KEY is present and model contains 'gemini'. Otherwise, falls back
-    to OpenRouter. If OpenRouter fails with 402 or 429, falls back to native Gemini.
+    Single LLM call. Routes through Google Vertex AI using GCP credits if configured,
+    otherwise directs natively to Google Gemini AI Studio, with a fallback to OpenRouter.
     """
+    # ─── Vertex AI Credit Routing (Option A) ───
+    use_vertex = os.environ.get("USE_VERTEX_AI", "").lower() in ("true", "1", "yes")
+    vertex_project = os.environ.get("VERTEX_PROJECT_ID", "")
+    
+    if use_vertex and vertex_project and _GENAI_SDK_AVAILABLE and "gemini" in model.lower():
+        model_name = model.split("/")[-1] if "/" in model else model
+        if "gemini" not in model_name.lower():
+            model_name = "gemini-2.5-flash"
+            
+        location = os.environ.get("VERTEX_LOCATION", "us-central1")
+        
+        try:
+            client = genai.Client(
+                vertexai=True,
+                project=vertex_project,
+                location=location
+            )
+            config = types.GenerateContentConfig(
+                system_instruction=system,
+                max_output_tokens=max_tokens,
+                temperature=temperature
+            )
+            response = client.models.generate_content(
+                model=model_name,
+                contents=user,
+                config=config
+            )
+            return response.text.strip()
+        except Exception as ve:
+            print(f"[WARNING] Vertex AI call failed ({ve}) — falling back to standard pathways.")
+
     gemini_key = os.environ.get("GEMINI_API_KEY", "")
     
     use_native = False

@@ -375,6 +375,7 @@ canvas {
     height: 100%;
     z-index: 1;
     cursor: crosshair;
+    touch-action: none;
 }
 
 .annotation-overlay {

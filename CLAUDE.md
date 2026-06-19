@@ -115,6 +115,20 @@ At the **beginning of every new session**, execute these steps in order:
 - Read this file (CLAUDE.md) — never ask to re-explain setup
 - Read `model-router` skill for routing thresholds
 
+### Step 4: Agent OS Context Load (🔄 Autonomous)
+Load the four Agent OS layers in order — they build on each other:
+
+1. **`memory_os/context-quality-check.md`** — Layer 0: run the 10-point scorecard on the first task of the session. Score < 8? Fill the Quick-Fill Template before proceeding.
+2. **`memory_os/north-star-protocol.md`** — Layer 1: write a North Star metric (`Done = [one sentence]`) for any multi-step task before starting it. Max 3 iterations; if still failing, context is wrong.
+3. **`memory_os/automation-tier-classifier.md`** — Layer 2: classify the task before building anything. Vending machine or slot machine? Check the 4-question checklist. Don't build an AI agent for a deterministic task.
+4. **`memory_os/taste_library/`** — Layer 3: before producing output in a domain, read the relevant approved file:
+   - Screenplay/cinematic work → `taste_library/screenplay-approved.md`
+   - Code/scripts → `taste_library/code-approved.md`
+   - Vault notes → `taste_library/notes-approved.md`
+   - Research/analysis → `taste_library/analysis-approved.md`
+
+**Capture trigger**: when the user says "Save this to taste library — [domain]", append to the relevant approved file. When they say "Save this as rejected — [domain] — reason: [x]", append to `[domain]-rejected.md`.
+
 ---
 
 ## Things Claude Should Always Do
@@ -140,4 +154,4 @@ At the **beginning of every new session**, execute these steps in order:
 
 ---
 
-*Last updated: 2026-06-12*
+*Last updated: 2026-06-15*

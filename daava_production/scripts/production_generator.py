@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import argparse
 from pathlib import Path
 from observation_engine import ObservationEngine
 
@@ -9,7 +10,7 @@ engine = ObservationEngine()
 def load_dna(dna_path):
     """Loads a Visual DNA JSON file."""
     try:
-        with open(dna_path, 'r') as f:
+        with open(dna_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
         print(f"Error loading DNA at {dna_path}: {e}")
@@ -50,16 +51,30 @@ def extract_dna_vars(dna_data):
 
 def parse_screenplay(file_path):
     """Parses a screenplay and identifies shot prompts and DNA anchors."""
-    with open(file_path, 'r') as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Find DNA Anchor
+    # Find DNA Anchor in text
     dna_match = re.search(r'Character Anchor:.*?\(DNA:\s*(.*?)\)', content)
     dna_id = dna_match.group(1) if dna_match else None
+    
+    # Check frontmatter if not found in text
+    if not dna_id:
+        fm_match = re.search(r'^---\n(.*?)\n---', content, re.DOTALL)
+        if fm_match:
+            fm_text = fm_match.group(1)
+            dna_id_match = re.search(r'dna_id:\s*(.*)', fm_text)
+            if dna_id_match:
+                dna_id = dna_id_match.group(1).strip()
 
     # Split by shots or generate them
-    # For now, we look for [SHOT X - SEEDANCE PROMPT] blocks
     shots = re.findall(r'\[SHOT (\d+) - SEEDANCE PROMPT\]\n(.*?)(?=\n\n|---|$)', content, re.DOTALL)
+    
+    if not shots:
+        # Look for general PRODUCTION PROMPT block
+        prompt_match = re.search(r'### \[PRODUCTION PRODUCTION PROMPT - SEEDANCE 2\.0\]\n(.*?)(?=\n\n|---|$)', content, re.DOTALL)
+        if prompt_match:
+            shots = [("1", prompt_match.group(1))]
     
     return dna_id, shots
 
@@ -71,7 +86,11 @@ def generate_production_prompts(screenplay_path, dna_folder):
         print("No DNA anchor found in screenplay.")
         return
 
-    dna_file = "climber_dna.json" # Hardcoded for now
+    # Map DNA ID to climber_dna.json (or environment dna)
+    dna_file = "climber_dna.json"
+    if "nampally_env" in dna_id.lower():
+        dna_file = "nampally_env_dna.json"
+        
     dna_path = Path(dna_folder) / dna_file
     dna_data = load_dna(dna_path)
     dna_vars = extract_dna_vars(dna_data)
@@ -106,8 +125,10 @@ def generate_production_prompts(screenplay_path, dna_folder):
         print(full_production_prompt)
         print("-" * 30)
         
-        output_file = Path(screenplay_path).parent / f"shot_{shot_num}_production.txt"
-        with open(output_file, 'w') as f:
+        # Use screenplay filename stem for output file prefix to avoid conflicts
+        prefix = Path(screenplay_path).stem
+        output_file = Path(screenplay_path).parent / f"{prefix}_shot_{shot_num}_production.txt"
+        with open(output_file, 'w', encoding='utf-8') as f:
             f.write(full_production_prompt)
         
         # Log generation trace
@@ -120,8 +141,16 @@ def generate_production_prompts(screenplay_path, dna_folder):
         print(f"Saved to: {output_file}\n")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="DAAVA Visual DNA Prompt Generator")
+    parser.add_argument("--screenplay", type=str, help="Path to screenplay markdown file")
+    args = parser.parse_args()
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    screenplay = os.path.join(script_dir, "chapter1_cyber_nampally.md")
     dna_dir = os.path.join(os.path.dirname(script_dir), "dna")
     
+    if args.screenplay:
+        screenplay = args.screenplay
+    else:
+        screenplay = os.path.join(script_dir, "chapter1_cyber_nampally.md")
+        
     generate_production_prompts(screenplay, dna_dir)

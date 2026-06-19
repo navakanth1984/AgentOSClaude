@@ -54,6 +54,7 @@ COMMANDS = {
     "hermes":     "Hermes video agent: load <file> | generate <file> (Step 4)",
     "cloud":      "Cloud Agent: self-correcting task execution in background",
     "creative":   "Creative: screenplay | audiography | prompt (AI filmmaking tools)",
+    "sql":        "Translate natural language questions into executable SQL queries against jobs.db",
     "session":    "Save the current session summary to Obsidian",
     "quit":       "Exit Agent OS",
 }
@@ -415,6 +416,35 @@ def cmd_creative(args: list[str]):
         print(f"[ERROR] Error in creative pipeline: {e}")
 
 
+def cmd_sql(args: list[str]):
+    """Translate natural language to SQL and execute. Usage: sql <question>"""
+    if not args:
+        question = input("  Enter natural language query: ").strip()
+    else:
+        question = " ".join(args)
+    
+    if not question:
+        print("  Please provide a question.")
+        return
+        
+    try:
+        from sql_translator import translate_and_execute
+        result = translate_and_execute(question)
+        if result["success"]:
+            print("\n=== Result Summary ===")
+            print(f"SQL Query: {result['sql']}")
+            print(f"Columns: {result['columns']}")
+            print("Rows:")
+            for row in result["results"]:
+                print(row)
+        else:
+            print(f"\n=== Execution Failed after {result['attempts']} attempts ===")
+            print(f"Final Error: {result['error']}")
+            print(f"Final SQL Tried: {result['sql']}")
+    except Exception as e:
+        print(f"  [ERROR] Failed to run SQL translator: {e}")
+
+
 # ─── Main Loop ────────────────────────────────────────────────
 
 def run():
@@ -469,6 +499,8 @@ def run():
             cmd_cloud(args)
         elif cmd == "creative":
             cmd_creative(args)
+        elif cmd == "sql":
+            cmd_sql(args)
         else:
             print(f"  Unknown command: '{cmd}'. Type 'help' for options.")
 
@@ -502,6 +534,8 @@ if __name__ == "__main__":
             cmd_cloud(args)
         elif cmd == "creative":
             cmd_creative(args)
+        elif cmd == "sql":
+            cmd_sql(args)
         else:
             print(f"  Unknown command: '{cmd}'.")
     else:
