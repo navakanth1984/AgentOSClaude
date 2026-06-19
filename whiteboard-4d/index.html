@@ -554,6 +554,10 @@ function addShape(key, surf, hex){
   else        root.userData.spin = true;         // solids gently rotate
   const o = register(root, 'shape', key, hex);
   o.is3D = def.d3;
+  if(def.d3){
+    // add the visible mesh as a collider so other objects can be placed on this shape
+    placeTargets.push(mesh); o.collider = mesh;
+  }
 }
 
 // ── Sticker library (emoji: faces, animals, birds, nature) ─
@@ -610,6 +614,16 @@ function placeObject3D(obj3d, animations, surf, label, targetSize){
     mixer.clipAction(animations[0]).play();
     o.mixer = mixer; mixers.push(mixer);
   }
+  // invisible bounding-box collider so objects can be placed on top of models
+  box = new THREE.Box3().setFromObject(obj3d);
+  const bsz = box.getSize(new THREE.Vector3());
+  const bctr = box.getCenter(new THREE.Vector3());
+  const collMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(bsz.x, bsz.y, bsz.z),
+    new THREE.MeshBasicMaterial({ visible:false })
+  );
+  collMesh.position.copy(bctr.sub(root.position));
+  root.add(collMesh); placeTargets.push(collMesh); o.collider = collMesh;
   return o;
 }
 function addModel(key, surf){
@@ -785,7 +799,7 @@ function rayPlane(plane, cx, cy){ setMouse(cx,cy); ray.setFromCamera(m2,camera);
 
 const PRESETS=['#00ccff','#ff4466','#44ff88','#ffcc00','#ff8800','#cc66ff','#ffffff','#ff6644','#00ffcc'];
 const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan · tap video/audio to toggle · Ctrl+Z undo · Ctrl+D duplicate',
-  move:'✋ Drag an object to reposition · mouse-wheel to push/pull depth',
+  move:'✋ Drag to reposition · scroll=depth · Shift+scroll or +/- to resize',
   audio:'🔊 Click a surface → choose an audio file (plays spatially)',
   draw:'✏️ Drag to draw a 3D stroke at the depth you start from',
   text:'🅣 Click a spot → type → Enter for extruded 3D text',
@@ -918,7 +932,23 @@ document.getElementById('audio-input').addEventListener('change', e=>{ const f=e
 document.getElementById('model-input').addEventListener('change', e=>{ const f=e.target.files[0]; if(f) loadModelFile(f); e.target.value=''; });
 
 // Move-tool depth: wheel pushes/pulls the grabbed object along the view axis
-canvas.addEventListener('wheel', e=>{ if(mode==='move' && moveTarget){ e.preventDefault(); const n=new THREE.Vector3(); camera.getWorldDirection(n); moveTarget.root.position.addScaledVector(n, e.deltaY>0?-0.7:0.7); moveTarget.basePos.copy(moveTarget.root.position); movePlane.setFromNormalAndCoplanarPoint(n, moveTarget.root.position); } }, { passive:false });
+canvas.addEventListener('wheel', e=>{
+  if(mode==='move' && moveTarget){
+    e.preventDefault();
+    if(e.shiftKey){
+      // Shift+scroll = resize the grabbed object
+      const factor = e.deltaY > 0 ? 0.9 : 1.1;
+      moveTarget.userScale = Math.max(0.05, Math.min(30, (moveTarget.userScale||1)*factor));
+      toast(`Size: ${(moveTarget.userScale*100).toFixed(0)}%`);
+    } else {
+      // plain scroll = push/pull along view axis
+      const n=new THREE.Vector3(); camera.getWorldDirection(n);
+      moveTarget.root.position.addScaledVector(n, e.deltaY>0?-0.7:0.7);
+      moveTarget.basePos.copy(moveTarget.root.position);
+      movePlane.setFromNormalAndCoplanarPoint(n, moveTarget.root.position);
+    }
+  }
+}, { passive:false });
 
 // ── Camera fly ─────────────────────────────────────────────
 function flyTo(pos,tgt,dur=900){ const sp=camera.position.clone(), st=controls.target.clone(), t0=performance.now();
@@ -980,6 +1010,9 @@ window.addEventListener('keydown', e=>{
   if((e.ctrlKey||e.metaKey) && e.key==='z'){ e.preventDefault(); const o=undoStack[undoStack.length-1]; if(o){ removeObj(o); toast('Undone'); } else toast('Nothing to undo'); return; }
   // Ctrl+D = duplicate last object (blocks, shapes, stickers only)
   if((e.ctrlKey||e.metaKey) && e.key==='d'){ e.preventDefault(); duplicateLast(); return; }
+  // +/- or =/- = resize grabbed object (Move mode) or last created object
+  if(e.key==='='||e.key==='+'){ e.preventDefault(); resizeTarget(1.15); return; }
+  if(e.key==='-'||e.key==='_'){ e.preventDefault(); resizeTarget(0.87); return; }
   const km={ n:'nav', g:'move', d:'draw', t:'text', i:'image', v:'video', a:'audio', b:'block', s:'shape', k:'sticker', m:'model', c:'connect', e:'erase' };
   if(km[e.key]) setMode(km[e.key]);
   if(e.key==='r') flyTo(HOME_POS,HOME_TGT);
@@ -987,6 +1020,13 @@ window.addEventListener('keydown', e=>{
   if(e.key==='Escape'){ setMode('nav'); document.getElementById('guide-overlay').style.display='none'; }
   const n=parseInt(e.key); if(n>=1&&n<=PRESETS.length){ ink=PRESETS[n-1]; document.getElementById('pick-ink').value=ink; ghost.material.color.set(ink); }
 });
+
+function resizeTarget(factor){
+  const o = (mode==='move' && moveTarget) ? moveTarget : undoStack[undoStack.length-1];
+  if(!o){ toast('Nothing to resize'); return; }
+  o.userScale = Math.max(0.05, Math.min(30, (o.userScale||1)*factor));
+  toast(`"${o.label}" → ${(o.userScale*100).toFixed(0)}%`);
+}
 
 function duplicateLast(){
   const o=undoStack[undoStack.length-1]; if(!o){ toast('Nothing to duplicate'); return; }
@@ -1020,7 +1060,7 @@ function animate(){
   objects.forEach(o=>{
     if(o.root.userData.billboardY){ const dx=camera.position.x-o.root.position.x, dz=camera.position.z-o.root.position.z; o.root.rotation.y=Math.atan2(dx,dz); }
     if(o.root.userData.spin && o.root.children[0]){ o.root.children[0].rotation.y += 0.01; o.root.children[0].rotation.x += 0.004; }
-    let scale = 1;
+    let scale = o.userScale || 1; // userScale is the persistent resize factor
     if(o.fourD){ const off=Math.sin(t*1.1 + o.wPhase); o.root.position.x = o.basePos.x + off*2.2; o.root.position.y = o.basePos.y + Math.cos(t*0.9 + o.wPhase)*0.8; scale *= 1+off*0.12; }
     if(o.bounce){ const e=(performance.now()-o.bounce)/600; if(e>=1){ o.bounce=null; } else { scale *= 1 + Math.sin(e*Math.PI)*0.45; } }
     o.root.scale.setScalar(scale);
