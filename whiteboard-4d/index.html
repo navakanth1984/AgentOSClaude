@@ -173,6 +173,7 @@ input[type=color]:hover{border-color:#5af;}
   <button class="tb"        data-mode="block"  title="Place a 3D block">🟦<span class="tb-label">Block</span></button>
   <button class="tb"        data-mode="shape"  title="Place 3D & 2D shapes">🔷<span class="tb-label">Shapes</span></button>
   <button class="tb"        data-mode="sticker" title="Place emoji, animals, birds & icons">🦋<span class="tb-label">Stickers</span></button>
+  <button class="tb"        data-mode="model"  title="Place animated 3D critters">🦩<span class="tb-label">Critters</span></button>
   <button class="tb"        data-mode="connect" title="Link two objects">🔗<span class="tb-label">Link</span></button>
   <button class="tb danger" data-mode="erase"  title="Delete an object">✂️<span class="tb-label">Erase</span></button>
   <button class="tb toggle" id="btn-4d"        title="Toggle 4D time animation for new objects">⏱<span class="tb-label">4D</span></button>
@@ -225,6 +226,7 @@ input[type=color]:hover{border-color:#5af;}
       <div class="gs"><div class="gs-icon">🎬</div><div class="gs-text"><strong>Images &amp; live video</strong><b>Image</b> and <b>Video</b> place media on floating panels in the scene. Videos play and loop right on the board.</div></div>
       <div class="gs"><div class="gs-icon">🟦</div><div class="gs-text"><strong>Place objects like Minecraft</strong>Click any surface — floor, back wall, or an existing object — and the new thing lands exactly on that face.</div></div>
       <div class="gs"><div class="gs-icon">🔷</div><div class="gs-text"><strong>Shapes &amp; stickers</strong>Tap <b>Shapes</b> for 3D solids and 2D flats, or <b>Stickers</b> for emoji, animals &amp; birds. Pick one from the palette, click a surface. In Nav mode, tap any object to make it <b>bounce</b>.</div></div>
+      <div class="gs"><div class="gs-icon">🦩</div><div class="gs-text"><strong>Living 3D critters</strong>Tap <b>Critters</b> for real animated 3D models — a flapping flamingo, parrot, stork or galloping horse. Pick one, click a surface, and watch it come to life.</div></div>
       <div class="gs"><div class="gs-icon">🔗</div><div class="gs-text"><strong>Connect ideas</strong>Tap <b>Link</b>, click two objects, and a bezier arc joins them. Build a 3D mind-map.</div></div>
       <div class="gs"><div class="gs-icon">⏱</div><div class="gs-text"><strong>The 4th dimension</strong>Toggle <b>4D</b> on, then create. New objects gently drift through time — oscillating in the W axis like the tesseract behind you.</div></div>
     </div>
@@ -238,6 +240,7 @@ input[type=color]:hover{border-color:#5af;}
 <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/loaders/FontLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/geometries/TextGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
 //  BLEUBOARD — 4D Creative Whiteboard
@@ -532,6 +535,44 @@ function addSticker(ch, surf){
   o.sprite = sp;
 }
 
+// ── 3D animated model library (CC0/threejs examples) ───────
+const GLB = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r146/examples/models/gltf/';
+const MODELS = {
+  flamingo:{ icon:'🦩', label:'Flamingo', url:GLB+'Flamingo.glb', size:4.5 },
+  parrot:  { icon:'🦜', label:'Parrot',   url:GLB+'Parrot.glb',   size:3.2 },
+  stork:   { icon:'🐦', label:'Stork',    url:GLB+'Stork.glb',    size:3.8 },
+  horse:   { icon:'🐴', label:'Horse',    url:GLB+'Horse.glb',    size:4.5 },
+};
+const gltfLoader = new THREE.GLTFLoader();
+const mixers = [];
+function addModel(key, surf){
+  const def = MODELS[key]; if(!def) return;
+  toast(`Loading ${def.label}…`);
+  gltfLoader.load(def.url, gltf => {
+    const model = gltf.scene;
+    // normalize size: scale longest axis to def.size
+    let box = new THREE.Box3().setFromObject(model);
+    const sz = box.getSize(new THREE.Vector3());
+    const s = (def.size||3) / (Math.max(sz.x,sz.y,sz.z)||1);
+    model.scale.setScalar(s);
+    // recentre on x/z, rest feet on y=0
+    box = new THREE.Box3().setFromObject(model);
+    const c = box.getCenter(new THREE.Vector3());
+    model.position.x -= c.x; model.position.z -= c.z; model.position.y -= box.min.y;
+    model.traverse(n => { if(n.isMesh){ n.castShadow = true; if(n.material) n.material.side = THREE.DoubleSide; } });
+    const root = new THREE.Group();
+    root.position.copy(surf.point).addScaledVector(surf.normal, 0.05);
+    root.add(model);
+    const o = register(root, 'model', def.label, ink);
+    if(gltf.animations && gltf.animations.length){
+      const mixer = new THREE.AnimationMixer(model);
+      mixer.clipAction(gltf.animations[0]).play();
+      o.mixer = mixer; mixers.push(mixer);
+    }
+    toast(`${def.label} landed — it's alive!`);
+  }, undefined, () => toast(`${def.label} failed to load (check connection)`));
+}
+
 // ── Links ──────────────────────────────────────────────────
 function center(o){ const v=new THREE.Vector3(); o.root.getWorldPosition(v); return v; }
 function createLink(a, b){
@@ -558,6 +599,7 @@ function removeObj(o){
   scene.remove(o.root);
   o.root.traverse(c=>{ if(c.geometry) c.geometry.dispose(); });
   if(o.video){ o.video.pause(); o.video.src=''; }
+  if(o.mixer){ o.mixer.stopAllAction(); const mi=mixers.indexOf(o.mixer); if(mi>-1) mixers.splice(mi,1); }
   if(o.collider){ const i=placeTargets.indexOf(o.collider); if(i>-1) placeTargets.splice(i,1); }
   const i=objects.indexOf(o); if(i>-1) objects.splice(i,1);
   // drop links referencing it
@@ -570,7 +612,7 @@ function removeObj(o){
 // ═══════════════════════════════════════════════════════════
 let mode='nav', ink='#00ccff', fourDOn=false, connectFirst=null;
 let pendingPos=null; // surface point awaiting text/image/video
-let curShape='sphere', curSticker='🦋';
+let curShape='sphere', curSticker='🦋', curModel='flamingo';
 
 const PRESETS=['#00ccff','#ff4466','#44ff88','#ffcc00','#ff8800','#cc66ff','#ffffff','#ff6644','#00ffcc'];
 const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan',
@@ -581,6 +623,7 @@ const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan',
   block:'🟦 Click any surface → block lands on that face',
   shape:'🔷 Pick a shape below, then click a surface to place it',
   sticker:'🦋 Pick an emoji below, then click a surface to place it',
+  model:'🦩 Pick a critter below → click a surface (it loads & animates)',
   connect:'🔗 Click one object, then another to link them',
   erase:'✂️ Click any object to delete it' };
 
@@ -594,11 +637,10 @@ function setMode(m){
   ghost.visible=false; drawing=false; drawPts=[]; liveLine.visible=false;
   document.getElementById('conn-banner').style.display=(m==='connect')?'block':'none';
   if(m!=='connect') connectFirst=null;
-  canvas.style.cursor={ nav:'grab', draw:'crosshair', text:'text', image:'cell', video:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  canvas.style.cursor={ nav:'grab', draw:'crosshair', text:'text', image:'cell', video:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
   // palette
   const pal=document.getElementById('palette');
-  if(m==='shape'){ buildPalette('shape'); pal.classList.add('show'); }
-  else if(m==='sticker'){ buildPalette('sticker'); pal.classList.add('show'); }
+  if(m==='shape'||m==='sticker'||m==='model'){ buildPalette(m); pal.classList.add('show'); }
   else pal.classList.remove('show');
   showModeTip(m); updateHUD();
 }
@@ -615,12 +657,20 @@ function buildPalette(kind){
       b.onclick=()=>{ curShape=key; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
       grid.appendChild(b);
     });
-  } else {
+  } else if(kind==='sticker'){
     title.textContent='Stickers — emoji, animals, birds & icons';
     STICKERS.forEach(ch=>{
       const b=document.createElement('div'); b.className='pal-item'+(ch===curSticker?' sel':'');
       b.textContent=ch;
       b.onclick=()=>{ curSticker=ch; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+      grid.appendChild(b);
+    });
+  } else {
+    title.textContent='Critters — animated 3D models';
+    Object.keys(MODELS).forEach(key=>{
+      const b=document.createElement('div'); b.className='pal-item'+(key===curModel?' sel':'');
+      b.textContent=MODELS[key].icon; b.title=MODELS[key].label;
+      b.onclick=()=>{ curModel=key; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
       grid.appendChild(b);
     });
   }
@@ -633,16 +683,17 @@ function onDown(cx,cy){
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p) addBlock(p.x,p.y,p.z,ink); }
   if(mode==='shape'){ const s=hitToSurface(cx,cy); if(s) addShape(curShape, s, ink); }
   if(mode==='sticker'){ const s=hitToSurface(cx,cy); if(s) addSticker(curSticker, s); }
+  if(mode==='model'){ const s=hitToSurface(cx,cy); if(s) addModel(curModel, s); }
   if(mode==='erase'){ const o=objAt(cx,cy); if(o) removeObj(o); }
 }
 function onMove(cx,cy){
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p){ ghost.position.set(p.x,p.y,p.z); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
-  else if(mode==='shape'||mode==='sticker'){ const s=hitToSurface(cx,cy); if(s){ ghost.position.copy(s.point).addScaledVector(s.normal,0.6); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
+  else if(mode==='shape'||mode==='sticker'||mode==='model'){ const s=hitToSurface(cx,cy); if(s){ ghost.position.copy(s.point).addScaledVector(s.normal,0.6); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
   else ghost.visible=false;
   if(mode==='draw' && drawing) addStrokePoint(cx,cy);
 
   const tip=document.getElementById('tip');
-  if(['block','shape','sticker','erase'].includes(mode)){ const h=getHit(cx,cy);
+  if(['block','shape','sticker','model','erase'].includes(mode)){ const h=getHit(cx,cy);
     if(h){ tip.textContent=h.object.name==='floor'?'Floor':h.object.name==='wall'?'Board Wall':'Object'; tip.style.display='block'; tip.style.left=cx+'px'; tip.style.top=cy+'px'; }
     else tip.style.display='none';
   } else tip.style.display='none';
@@ -714,7 +765,7 @@ document.getElementById('guide-skip-btn').addEventListener('click', ()=>{ docume
 // Keyboard
 window.addEventListener('keydown', e=>{
   if(document.activeElement===document.getElementById('text-input')) return;
-  const km={ n:'nav', d:'draw', t:'text', i:'image', v:'video', b:'block', s:'shape', k:'sticker', c:'connect', e:'erase' };
+  const km={ n:'nav', d:'draw', t:'text', i:'image', v:'video', b:'block', s:'shape', k:'sticker', m:'model', c:'connect', e:'erase' };
   if(km[e.key]) setMode(km[e.key]);
   if(e.key==='r') flyTo(HOME_POS,HOME_TGT);
   if(e.key==='f'){ document.getElementById('btn-4d').click(); }
@@ -729,10 +780,12 @@ function updateHUD(){ const txt=`${mode.toUpperCase()} · ${objects.length} obje
 
 // ── Render loop ────────────────────────────────────────────
 const clock=new THREE.Clock();
+let elapsed=0;
 function animate(){
   requestAnimationFrame(animate);
-  const t=clock.getElapsedTime();
+  const dt=clock.getDelta(); elapsed+=dt; const t=elapsed;
   controls.update();
+  for(let i=0;i<mixers.length;i++) mixers[i].update(dt); // advance skeletal animations
   updTess(t);
   refreshLinks();
   updateLive();
