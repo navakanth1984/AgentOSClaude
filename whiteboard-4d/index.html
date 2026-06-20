@@ -412,7 +412,7 @@ input[type=color]:hover{border-color:#5af;}
 
     <!-- Back / Next navigation -->
     <div class="guide-nav" id="guide-nav">
-      <button class="gnav-back" id="guide-back">← Back</button>
+      <button class="gnav-back" id="guide-back" style="visibility:hidden">← Back</button>
       <button class="gnav-next" id="guide-next">Next →</button>
     </div>
 
@@ -1154,12 +1154,14 @@ const GUIDE_TOTAL = 4;
 function goGuideStep(next, direction){
   const steps = document.querySelectorAll('.gstep');
   const dots  = document.querySelectorAll('.gdot');
-  steps[guideStep].classList.remove('active');
+  steps[guideStep].classList.remove('active','back-anim');
   guideStep = Math.max(0, Math.min(GUIDE_TOTAL-1, next));
-  steps[guideStep].classList.remove('back-anim');
-  steps[guideStep].classList.add('active', direction==='back' ? 'back-anim' : '');
-  // remove animation class after it fires so re-entry works
-  setTimeout(()=> steps[guideStep].classList.remove('back-anim'), 320);
+  // Bug fix: never pass empty string to classList.add — it throws DOMException
+  steps[guideStep].classList.add('active');
+  if(direction==='back') steps[guideStep].classList.add('back-anim');
+  // capture index now so rapid clicks don't corrupt the timeout
+  const capturedStep = guideStep;
+  setTimeout(()=> steps[capturedStep].classList.remove('back-anim'), 320);
   dots.forEach((d,i)=> d.classList.toggle('active', i===guideStep));
   const isLast = guideStep === GUIDE_TOTAL-1;
   document.getElementById('guide-nav').style.display = isLast ? 'none' : 'flex';
