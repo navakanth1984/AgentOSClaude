@@ -312,6 +312,8 @@ input[type=color]:hover{border-color:#5af;}
   <button class="tb"        data-mode="model"  title="Place animated 3D critters">🦩<span class="tb-label">Critters</span></button>
   <button class="tb"        data-mode="connect" title="Link two objects">🔗<span class="tb-label">Link</span></button>
   <button class="tb danger" data-mode="erase"  title="Delete an object">✂️<span class="tb-label">Erase</span></button>
+  <button class="tb" id="btn-undo" title="Undo last object (Ctrl+Z)" disabled style="opacity:.35">↩<span class="tb-label">Undo</span></button>
+  <button class="tb" id="btn-redo" title="Redo (Ctrl+Y)" disabled style="opacity:.35">↪<span class="tb-label">Redo</span></button>
   <button class="tb toggle" id="btn-4d"        title="Toggle 4D time animation for new objects">⏱<span class="tb-label">4D</span></button>
   <button class="tb"        id="btn-guide"     title="Show the guide">❓<span class="tb-label">Guide</span></button>
 </div>
@@ -550,17 +552,57 @@ ghost.visible = false; scene.add(ghost);
 let idCtr = 0;
 const objects = [];
 const links = [];
-const undoStack = []; // tracks creation order for Ctrl+Z
+const undoStack = []; // tracks creation order for undo
+const redoStack = []; // objects hidden by undo, available to redo
 
 function register(root, type, label, color){
   const id = idCtr++;
   const o = { id, root, type, label, color, fourD: fourDOn, wPhase: Math.random()*Math.PI*2, basePos: root.position.clone() };
   objects.push(o);
   undoStack.push(o);
+  redoStack.length = 0; // new creation clears redo history
   scene.add(root);
   if (fourDOn) toast('4D object created — it will drift through time');
   updateHUD();
+  updateUndoRedoBtns();
   return o;
+}
+
+function updateUndoRedoBtns(){
+  const u=document.getElementById('btn-undo'), r=document.getElementById('btn-redo');
+  if(!u||!r) return;
+  u.disabled = undoStack.length===0;
+  r.disabled = redoStack.length===0;
+  u.style.opacity = undoStack.length===0 ? '0.35' : '1';
+  r.style.opacity = redoStack.length===0 ? '0.35' : '1';
+}
+
+function undoLast(){
+  const o=undoStack.pop();
+  if(!o){ toast('Nothing to undo'); return; }
+  scene.remove(o.root);
+  const i=objects.indexOf(o); if(i>-1) objects.splice(i,1);
+  if(o.collider){ const ci=placeTargets.indexOf(o.collider); if(ci>-1) placeTargets.splice(ci,1); }
+  if(o.video) o.video.pause();
+  if(o.sound){ try{ o.sound.pause(); }catch(e){} }
+  for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); links.splice(k,1); } }
+  if(moveTarget===o) moveTarget=null;
+  redoStack.push(o);
+  updateHUD(); updateUndoRedoBtns();
+  toast('Undone');
+}
+
+function redoLast(){
+  const o=redoStack.pop();
+  if(!o){ toast('Nothing to redo'); return; }
+  scene.add(o.root);
+  objects.push(o);
+  undoStack.push(o);
+  if(o.collider) placeTargets.push(o.collider);
+  if(o.video) o.video.play().catch(()=>{});
+  if(o.sound){ try{ o.sound.play(); }catch(e){} }
+  updateHUD(); updateUndoRedoBtns();
+  toast('Redone');
 }
 
 // ── 3D Text (extruded) ─────────────────────────────────────
@@ -1143,6 +1185,8 @@ document.getElementById('btn-scene').addEventListener('click', ()=>document.getE
 
 // ── Toolbar ────────────────────────────────────────────────
 document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
+document.getElementById('btn-undo').addEventListener('click', ()=>undoLast());
+document.getElementById('btn-redo').addEventListener('click', ()=>redoLast());
 document.getElementById('btn-4d').addEventListener('click', e=>{ fourDOn=!fourDOn; e.currentTarget.classList.toggle('on',fourDOn); toast(fourDOn?'4D mode ON — new objects drift through time':'4D mode off'); });
 document.getElementById('btn-reset').addEventListener('click', ()=>flyTo(HOME_POS,HOME_TGT));
 document.getElementById('btn-clear').addEventListener('click', ()=>{ [...objects].forEach(removeObj); toast('Board cleared'); });
@@ -1208,7 +1252,8 @@ document.getElementById('btn-guide').addEventListener('click', ()=>{ document.ge
 window.addEventListener('keydown', e=>{
   if(document.activeElement===document.getElementById('text-input')) return;
   // Ctrl+Z = undo last object
-  if((e.ctrlKey||e.metaKey) && e.key==='z'){ e.preventDefault(); const o=undoStack[undoStack.length-1]; if(o){ removeObj(o); toast('Undone'); } else toast('Nothing to undo'); return; }
+  if((e.ctrlKey||e.metaKey) && e.key==='z' && !e.shiftKey){ e.preventDefault(); undoLast(); return; }
+  if((e.ctrlKey||e.metaKey) && (e.key==='y'||(e.key==='z'&&e.shiftKey))){ e.preventDefault(); redoLast(); return; }
   // Ctrl+D = duplicate last object (blocks, shapes, stickers only)
   if((e.ctrlKey||e.metaKey) && e.key==='d'){ e.preventDefault(); duplicateLast(); return; }
   // +/- or =/- = resize grabbed object (Move mode) or last created object
