@@ -258,6 +258,31 @@ input[type=color]:hover{border-color:#5af;}
 #rec-dot .dot{width:10px;height:10px;border-radius:50%;background:#f33;animation:recpulse 1s infinite;}
 #rec-dot button{background:rgba(220,40,40,.6);border:none;color:#fff;border-radius:12px;padding:3px 10px;font-size:10px;cursor:pointer;font-weight:700;}
 @keyframes recpulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+/* ════════ CINEMATIC INTRO ════════ */
+.cine-bar{position:fixed;left:0;right:0;z-index:900;background:#000;height:0;transition:height .65s cubic-bezier(.4,0,.2,1);}
+#cine-top{top:0;}
+#cine-bot{bottom:0;}
+.cine-bar.show{height:10vh;}
+#cine-title{
+  position:fixed;bottom:11.5vh;left:50%;transform:translateX(-50%);
+  z-index:910;text-align:center;white-space:nowrap;
+  opacity:0;transition:opacity 1.3s ease;pointer-events:none;
+}
+#cine-title.show{opacity:1;}
+#cine-title-main{
+  font-size:clamp(11px,1.8vw,16px);font-weight:400;letter-spacing:5px;
+  color:rgba(140,190,255,.55);text-transform:uppercase;font-family:inherit;
+}
+#cine-skip{
+  position:fixed;bottom:11.5vh;right:3vw;z-index:920;
+  background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.5);padding:6px 15px;border-radius:20px;
+  font-size:11px;cursor:pointer;letter-spacing:1.2px;
+  transition:border-color .15s,color .15s,opacity .4s;
+  font-family:inherit;opacity:0;pointer-events:none;
+}
+#cine-skip.show{opacity:1;pointer-events:all;}
+#cine-skip:hover{border-color:rgba(255,255,255,.45);color:#fff;}
 </style>
 </head>
 <body>
@@ -320,6 +345,11 @@ input[type=color]:hover{border-color:#5af;}
   <div class="pal-grid" id="pal-grid"></div>
 </div>
 
+<!-- ════ CINEMATIC INTRO ════ -->
+<div class="cine-bar" id="cine-top"></div>
+<div class="cine-bar" id="cine-bot"></div>
+<div id="cine-title"><div id="cine-title-main">4D Creative Whiteboard &nbsp;·&nbsp; Alpha</div></div>
+<button id="cine-skip">Skip &rarr;</button>
 <canvas id="c"></canvas>
 
 <div id="mode-tip"></div>
@@ -1222,6 +1252,7 @@ function animate(){
   requestAnimationFrame(animate);
   const dt=clock.getDelta(); elapsed+=dt; const t=elapsed;
   controls.update();
+  tickCinematic();
   for(let i=0;i<mixers.length;i++) mixers[i].update(dt); // advance skeletal animations
   updTess(t);
   refreshLinks();
@@ -1239,9 +1270,164 @@ function animate(){
   renderer.render(scene,camera);
 }
 
+// ── Brand wall decal ────────────────────────────────────────
+function createBrandDecal(){
+  const W=2048, H=1024;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+
+  // transparent base — wall color shows through edges
+  ctx.clearRect(0,0,W,H);
+
+  // soft blue glow halo
+  const halo=ctx.createRadialGradient(W/2,H/2,60,W/2,H/2,520);
+  halo.addColorStop(0,'rgba(0,80,220,.18)');
+  halo.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=halo; ctx.fillRect(0,0,W,H);
+
+  // hex logo ⬡
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font=`bold ${H*0.28}px "Segoe UI Emoji",sans-serif`;
+  ctx.fillStyle='rgba(60,150,255,.85)';
+  // subtle glow shadow
+  ctx.shadowColor='rgba(80,160,255,.9)'; ctx.shadowBlur=60;
+  ctx.fillText('⬡',W/2,H*0.30);
+  ctx.shadowBlur=0;
+
+  // BLEUUBOARD
+  ctx.font=`900 ${H*0.19}px "Segoe UI",Arial,sans-serif`;
+  ctx.letterSpacing='12px';
+  ctx.shadowColor='rgba(100,180,255,.6)'; ctx.shadowBlur=45;
+  ctx.fillStyle='#ffffff';
+  ctx.fillText('BLEUUBOARD',W/2,H*0.635);
+  ctx.shadowBlur=0;
+
+  // tagline
+  ctx.font=`300 ${H*0.055}px "Segoe UI",Arial,sans-serif`;
+  ctx.letterSpacing='4px';
+  ctx.fillStyle='rgba(100,160,240,.5)';
+  ctx.fillText('4D CREATIVE WHITEBOARD  ·  ALPHA',W/2,H*0.81);
+
+  const tex=new THREE.CanvasTexture(cv);
+  const mesh=new THREE.Mesh(
+    new THREE.PlaneGeometry(32,16),
+    new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,side:THREE.FrontSide})
+  );
+  mesh.position.set(0,11,-8.55); // slightly in front of wall
+  mesh.renderOrder=1;
+  scene.add(mesh);
+  return mesh;
+}
+const brandDecal=createBrandDecal();
+
+// spotlight that illuminates the wall
+const brandSpot=new THREE.SpotLight(0x4488ff,0,60,Math.PI/5,0.5,1.5);
+brandSpot.position.set(0,22,8);
+brandSpot.target.position.set(0,11,-9);
+scene.add(brandSpot); scene.add(brandSpot.target);
+
+// ── Cinematic intro ─────────────────────────────────────────
+// Camera path: [t, position, lookAt-target]
+const CINE_PATH=[
+  {t:0,   p:new THREE.Vector3(6,55,155), l:new THREE.Vector3(0,11,-9)},
+  {t:0.30,p:new THREE.Vector3(-5,30,80), l:new THREE.Vector3(0,12,-9)},
+  {t:0.62,p:new THREE.Vector3(3,11,34),  l:new THREE.Vector3(0,13,-9)},
+  {t:0.85,p:new THREE.Vector3(0,5,14),   l:new THREE.Vector3(0,11.5,-9)},
+  {t:1,   p:new THREE.Vector3(0,5,12),   l:new THREE.Vector3(0,11,-9)},
+];
+const CINE_DUR=5800; // ms
+let cineActive=false, cineT0=0;
+
+function easeInOutCubic(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;}
+
+function sampleCinePath(t){
+  for(let i=0;i<CINE_PATH.length-1;i++){
+    const a=CINE_PATH[i], b=CINE_PATH[i+1];
+    if(t>=a.t&&t<=b.t){
+      const local=(t-a.t)/(b.t-a.t);
+      const e=easeInOutCubic(local);
+      return {p:a.p.clone().lerp(b.p,e), l:a.l.clone().lerp(b.l,e)};
+    }
+  }
+  const last=CINE_PATH[CINE_PATH.length-1];
+  return {p:last.p.clone(), l:last.l.clone()};
+}
+
+function tickCinematic(){
+  if(!cineActive) return;
+  const now=performance.now();
+  const elapsed=now-cineT0;
+  const t=Math.min(elapsed/CINE_DUR,1);
+  const {p,l}=sampleCinePath(t);
+
+  // subtle drone micro-jitter (decays as we approach)
+  const shake=0.05*(1-t)*(1-t);
+  p.x+=Math.sin(now*0.073)*shake;
+  p.y+=Math.cos(now*0.113)*shake;
+
+  camera.position.copy(p);
+  controls.target.copy(l);
+
+  // spotlight fades in during approach
+  brandSpot.intensity=Math.max(0,(t-0.4)/0.6)*2.4;
+
+  // show skip button after 0.5s
+  if(elapsed>500) document.getElementById('cine-skip').classList.add('show');
+
+  // show subtitle text after 2.5s
+  if(elapsed>2500) document.getElementById('cine-title').classList.add('show');
+
+  if(t>=1) endCinematic();
+}
+
+function endCinematic(){
+  cineActive=false;
+  controls.enabled=true;
+  // fade out bars + title
+  document.getElementById('cine-top').classList.remove('show');
+  document.getElementById('cine-bot').classList.remove('show');
+  document.getElementById('cine-title').classList.remove('show');
+  document.getElementById('cine-skip').classList.remove('show');
+  // dim spotlight back to ambient after 1s
+  setTimeout(()=>{ brandSpot.intensity=0.5; },1000);
+  // fly to home position, then show guide if first visit
+  flyTo(HOME_POS.clone(), HOME_TGT.clone(), 1100);
+  setTimeout(()=>{
+    if(!localStorage.getItem('bleuuboard_guided'))
+      document.getElementById('guide-overlay').style.display='flex';
+  },1200);
+}
+
+function startCinematic(){
+  cineActive=true; cineT0=performance.now();
+  controls.enabled=false;
+  const start=CINE_PATH[0];
+  camera.position.copy(start.p);
+  controls.target.copy(start.l);
+  document.getElementById('cine-top').classList.add('show');
+  document.getElementById('cine-bot').classList.add('show');
+}
+
+document.getElementById('cine-skip').addEventListener('click',()=>{
+  if(!cineActive) return;
+  cineActive=false;
+  controls.enabled=true;
+  document.getElementById('cine-top').classList.remove('show');
+  document.getElementById('cine-bot').classList.remove('show');
+  document.getElementById('cine-title').classList.remove('show');
+  document.getElementById('cine-skip').classList.remove('show');
+  brandSpot.intensity=0.5;
+  flyTo(HOME_POS.clone(),HOME_TGT.clone(),700);
+  setTimeout(()=>{
+    if(!localStorage.getItem('bleuuboard_guided'))
+      document.getElementById('guide-overlay').style.display='flex';
+  },750);
+});
+
 // ── Boot ───────────────────────────────────────────────────
-setMode('nav'); updateHUD(); animate();
-document.getElementById('guide-overlay').style.display = localStorage.getItem('bleuuboard_guided') ? 'none' : 'flex';
+setMode('nav'); updateHUD();
+startCinematic();
+animate();
 </script>
 </body>
 </html>
