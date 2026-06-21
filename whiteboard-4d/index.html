@@ -262,6 +262,39 @@ input[type=color]:hover{border-color:#5af;}
 .ds-dismiss{background:none;border:none;color:#334;font-size:10px;cursor:pointer;padding:0 2px;align-self:center;transition:color .1s;}
 .ds-dismiss:hover{color:#668;}
 
+/* ════════ ORBIT PATTERN PANEL ════════ */
+#orbit-panel{
+  position:fixed;z-index:290;display:none;
+  background:rgba(2,8,36,.97);backdrop-filter:blur(16px);
+  border:1px solid rgba(110,40,200,.4);
+}
+#orbit-panel.show{display:flex;}
+.op-title{font-size:8px;color:#b6f;letter-spacing:1.2px;text-transform:uppercase;
+  padding:4px 8px 3px;border-bottom:1px solid rgba(110,40,200,.2);}
+.op-row{display:flex;gap:3px;padding:5px 6px;}
+.op-btn{display:flex;flex-direction:column;align-items:center;gap:2px;
+  border:1px solid transparent;background:none;color:#779;border-radius:8px;
+  cursor:pointer;font-size:16px;transition:background .12s,color .12s,border-color .12s;
+  touch-action:manipulation;padding:5px 4px;}
+.op-btn span{font-size:7px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#446;}
+.op-btn:hover{background:rgba(110,40,200,.35);color:#d9f;border-color:rgba(160,80,255,.3);}
+.op-btn:hover span{color:#99c;}
+.op-btn.active{background:rgba(90,20,180,.5);color:#c9f;border-color:rgba(160,80,255,.5);}
+.op-btn.active span{color:#b6f;}
+.op-sep{width:1px;background:rgba(110,40,200,.2);margin:4px 2px;}
+.op-radius{display:flex;align-items:center;gap:5px;padding:0 8px 6px;font-size:9px;color:#669;}
+.op-radius input{width:70px;accent-color:#9060ff;}
+
+/* mobile: anchored above bottombar */
+@media(max-width:819px){
+  #orbit-panel{bottom:64px;left:0;right:0;flex-direction:column;}
+  .op-row{justify-content:center;}
+}
+/* desktop: top-right corner, below topbar */
+@media(min-width:820px){
+  #orbit-panel{right:10px;top:58px;flex-direction:column;width:140px;}
+}
+
 /* ════════ BRUSH PICKER (secondary toolbar strip) ════════ */
 #brush-picker{position:fixed;z-index:290;display:none;
   background:rgba(2,8,36,.97);backdrop-filter:blur(16px);}
@@ -296,6 +329,32 @@ input[type=color]:hover{border-color:#5af;}
   .bp-btn{width:52px;padding:6px 4px;}
   .bp-sep{width:36px;height:1px;background:rgba(80,160,255,.1);margin:2px 0;}
 }
+
+/* ════════ SIZE HUD ════════ */
+#size-hud{
+  position:fixed;z-index:400;display:none;
+  align-items:center;gap:6px;
+  background:rgba(0,6,30,.95);border:1px solid rgba(80,160,255,.3);
+  border-radius:22px;padding:6px 12px;backdrop-filter:blur(12px);
+  box-shadow:0 0 18px rgba(20,60,180,.3);
+  pointer-events:all;user-select:none;
+  /* position will be set by JS near the grabbed object */
+}
+#size-hud.show{display:flex;}
+#size-hud .sz-btn{
+  width:28px;height:28px;border-radius:50%;border:1px solid rgba(80,160,255,.3);
+  background:rgba(20,50,150,.6);color:#9cf;font-size:18px;font-weight:300;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .1s;touch-action:manipulation;flex-shrink:0;line-height:1;
+}
+#size-hud .sz-btn:hover{background:rgba(40,90,200,.7);}
+#size-hud #sz-val{
+  font-size:12px;color:#7af;letter-spacing:.3px;min-width:48px;text-align:center;
+}
+#size-hud #sz-range{
+  width:80px;accent-color:#5af;cursor:pointer;
+}
+@media(max-width:500px){#size-hud #sz-range{width:55px;}}
 
 /* ════════ LINK DIRECTION INDICATOR ════════ */
 .link-dir-badge{position:fixed;z-index:300;pointer-events:none;font-size:10px;
@@ -392,6 +451,32 @@ input[type=color]:hover{border-color:#5af;}
   <button class="tb"        id="btn-guide"     title="Show the guide">❓<span class="tb-label">Guide</span></button>
 </div>
 
+<!-- ════════ SIZE HUD ════════ -->
+<div id="size-hud">
+  <button class="sz-btn" id="sz-minus">−</button>
+  <span id="sz-val">100%</span>
+  <input type="range" id="sz-range" min="5" max="500" step="5" value="100">
+  <button class="sz-btn" id="sz-plus">+</button>
+</div>
+
+<!-- ════════ ORBIT PATTERN PANEL ════════ -->
+<div id="orbit-panel">
+  <div class="op-title">⭕ Orbit Pattern</div>
+  <div class="op-row">
+    <button class="op-btn active" data-orbit="circle">🔵<span>Circle</span></button>
+    <button class="op-btn" data-orbit="figure8">∞<span>Fig-8</span></button>
+    <button class="op-btn" data-orbit="helix">🌀<span>Helix</span></button>
+    <button class="op-btn" data-orbit="spiral">🌪<span>Spiral</span></button>
+    <div class="op-sep"></div>
+    <button class="op-btn" data-orbit="float">〜<span>Float</span></button>
+  </div>
+  <div class="op-radius">
+    <span>r</span>
+    <input type="range" id="orbit-radius" min="0.5" max="8" step="0.5" value="2.5">
+    <span id="orbit-radius-val">2.5</span>
+  </div>
+</div>
+
 <!-- ════════ UTILITIES ════════ -->
 <div id="utils">
   <button class="ubtn" id="btn-reset">⟳ Reset view</button>
@@ -432,9 +517,10 @@ input[type=color]:hover{border-color:#5af;}
 <div id="draw-suggest">
   <div class="ds-title" id="ds-drag-handle">✨ Suggestions &nbsp;<span style="margin-left:auto;font-size:9px;color:#223">drag to move</span></div>
   <div class="ds-row">
-    <button class="ds-btn" id="ds-text">🅣 Convert to Text</button>
-    <button class="ds-btn" id="ds-image">🖼 Replace with Image</button>
-    <button class="ds-btn" id="ds-icon">⬡ Place Icon Node</button>
+    <button class="ds-btn" id="ds-recognize" style="display:none;background:rgba(40,140,60,.7);border-color:rgba(80,220,100,.4);color:#9fe;">✨ Recognise</button>
+    <button class="ds-btn" id="ds-text">🅣 To Text</button>
+    <button class="ds-btn" id="ds-image">🖼 Image</button>
+    <button class="ds-btn" id="ds-icon">⬡ Icon</button>
     <button class="ds-dismiss" id="ds-dismiss">✕</button>
   </div>
 </div>
@@ -465,7 +551,10 @@ input[type=color]:hover{border-color:#5af;}
 
 <div id="text-overlay">
   <input id="text-input" type="text" placeholder="Type text and press Enter…" autocomplete="off" spellcheck="false">
-  <span class="text-hint">Esc to cancel · becomes extruded 3D text</span>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <span class="text-hint" style="flex:1">Enter = 3D text · Shift+Enter = 🔵 Ring</span>
+    <button id="btn-text-ring" style="background:rgba(90,20,180,.7);border:1px solid rgba(160,80,255,.5);color:#c9f;border-radius:6px;font-size:10px;padding:3px 8px;cursor:pointer;white-space:nowrap;">⭕ Ring</button>
+  </div>
 </div>
 
 <input type="file" id="img-input" accept="image/*">
@@ -667,12 +756,18 @@ const redoStack = []; // objects hidden by undo, available to redo
 
 function register(root, type, label, color){
   const id = idCtr++;
-  const o = { id, root, type, label, color, fourD: fourDOn, wPhase: Math.random()*Math.PI*2, basePos: root.position.clone() };
+  const o = { id, root, type, label, color, fourD: fourDOn,
+    wPhase: Math.random()*Math.PI*2, basePos: root.position.clone(),
+    orbitPattern: curOrbitPattern, orbitRadius: curOrbitRadius, orbitSpeed: 0.38 };
   objects.push(o);
   undoStack.push(o);
-  redoStack.length = 0; // new creation clears redo history
+  redoStack.length = 0;
   scene.add(root);
-  if (fourDOn) toast('4D object created — it will drift through time');
+  // attach Gaussian splat aura — always present, only animated when 4D is on
+  const aura = makeSplatAura(color, 1.8);
+  root.add(aura); o.splatPts = aura;
+  aura.visible = fourDOn; // hide for non-4D objects
+  if (fourDOn) toast(`4D orbit: ${curOrbitPattern} · r=${curOrbitRadius}`);
   updateHUD();
   updateUndoRedoBtns();
   return o;
@@ -735,18 +830,70 @@ function addText3D(text, pos, hex){
   register(root, 'text', text, hex);
 }
 
+// ── Gaussian-splat depth halo ──────────────────────────────
+// Creates a soft particle cloud around an object — viewer's brain reads
+// the density gradient as real volumetric depth (splat-style depth cue).
+function makeSplatAura(colorHex, radius){
+  const N=120, pos=new Float32Array(N*3), col=new Float32Array(N*3);
+  const c=new THREE.Color(colorHex);
+  for(let i=0;i<N;i++){
+    const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1);
+    // gaussian-distributed radii: denser near centre, feathered at edge
+    const r=radius*(0.25 + Math.abs(gaussRand())*0.38);
+    pos[i*3]=r*Math.sin(phi)*Math.cos(theta);
+    pos[i*3+1]=r*Math.sin(phi)*Math.sin(theta)*0.55; // flatten vertically
+    pos[i*3+2]=r*Math.cos(phi);
+    const bright=0.5+Math.random()*0.5;
+    col[i*3]=c.r*bright; col[i*3+1]=c.g*bright; col[i*3+2]=c.b*bright;
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  return new THREE.Points(geo, new THREE.PointsMaterial({
+    size:0.18, vertexColors:true, sizeAttenuation:true,
+    transparent:true, opacity:0.22, depthWrite:false,
+  }));
+}
+function gaussRand(){ let u=0,v=0; while(!u)u=Math.random(); while(!v)v=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+
+// ── Circular text ring (characters placed radially) ────────
+// Wraps text around a 3D circle — readable from any viewing angle
+// because each char is individually billboard-Y aligned in the loop.
+function addTextRing(text, pos, hex, ringR){
+  if(!FONT){ toast('Font still loading — try again'); return; }
+  const chars=[...text.replace(/\s/g,'')]; if(!chars.length) return;
+  const radius=ringR||Math.max(2.0, chars.length*0.28);
+  const col=new THREE.Color(hex);
+  const root=new THREE.Group(); root.position.copy(pos);
+  const step=(Math.PI*2)/chars.length;
+  chars.forEach((ch,i)=>{
+    const geo=new THREE.TextGeometry(ch,{font:FONT,size:0.75,height:0.18,curveSegments:5,bevelEnabled:true,bevelThickness:0.03,bevelSize:0.02,bevelSegments:1});
+    geo.computeBoundingBox();
+    const cw=geo.boundingBox.max.x-geo.boundingBox.min.x;
+    geo.translate(-cw/2,0,0);
+    const mat=new THREE.MeshStandardMaterial({color:col,emissive:col.clone().multiplyScalar(0.22),roughness:0.32,metalness:0.2});
+    const mesh=new THREE.Mesh(geo,mat); mesh.castShadow=true;
+    const angle=i*step;
+    mesh.position.set(Math.cos(angle)*radius, 0, Math.sin(angle)*radius);
+    mesh.rotation.y=-angle+Math.PI/2; // face outward from ring
+    root.add(mesh);
+  });
+  // add a subtle orbit ring glyph
+  const ringGeo=new THREE.TorusGeometry(radius,0.03,8,64);
+  root.add(new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.18})));
+  register(root,'textring',text,hex);
+}
+
 // ── Freehand 3D stroke (tube) ──────────────────────────────
 let drawPlane = new THREE.Plane();
 let drawPts = [];
 let drawing = false;
 
 function beginStroke(cx, cy){
-  const hit = getHit(cx, cy);
-  // anchor depth: the hit point, else the controls target
-  const anchor = hit ? hit.point.clone() : controls.target.clone();
-  // plane facing the camera, through the anchor — lets us draw a flat ribbon in 3D
+  // ALWAYS anchor to controls.target so every stroke is coplanar on the same
+  // camera-facing canvas — prevents the front/back/sideways depth jumping.
   const nrm = new THREE.Vector3(); camera.getWorldDirection(nrm);
-  drawPlane.setFromNormalAndCoplanarPoint(nrm, anchor);
+  drawPlane.setFromNormalAndCoplanarPoint(nrm, controls.target.clone());
   drawing = true; drawPts = [];
   addStrokePoint(cx, cy);
 }
@@ -791,14 +938,112 @@ function endStroke(){
   const sx = (projected.x * 0.5 + 0.5) * innerWidth;
   const sy = (-projected.y * 0.5 + 0.5) * innerHeight;
   lastStrokeEndScreen = { x: sx, y: sy };
-  showSuggest(sx, sy);
+  lastRecogPts = [...drawPts]; // save raw points for shape recognition
+  // auto-preview what we'd recognise
+  const hint = recognizeStroke(lastRecogPts);
+  showSuggest(sx, sy, hint ? hint.label : null);
   drawPts = [];
 }
 
+// ── Stroke shape recogniser ─────────────────────────────────
+// Analyses raw 3D points and returns { type, geo, label } for a clean shape.
+// Works entirely with bounding-box + closure + variance heuristics — no ML needed.
+function recognizeStroke(pts){
+  if(pts.length < 3) return null;
+  // 1. Compute centroid and bounding box in the draw plane's local UV coords.
+  const n = pts.length;
+  const cx = pts.reduce((s,p)=>s+p.x,0)/n;
+  const cy = pts.reduce((s,p)=>s+p.y,0)/n;
+  const cz = pts.reduce((s,p)=>s+p.z,0)/n;
+  const centroid = new THREE.Vector3(cx,cy,cz);
+
+  // 2. Closure: is the stroke a closed loop?
+  const arcLen = pts.reduce((s,_,i)=>i?s+pts[i].distanceTo(pts[i-1]):s, 0);
+  const gapRatio = pts[0].distanceTo(pts[n-1]) / (arcLen||1);
+  const isClosed = gapRatio < 0.28;
+
+  // 3. Bounding box
+  const box = new THREE.Box3().setFromPoints(pts);
+  const sz  = box.getSize(new THREE.Vector3());
+  const w = Math.max(sz.x, sz.z), h = sz.y || Math.max(sz.x, sz.z);
+  const aspect = Math.max(w,h) / (Math.min(w,h)||0.01);
+
+  // 4. Circularity — how consistent are distances from centroid?
+  const dists = pts.map(p=>p.distanceTo(centroid));
+  const meanD = dists.reduce((s,d)=>s+d,0)/n;
+  const varD  = dists.reduce((s,d)=>s+(d-meanD)**2,0)/n;
+  const circScore = varD / (meanD*meanD||1); // low = circular
+
+  // 5. Straightness — deviation from the pts[0]→pts[last] axis
+  const axis = pts[n-1].clone().sub(pts[0]).normalize();
+  const maxPerp = Math.max(...pts.map(p=>{ const v=p.clone().sub(pts[0]); const proj=v.dot(axis); return v.addScaledVector(axis,-proj).length(); }));
+  const isStraight = maxPerp < arcLen * 0.08;
+
+  // ── Decision tree ──────────────────────────────────────────
+  const size = Math.max(w,h,0.5);
+  const halfSize = size/2;
+  const col = new THREE.Color(ink);
+  const mat3d = ()=> new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.15), roughness:0.38, metalness:0.18 });
+  const mat2d = ()=> new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.28), roughness:0.5, side:THREE.DoubleSide });
+
+  if(isStraight && !isClosed){
+    // Clean line → thin tube between first and last point
+    const linePts = [pts[0], pts[n-1]];
+    const geo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(linePts),4,0.04,6,false);
+    return { label:'Line', mesh: new THREE.Mesh(geo, mat3d()), pos: centroid };
+  }
+  if(isClosed){
+    const maxD = Math.max(...dists), minD = Math.min(...dists);
+    const distRatio = maxD / (minD||0.01); // ~1.0 for circle, ~1.41 for square
+    if(circScore < 0.06 && distRatio < 1.18){
+      // Circle
+      const geo = new THREE.CylinderGeometry(meanD, meanD, 0.22, 48);
+      return { label:'Circle', mesh: new THREE.Mesh(geo, mat3d()), pos: centroid };
+    }
+    if(aspect < 1.35){
+      // Square
+      const geo = new THREE.BoxGeometry(size, 0.22, size);
+      return { label:'Square', mesh: new THREE.Mesh(geo, mat3d()), pos: centroid };
+    }
+    // Rectangle
+    const geo = new THREE.BoxGeometry(w||size, 0.22, h||size);
+    return { label:'Rectangle', mesh: new THREE.Mesh(geo, mat3d()), pos: centroid };
+  }
+  // L-shape or arc — wrap as a flat curved shape
+  if(circScore < 0.25 && !isClosed){
+    // Arc / partial circle
+    const geo = new THREE.TorusGeometry(meanD, 0.1, 8, 48, Math.PI);
+    return { label:'Arc', mesh: new THREE.Mesh(geo, mat3d()), pos: centroid };
+  }
+  return null; // unrecognised — keep as freehand
+}
+
+function recognizeAndReplace(){
+  const last = undoStack[undoStack.length-1];
+  if(!last || last.type !== 'stroke'){ toast('Draw a stroke first'); return; }
+  // grab the tube geometry points by sampling the curve
+  const tube = last.root.children[0];
+  if(!tube || !tube.geometry) return;
+  // Re-run on saved raw points from lastRecogPts
+  const result = lastRecogPts ? recognizeStroke(lastRecogPts) : null;
+  if(!result){ toast('Shape unclear — try a cleaner stroke'); return; }
+  const pos = last.root.position.clone().add(result.pos);
+  undoLast();
+  result.mesh.castShadow = true;
+  const root = new THREE.Group(); root.position.copy(result.pos.lengthSq() > 0.01 ? result.pos : last.root.position);
+  root.add(result.mesh);
+  register(root, 'shape', result.label, ink);
+  toast(`✨ Recognised as ${result.label}`);
+  hideSuggest();
+}
+let lastRecogPts = null; // saved after each stroke for recognition
+
 let suggestPinned = false, suggestPinnedX = null, suggestPinnedY = null;
-function showSuggest(sx, sy){
+function showSuggest(sx, sy, recognisedHint){
   const el = document.getElementById('draw-suggest');
   el.classList.add('show');
+  const rb = document.getElementById('ds-recognize');
+  if(rb){ rb.style.display = recognisedHint ? 'flex' : 'none'; rb.textContent = recognisedHint ? `✨ Make ${recognisedHint}` : ''; }
   if(suggestPinned && suggestPinnedX !== null){ return; } // keep user-dragged position
   const W = el.offsetWidth || 260, H = el.offsetHeight || 70;
   // prefer bottom-right corner away from drawing area; fall back if near right edge
@@ -857,6 +1102,8 @@ document.querySelectorAll('.bp-btn[data-brush]').forEach(btn=>{
 // Draw suggestion actions
 document.getElementById('ds-dismiss').addEventListener('click', hideSuggest);
 
+document.getElementById('ds-recognize').addEventListener('click', ()=>recognizeAndReplace());
+
 document.getElementById('ds-text').addEventListener('click', ()=>{
   const sc = lastStrokeEndScreen ? {...lastStrokeEndScreen} : {x:innerWidth/2, y:innerHeight/2};
   hideSuggest();
@@ -887,7 +1134,7 @@ document.getElementById('ds-icon').addEventListener('click', ()=>{
     undoLast();
     const ic = ICON_CATEGORIES[curIconCat][curIconKey];
     const surf = { point: pos, normal: new THREE.Vector3(0,1,0) };
-    addIconNode(ic.icon, ic.label, surf);
+    addIconNode(ic.icon, ic.label, surf, ic.draw||null);
     toast(`Icon node "${ic.label}" placed — switch to Link to connect it`);
   }
   // open icon palette so user can pick
@@ -1033,48 +1280,245 @@ function addSticker(ch, surf){
 }
 
 // ── Icon node library (tech + creative fields) ─────────────
+// Brand-colored canvas draw functions for tech platform icons
+// Each fn(ctx, S) draws into a square canvas of side S.
+const BRAND_ICONS = {
+  // ── Data Engineering ────────────────────────────────────────
+  databricks: (ctx,S)=>{
+    ctx.fillStyle='#1B1B2F'; ctx.fillRect(0,0,S,S);
+    const g=ctx.createLinearGradient(S*0.2,S*0.8,S*0.8,S*0.1);
+    g.addColorStop(0,'#FF3621'); g.addColorStop(1,'#FFA200');
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.moveTo(S*.5,S*.12); ctx.lineTo(S*.85,S*.72); ctx.lineTo(S*.15,S*.72); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.9)';
+    ctx.beginPath(); ctx.moveTo(S*.5,S*.32); ctx.lineTo(S*.68,S*.62); ctx.lineTo(S*.32,S*.62); ctx.closePath(); ctx.fill();
+  },
+  spark: (ctx,S)=>{
+    ctx.fillStyle='#1A1A2E'; ctx.fillRect(0,0,S,S);
+    const g=ctx.createLinearGradient(S*.2,S*.8,S*.8,S*.1);
+    g.addColorStop(0,'#E25A00'); g.addColorStop(1,'#FFB347');
+    ctx.fillStyle=g;
+    // lightning bolt
+    ctx.beginPath(); ctx.moveTo(S*.6,S*.1); ctx.lineTo(S*.35,S*.5); ctx.lineTo(S*.52,S*.5); ctx.lineTo(S*.4,S*.9); ctx.lineTo(S*.65,S*.48); ctx.lineTo(S*.48,S*.48); ctx.closePath(); ctx.fill();
+  },
+  snowflake: (ctx,S)=>{
+    ctx.fillStyle='#29B5E8'; ctx.fillRect(0,0,S,S);
+    ctx.strokeStyle='#fff'; ctx.lineWidth=S*.07; ctx.lineCap='round';
+    const cx=S/2,cy=S/2,r=S*.35;
+    for(let i=0;i<6;i++){
+      const a=i*Math.PI/3;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a)); ctx.stroke();
+      const mx=cx+r*.55*Math.cos(a),my=cy+r*.55*Math.sin(a);
+      const pa=a+Math.PI/2;
+      ctx.beginPath(); ctx.moveTo(mx-r*.2*Math.cos(pa),my-r*.2*Math.sin(pa)); ctx.lineTo(mx+r*.2*Math.cos(pa),my+r*.2*Math.sin(pa)); ctx.stroke();
+    }
+  },
+  dbt: (ctx,S)=>{
+    ctx.fillStyle='#FF694A'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`900 ${S*.62}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('dbt',S/2,S*.52);
+  },
+  airflow: (ctx,S)=>{
+    ctx.fillStyle='#017CEE'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`bold ${S*.28}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('AIR',S/2,S*.36); ctx.fillText('FLOW',S/2,S*.64);
+  },
+  kafka: (ctx,S)=>{
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,S,S);
+    ctx.strokeStyle='#fff'; ctx.lineWidth=S*.06; ctx.lineCap='round';
+    // K shape
+    ctx.beginPath(); ctx.moveTo(S*.3,S*.2); ctx.lineTo(S*.3,S*.8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(S*.3,S*.5); ctx.lineTo(S*.72,S*.2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(S*.3,S*.5); ctx.lineTo(S*.72,S*.8); ctx.stroke();
+    // accent dot
+    ctx.fillStyle='#E83E3E'; ctx.beginPath(); ctx.arc(S*.15,S*.5,S*.07,0,Math.PI*2); ctx.fill();
+  },
+  fabric: (ctx,S)=>{
+    ctx.fillStyle='#0F0F1A'; ctx.fillRect(0,0,S,S);
+    const cols=['#0078D4','#00BCF2','#00B7C3','#742774'];
+    [[0,0],[1,0],[0,1],[1,1]].forEach(([xi,yi],i)=>{
+      ctx.fillStyle=cols[i];
+      ctx.fillRect(S*(.18+xi*.32),S*(.18+yi*.32),S*.28,S*.28);
+    });
+  },
+  trino: (ctx,S)=>{
+    ctx.fillStyle='#DD00A1'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`900 ${S*.5}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('T',S/2,S*.52);
+  },
+  iceberg: (ctx,S)=>{
+    ctx.fillStyle='#1C3A5E'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='rgba(255,255,255,.9)';
+    ctx.beginPath(); ctx.moveTo(S*.5,S*.15); ctx.lineTo(S*.8,S*.55); ctx.lineTo(S*.2,S*.55); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(100,180,255,.55)';
+    ctx.beginPath(); ctx.moveTo(S*.35,S*.55); ctx.lineTo(S*.65,S*.55); ctx.lineTo(S*.75,S*.85); ctx.lineTo(S*.25,S*.85); ctx.closePath(); ctx.fill();
+  },
+  flink: (ctx,S)=>{
+    ctx.fillStyle='#E6526F'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`900 ${S*.44}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('FL',S/2,S*.52);
+  },
+  // ── Cloud Platforms ─────────────────────────────────────────
+  aws: (ctx,S)=>{
+    ctx.fillStyle='#232F3E'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#FF9900';
+    ctx.font=`900 ${S*.22}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('aws',S/2,S*.38);
+    // smile arc
+    ctx.strokeStyle='#FF9900'; ctx.lineWidth=S*.07; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(S*.5,S*.48,S*.28,0.2,Math.PI-.2); ctx.stroke();
+    // arrow tip
+    ctx.fillStyle='#FF9900';
+    ctx.beginPath(); ctx.moveTo(S*.78,S*.56); ctx.lineTo(S*.72,S*.48); ctx.lineTo(S*.85,S*.48); ctx.closePath(); ctx.fill();
+  },
+  azure: (ctx,S)=>{
+    const g=ctx.createLinearGradient(0,0,S,S);
+    g.addColorStop(0,'#0062AD'); g.addColorStop(1,'#00BCF2');
+    ctx.fillStyle=g; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='rgba(255,255,255,.95)';
+    ctx.beginPath(); ctx.moveTo(S*.22,S*.75); ctx.lineTo(S*.5,S*.18); ctx.lineTo(S*.78,S*.75); ctx.lineTo(S*.6,S*.75); ctx.lineTo(S*.5,S*.45); ctx.lineTo(S*.4,S*.75); ctx.closePath(); ctx.fill();
+  },
+  gcp: (ctx,S)=>{
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,S,S);
+    const cols=['#4285F4','#34A853','#FBBC05','#EA4335'];
+    const rects=[[S*.08,S*.3,S*.38,S*.12],[S*.54,S*.3,S*.38,S*.12],[S*.3,S*.54,S*.12,S*.38],[S*.3,S*.08,S*.12,S*.38]];
+    rects.forEach(([x,y,w,h],i)=>{ ctx.fillStyle=cols[i]; ctx.beginPath(); ctx.roundRect(x,y,w,h,4); ctx.fill(); });
+  },
+  redshift: (ctx,S)=>{
+    ctx.fillStyle='#8C4FFF'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`900 ${S*.28}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('RS',S/2,S*.52);
+  },
+  bigquery: (ctx,S)=>{
+    ctx.fillStyle='#4285F4'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff';
+    ctx.beginPath(); ctx.arc(S*.5,S*.45,S*.28,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#4285F4'; ctx.beginPath(); ctx.arc(S*.5,S*.45,S*.16,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.lineWidth=S*.08; ctx.strokeStyle='#fff'; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(S*.65,S*.6); ctx.lineTo(S*.8,S*.75); ctx.stroke();
+  },
+  synapse: (ctx,S)=>{
+    ctx.fillStyle='#0078D4'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`900 ${S*.28}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('SYN',S/2,S*.52);
+  },
+  // ── AI Tools ────────────────────────────────────────────────
+  openai: (ctx,S)=>{
+    ctx.fillStyle='#10A37F'; ctx.fillRect(0,0,S,S);
+    // OpenAI rosette
+    ctx.strokeStyle='#fff'; ctx.lineWidth=S*.055; ctx.lineCap='round';
+    const cx=S/2,cy=S/2,r=S*.3;
+    for(let i=0;i<6;i++){
+      const a=i*Math.PI/3;
+      ctx.beginPath(); ctx.arc(cx+r*.55*Math.cos(a),cy+r*.55*Math.sin(a),r*.4,a+Math.PI*.65,a+Math.PI*1.35); ctx.stroke();
+    }
+  },
+  gemini: (ctx,S)=>{
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,S,S);
+    const g=ctx.createLinearGradient(S*.2,S*.8,S*.8,S*.2);
+    g.addColorStop(0,'#4285F4'); g.addColorStop(.5,'#8B5CF6'); g.addColorStop(1,'#EA4335');
+    ctx.fillStyle=g;
+    // 4-pointed star
+    const pts=[];
+    for(let i=0;i<8;i++){
+      const a=i*Math.PI/4-Math.PI/2;
+      const r=i%2===0?S*.4:S*.12;
+      pts.push([S/2+r*Math.cos(a),S/2+r*Math.sin(a)]);
+    }
+    ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+    pts.slice(1).forEach(([x,y])=>ctx.lineTo(x,y)); ctx.closePath(); ctx.fill();
+  },
+  grok: (ctx,S)=>{
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`900 ${S*.6}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('𝕏',S/2,S*.55);
+  },
+  claude: (ctx,S)=>{
+    ctx.fillStyle='#CC785C'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='rgba(255,240,230,.95)';
+    ctx.font=`900 ${S*.48}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('A',S/2,S*.52);
+  },
+  huggingface: (ctx,S)=>{
+    ctx.fillStyle='#FFD21E'; ctx.fillRect(0,0,S,S);
+    ctx.font=`${S*.6}px "Segoe UI Emoji",sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🤗',S/2,S*.55);
+  },
+  langchain: (ctx,S)=>{
+    ctx.fillStyle='#1C3C5A'; ctx.fillRect(0,0,S,S);
+    ctx.strokeStyle='#4FC3F7'; ctx.lineWidth=S*.07; ctx.lineCap='round';
+    // chain links
+    ctx.beginPath(); ctx.arc(S*.32,S*.5,S*.2,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(S*.68,S*.5,S*.2,0,Math.PI*2); ctx.stroke();
+  },
+  llamaindex: (ctx,S)=>{
+    ctx.fillStyle='#7B2D8B'; ctx.fillRect(0,0,S,S);
+    ctx.font=`${S*.55}px "Segoe UI Emoji",sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🦙',S/2,S*.55);
+  },
+  midjourney: (ctx,S)=>{
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='#fff'; ctx.font=`bold ${S*.18}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('MID',S/2,S*.38); ctx.fillText('JOUR',S/2,S*.57); ctx.fillText('NEY',S/2,S*.76);
+  },
+  stablediff: (ctx,S)=>{
+    const g=ctx.createRadialGradient(S/2,S/2,0,S/2,S/2,S*.5);
+    g.addColorStop(0,'#FF6B35'); g.addColorStop(1,'#3D0066');
+    ctx.fillStyle=g; ctx.fillRect(0,0,S,S);
+    ctx.fillStyle='rgba(255,255,255,.9)'; ctx.font=`900 ${S*.28}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('SD',S/2,S*.52);
+  },
+  ollama: (ctx,S)=>{
+    ctx.fillStyle='#1a1a1a'; ctx.fillRect(0,0,S,S);
+    ctx.font=`${S*.5}px "Segoe UI Emoji",sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🦙',S/2,S*.5);
+    ctx.fillStyle='rgba(255,255,255,.6)'; ctx.font=`bold ${S*.16}px Arial`; ctx.textAlign='center'; ctx.textBaseline='bottom'; ctx.fillText('ollama',S/2,S*.94);
+  },
+};
+
 const ICON_CATEGORIES = {
-  'Cloud & Infra': [
-    { icon:'☁️', label:'Cloud' },
-    { icon:'🖥️', label:'Server' },
-    { icon:'🗄️', label:'Database' },
-    { icon:'🔒', label:'Security' },
-    { icon:'🌐', label:'Network' },
-    { icon:'⚙️', label:'Config' },
-    { icon:'🚀', label:'Deploy' },
-    { icon:'🔄', label:'Pipeline' },
-    { icon:'📦', label:'Container' },
-    { icon:'🧩', label:'Microservice' },
-    { icon:'🔌', label:'API' },
-    { icon:'📡', label:'CDN' },
+  'Data Eng': [
+    { icon:'databricks', label:'Databricks', draw:BRAND_ICONS.databricks },
+    { icon:'spark',      label:'Spark',      draw:BRAND_ICONS.spark },
+    { icon:'snowflake',  label:'Snowflake',  draw:BRAND_ICONS.snowflake },
+    { icon:'kafka',      label:'Kafka',      draw:BRAND_ICONS.kafka },
+    { icon:'airflow',    label:'Airflow',    draw:BRAND_ICONS.airflow },
+    { icon:'dbt',        label:'dbt',        draw:BRAND_ICONS.dbt },
+    { icon:'fabric',     label:'MS Fabric',  draw:BRAND_ICONS.fabric },
+    { icon:'iceberg',    label:'Iceberg',    draw:BRAND_ICONS.iceberg },
+    { icon:'flink',      label:'Flink',      draw:BRAND_ICONS.flink },
+    { icon:'trino',      label:'Trino',      draw:BRAND_ICONS.trino },
+    { icon:'🗄️', label:'Data Lake' },
+    { icon:'🔄', label:'ETL/ELT' },
   ],
-  'AI & Data': [
-    { icon:'🤖', label:'AI Model' },
-    { icon:'🧠', label:'Neural Net' },
-    { icon:'📊', label:'Analytics' },
-    { icon:'🔬', label:'Research' },
-    { icon:'📈', label:'Metrics' },
-    { icon:'🗃️', label:'Data Store' },
-    { icon:'⚡', label:'Inference' },
-    { icon:'🎯', label:'Prompt' },
+  'Cloud': [
+    { icon:'aws',       label:'AWS',         draw:BRAND_ICONS.aws },
+    { icon:'azure',     label:'Azure',       draw:BRAND_ICONS.azure },
+    { icon:'gcp',       label:'GCP',         draw:BRAND_ICONS.gcp },
+    { icon:'bigquery',  label:'BigQuery',    draw:BRAND_ICONS.bigquery },
+    { icon:'redshift',  label:'Redshift',    draw:BRAND_ICONS.redshift },
+    { icon:'synapse',   label:'Synapse',     draw:BRAND_ICONS.synapse },
+    { icon:'☁️',  label:'S3/Blob' },
+    { icon:'🔒',  label:'IAM' },
+    { icon:'⚙️',  label:'Functions' },
+    { icon:'🌐',  label:'CDN' },
+    { icon:'📡',  label:'API GW' },
+    { icon:'🧩',  label:'VPC' },
+  ],
+  'AI Tools': [
+    { icon:'openai',     label:'ChatGPT',    draw:BRAND_ICONS.openai },
+    { icon:'gemini',     label:'Gemini',     draw:BRAND_ICONS.gemini },
+    { icon:'grok',       label:'Grok',       draw:BRAND_ICONS.grok },
+    { icon:'claude',     label:'Claude',     draw:BRAND_ICONS.claude },
+    { icon:'huggingface',label:'HuggingFace',draw:BRAND_ICONS.huggingface },
+    { icon:'langchain',  label:'LangChain',  draw:BRAND_ICONS.langchain },
+    { icon:'llamaindex', label:'LlamaIndex', draw:BRAND_ICONS.llamaindex },
+    { icon:'midjourney', label:'Midjourney', draw:BRAND_ICONS.midjourney },
+    { icon:'stablediff', label:'Stable Diff',draw:BRAND_ICONS.stablediff },
+    { icon:'ollama',     label:'Ollama',     draw:BRAND_ICONS.ollama },
+    { icon:'🤖', label:'LLM' },
+    { icon:'🧠', label:'Agent' },
+  ],
+  'AI Eng': [
     { icon:'🔗', label:'RAG' },
-    { icon:'🌀', label:'Agent' },
-    { icon:'📝', label:'Fine-tune' },
-    { icon:'🏗️', label:'Training' },
-  ],
-  'Creative': [
-    { icon:'📷', label:'Camera' },
-    { icon:'🎬', label:'Director' },
-    { icon:'🎞️', label:'Film Edit' },
-    { icon:'✨', label:'VFX' },
-    { icon:'🖌️', label:'Design' },
-    { icon:'🎨', label:'Color' },
-    { icon:'🔊', label:'Audio' },
-    { icon:'🎵', label:'Music' },
-    { icon:'🎤', label:'Voice' },
-    { icon:'💡', label:'Concept' },
-    { icon:'🎭', label:'Story' },
-    { icon:'🖼️', label:'Art' },
+    { icon:'🎯', label:'Prompt Eng' },
+    { icon:'⚡', label:'Inference' },
+    { icon:'🏗️', label:'Fine-tune' },
+    { icon:'📊', label:'Eval' },
+    { icon:'🔬', label:'Research' },
+    { icon:'🌀', label:'Orchestrate' },
+    { icon:'📝', label:'Context' },
+    { icon:'🔍', label:'Retrieval' },
+    { icon:'📈', label:'Metrics' },
+    { icon:'🧪', label:'Experiment' },
+    { icon:'🛡️', label:'Guardrails' },
   ],
   'Dev & Code': [
     { icon:'💻', label:'Frontend' },
@@ -1090,36 +1534,72 @@ const ICON_CATEGORIES = {
     { icon:'📬', label:'Queue' },
     { icon:'⏱️', label:'Monitor' },
   ],
+  'Creative': [
+    { icon:'📷', label:'Camera' },
+    { icon:'🎬', label:'Director' },
+    { icon:'✨', label:'VFX' },
+    { icon:'🖌️', label:'Design' },
+    { icon:'🎨', label:'Color' },
+    { icon:'🔊', label:'Audio' },
+    { icon:'🎵', label:'Music' },
+    { icon:'💡', label:'Concept' },
+    { icon:'🎭', label:'Story' },
+    { icon:'🖼️', label:'Art' },
+  ],
 };
 let curIconCat = 'Cloud & Infra';
 let curIconKey = 0; // index in current category
 
-function iconNodeTexture(ico, lbl){
+function iconNodeTexture(ico, lbl, drawFn){
   const S=128, cv=document.createElement('canvas'); cv.width=S; cv.height=S;
   const ctx=cv.getContext('2d');
-  // background pill (manual rounded rect for cross-browser compat)
-  const [rx,ry,rw,rh,rr]=[4,20,S-8,S-28,14];
-  ctx.beginPath();
-  ctx.moveTo(rx+rr,ry); ctx.lineTo(rx+rw-rr,ry);
-  ctx.arcTo(rx+rw,ry,rx+rw,ry+rr,rr); ctx.lineTo(rx+rw,ry+rh-rr);
-  ctx.arcTo(rx+rw,ry+rh,rx+rw-rr,ry+rh,rr); ctx.lineTo(rx+rr,ry+rh);
-  ctx.arcTo(rx,ry+rh,rx,ry+rh-rr,rr); ctx.lineTo(rx,ry+rr);
-  ctx.arcTo(rx,ry,rx+rr,ry,rr); ctx.closePath();
-  ctx.fillStyle='rgba(10,28,80,0.92)'; ctx.fill();
-  ctx.strokeStyle='rgba(80,160,255,0.6)'; ctx.lineWidth=2; ctx.stroke();
-  // icon
-  ctx.font=`${S*0.42}px "Segoe UI Emoji","Apple Color Emoji",sans-serif`;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(ico, S/2, S*0.46);
-  // label
-  ctx.font=`600 ${S*0.14}px "Segoe UI",sans-serif`;
-  ctx.fillStyle='rgba(100,180,255,0.9)';
-  ctx.fillText(lbl, S/2, S*0.84);
+
+  if(drawFn){
+    // Brand icon: custom draw fills top 80% of canvas, label below
+    // Clip to rounded rect
+    const rr=14;
+    ctx.beginPath();
+    ctx.moveTo(rr,0); ctx.lineTo(S-rr,0); ctx.arcTo(S,0,S,rr,rr);
+    ctx.lineTo(S,S-rr); ctx.arcTo(S,S,S-rr,S,rr);
+    ctx.lineTo(rr,S); ctx.arcTo(0,S,0,S-rr,rr);
+    ctx.lineTo(0,rr); ctx.arcTo(0,0,rr,0,rr); ctx.closePath();
+    ctx.clip();
+    // draw brand bg + graphic into top 80%
+    ctx.save(); ctx.beginPath(); ctx.rect(0,0,S,S*0.82); ctx.clip();
+    drawFn(ctx, S*0.82); // pass sub-height so icons fill that zone
+    ctx.restore();
+    // label strip at bottom
+    ctx.fillStyle='rgba(0,0,0,0.72)';
+    ctx.fillRect(0,S*0.82,S,S*0.18);
+    ctx.font=`700 ${S*0.13}px "Segoe UI",sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle='#fff';
+    ctx.fillText(lbl, S/2, S*0.905);
+    // border glow
+    ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=2; ctx.stroke();
+  } else {
+    // Emoji icon: original pill style
+    const [rx,ry,rw,rh,rr]=[4,20,S-8,S-28,14];
+    ctx.beginPath();
+    ctx.moveTo(rx+rr,ry); ctx.lineTo(rx+rw-rr,ry);
+    ctx.arcTo(rx+rw,ry,rx+rw,ry+rr,rr); ctx.lineTo(rx+rw,ry+rh-rr);
+    ctx.arcTo(rx+rw,ry+rh,rx+rw-rr,ry+rh,rr); ctx.lineTo(rx+rr,ry+rh);
+    ctx.arcTo(rx,ry+rh,rx,ry+rh-rr,rr); ctx.lineTo(rx,ry+rr);
+    ctx.arcTo(rx,ry,rx+rr,ry,rr); ctx.closePath();
+    ctx.fillStyle='rgba(10,28,80,0.92)'; ctx.fill();
+    ctx.strokeStyle='rgba(80,160,255,0.6)'; ctx.lineWidth=2; ctx.stroke();
+    ctx.font=`${S*0.42}px "Segoe UI Emoji","Apple Color Emoji",sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(ico, S/2, S*0.46);
+    ctx.font=`600 ${S*0.14}px "Segoe UI",sans-serif`;
+    ctx.fillStyle='rgba(100,180,255,0.9)';
+    ctx.fillText(lbl, S/2, S*0.84);
+  }
   const tex=new THREE.CanvasTexture(cv); tex.minFilter=THREE.LinearFilter; return tex;
 }
 
-function addIconNode(ico, lbl, surf){
-  const tex = iconNodeTexture(ico, lbl);
+function addIconNode(ico, lbl, surf, drawFn){
+  const tex = iconNodeTexture(ico, lbl, drawFn);
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map:tex, transparent:true, depthTest:true }));
   sp.scale.set(3.2, 3.2, 1);
   const root = new THREE.Group();
@@ -1383,7 +1863,7 @@ function tickLinks(dt){
 // ── Pick an object by pointer ──────────────────────────────
 function objAt(cx, cy){
   setMouse(cx,cy); ray.setFromCamera(m2, camera);
-  const meshes=[]; objects.forEach(o=>o.root.traverse(c=>{ if(c.isMesh||c.isSprite) meshes.push(c); }));
+  const meshes=[]; objects.forEach(o=>o.root.traverse(c=>{ if((c.isMesh||c.isSprite) && c.name!=='__selRing__') meshes.push(c); }));
   const hit = ray.intersectObjects(meshes, false)[0]; if(!hit) return null;
   return objects.find(o=>{ let f=false; o.root.traverse(c=>{ if(c===hit.object) f=true; }); return f; }) || null;
 }
@@ -1410,6 +1890,7 @@ function removeObj(o){
 //  STATE & INTERACTION
 // ═══════════════════════════════════════════════════════════
 let mode='nav', ink='#00ccff', fourDOn=false, connectFirst=null;
+let curOrbitPattern='circle', curOrbitRadius=2.5;
 let lastStrokeEndScreen=null; // screen coords {x,y} of last stroke endpoint for draw suggestions
 let pendingPos=null; // surface point awaiting text/image/video
 let curShape='sphere', curSticker='🦋', curModel='flamingo';
@@ -1511,12 +1992,12 @@ function buildPalette(kind){
 let mdPt=null, mdT=0;
 function onDown(cx,cy){
   mdPt={x:cx,y:cy}; mdT=Date.now();
-  if(mode==='move'){ const o=objAt(cx,cy); if(o){ moveTarget=o; const n=new THREE.Vector3(); camera.getWorldDirection(n); movePlane.setFromNormalAndCoplanarPoint(n, o.root.position); const p=rayPlane(movePlane,cx,cy); moveOffset.copy(o.root.position).sub(p||o.root.position); } }
+  if(mode==='move'){ const o=objAt(cx,cy); if(o){ moveTarget=o; const n=new THREE.Vector3(); camera.getWorldDirection(n); movePlane.setFromNormalAndCoplanarPoint(n, o.root.position); const p=rayPlane(movePlane,cx,cy); moveOffset.copy(o.root.position).sub(p||o.root.position); selectObj(o, cx, cy); } else { selectObj(null); } }
   if(mode==='draw') beginStroke(cx,cy);
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p) addBlock(p.x,p.y,p.z,ink); }
   if(mode==='shape'){ const s=hitToSurface(cx,cy); if(s) addShape(curShape, s, ink); }
   if(mode==='sticker'){ const s=hitToSurface(cx,cy); if(s) addSticker(curSticker, s); }
-  if(mode==='icon'){ const s=hitToSurface(cx,cy); if(s){ const ic=ICON_CATEGORIES[curIconCat][curIconKey]; addIconNode(ic.icon, ic.label, s); } }
+  if(mode==='icon'){ const s=hitToSurface(cx,cy); if(s){ const ic=ICON_CATEGORIES[curIconCat][curIconKey]; addIconNode(ic.icon, ic.label, s, ic.draw||null); } }
   if(mode==='model'){ const s=hitToSurface(cx,cy); if(s) addModel(curModel, s); }
   if(mode==='erase'){ const o=objAt(cx,cy); if(o) removeObj(o); }
 }
@@ -1535,7 +2016,7 @@ function onMove(cx,cy){
 }
 function onUp(cx,cy){
   if(mode==='draw'){ endStroke(); return; }
-  if(mode==='move'){ moveTarget=null; return; }
+  if(mode==='move'){ moveTarget=null; /* keep HUD visible after release so user can resize */ return; }
   const moved = Math.hypot(cx-(mdPt?.x||0), cy-(mdPt?.y||0));
   if(Date.now()-mdT>320 || moved>14) return; // treat as drag, ignore
   if(mode==='audio'){ const s=hitToSurface(cx,cy); if(s){ pendingPos=s; document.getElementById('audio-input').click(); } return; }
@@ -1589,9 +2070,21 @@ function showTextInput(cx,cy){ const el=document.getElementById('text-overlay');
   el.style.left=Math.min(cx, innerWidth-240)+'px'; el.style.top=Math.min(cy, innerHeight-80)+'px';
   const inp=document.getElementById('text-input'); inp.value=''; requestAnimationFrame(()=>inp.focus()); }
 document.getElementById('text-input').addEventListener('keydown', e=>{
-  if(e.key==='Enter' && e.target.value.trim() && pendingPos){ addText3D(e.target.value.trim(), pendingPos, ink); document.getElementById('text-overlay').style.display='none'; pendingPos=null; }
+  if(e.key==='Enter' && e.target.value.trim() && pendingPos){
+    if(e.shiftKey){
+      addTextRing(e.target.value.trim(), pendingPos, ink);
+    } else {
+      addText3D(e.target.value.trim(), pendingPos, ink);
+    }
+    document.getElementById('text-overlay').style.display='none'; pendingPos=null;
+  }
   if(e.key==='Escape'){ document.getElementById('text-overlay').style.display='none'; pendingPos=null; }
   e.stopPropagation();
+});
+document.getElementById('btn-text-ring').addEventListener('click', ()=>{
+  const val=document.getElementById('text-input').value.trim();
+  if(val && pendingPos){ addTextRing(val, pendingPos, ink); document.getElementById('text-overlay').style.display='none'; pendingPos=null; }
+  else toast('Type some text first, then click Ring');
 });
 document.getElementById('img-input').addEventListener('change', e=>{ const f=e.target.files[0]; if(f&&pendingPos){ addImage(URL.createObjectURL(f), pendingPos, ink); pendingPos=null; } e.target.value=''; });
 document.getElementById('video-input').addEventListener('change', e=>{ const f=e.target.files[0]; if(f&&pendingPos){ addVideo(URL.createObjectURL(f), pendingPos, ink); pendingPos=null; } e.target.value=''; });
@@ -1634,7 +2127,33 @@ document.getElementById('btn-scene').addEventListener('click', ()=>document.getE
 document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
 document.getElementById('btn-undo').addEventListener('click', ()=>undoLast());
 document.getElementById('btn-redo').addEventListener('click', ()=>redoLast());
-document.getElementById('btn-4d').addEventListener('click', e=>{ fourDOn=!fourDOn; e.currentTarget.classList.toggle('on',fourDOn); toast(fourDOn?'4D mode ON — new objects drift through time':'4D mode off'); });
+document.getElementById('btn-4d').addEventListener('click', e=>{
+  fourDOn=!fourDOn;
+  e.currentTarget.classList.toggle('on',fourDOn);
+  document.getElementById('orbit-panel').classList.toggle('show', fourDOn);
+  toast(fourDOn?`4D ON — orbit: ${curOrbitPattern} · r=${curOrbitRadius}`:'4D mode off');
+});
+
+// Orbit pattern buttons
+document.querySelectorAll('.op-btn[data-orbit]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    curOrbitPattern=btn.dataset.orbit;
+    document.querySelectorAll('.op-btn[data-orbit]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    // apply to the most recently created 4D object too
+    const last=objects.filter(o=>o.fourD).at(-1);
+    if(last){ last.orbitPattern=curOrbitPattern; last.basePos.copy(last.root.position); }
+    toast(`Orbit: ${curOrbitPattern}`);
+  });
+});
+
+// Orbit radius slider
+document.getElementById('orbit-radius').addEventListener('input', e=>{
+  curOrbitRadius=parseFloat(e.target.value);
+  document.getElementById('orbit-radius-val').textContent=curOrbitRadius;
+  const last=objects.filter(o=>o.fourD).at(-1);
+  if(last) last.orbitRadius=curOrbitRadius;
+});
 document.getElementById('btn-reset').addEventListener('click', ()=>flyTo(HOME_POS,HOME_TGT));
 document.getElementById('btn-clear').addEventListener('click', ()=>{ [...objects].forEach(removeObj); toast('Board cleared'); });
 document.getElementById('btn-export').addEventListener('click', ()=>{
@@ -1778,11 +2297,47 @@ function animate(){
     if(o.root.userData.billboardY){ const dx=camera.position.x-o.root.position.x, dz=camera.position.z-o.root.position.z; o.root.rotation.y=Math.atan2(dx,dz); }
     if(o.root.userData.spin && o.root.children[0]){ o.root.children[0].rotation.y += 0.01; o.root.children[0].rotation.x += 0.004; }
     let scale = o.userScale || 1; // userScale is the persistent resize factor
-    if(o.fourD){ const off=Math.sin(t*1.1 + o.wPhase); o.root.position.x = o.basePos.x + off*2.2; o.root.position.y = o.basePos.y + Math.cos(t*0.9 + o.wPhase)*0.8; scale *= 1+off*0.12; }
+    if(o.fourD){
+      const sp = o.orbitSpeed||0.38, r = o.orbitRadius||2.5, ph = o.wPhase;
+      const ang = t*sp + ph;
+      switch(o.orbitPattern||'circle'){
+        case 'circle':
+          o.root.position.x = o.basePos.x + r*Math.cos(ang);
+          o.root.position.z = o.basePos.z + r*Math.sin(ang);
+          o.root.position.y = o.basePos.y + Math.sin(t*0.7+ph)*0.5;
+          break;
+        case 'figure8':
+          o.root.position.x = o.basePos.x + r*Math.sin(ang);
+          o.root.position.z = o.basePos.z + r*Math.sin(2*ang)*0.5;
+          o.root.position.y = o.basePos.y + Math.cos(t*0.55+ph)*0.6;
+          break;
+        case 'helix':
+          o.root.position.x = o.basePos.x + r*Math.cos(ang);
+          o.root.position.z = o.basePos.z + r*Math.sin(ang);
+          o.root.position.y = o.basePos.y + Math.sin(t*0.3+ph)*2.5;
+          break;
+        case 'spiral': {
+          const rs = r*(0.5+0.5*Math.abs(Math.sin(t*0.18+ph)));
+          o.root.position.x = o.basePos.x + rs*Math.cos(ang*1.6);
+          o.root.position.z = o.basePos.z + rs*Math.sin(ang*1.6);
+          o.root.position.y = o.basePos.y + Math.sin(t*0.6+ph)*1.2;
+          break; }
+        default: { // float — classic linear oscillation
+          const off=Math.sin(t*1.1+ph);
+          o.root.position.x = o.basePos.x + off*2.2;
+          o.root.position.y = o.basePos.y + Math.cos(t*0.9+ph)*0.8;
+          scale *= 1+off*0.12;
+        }
+      }
+      // pulse the splat aura
+      if(o.splatPts){ o.splatPts.material.opacity = 0.18+0.12*Math.sin(t*1.4+ph); o.splatPts.rotation.y = t*0.12; }
+    }
     if(o.bounce){ const e=(performance.now()-o.bounce)/600; if(e>=1){ o.bounce=null; } else { scale *= 1 + Math.sin(e*Math.PI)*0.45; } }
     if(o.ring){ const pulse=0.15+0.12*Math.sin(t*2.2+o.ringPhase); o.ring.material.opacity=pulse; o.ring.scale.setScalar(1+0.08*Math.sin(t*1.8+o.ringPhase)); }
     o.root.scale.setScalar(scale);
   });
+  // pulse selection ring
+  if(_selectionRing){ _selectionRing._phase = (_selectionRing._phase||0)+0.06; _selectionRing.material.opacity = 0.5+0.45*Math.sin(_selectionRing._phase); _selectionRing.rotation.y = t*0.8; }
   renderer.render(scene,camera);
 }
 
@@ -1939,6 +2494,83 @@ document.getElementById('cine-skip').addEventListener('click',()=>{
       document.getElementById('guide-overlay').style.display='flex';
   },750);
 });
+
+// ── Size HUD ───────────────────────────────────────────────
+let sizeHudTarget = null;
+let selectedObj = null;
+let _selectionRing = null;
+
+function _makeSelectionRing(){
+  const geo = new THREE.TorusGeometry(1.4, 0.04, 8, 48);
+  const mat = new THREE.MeshBasicMaterial({ color: 0x44aaff, transparent: true, opacity: 0.85, depthWrite: false });
+  const ring = new THREE.Mesh(geo, mat);
+  ring.name = '__selRing__';
+  return ring;
+}
+
+function selectObj(o, cx, cy){
+  // remove glow from previous
+  if(selectedObj && _selectionRing){
+    selectedObj.root.remove(_selectionRing);
+  }
+  selectedObj = o;
+  sizeHudTarget = o;
+  if(o){
+    if(!_selectionRing) _selectionRing = _makeSelectionRing();
+    o.root.add(_selectionRing);
+    _selectionRing.position.set(0,0,0);
+    // pulse ring opacity in animate loop via flag
+    _selectionRing._phase = 0;
+  } else {
+    _selectionRing = null;
+  }
+  if(o) showSizeHUD(o, cx||innerWidth/2, cy||innerHeight/2);
+  else hideSizeHUD();
+}
+
+function showSizeHUD(o, cx, cy){
+  sizeHudTarget = o;
+  const pct = Math.round((o.userScale||1)*100);
+  const range = document.getElementById('sz-range');
+  range.value = pct;
+  document.getElementById('sz-val').textContent = pct+'%';
+  const hud = document.getElementById('size-hud');
+  hud.classList.add('show');
+  const botClear = innerWidth < 820 ? 80 : 20;
+  const x = Math.max(8, Math.min(cx - 90, innerWidth - 220));
+  const y = Math.max(58, Math.min(cy - 50, innerHeight - botClear - 54));
+  hud.style.left = x+'px'; hud.style.top = y+'px';
+}
+function hideSizeHUD(){
+  document.getElementById('size-hud').classList.remove('show');
+  sizeHudTarget = null;
+  if(selectedObj && _selectionRing){ selectedObj.root.remove(_selectionRing); }
+  selectedObj = null; _selectionRing = null;
+}
+function applySizeHUD(pct){
+  if(!sizeHudTarget) return;
+  sizeHudTarget.userScale = pct/100;
+  document.getElementById('sz-val').textContent = pct+'%';
+  document.getElementById('sz-range').value = pct;
+}
+
+document.getElementById('sz-minus').addEventListener('click', ()=>{
+  if(!sizeHudTarget) return;
+  const pct = Math.max(5, Math.round((sizeHudTarget.userScale||1)*100) - 10);
+  applySizeHUD(pct);
+});
+document.getElementById('sz-plus').addEventListener('click', ()=>{
+  if(!sizeHudTarget) return;
+  const pct = Math.min(500, Math.round((sizeHudTarget.userScale||1)*100) + 10);
+  applySizeHUD(pct);
+});
+document.getElementById('sz-range').addEventListener('input', e=>{
+  applySizeHUD(parseInt(e.target.value));
+});
+// hide size HUD when switching away from move mode
+const _origSetMode = setMode;
+// patch setMode to also hide size HUD
+(()=>{ const orig=setMode; window.setMode = (m)=>{ orig(m); if(m!=='move') hideSizeHUD(); }; setMode=window.setMode; })();
 
 // ── Boot ───────────────────────────────────────────────────
 setMode('nav'); updateHUD();
