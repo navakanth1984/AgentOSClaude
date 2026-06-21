@@ -218,13 +218,16 @@ input[type=color]:hover{border-color:#5af;}
   .glist li{padding:7px 11px;}
 }
 
-/* ════════ PALETTE (shapes / stickers) ════════ */
+/* ════════ PALETTE (shapes / stickers / icons) ════════ */
 #palette{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:250;
   display:none;background:rgba(2,10,40,.97);border:1px solid rgba(80,160,255,.3);
   border-radius:14px;padding:10px;max-width:92vw;width:max-content;
   box-shadow:0 0 30px rgba(20,60,180,.25);backdrop-filter:blur(16px);}
 #palette.show{display:block;}
 #palette .pal-title{font-size:9px;color:#669;letter-spacing:1px;text-transform:uppercase;margin:0 2px 7px;}
+#palette .pal-tabs{display:flex;gap:4px;margin-bottom:8px;}
+#palette .pal-tab{font-size:9px;padding:3px 8px;border:1px solid rgba(80,160,255,.18);border-radius:12px;background:none;color:#446;cursor:pointer;letter-spacing:.5px;transition:all .15s;}
+#palette .pal-tab.active{background:rgba(20,70,200,.5);color:#9df;border-color:#5af;}
 #palette .pal-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-height:160px;overflow-y:auto;}
 @media(max-width:520px){#palette .pal-grid{grid-template-columns:repeat(6,1fr);}}
 .pal-item{width:40px;height:40px;display:flex;align-items:center;justify-content:center;
@@ -233,7 +236,29 @@ input[type=color]:hover{border-color:#5af;}
 .pal-item:hover{background:rgba(35,90,200,.5);}
 .pal-item.sel{border-color:#5af;background:rgba(20,80,230,.55);box-shadow:0 0 8px rgba(80,180,255,.3);}
 .pal-item svg{width:24px;height:24px;}
+.pal-item.icon-node{font-size:17px;flex-direction:column;gap:1px;}
+.pal-item.icon-node .pal-lbl{font-size:7px;color:#7af;letter-spacing:.2px;line-height:1;}
 @media(min-width:820px){#palette{left:80px;bottom:60px;transform:none;}}
+
+/* ════════ DRAW SUGGESTIONS ════════ */
+#draw-suggest{position:fixed;z-index:400;display:none;flex-direction:column;gap:6px;
+  background:rgba(2,10,40,.97);border:1px solid rgba(80,160,255,.3);
+  border-radius:12px;padding:10px;backdrop-filter:blur(16px);
+  box-shadow:0 0 24px rgba(20,60,180,.3);
+  max-width:calc(100vw - 16px);}
+#draw-suggest.show{display:flex;}
+.ds-title{font-size:9px;color:#446;letter-spacing:1px;text-transform:uppercase;padding:0 2px;}
+.ds-row{display:flex;gap:6px;flex-wrap:wrap;}
+.ds-btn{flex:1;padding:7px 10px;border:1px solid rgba(80,160,255,.2);background:rgba(10,30,90,.7);
+  color:#8af;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;
+  display:flex;align-items:center;gap:5px;transition:background .15s,border-color .15s;white-space:nowrap;}
+.ds-btn:hover{background:rgba(20,70,200,.55);border-color:#5af;color:#cef;}
+.ds-dismiss{background:none;border:none;color:#334;font-size:10px;cursor:pointer;padding:0 2px;align-self:center;transition:color .1s;}
+.ds-dismiss:hover{color:#668;}
+
+/* ════════ LINK DIRECTION INDICATOR ════════ */
+.link-dir-badge{position:fixed;z-index:300;pointer-events:none;font-size:10px;
+  color:#6af;background:rgba(0,10,40,.8);border-radius:10px;padding:2px 6px;opacity:0;transition:opacity .3s;}
 
 /* ════════ SCENE COLOUR PANEL ════════ */
 #scene-panel{display:none;flex-direction:column;gap:7px;margin-top:5px;
@@ -310,7 +335,8 @@ input[type=color]:hover{border-color:#5af;}
   <button class="tb"        data-mode="shape"  title="Place 3D & 2D shapes">🔷<span class="tb-label">Shapes</span></button>
   <button class="tb"        data-mode="sticker" title="Place emoji, animals, birds & icons">🦋<span class="tb-label">Stickers</span></button>
   <button class="tb"        data-mode="model"  title="Place animated 3D critters">🦩<span class="tb-label">Critters</span></button>
-  <button class="tb"        data-mode="connect" title="Link two objects">🔗<span class="tb-label">Link</span></button>
+  <button class="tb"        data-mode="icon"   title="Place tech & creative icon nodes">⬡<span class="tb-label">Icons</span></button>
+  <button class="tb"        data-mode="connect" title="Link two objects — click for animated flow">🔗<span class="tb-label">Link</span></button>
   <button class="tb danger" data-mode="erase"  title="Delete an object">✂️<span class="tb-label">Erase</span></button>
   <button class="tb" id="btn-undo" title="Undo last object (Ctrl+Z)" disabled style="opacity:.35">↩<span class="tb-label">Undo</span></button>
   <button class="tb" id="btn-redo" title="Redo (Ctrl+Y)" disabled style="opacity:.35">↪<span class="tb-label">Redo</span></button>
@@ -344,7 +370,19 @@ input[type=color]:hover{border-color:#5af;}
 <!-- ════════ PALETTE ════════ -->
 <div id="palette">
   <div class="pal-title" id="pal-title">Shapes</div>
+  <div class="pal-tabs" id="pal-tabs" style="display:none"></div>
   <div class="pal-grid" id="pal-grid"></div>
+</div>
+
+<!-- ════════ DRAW SUGGESTIONS ════════ -->
+<div id="draw-suggest">
+  <div class="ds-title">✨ Suggestions for your stroke</div>
+  <div class="ds-row">
+    <button class="ds-btn" id="ds-text">🅣 Convert to Text</button>
+    <button class="ds-btn" id="ds-image">🖼 Replace with Image</button>
+    <button class="ds-btn" id="ds-icon">⬡ Place Icon Node</button>
+    <button class="ds-dismiss" id="ds-dismiss">✕</button>
+  </div>
 </div>
 
 <!-- ════ CINEMATIC INTRO ════ -->
@@ -434,9 +472,9 @@ input[type=color]:hover{border-color:#5af;}
       <h2>Move, Resize &amp; Present</h2>
       <ul class="glist">
         <li><b>Move ✋</b> — drag to reposition · scroll = depth</li>
-        <li><b>Shift+scroll</b> or <b>+ / −</b> keys to grow or shrink any object</li>
-        <li><b>Link 🔗</b> — click two objects to draw a bezier arc between them</li>
-        <li><b>🖥 Share a window</b> — drops a live screen into the board</li>
+        <li><b>Icons ⬡</b> — place tech (cloud, AI, server) &amp; creative (camera, VFX, edit) nodes with pulsing rings</li>
+        <li><b>Link 🔗</b> — click two objects → animated particle flows A→B · right-click link to reverse direction</li>
+        <li><b>Draw ✏️</b> — finish a stroke to get suggestions: convert to text, image, or icon node</li>
         <li><b>🔴 Record</b> — capture the board + mic + webcam picture-in-picture</li>
       </ul>
       <button class="guide-start" id="guide-start-btn">START CREATING →</button>
@@ -466,11 +504,18 @@ input[type=color]:hover{border-color:#5af;}
 
 // ── Renderer ───────────────────────────────────────────────
 const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.setSize(innerWidth, innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+} catch(e) {
+  // WebGL unavailable (sandbox / headless) — stub so script runs to completion
+  // All DOM interactions (guide, buttons, etc.) still work normally
+  renderer = { render:()=>{}, setSize:()=>{}, shadowMap:{enabled:false,type:null} };
+}
 
 // ── Scene ──────────────────────────────────────────────────
 const scene = new THREE.Scene();
@@ -585,7 +630,7 @@ function undoLast(){
   if(o.collider){ const ci=placeTargets.indexOf(o.collider); if(ci>-1) placeTargets.splice(ci,1); }
   if(o.video) o.video.pause();
   if(o.sound){ try{ o.sound.pause(); }catch(e){} }
-  for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); links.splice(k,1); } }
+  for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); if(links[k].particle){ scene.remove(links[k].particle); links[k].particle.geometry.dispose(); links[k].particle.material.dispose(); } links.splice(k,1); } }
   if(moveTarget===o) moveTarget=null;
   redoStack.push(o);
   updateHUD(); updateUndoRedoBtns();
@@ -654,6 +699,8 @@ function addStrokePoint(cx, cy){
 function endStroke(){
   drawing = false;
   if(drawPts.length < 2){ drawPts=[]; return; }
+  // capture last 3D point → project to screen for suggestion popup
+  const lastPt = drawPts[drawPts.length-1].clone();
   const curve = new THREE.CatmullRomCurve3(drawPts);
   const seg = Math.min(400, Math.max(20, drawPts.length*6));
   const geo = new THREE.TubeGeometry(curve, seg, 0.07, 8, false);
@@ -662,8 +709,65 @@ function endStroke(){
   const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = true;
   const root = new THREE.Group(); root.add(mesh);
   register(root, 'stroke', 'Stroke', ink);
+  // screen-space position of stroke endpoint for suggestion popup
+  const projected = lastPt.clone().project(camera);
+  const sx = (projected.x * 0.5 + 0.5) * innerWidth;
+  const sy = (-projected.y * 0.5 + 0.5) * innerHeight;
+  lastStrokeEndScreen = { x: sx, y: sy };
+  showSuggest(sx, sy);
   drawPts = [];
 }
+
+function showSuggest(sx, sy){
+  const el = document.getElementById('draw-suggest');
+  el.classList.add('show'); // show first so offsetWidth is accurate
+  const W = el.offsetWidth, H = el.offsetHeight;
+  const x = Math.max(8, Math.min(sx + 16, innerWidth - W - 8));
+  const y = Math.min(Math.max(sy - H - 16, 60), innerHeight - H - 8);
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+}
+function hideSuggest(){ document.getElementById('draw-suggest').classList.remove('show'); lastStrokeEndScreen=null; }
+
+// Draw suggestion actions
+document.getElementById('ds-dismiss').addEventListener('click', hideSuggest);
+
+document.getElementById('ds-text').addEventListener('click', ()=>{
+  const sc = lastStrokeEndScreen ? {...lastStrokeEndScreen} : {x:innerWidth/2, y:innerHeight/2};
+  hideSuggest();
+  const last = undoStack[undoStack.length-1];
+  if(last && last.type==='stroke'){
+    const pos = last.root.position.clone();
+    undoLast();
+    pendingPos = pos;
+    showTextInput(sc.x, sc.y);
+  }
+});
+
+document.getElementById('ds-image').addEventListener('click', ()=>{
+  hideSuggest();
+  const last = undoStack[undoStack.length-1];
+  if(last && last.type==='stroke'){
+    pendingPos = last.root.position.clone();
+    undoLast();
+    document.getElementById('img-input').click();
+  }
+});
+
+document.getElementById('ds-icon').addEventListener('click', ()=>{
+  hideSuggest();
+  const last = undoStack[undoStack.length-1];
+  if(last && last.type==='stroke'){
+    const pos = last.root.position.clone();
+    undoLast();
+    const ic = ICON_CATEGORIES[curIconCat][curIconKey];
+    const surf = { point: pos, normal: new THREE.Vector3(0,1,0) };
+    addIconNode(ic.icon, ic.label, surf);
+    toast(`Icon node "${ic.label}" placed — switch to Link to connect it`);
+  }
+  // open icon palette so user can pick
+  setMode('icon');
+});
 // live preview line while drawing
 const liveGeo = new THREE.BufferGeometry();
 const liveLine = new THREE.Line(liveGeo, new THREE.LineBasicMaterial({ color:0x9cf, transparent:true, opacity:0.9 }));
@@ -801,6 +905,110 @@ function addSticker(ch, surf){
   root.add(sp);
   const o = register(root, 'sticker', ch, ink);
   o.sprite = sp;
+}
+
+// ── Icon node library (tech + creative fields) ─────────────
+const ICON_CATEGORIES = {
+  'Cloud & Infra': [
+    { icon:'☁️', label:'Cloud' },
+    { icon:'🖥️', label:'Server' },
+    { icon:'🗄️', label:'Database' },
+    { icon:'🔒', label:'Security' },
+    { icon:'🌐', label:'Network' },
+    { icon:'⚙️', label:'Config' },
+    { icon:'🚀', label:'Deploy' },
+    { icon:'🔄', label:'Pipeline' },
+    { icon:'📦', label:'Container' },
+    { icon:'🧩', label:'Microservice' },
+    { icon:'🔌', label:'API' },
+    { icon:'📡', label:'CDN' },
+  ],
+  'AI & Data': [
+    { icon:'🤖', label:'AI Model' },
+    { icon:'🧠', label:'Neural Net' },
+    { icon:'📊', label:'Analytics' },
+    { icon:'🔬', label:'Research' },
+    { icon:'📈', label:'Metrics' },
+    { icon:'🗃️', label:'Data Store' },
+    { icon:'⚡', label:'Inference' },
+    { icon:'🎯', label:'Prompt' },
+    { icon:'🔗', label:'RAG' },
+    { icon:'🌀', label:'Agent' },
+    { icon:'📝', label:'Fine-tune' },
+    { icon:'🏗️', label:'Training' },
+  ],
+  'Creative': [
+    { icon:'📷', label:'Camera' },
+    { icon:'🎬', label:'Director' },
+    { icon:'🎞️', label:'Film Edit' },
+    { icon:'✨', label:'VFX' },
+    { icon:'🖌️', label:'Design' },
+    { icon:'🎨', label:'Color' },
+    { icon:'🔊', label:'Audio' },
+    { icon:'🎵', label:'Music' },
+    { icon:'🎤', label:'Voice' },
+    { icon:'💡', label:'Concept' },
+    { icon:'🎭', label:'Story' },
+    { icon:'🖼️', label:'Art' },
+  ],
+  'Dev & Code': [
+    { icon:'💻', label:'Frontend' },
+    { icon:'🛠️', label:'Backend' },
+    { icon:'📱', label:'Mobile' },
+    { icon:'🔧', label:'DevOps' },
+    { icon:'🧪', label:'Testing' },
+    { icon:'📋', label:'Docs' },
+    { icon:'🗂️', label:'Repo' },
+    { icon:'🐛', label:'Bug' },
+    { icon:'✅', label:'CI/CD' },
+    { icon:'🔑', label:'Auth' },
+    { icon:'📬', label:'Queue' },
+    { icon:'⏱️', label:'Monitor' },
+  ],
+};
+let curIconCat = 'Cloud & Infra';
+let curIconKey = 0; // index in current category
+
+function iconNodeTexture(ico, lbl){
+  const S=128, cv=document.createElement('canvas'); cv.width=S; cv.height=S;
+  const ctx=cv.getContext('2d');
+  // background pill (manual rounded rect for cross-browser compat)
+  const [rx,ry,rw,rh,rr]=[4,20,S-8,S-28,14];
+  ctx.beginPath();
+  ctx.moveTo(rx+rr,ry); ctx.lineTo(rx+rw-rr,ry);
+  ctx.arcTo(rx+rw,ry,rx+rw,ry+rr,rr); ctx.lineTo(rx+rw,ry+rh-rr);
+  ctx.arcTo(rx+rw,ry+rh,rx+rw-rr,ry+rh,rr); ctx.lineTo(rx+rr,ry+rh);
+  ctx.arcTo(rx,ry+rh,rx,ry+rh-rr,rr); ctx.lineTo(rx,ry+rr);
+  ctx.arcTo(rx,ry,rx+rr,ry,rr); ctx.closePath();
+  ctx.fillStyle='rgba(10,28,80,0.92)'; ctx.fill();
+  ctx.strokeStyle='rgba(80,160,255,0.6)'; ctx.lineWidth=2; ctx.stroke();
+  // icon
+  ctx.font=`${S*0.42}px "Segoe UI Emoji","Apple Color Emoji",sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(ico, S/2, S*0.46);
+  // label
+  ctx.font=`600 ${S*0.14}px "Segoe UI",sans-serif`;
+  ctx.fillStyle='rgba(100,180,255,0.9)';
+  ctx.fillText(lbl, S/2, S*0.84);
+  const tex=new THREE.CanvasTexture(cv); tex.minFilter=THREE.LinearFilter; return tex;
+}
+
+function addIconNode(ico, lbl, surf){
+  const tex = iconNodeTexture(ico, lbl);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map:tex, transparent:true, depthTest:true }));
+  sp.scale.set(3.2, 3.2, 1);
+  const root = new THREE.Group();
+  root.position.copy(surf.point).addScaledVector(surf.normal, 1.8);
+  root.add(sp);
+  // subtle pulse glow ring
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(1.4, 1.6, 32),
+    new THREE.MeshBasicMaterial({ color:new THREE.Color(ink), transparent:true, opacity:0.3, side:THREE.DoubleSide, depthWrite:false })
+  );
+  ring.rotation.x = -Math.PI/2;
+  root.add(ring);
+  const o = register(root, 'icon', `${ico} ${lbl}`, ink);
+  o.sprite = sp; o.ring = ring; o.ringPhase = Math.random()*Math.PI*2;
 }
 
 // ── 3D animated model library (CC0/threejs examples) ───────
@@ -965,19 +1173,48 @@ function stopRecording(){
   document.getElementById('rec-dot').style.display='none';
 }
 
-// ── Links ──────────────────────────────────────────────────
+// ── Links (with animated flow) ─────────────────────────────
 function center(o){ const v=new THREE.Vector3(); o.root.getWorldPosition(v); return v; }
+
+function makeLinkParticle(col){
+  const m = new THREE.Mesh(
+    new THREE.SphereGeometry(0.12, 8, 8),
+    new THREE.MeshStandardMaterial({ color:col, emissive:col, emissiveIntensity:1.2, roughness:0, metalness:0 })
+  );
+  scene.add(m); return m;
+}
+
 function createLink(a, b){
   const pa=center(a), pb=center(b), mid=pa.clone().lerp(pb,.5).add(new THREE.Vector3(0,2,0));
-  const geo=new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(pa,mid,pb).getPoints(60));
-  const line=new THREE.Line(geo, new THREE.LineBasicMaterial({ color:0x4488ff, transparent:true, opacity:.65 }));
+  const curve = new THREE.QuadraticBezierCurve3(pa, mid, pb);
+  const geo=new THREE.BufferGeometry().setFromPoints(curve.getPoints(60));
+  const lineCol = new THREE.Color(ink);
+  const line=new THREE.Line(geo, new THREE.LineBasicMaterial({ color:lineCol, transparent:true, opacity:.65 }));
   scene.add(line);
-  links.push({ line, geo, a:a.id, b:b.id }); updateHUD();
+  // flow particle
+  const particle = makeLinkParticle(lineCol);
+  links.push({ line, geo, curve, a:a.id, b:b.id, flowT:0, flowDir:1, particle, lineCol });
+  updateHUD();
+  toast('Link created — right-click the link area to reverse flow direction');
 }
+
 function refreshLinks(){
-  links.forEach(lk=>{ const a=objects.find(o=>o.id===lk.a), b=objects.find(o=>o.id===lk.b); if(!a||!b) return;
+  links.forEach(lk=>{
+    const a=objects.find(o=>o.id===lk.a), b=objects.find(o=>o.id===lk.b); if(!a||!b) return;
     const pa=center(a), pb=center(b), mid=pa.clone().lerp(pb,.5).add(new THREE.Vector3(0,2,0));
-    lk.geo.setFromPoints(new THREE.QuadraticBezierCurve3(pa,mid,pb).getPoints(60)); });
+    lk.curve = new THREE.QuadraticBezierCurve3(pa, mid, pb);
+    lk.geo.setFromPoints(lk.curve.getPoints(60));
+  });
+}
+
+function tickLinks(dt){
+  links.forEach(lk=>{
+    lk.flowT = (lk.flowT + dt * 0.35 * lk.flowDir + 1) % 1;
+    if(lk.curve){
+      const pos = lk.curve.getPoint(lk.flowT);
+      lk.particle.position.copy(pos);
+    }
+  });
 }
 
 // ── Pick an object by pointer ──────────────────────────────
@@ -1002,8 +1239,7 @@ function removeObj(o){
   if(o._blobUrl) URL.revokeObjectURL(o._blobUrl);
   const i=objects.indexOf(o); if(i>-1) objects.splice(i,1);
   const ui=undoStack.indexOf(o); if(ui>-1) undoStack.splice(ui,1);
-  // drop links referencing it
-  for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); links.splice(k,1); } }
+  for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); if(links[k].particle){ scene.remove(links[k].particle); links[k].particle.geometry.dispose(); links[k].particle.material.dispose(); } links.splice(k,1); } }
   updateHUD();
 }
 
@@ -1011,6 +1247,7 @@ function removeObj(o){
 //  STATE & INTERACTION
 // ═══════════════════════════════════════════════════════════
 let mode='nav', ink='#00ccff', fourDOn=false, connectFirst=null;
+let lastStrokeEndScreen=null; // screen coords {x,y} of last stroke endpoint for draw suggestions
 let pendingPos=null; // surface point awaiting text/image/video
 let curShape='sphere', curSticker='🦋', curModel='flamingo';
 // Move tool
@@ -1021,7 +1258,7 @@ const PRESETS=['#00ccff','#ff4466','#44ff88','#ffcc00','#ff8800','#cc66ff','#fff
 const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan · tap video/audio to toggle · Ctrl+Z undo · Ctrl+D duplicate',
   move:'✋ Drag to reposition · scroll=depth · Shift+scroll or +/- to resize',
   audio:'🔊 Click a surface → choose an audio file (plays spatially)',
-  draw:'✏️ Drag to draw a 3D stroke at the depth you start from',
+  draw:'✏️ Drag to draw a 3D stroke — release to get AI suggestions',
   text:'🅣 Click a spot → type → Enter for extruded 3D text',
   image:'🖼 Click a surface → choose an image file',
   video:'🎬 Click a surface → choose a video (plays & loops)',
@@ -1029,7 +1266,8 @@ const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan · tap video/
   shape:'🔷 Pick a shape below, then click a surface to place it',
   sticker:'🦋 Pick an emoji below, then click a surface to place it',
   model:'🦩 Pick a critter below → click a surface (it loads & animates)',
-  connect:'🔗 Click one object, then another to link them',
+  icon:'⬡ Pick an icon below, then click a surface — connects as a node',
+  connect:'🔗 Click one object → then another — animated flow runs A→B',
   erase:'✂️ Click any object to delete it' };
 
 function showModeTip(m){ const el=document.getElementById('mode-tip'); el.textContent=TIPS[m]||''; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),3200); }
@@ -1045,10 +1283,12 @@ function setMode(m){
   document.getElementById('conn-banner').style.display=(m==='connect')?'block':'none';
   if(m!=='connect') connectFirst=null;
   if(m!=='move') moveTarget=null;
-  canvas.style.cursor={ nav:'grab', move:'move', draw:'crosshair', text:'text', image:'cell', video:'cell', audio:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  canvas.style.cursor={ nav:'grab', move:'move', draw:'crosshair', text:'text', image:'cell', video:'cell', audio:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', icon:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  // hide draw suggestions when switching away from draw
+  if(m!=='draw') hideSuggest();
   // palette
   const pal=document.getElementById('palette');
-  if(m==='shape'||m==='sticker'||m==='model'){ buildPalette(m); pal.classList.add('show'); }
+  if(m==='shape'||m==='sticker'||m==='model'||m==='icon'){ buildPalette(m); pal.classList.add('show'); }
   else pal.classList.remove('show');
   showModeTip(m); updateHUD();
 }
@@ -1073,6 +1313,22 @@ function buildPalette(kind){
       b.onclick=()=>{ curSticker=ch; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
       grid.appendChild(b);
     });
+  } else if(kind==='icon'){
+    title.textContent='Icon Nodes — tech & creative';
+    const tabsEl=document.getElementById('pal-tabs'); tabsEl.style.display='flex'; tabsEl.innerHTML='';
+    Object.keys(ICON_CATEGORIES).forEach(cat=>{
+      const t=document.createElement('button'); t.className='pal-tab'+(cat===curIconCat?' active':'');
+      t.textContent=cat;
+      t.onclick=()=>{ curIconCat=cat; curIconKey=0; buildPalette('icon'); };
+      tabsEl.appendChild(t);
+    });
+    const icons=ICON_CATEGORIES[curIconCat];
+    icons.forEach((ic,idx)=>{
+      const b=document.createElement('div'); b.className='pal-item icon-node'+(idx===curIconKey?' sel':'');
+      b.innerHTML=`<span>${ic.icon}</span><span class="pal-lbl">${ic.label}</span>`; b.title=ic.label;
+      b.onclick=()=>{ curIconKey=idx; grid.querySelectorAll('.pal-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+      grid.appendChild(b);
+    });
   } else {
     title.textContent='Critters — animated 3D models';
     Object.keys(MODELS).forEach(key=>{
@@ -1082,6 +1338,8 @@ function buildPalette(kind){
       grid.appendChild(b);
     });
   }
+  // hide tabs for non-icon modes
+  if(kind!=='icon') document.getElementById('pal-tabs').style.display='none';
 }
 
 let mdPt=null, mdT=0;
@@ -1092,12 +1350,13 @@ function onDown(cx,cy){
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p) addBlock(p.x,p.y,p.z,ink); }
   if(mode==='shape'){ const s=hitToSurface(cx,cy); if(s) addShape(curShape, s, ink); }
   if(mode==='sticker'){ const s=hitToSurface(cx,cy); if(s) addSticker(curSticker, s); }
+  if(mode==='icon'){ const s=hitToSurface(cx,cy); if(s){ const ic=ICON_CATEGORIES[curIconCat][curIconKey]; addIconNode(ic.icon, ic.label, s); } }
   if(mode==='model'){ const s=hitToSurface(cx,cy); if(s) addModel(curModel, s); }
   if(mode==='erase'){ const o=objAt(cx,cy); if(o) removeObj(o); }
 }
 function onMove(cx,cy){
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p){ ghost.position.set(p.x,p.y,p.z); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
-  else if(mode==='shape'||mode==='sticker'||mode==='model'||mode==='audio'){ const s=hitToSurface(cx,cy); if(s){ ghost.position.copy(s.point).addScaledVector(s.normal,0.6); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
+  else if(mode==='shape'||mode==='sticker'||mode==='model'||mode==='icon'||mode==='audio'){ const s=hitToSurface(cx,cy); if(s){ ghost.position.copy(s.point).addScaledVector(s.normal,0.6); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
   else ghost.visible=false;
   if(mode==='move' && moveTarget){ const p=rayPlane(movePlane,cx,cy); if(p){ const np=p.clone().add(moveOffset); moveTarget.root.position.copy(np); moveTarget.basePos.copy(np); } }
   if(mode==='draw' && drawing) addStrokePoint(cx,cy);
@@ -1131,6 +1390,28 @@ function onUp(cx,cy){
 canvas.addEventListener('mousedown', e=>{ if(e.button===0) onDown(e.clientX,e.clientY); });
 canvas.addEventListener('mousemove', e=> onMove(e.clientX,e.clientY));
 canvas.addEventListener('mouseup',   e=>{ if(e.button===0) onUp(e.clientX,e.clientY); });
+// Right-click in connect mode: reverse nearest link's flow direction
+canvas.addEventListener('contextmenu', e=>{
+  e.preventDefault();
+  if(mode!=='connect' && mode!=='nav') return;
+  // find closest link by checking midpoint proximity on screen
+  setMouse(e.clientX, e.clientY);
+  ray.setFromCamera(m2, camera);
+  let best=null, bestD=Infinity;
+  links.forEach(lk=>{
+    if(!lk.curve) return;
+    // sample a few points along the curve, pick closest to ray
+    for(let i=0;i<=10;i++){
+      const pt = lk.curve.getPoint(i/10);
+      const d = ray.ray.distanceToPoint(pt);
+      if(d<bestD){ bestD=d; best=lk; }
+    }
+  });
+  if(best && bestD < 2.5){
+    best.flowDir *= -1;
+    toast(best.flowDir>0 ? '→ Flow: A → B (downstream)' : '← Flow: B → A (upstream)');
+  }
+});
 // Touch
 let _tid=null;
 canvas.addEventListener('touchstart', e=>{ if(e.touches.length>1) return; e.preventDefault(); const t=e.touches[0]; _tid=t.identifier; onDown(t.clientX,t.clientY); }, {passive:false});
@@ -1259,7 +1540,7 @@ window.addEventListener('keydown', e=>{
   // +/- or =/- = resize grabbed object (Move mode) or last created object
   if(e.key==='='||e.key==='+'){ e.preventDefault(); resizeTarget(1.15); return; }
   if(e.key==='-'||e.key==='_'){ e.preventDefault(); resizeTarget(0.87); return; }
-  const km={ n:'nav', g:'move', d:'draw', t:'text', i:'image', v:'video', a:'audio', b:'block', s:'shape', k:'sticker', m:'model', c:'connect', e:'erase' };
+  const km={ n:'nav', g:'move', d:'draw', t:'text', i:'image', v:'video', a:'audio', b:'block', s:'shape', k:'sticker', o:'icon', m:'model', c:'connect', e:'erase' };
   if(km[e.key]) setMode(km[e.key]);
   if(e.key==='r') flyTo(HOME_POS,HOME_TGT);
   if(e.key==='f'){ document.getElementById('btn-4d').click(); }
@@ -1298,9 +1579,10 @@ function animate(){
   const dt=clock.getDelta(); elapsed+=dt; const t=elapsed;
   controls.update();
   tickCinematic();
-  for(let i=0;i<mixers.length;i++) mixers[i].update(dt); // advance skeletal animations
+  for(let i=0;i<mixers.length;i++) mixers[i].update(dt);
   updTess(t);
   refreshLinks();
+  tickLinks(dt);
   updateLive();
   fill.intensity=1.1+Math.sin(t*.85)*.3; fill.position.x=Math.sin(t*.28)*12; fill.position.z=Math.cos(t*.28)*12;
   // billboard + spin + 4D drift + bounce
@@ -1310,6 +1592,7 @@ function animate(){
     let scale = o.userScale || 1; // userScale is the persistent resize factor
     if(o.fourD){ const off=Math.sin(t*1.1 + o.wPhase); o.root.position.x = o.basePos.x + off*2.2; o.root.position.y = o.basePos.y + Math.cos(t*0.9 + o.wPhase)*0.8; scale *= 1+off*0.12; }
     if(o.bounce){ const e=(performance.now()-o.bounce)/600; if(e>=1){ o.bounce=null; } else { scale *= 1 + Math.sin(e*Math.PI)*0.45; } }
+    if(o.ring){ const pulse=0.15+0.12*Math.sin(t*2.2+o.ringPhase); o.ring.material.opacity=pulse; o.ring.scale.setScalar(1+0.08*Math.sin(t*1.8+o.ringPhase)); }
     o.root.scale.setScalar(scale);
   });
   renderer.render(scene,camera);

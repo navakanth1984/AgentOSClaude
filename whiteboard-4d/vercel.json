@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "bleuboard",
+  "name": "bleuuboard",
   "builds": [
     { "src": "index.html", "use": "@vercel/static" }
   ],
