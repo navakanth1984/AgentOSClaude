@@ -3,12 +3,16 @@ adlc_pipeline.py — BLEUUBOARD Agentic Development Life Cycle Pipeline
 Mirrors the pattern from agent_os/adlc_pipeline.py, scoped to whiteboard-4d.
 
 Environments:
-  staging  → vercel preview deploy (any non-main branch)
-  prod     → vercel --prod (main branch, gated by smoke test)
+  non-prod (staging)  -> bleuboard-dev.vercel.app   (permanent alias, updated on every stage)
+  prod                -> bleuboard.vercel.app        (only promoted after smoke test passes)
+
+Branches:
+  bleuuboard-dev  -> work-in-progress, maps to staging
+  master          -> production-ready, maps to prod
 
 Usage:
-  python adlc_pipeline.py stage          # deploy to staging preview URL
-  python adlc_pipeline.py promote        # run smoke test → if pass, deploy to prod
+  python adlc_pipeline.py stage          # deploy to staging + pin bleuboard-dev.vercel.app
+  python adlc_pipeline.py promote        # run smoke test -> if pass, deploy to prod
   python adlc_pipeline.py status         # show last CI run
   python adlc_pipeline.py deploy         # stage + smoke + promote in one shot
 """
@@ -26,12 +30,18 @@ WORK_DIR = Path(__file__).parent
 CI_LOG = WORK_DIR / "adlc_ci.json"
 HTML_FILE = WORK_DIR / "index.html"
 
+# On Windows, npm scripts are .cmd wrappers — use vercel.cmd directly
+VERCEL_CMD = "vercel.cmd" if sys.platform == "win32" else "vercel"
+
+STAGING_ALIAS = "bleuboard-dev.vercel.app"
+PROD_ALIAS    = "bleuboard.vercel.app"
+
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 def run(args: list[str], timeout: int = 120) -> tuple[int, str, str]:
     try:
-        r = subprocess.run(args, capture_output=True, text=True, timeout=timeout, cwd=WORK_DIR)
+        r = subprocess.run(args, capture_output=True, text=True, timeout=timeout, cwd=WORK_DIR, shell=(sys.platform == "win32"))
         return r.returncode, r.stdout, r.stderr
     except subprocess.TimeoutExpired:
         return -1, "", f"Timed out after {timeout}s"
@@ -97,12 +107,18 @@ def smoke_test() -> tuple[bool, str]:
 
 def deploy_staging() -> tuple[bool, str]:
     log("Deploying to staging (Vercel preview)...")
-    code, stdout, stderr = run(["npx", "vercel", "--yes"], timeout=120)
+    code, stdout, stderr = run([VERCEL_CMD, "--yes"], timeout=120)
     combined = stdout + stderr
     url_match = re.search(r"https://\S+\.vercel\.app", combined)
     url = url_match.group(0) if url_match else "(no URL found)"
     if code == 0:
-        log(f"Staging deployed → {url}")
+        log(f"Staging deployed -> {url}")
+        # Pin the permanent non-prod alias to this deploy
+        a_code, a_out, a_err = run([VERCEL_CMD, "alias", "set", url, STAGING_ALIAS], timeout=30)
+        if a_code == 0:
+            log(f"Staging alias updated -> https://{STAGING_ALIAS}")
+        else:
+            log(f"Warning: alias update failed: {(a_out+a_err)[:120]}")
         return True, url
     else:
         log(f"Staging deploy FAILED: {combined[:300]}")
@@ -111,12 +127,12 @@ def deploy_staging() -> tuple[bool, str]:
 
 def deploy_prod() -> tuple[bool, str]:
     log("Deploying to PRODUCTION (vercel --prod)...")
-    code, stdout, stderr = run(["npx", "vercel", "--prod", "--yes"], timeout=120)
+    code, stdout, stderr = run([VERCEL_CMD, "--prod", "--yes"], timeout=120)
     combined = stdout + stderr
     url_match = re.search(r"https://\S+\.vercel\.app", combined)
     url = url_match.group(0) if url_match else "(no URL found)"
     if code == 0:
-        log(f"Production deployed → {url}")
+        log(f"Production deployed -> {url}")
         return True, url
     else:
         log(f"Prod deploy FAILED: {combined[:300]}")
@@ -162,7 +178,7 @@ def cmd_promote():
 
 
 def cmd_deploy():
-    """Full ADLC loop: stage → smoke → promote."""
+    """Full ADLC loop: stage -> smoke -> promote."""
     log("=== BLEUUBOARD ADLC FULL DEPLOY ===")
 
     # Stage

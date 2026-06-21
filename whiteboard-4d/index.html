@@ -76,6 +76,28 @@ input[type=color]:hover{border-color:#5af;}
 .ubtn:hover{background:rgba(20,60,180,.55);color:#99d;}
 @media(max-width:819px){#utils{top:auto;bottom:72px;right:8px;}}
 
+/* ════════ QUICK ACTION FABs (undo / redo / duplicate) ════════ */
+#quick-actions{position:fixed;z-index:250;display:flex;align-items:center;gap:5px;}
+@media(max-width:819px){
+  #quick-actions{bottom:74px;left:8px;flex-direction:row;}
+}
+@media(min-width:820px){
+  #quick-actions{bottom:14px;left:80px;flex-direction:row;}
+}
+.qa-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(80,160,255,.22);
+  background:rgba(4,10,38,.95);color:#557;font-size:19px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation;backdrop-filter:blur(14px);
+  transition:background .12s,color .12s,border-color .12s;
+  box-shadow:0 2px 14px rgba(0,20,80,.45);position:relative;}
+.qa-btn:hover{background:rgba(20,60,180,.55);color:#9bc;border-color:rgba(80,160,255,.4);}
+.qa-btn:disabled,.qa-btn[disabled]{opacity:0.28;pointer-events:none;}
+.qa-btn .qa-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  font-size:7.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:#334;white-space:nowrap;pointer-events:none;}
+/* draw button icon updates with brush — slightly larger */
+#draw-icon{font-size:20px;line-height:1;}
+
 /* ════════ HUD ════════ */
 #hud{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;
   background:rgba(0,4,20,.82);border:1px solid rgba(80,160,255,.1);border-radius:20px;
@@ -245,9 +267,12 @@ input[type=color]:hover{border-color:#5af;}
   background:rgba(2,10,40,.97);border:1px solid rgba(80,160,255,.3);
   border-radius:12px;padding:10px;backdrop-filter:blur(16px);
   box-shadow:0 0 24px rgba(20,60,180,.3);
-  max-width:calc(100vw - 16px);}
+  max-width:calc(100vw - 16px);user-select:none;}
 #draw-suggest.show{display:flex;}
-.ds-title{font-size:9px;color:#446;letter-spacing:1px;text-transform:uppercase;padding:0 2px;}
+.ds-title{font-size:9px;color:#446;letter-spacing:1px;text-transform:uppercase;padding:0 2px;
+  cursor:grab;display:flex;align-items:center;gap:5px;}
+.ds-title::before{content:'⠿';font-size:12px;color:#224;line-height:1;}
+.ds-title:active{cursor:grabbing;}
 .ds-row{display:flex;gap:6px;flex-wrap:wrap;}
 .ds-btn{flex:1;padding:7px 10px;border:1px solid rgba(80,160,255,.2);background:rgba(10,30,90,.7);
   color:#8af;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;
@@ -255,6 +280,27 @@ input[type=color]:hover{border-color:#5af;}
 .ds-btn:hover{background:rgba(20,70,200,.55);border-color:#5af;color:#cef;}
 .ds-dismiss{background:none;border:none;color:#334;font-size:10px;cursor:pointer;padding:0 2px;align-self:center;transition:color .1s;}
 .ds-dismiss:hover{color:#668;}
+
+/* ════════ BRUSH PICKER ════════ */
+#brush-picker{position:fixed;z-index:290;display:none;flex-direction:column;
+  align-items:center;gap:4px;padding:7px 5px;
+  background:rgba(2,8,36,.97);border:1px solid rgba(80,160,255,.18);
+  border-radius:12px;backdrop-filter:blur(14px);box-shadow:0 0 18px rgba(0,40,140,.35);}
+#brush-picker.show{display:flex;}
+.bp-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;
+  border:1px solid transparent;background:none;color:#446;border-radius:8px;
+  cursor:pointer;font-size:18px;transition:background .12s,color .12s,border-color .12s;width:54px;}
+.bp-btn span{font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#335;}
+.bp-btn:hover{background:rgba(30,70,180,.35);color:#99c;border-color:rgba(80,160,255,.2);}
+.bp-btn:hover span{color:#77a;}
+.bp-btn.active{background:rgba(20,60,200,.45);color:#7df;border-color:rgba(80,160,255,.4);}
+.bp-btn.active span{color:#6af;}
+.bp-sep{width:32px;height:1px;background:rgba(80,160,255,.1);margin:2px 0;}
+/* desktop: right of sidebar; mobile: above bottom bar */
+@media(min-width:820px){#brush-picker{left:80px;top:58px;}}
+@media(max-width:819px){#brush-picker{flex-direction:row;flex-wrap:wrap;justify-content:center;
+  bottom:72px;left:50%;transform:translateX(-50%);padding:6px 8px;gap:3px;}
+  .bp-btn{width:46px;padding:5px 6px;font-size:16px;}}
 
 /* ════════ LINK DIRECTION INDICATOR ════════ */
 .link-dir-badge{position:fixed;z-index:300;pointer-events:none;font-size:10px;
@@ -333,7 +379,7 @@ input[type=color]:hover{border-color:#5af;}
 <div id="bottombar">
   <button class="tb active" data-mode="nav"    title="Orbit / zoom / pan">🎮<span class="tb-label">Nav</span></button>
   <button class="tb"        data-mode="move"   title="Grab & move objects in 3D — drag to reposition, wheel to push/pull depth">✋<span class="tb-label">Move</span></button>
-  <button class="tb"        data-mode="draw"   title="Draw freehand 3D strokes">✏️<span class="tb-label">Draw</span></button>
+  <button class="tb"        data-mode="draw"   title="Draw freehand 3D strokes"><span id="draw-icon">🖊️</span><span class="tb-label">Draw</span></button>
   <button class="tb"        data-mode="text"   title="Place extruded 3D text">🅣<span class="tb-label">3D Text</span></button>
   <button class="tb"        data-mode="image"  title="Place an image">🖼<span class="tb-label">Image</span></button>
   <button class="tb"        data-mode="video"  title="Place animated video">🎬<span class="tb-label">Video</span></button>
@@ -387,15 +433,33 @@ input[type=color]:hover{border-color:#5af;}
   <div class="pal-grid" id="pal-grid"></div>
 </div>
 
+<!-- ════════ QUICK ACTION FABs ════════ -->
+<div id="quick-actions">
+  <button class="qa-btn" id="qa-undo" title="Undo (Ctrl+Z)" disabled>↩<span class="qa-label">Undo</span></button>
+  <button class="qa-btn" id="qa-redo" title="Redo (Ctrl+Y)" disabled>↪<span class="qa-label">Redo</span></button>
+  <button class="qa-btn" id="qa-dupe" title="Duplicate (Ctrl+D)">⧉<span class="qa-label">Copy</span></button>
+</div>
+
 <!-- ════════ DRAW SUGGESTIONS ════════ -->
 <div id="draw-suggest">
-  <div class="ds-title">✨ Suggestions for your stroke</div>
+  <div class="ds-title" id="ds-drag-handle">✨ Suggestions &nbsp;<span style="margin-left:auto;font-size:9px;color:#223">drag to move</span></div>
   <div class="ds-row">
     <button class="ds-btn" id="ds-text">🅣 Convert to Text</button>
     <button class="ds-btn" id="ds-image">🖼 Replace with Image</button>
     <button class="ds-btn" id="ds-icon">⬡ Place Icon Node</button>
     <button class="ds-dismiss" id="ds-dismiss">✕</button>
   </div>
+</div>
+
+<!-- ════════ BRUSH PICKER ════════ -->
+<div id="brush-picker">
+  <button class="bp-btn active" data-brush="pen"         title="Pen — thin, sharp">🖊️<span>Pen</span></button>
+  <button class="bp-btn"        data-brush="pencil"      title="Pencil — light, sketchy">✏️<span>Pencil</span></button>
+  <div class="bp-sep"></div>
+  <button class="bp-btn"        data-brush="marker"      title="Marker — bold, opaque">🖍️<span>Marker</span></button>
+  <button class="bp-btn"        data-brush="brush"       title="Brush — soft, painterly">🎨<span>Brush</span></button>
+  <div class="bp-sep"></div>
+  <button class="bp-btn"        data-brush="highlighter" title="Highlighter — wide, glowing">🌟<span>Glow</span></button>
 </div>
 
 <!-- ════ CINEMATIC INTRO ════ -->
@@ -628,11 +692,12 @@ function register(root, type, label, color){
 
 function updateUndoRedoBtns(){
   const u=document.getElementById('btn-undo'), r=document.getElementById('btn-redo');
-  if(!u||!r) return;
-  u.disabled = undoStack.length===0;
-  r.disabled = redoStack.length===0;
-  u.style.opacity = undoStack.length===0 ? '0.35' : '1';
-  r.style.opacity = redoStack.length===0 ? '0.35' : '1';
+  const qu=document.getElementById('qa-undo'), qr=document.getElementById('qa-redo');
+  const empty=undoStack.length===0, noRedo=redoStack.length===0;
+  if(u){ u.disabled=empty; u.style.opacity=empty?'0.35':'1'; }
+  if(r){ r.disabled=noRedo; r.style.opacity=noRedo?'0.35':'1'; }
+  if(qu){ qu.disabled=empty; }
+  if(qr){ qr.disabled=noRedo; }
 }
 
 function undoLast(){
@@ -709,20 +774,34 @@ function addStrokePoint(cx, cy){
   const p = planePoint(cx, cy); if(!p) return;
   if(drawPts.length===0 || p.distanceTo(drawPts[drawPts.length-1]) > 0.12) drawPts.push(p);
 }
+// ── Brush styles ───────────────────────────────────────────
+let brushStyle = 'pen';
+const BRUSHES = {
+  pen:         { radius:0.035, radSeg:6,  opacity:1.0,  roughness:0.5,  emissive:0.35, transparent:false },
+  pencil:      { radius:0.022, radSeg:5,  opacity:0.70, roughness:0.95, emissive:0.05, transparent:true  },
+  marker:      { radius:0.11,  radSeg:8,  opacity:0.95, roughness:0.85, emissive:0.08, transparent:false },
+  brush:       { radius:0.07,  radSeg:10, opacity:0.82, roughness:0.25, emissive:0.55, transparent:true  },
+  highlighter: { radius:0.20,  radSeg:8,  opacity:0.28, roughness:0.05, emissive:0.90, transparent:true  },
+};
+
 function endStroke(){
   drawing = false;
   if(drawPts.length < 2){ drawPts=[]; return; }
-  // capture last 3D point → project to screen for suggestion popup
   const lastPt = drawPts[drawPts.length-1].clone();
   const curve = new THREE.CatmullRomCurve3(drawPts);
   const seg = Math.min(400, Math.max(20, drawPts.length*6));
-  const geo = new THREE.TubeGeometry(curve, seg, 0.07, 8, false);
+  const b = BRUSHES[brushStyle] || BRUSHES.pen;
+  const geo = new THREE.TubeGeometry(curve, seg, b.radius, b.radSeg, false);
   const col = new THREE.Color(ink);
-  const mat = new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.4), roughness:0.4 });
+  const mat = new THREE.MeshStandardMaterial({
+    color:col, emissive:col.clone().multiplyScalar(b.emissive),
+    roughness:b.roughness, opacity:b.opacity, transparent:b.transparent,
+    depthWrite: !b.transparent,
+  });
   const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = true;
   const root = new THREE.Group(); root.add(mesh);
   register(root, 'stroke', 'Stroke', ink);
-  // screen-space position of stroke endpoint for suggestion popup
+  // show suggestion box — anchor to a safe corner, not on top of stroke
   const projected = lastPt.clone().project(camera);
   const sx = (projected.x * 0.5 + 0.5) * innerWidth;
   const sy = (-projected.y * 0.5 + 0.5) * innerHeight;
@@ -731,16 +810,70 @@ function endStroke(){
   drawPts = [];
 }
 
+let suggestPinned = false, suggestPinnedX = null, suggestPinnedY = null;
 function showSuggest(sx, sy){
   const el = document.getElementById('draw-suggest');
-  el.classList.add('show'); // show first so offsetWidth is accurate
-  const W = el.offsetWidth, H = el.offsetHeight;
-  const x = Math.max(8, Math.min(sx + 16, innerWidth - W - 8));
-  const y = Math.min(Math.max(sy - H - 16, 60), innerHeight - H - 8);
+  el.classList.add('show');
+  if(suggestPinned && suggestPinnedX !== null){ return; } // keep user-dragged position
+  const W = el.offsetWidth || 260, H = el.offsetHeight || 70;
+  // prefer bottom-right corner away from drawing area; fall back if near right edge
+  let x, y;
+  const margin = 10, topBar = 60, botBar = innerWidth < 820 ? 74 : 10;
+  // pick the quadrant furthest from the stroke endpoint
+  const useRight = sx < innerWidth * 0.6;
+  const useBottom = sy < innerHeight * 0.5;
+  x = useRight ? Math.min(innerWidth - W - margin, sx + 30) : Math.max(margin, sx - W - 30);
+  y = useBottom ? Math.min(innerHeight - botBar - H - margin, sy + 24) : Math.max(topBar + margin, sy - H - 24);
+  x = Math.max(margin, Math.min(x, innerWidth - W - margin));
+  y = Math.max(topBar, Math.min(y, innerHeight - botBar - H - margin));
   el.style.left = x + 'px';
   el.style.top  = y + 'px';
 }
-function hideSuggest(){ document.getElementById('draw-suggest').classList.remove('show'); lastStrokeEndScreen=null; }
+function hideSuggest(){
+  document.getElementById('draw-suggest').classList.remove('show');
+  lastStrokeEndScreen = null;
+  // don't clear pin — user chose that spot intentionally
+}
+
+// ── Suggestion box drag ─────────────────────────────────────
+(function(){
+  const el = document.getElementById('draw-suggest');
+  const handle = document.getElementById('ds-drag-handle');
+  let dragging=false, ox=0, oy=0;
+  handle.addEventListener('pointerdown', e=>{
+    dragging=true; handle.setPointerCapture(e.pointerId);
+    const r=el.getBoundingClientRect();
+    ox=e.clientX-r.left; oy=e.clientY-r.top;
+    e.preventDefault();
+  });
+  handle.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const W=el.offsetWidth, H=el.offsetHeight;
+    const x=Math.max(8, Math.min(e.clientX-ox, innerWidth-W-8));
+    const y=Math.max(8, Math.min(e.clientY-oy, innerHeight-H-8));
+    el.style.left=x+'px'; el.style.top=y+'px';
+    suggestPinned=true; suggestPinnedX=x; suggestPinnedY=y;
+  });
+  handle.addEventListener('pointerup', ()=>{ dragging=false; });
+})();
+
+// ── Brush picker wiring + draw icon sync ───────────────────
+const BRUSH_ICONS = { pen:'🖊️', pencil:'✏️', marker:'🖍️', brush:'🎨', highlighter:'🌟' };
+document.querySelectorAll('.bp-btn[data-brush]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    brushStyle = btn.dataset.brush;
+    document.querySelectorAll('.bp-btn[data-brush]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const di = document.getElementById('draw-icon');
+    if(di) di.textContent = BRUSH_ICONS[brushStyle] || '🖊️';
+  });
+});
+
+// ── Quick-action FAB wiring ─────────────────────────────────
+document.getElementById('qa-undo').addEventListener('click', ()=>undoLast());
+document.getElementById('qa-redo').addEventListener('click', ()=>redoLast());
+document.getElementById('qa-dupe').addEventListener('click', ()=>duplicateLast());
+
 
 // Draw suggestion actions
 document.getElementById('ds-dismiss').addEventListener('click', hideSuggest);
@@ -1337,6 +1470,8 @@ function setMode(m){
   canvas.style.cursor={ nav:'grab', move:'move', draw:'crosshair', text:'text', image:'cell', video:'cell', audio:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', icon:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
   // hide draw suggestions when switching away from draw
   if(m!=='draw') hideSuggest();
+  // show/hide brush picker
+  document.getElementById('brush-picker').classList.toggle('show', m==='draw');
   // palette
   const pal=document.getElementById('palette');
   if(m==='shape'||m==='sticker'||m==='model'||m==='icon'){ buildPalette(m); pal.classList.add('show'); }
