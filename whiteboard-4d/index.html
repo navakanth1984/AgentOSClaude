@@ -76,6 +76,28 @@ input[type=color]:hover{border-color:#5af;}
 .ubtn:hover{background:rgba(20,60,180,.55);color:#99d;}
 @media(max-width:819px){#utils{top:auto;bottom:72px;right:8px;}}
 
+/* ════════ QUICK ACTION FABs (undo / redo / duplicate) ════════ */
+#quick-actions{position:fixed;z-index:250;display:flex;align-items:center;gap:5px;}
+@media(max-width:819px){
+  #quick-actions{bottom:74px;left:8px;flex-direction:row;}
+}
+@media(min-width:820px){
+  #quick-actions{bottom:14px;left:80px;flex-direction:row;}
+}
+.qa-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(80,160,255,.22);
+  background:rgba(4,10,38,.95);color:#557;font-size:19px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation;backdrop-filter:blur(14px);
+  transition:background .12s,color .12s,border-color .12s;
+  box-shadow:0 2px 14px rgba(0,20,80,.45);position:relative;}
+.qa-btn:hover{background:rgba(20,60,180,.55);color:#9bc;border-color:rgba(80,160,255,.4);}
+.qa-btn:disabled,.qa-btn[disabled]{opacity:0.28;pointer-events:none;}
+.qa-btn .qa-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  font-size:7.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:#334;white-space:nowrap;pointer-events:none;}
+/* draw button icon updates with brush — slightly larger */
+#draw-icon{font-size:20px;line-height:1;}
+
 /* ════════ HUD ════════ */
 #hud{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;
   background:rgba(0,4,20,.82);border:1px solid rgba(80,160,255,.1);border-radius:20px;
@@ -357,7 +379,7 @@ input[type=color]:hover{border-color:#5af;}
 <div id="bottombar">
   <button class="tb active" data-mode="nav"    title="Orbit / zoom / pan">🎮<span class="tb-label">Nav</span></button>
   <button class="tb"        data-mode="move"   title="Grab & move objects in 3D — drag to reposition, wheel to push/pull depth">✋<span class="tb-label">Move</span></button>
-  <button class="tb"        data-mode="draw"   title="Draw freehand 3D strokes">✏️<span class="tb-label">Draw</span></button>
+  <button class="tb"        data-mode="draw"   title="Draw freehand 3D strokes"><span id="draw-icon">🖊️</span><span class="tb-label">Draw</span></button>
   <button class="tb"        data-mode="text"   title="Place extruded 3D text">🅣<span class="tb-label">3D Text</span></button>
   <button class="tb"        data-mode="image"  title="Place an image">🖼<span class="tb-label">Image</span></button>
   <button class="tb"        data-mode="video"  title="Place animated video">🎬<span class="tb-label">Video</span></button>
@@ -409,6 +431,13 @@ input[type=color]:hover{border-color:#5af;}
   <div class="pal-title" id="pal-title">Shapes</div>
   <div class="pal-tabs" id="pal-tabs" style="display:none"></div>
   <div class="pal-grid" id="pal-grid"></div>
+</div>
+
+<!-- ════════ QUICK ACTION FABs ════════ -->
+<div id="quick-actions">
+  <button class="qa-btn" id="qa-undo" title="Undo (Ctrl+Z)" disabled>↩<span class="qa-label">Undo</span></button>
+  <button class="qa-btn" id="qa-redo" title="Redo (Ctrl+Y)" disabled>↪<span class="qa-label">Redo</span></button>
+  <button class="qa-btn" id="qa-dupe" title="Duplicate (Ctrl+D)">⧉<span class="qa-label">Copy</span></button>
 </div>
 
 <!-- ════════ DRAW SUGGESTIONS ════════ -->
@@ -663,11 +692,12 @@ function register(root, type, label, color){
 
 function updateUndoRedoBtns(){
   const u=document.getElementById('btn-undo'), r=document.getElementById('btn-redo');
-  if(!u||!r) return;
-  u.disabled = undoStack.length===0;
-  r.disabled = redoStack.length===0;
-  u.style.opacity = undoStack.length===0 ? '0.35' : '1';
-  r.style.opacity = redoStack.length===0 ? '0.35' : '1';
+  const qu=document.getElementById('qa-undo'), qr=document.getElementById('qa-redo');
+  const empty=undoStack.length===0, noRedo=redoStack.length===0;
+  if(u){ u.disabled=empty; u.style.opacity=empty?'0.35':'1'; }
+  if(r){ r.disabled=noRedo; r.style.opacity=noRedo?'0.35':'1'; }
+  if(qu){ qu.disabled=empty; }
+  if(qr){ qr.disabled=noRedo; }
 }
 
 function undoLast(){
@@ -827,14 +857,22 @@ function hideSuggest(){
   handle.addEventListener('pointerup', ()=>{ dragging=false; });
 })();
 
-// ── Brush picker wiring ─────────────────────────────────────
+// ── Brush picker wiring + draw icon sync ───────────────────
+const BRUSH_ICONS = { pen:'🖊️', pencil:'✏️', marker:'🖍️', brush:'🎨', highlighter:'🌟' };
 document.querySelectorAll('.bp-btn[data-brush]').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     brushStyle = btn.dataset.brush;
     document.querySelectorAll('.bp-btn[data-brush]').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
+    const di = document.getElementById('draw-icon');
+    if(di) di.textContent = BRUSH_ICONS[brushStyle] || '🖊️';
   });
 });
+
+// ── Quick-action FAB wiring ─────────────────────────────────
+document.getElementById('qa-undo').addEventListener('click', ()=>undoLast());
+document.getElementById('qa-redo').addEventListener('click', ()=>redoLast());
+document.getElementById('qa-dupe').addEventListener('click', ()=>duplicateLast());
 
 
 // Draw suggestion actions
