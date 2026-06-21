@@ -273,6 +273,13 @@ input[type=color]:hover{border-color:#5af;}
   background:rgba(20,4,12,.95);border:1px solid rgba(220,60,60,.35);border-radius:8px;padding:9px 11px;backdrop-filter:blur(10px);}
 #rec-panel.show{display:flex;}
 #rec-panel .srow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;color:#caa;letter-spacing:.4px;}
+#audio-rec-panel{display:none;flex-direction:column;gap:6px;margin-top:4px;
+  background:rgba(4,12,30,.95);border:1px solid rgba(60,160,220,.35);border-radius:8px;padding:9px 11px;backdrop-filter:blur(10px);}
+#audio-rec-panel.show{display:flex;}
+#audio-rec-panel .srow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;color:#aac;letter-spacing:.4px;}
+.rec-select{background:rgba(0,4,20,.9);border:1px solid rgba(80,120,200,.4);color:#aac;border-radius:4px;
+  font-size:10px;padding:2px 5px;cursor:pointer;outline:none;}
+.rec-select:hover{border-color:#5af;}
 #webcam-pip{display:none;position:fixed;bottom:78px;right:12px;z-index:350;
   width:150px;border-radius:10px;border:2px solid rgba(220,80,80,.7);box-shadow:0 0 16px rgba(220,40,40,.35);
   transform:scaleX(-1);background:#000;}
@@ -359,7 +366,13 @@ input[type=color]:hover{border-color:#5af;}
   <div id="rec-panel">
     <div class="srow"><span>🎤 Presenter mic</span><input type="checkbox" id="rec-mic" checked></div>
     <div class="srow"><span>📷 Webcam (PiP)</span><input type="checkbox" id="rec-cam"></div>
+    <div class="srow"><span>🎬 Video format</span><select id="rec-vid-fmt" class="rec-select"></select></div>
     <button class="ubtn" id="rec-start" style="background:rgba(200,40,40,.5);color:#fbb;">● Start recording</button>
+  </div>
+  <button class="ubtn" id="btn-audio-rec">🎙 Audio Recording</button>
+  <div id="audio-rec-panel">
+    <div class="srow"><span>🎵 Audio format</span><select id="audio-rec-fmt" class="rec-select"></select></div>
+    <button class="ubtn" id="audio-rec-start" style="background:rgba(40,80,200,.5);color:#bbf;">● Start audio rec</button>
   </div>
   <button class="ubtn" id="btn-clear">🗑 Clear all</button>
   <button class="ubtn" id="btn-export">💾 Export JSON</button>
@@ -1148,11 +1161,15 @@ async function startRecording(withMic, withCam){
     const tracks=[...videoStream.getVideoTracks()];
     if(withMic){ micStream=await navigator.mediaDevices.getUserMedia({ audio:true }); tracks.push(...micStream.getAudioTracks()); }
     const combined=new MediaStream(tracks);
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus') ? 'video/webm;codecs=vp9,opus'
-               : MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus') ? 'video/webm;codecs=vp8,opus' : 'video/webm';
+    const fmtSel=document.getElementById('rec-vid-fmt').value;
+    let mime,ext;
+    if(fmtSel==='mp4'&&MediaRecorder.isTypeSupported('video/mp4')){ mime='video/mp4'; ext='mp4'; }
+    else if(MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')){ mime='video/webm;codecs=vp9,opus'; ext='webm'; }
+    else if(MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')){ mime='video/webm;codecs=vp8,opus'; ext='webm'; }
+    else { mime='video/webm'; ext='webm'; }
     mediaRec=new MediaRecorder(combined,{ mimeType:mime }); recChunks=[];
     mediaRec.ondataavailable=e=>{ if(e.data && e.data.size) recChunks.push(e.data); };
-    mediaRec.onstop=()=>{ const blob=new Blob(recChunks,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`bleuuboard-presentation-${Date.now()}.webm`; a.click(); toast('Presentation saved (.webm)'); };
+    mediaRec.onstop=()=>{ const blob=new Blob(recChunks,{type:mime.split(';')[0]}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`bleuuboard-presentation-${Date.now()}.${ext}`; a.click(); toast(`Presentation saved (.${ext})`); };
     mediaRec.start(200);
     recActive=true; recStart=Date.now();
     document.getElementById('rec-dot').style.display='flex';
@@ -1171,6 +1188,40 @@ function stopRecording(){
   if(recTimer){ clearInterval(recTimer); recTimer=null; }
   const pip=document.getElementById('webcam-pip'); pip.style.display='none'; pip.srcObject=null;
   document.getElementById('rec-dot').style.display='none';
+}
+
+// ── Audio-only recording ────────────────────────────────────
+let audioRec=null, audioChunks=[], audioRecActive=false, audioMicStream=null, audioTimer=null, audioRecStart=0;
+async function startAudioRecording(){
+  if(audioRecActive) return;
+  try{
+    audioMicStream=await navigator.mediaDevices.getUserMedia({ audio:true });
+    const fmtSel=document.getElementById('audio-rec-fmt').value;
+    let mime,ext;
+    if(fmtSel==='ogg'&&MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')){ mime='audio/ogg;codecs=opus'; ext='ogg'; }
+    else if(fmtSel==='mp4'&&MediaRecorder.isTypeSupported('audio/mp4')){ mime='audio/mp4'; ext='m4a'; }
+    else if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){ mime='audio/webm;codecs=opus'; ext='webm'; }
+    else { mime='audio/webm'; ext='webm'; }
+    audioRec=new MediaRecorder(audioMicStream,{ mimeType:mime }); audioChunks=[];
+    audioRec.ondataavailable=e=>{ if(e.data&&e.data.size) audioChunks.push(e.data); };
+    audioRec.onstop=()=>{ const blob=new Blob(audioChunks,{type:mime.split(';')[0]}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`bleuuboard-audio-${Date.now()}.${ext}`; a.click(); toast(`Audio saved (.${ext})`); };
+    audioRec.start(200);
+    audioRecActive=true; audioRecStart=Date.now();
+    const btn=document.getElementById('audio-rec-start');
+    btn.textContent='⏹ Stop audio rec'; btn.style.background='rgba(200,40,40,.5)'; btn.style.color='#fbb';
+    audioTimer=setInterval(()=>{ const s=Math.floor((Date.now()-audioRecStart)/1000); btn.textContent=`⏹ ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')} Stop`; },500);
+    document.getElementById('audio-rec-panel').classList.remove('show');
+    toast('🎙 Audio recording started');
+  }catch(e){ toast('Audio recording failed: '+(e.message||e.name)); stopAudioRecording(); }
+}
+function stopAudioRecording(){
+  if(!audioRecActive) return;
+  audioRecActive=false;
+  try{ audioRec&&audioRec.state!=='inactive'&&audioRec.stop(); }catch(e){}
+  if(audioMicStream){ audioMicStream.getTracks().forEach(t=>t.stop()); audioMicStream=null; }
+  if(audioTimer){ clearInterval(audioTimer); audioTimer=null; }
+  const btn=document.getElementById('audio-rec-start');
+  btn.textContent='● Start audio rec'; btn.style.background='rgba(40,80,200,.5)'; btn.style.color='#bbf';
 }
 
 // ── Links (with animated flow) ─────────────────────────────
@@ -1502,6 +1553,28 @@ document.getElementById('btn-window').addEventListener('click', ()=>addScreenWin
 document.getElementById('btn-rec').addEventListener('click', ()=>document.getElementById('rec-panel').classList.toggle('show'));
 document.getElementById('rec-start').addEventListener('click', ()=>startRecording(document.getElementById('rec-mic').checked, document.getElementById('rec-cam').checked));
 document.getElementById('rec-stop').addEventListener('click', ()=>stopRecording());
+document.getElementById('btn-audio-rec').addEventListener('click', ()=>document.getElementById('audio-rec-panel').classList.toggle('show'));
+document.getElementById('audio-rec-start').addEventListener('click', ()=>{ if(audioRecActive) stopAudioRecording(); else startAudioRecording(); });
+
+// ── Populate format dropdowns based on browser support ──────
+(function initFormatSelects(){
+  const vidFmt=document.getElementById('rec-vid-fmt');
+  const audFmt=document.getElementById('audio-rec-fmt');
+  const vidOptions=[
+    {label:'WebM (VP9)',value:'webm',mime:'video/webm;codecs=vp9,opus'},
+    {label:'WebM (VP8)',value:'webm-vp8',mime:'video/webm;codecs=vp8,opus'},
+    {label:'MP4',value:'mp4',mime:'video/mp4'},
+  ];
+  const audOptions=[
+    {label:'WebM Opus',value:'webm',mime:'audio/webm;codecs=opus'},
+    {label:'OGG Opus',value:'ogg',mime:'audio/ogg;codecs=opus'},
+    {label:'MP4 / AAC (M4A)',value:'mp4',mime:'audio/mp4'},
+  ];
+  vidOptions.forEach(o=>{ if(MediaRecorder.isTypeSupported(o.mime)){ const el=document.createElement('option'); el.value=o.value; el.textContent=o.label; vidFmt.appendChild(el); } });
+  if(!vidFmt.options.length){ const el=document.createElement('option'); el.value='webm'; el.textContent='WebM'; vidFmt.appendChild(el); }
+  audOptions.forEach(o=>{ if(MediaRecorder.isTypeSupported(o.mime)){ const el=document.createElement('option'); el.value=o.value; el.textContent=o.label; audFmt.appendChild(el); } });
+  if(!audFmt.options.length){ const el=document.createElement('option'); el.value='webm'; el.textContent='WebM'; audFmt.appendChild(el); }
+})();
 // ── Guide step navigation ──────────────────────────────────
 let guideStep = 0;
 const GUIDE_TOTAL = 4;
