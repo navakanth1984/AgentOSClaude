@@ -76,26 +76,7 @@ input[type=color]:hover{border-color:#5af;}
 .ubtn:hover{background:rgba(20,60,180,.55);color:#99d;}
 @media(max-width:819px){#utils{top:auto;bottom:72px;right:8px;}}
 
-/* ════════ QUICK ACTION FABs (undo / redo / duplicate) ════════ */
-#quick-actions{position:fixed;z-index:250;display:flex;align-items:center;gap:5px;}
-@media(max-width:819px){
-  #quick-actions{bottom:74px;left:8px;flex-direction:row;}
-}
-@media(min-width:820px){
-  #quick-actions{bottom:14px;left:80px;flex-direction:row;}
-}
-.qa-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(80,160,255,.22);
-  background:rgba(4,10,38,.95);color:#557;font-size:19px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  touch-action:manipulation;backdrop-filter:blur(14px);
-  transition:background .12s,color .12s,border-color .12s;
-  box-shadow:0 2px 14px rgba(0,20,80,.45);position:relative;}
-.qa-btn:hover{background:rgba(20,60,180,.55);color:#9bc;border-color:rgba(80,160,255,.4);}
-.qa-btn:disabled,.qa-btn[disabled]{opacity:0.28;pointer-events:none;}
-.qa-btn .qa-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
-  font-size:7.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
-  color:#334;white-space:nowrap;pointer-events:none;}
-/* draw button icon updates with brush — slightly larger */
+/* draw button icon updates with brush */
 #draw-icon{font-size:20px;line-height:1;}
 
 /* ════════ HUD ════════ */
@@ -281,26 +262,40 @@ input[type=color]:hover{border-color:#5af;}
 .ds-dismiss{background:none;border:none;color:#334;font-size:10px;cursor:pointer;padding:0 2px;align-self:center;transition:color .1s;}
 .ds-dismiss:hover{color:#668;}
 
-/* ════════ BRUSH PICKER ════════ */
-#brush-picker{position:fixed;z-index:290;display:none;flex-direction:column;
-  align-items:center;gap:4px;padding:7px 5px;
-  background:rgba(2,8,36,.97);border:1px solid rgba(80,160,255,.18);
-  border-radius:12px;backdrop-filter:blur(14px);box-shadow:0 0 18px rgba(0,40,140,.35);}
+/* ════════ BRUSH PICKER (secondary toolbar strip) ════════ */
+#brush-picker{position:fixed;z-index:290;display:none;
+  background:rgba(2,8,36,.97);backdrop-filter:blur(16px);}
 #brush-picker.show{display:flex;}
-.bp-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;
-  border:1px solid transparent;background:none;color:#446;border-radius:8px;
-  cursor:pointer;font-size:18px;transition:background .12s,color .12s,border-color .12s;width:54px;}
-.bp-btn span{font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#335;}
-.bp-btn:hover{background:rgba(30,70,180,.35);color:#99c;border-color:rgba(80,160,255,.2);}
+.bp-btn{display:flex;flex-direction:column;align-items:center;gap:2px;
+  border:1px solid transparent;background:none;color:#557;border-radius:8px;
+  cursor:pointer;font-size:17px;transition:background .12s,color .12s,border-color .12s;
+  touch-action:manipulation;}
+.bp-btn span{font-size:7.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#335;}
+.bp-btn:hover{background:rgba(30,70,180,.35);color:#9bc;border-color:rgba(80,160,255,.2);}
 .bp-btn:hover span{color:#77a;}
 .bp-btn.active{background:rgba(20,60,200,.45);color:#7df;border-color:rgba(80,160,255,.4);}
 .bp-btn.active span{color:#6af;}
-.bp-sep{width:32px;height:1px;background:rgba(80,160,255,.1);margin:2px 0;}
-/* desktop: right of sidebar; mobile: above bottom bar */
-@media(min-width:820px){#brush-picker{left:80px;top:58px;}}
-@media(max-width:819px){#brush-picker{flex-direction:row;flex-wrap:wrap;justify-content:center;
-  bottom:72px;left:50%;transform:translateX(-50%);padding:6px 8px;gap:3px;}
-  .bp-btn{width:46px;padding:5px 6px;font-size:16px;}}
+/* mobile: full-width strip anchored right above the bottom toolbar */
+@media(max-width:819px){
+  #brush-picker{bottom:64px;left:0;right:52px;
+    flex-direction:row;justify-content:space-evenly;align-items:center;
+    padding:5px 6px;height:50px;
+    border-top:1px solid rgba(80,160,255,.14);}
+  .bp-btn{flex:1;max-width:68px;padding:4px 2px;}
+  .bp-sep{display:none;}
+  /* lift palette and toast so they clear the brush strip */
+  body.draw-mode #palette{bottom:120px;}
+  body.draw-mode #toast{bottom:148px;}
+}
+/* desktop: slim vertical strip flush against the left sidebar */
+@media(min-width:820px){
+  #brush-picker{left:72px;top:50px;
+    flex-direction:column;align-items:center;
+    padding:10px 4px;width:62px;gap:3px;
+    border-right:1px solid rgba(80,160,255,.12);}
+  .bp-btn{width:52px;padding:6px 4px;}
+  .bp-sep{width:36px;height:1px;background:rgba(80,160,255,.1);margin:2px 0;}
+}
 
 /* ════════ LINK DIRECTION INDICATOR ════════ */
 .link-dir-badge{position:fixed;z-index:300;pointer-events:none;font-size:10px;
@@ -431,13 +426,6 @@ input[type=color]:hover{border-color:#5af;}
   <div class="pal-title" id="pal-title">Shapes</div>
   <div class="pal-tabs" id="pal-tabs" style="display:none"></div>
   <div class="pal-grid" id="pal-grid"></div>
-</div>
-
-<!-- ════════ QUICK ACTION FABs ════════ -->
-<div id="quick-actions">
-  <button class="qa-btn" id="qa-undo" title="Undo (Ctrl+Z)" disabled>↩<span class="qa-label">Undo</span></button>
-  <button class="qa-btn" id="qa-redo" title="Redo (Ctrl+Y)" disabled>↪<span class="qa-label">Redo</span></button>
-  <button class="qa-btn" id="qa-dupe" title="Duplicate (Ctrl+D)">⧉<span class="qa-label">Copy</span></button>
 </div>
 
 <!-- ════════ DRAW SUGGESTIONS ════════ -->
@@ -692,12 +680,9 @@ function register(root, type, label, color){
 
 function updateUndoRedoBtns(){
   const u=document.getElementById('btn-undo'), r=document.getElementById('btn-redo');
-  const qu=document.getElementById('qa-undo'), qr=document.getElementById('qa-redo');
   const empty=undoStack.length===0, noRedo=redoStack.length===0;
   if(u){ u.disabled=empty; u.style.opacity=empty?'0.35':'1'; }
   if(r){ r.disabled=noRedo; r.style.opacity=noRedo?'0.35':'1'; }
-  if(qu){ qu.disabled=empty; }
-  if(qr){ qr.disabled=noRedo; }
 }
 
 function undoLast(){
@@ -868,12 +853,6 @@ document.querySelectorAll('.bp-btn[data-brush]').forEach(btn=>{
     if(di) di.textContent = BRUSH_ICONS[brushStyle] || '🖊️';
   });
 });
-
-// ── Quick-action FAB wiring ─────────────────────────────────
-document.getElementById('qa-undo').addEventListener('click', ()=>undoLast());
-document.getElementById('qa-redo').addEventListener('click', ()=>redoLast());
-document.getElementById('qa-dupe').addEventListener('click', ()=>duplicateLast());
-
 
 // Draw suggestion actions
 document.getElementById('ds-dismiss').addEventListener('click', hideSuggest);
@@ -1470,8 +1449,9 @@ function setMode(m){
   canvas.style.cursor={ nav:'grab', move:'move', draw:'crosshair', text:'text', image:'cell', video:'cell', audio:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', icon:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
   // hide draw suggestions when switching away from draw
   if(m!=='draw') hideSuggest();
-  // show/hide brush picker
+  // show/hide brush picker + body class (used for CSS zone lifting)
   document.getElementById('brush-picker').classList.toggle('show', m==='draw');
+  document.body.classList.toggle('draw-mode', m==='draw');
   // palette
   const pal=document.getElementById('palette');
   if(m==='shape'||m==='sticker'||m==='model'||m==='icon'){ buildPalette(m); pal.classList.add('show'); }
