@@ -2,6 +2,8 @@
 
 This folder (`wiki/`) is a self-improving knowledge map for the `navakanth001` workspace. Read this before working in it.
 
+> **Shared with Antigravity.** Both Claude and Antigravity feed and extract from the same knowledge base. The full read/feed contract — including the graphify **graph layer** (`.graphify/` per repo) alongside this **wiki layer** — is in [knowledge-base-protocol.md](knowledge-base-protocol.md). Start any cross-repo question at [knowledge-base-map.md](knowledge-base-map.md). EXTRACT order: graph (`graphify query/path/explain`) → wiki → raw files. FEED: `graphify update <repo>` after code changes; wiki ingest after notes.
+
 ## What this is
 - `sources/` (repo root) holds raw, original material — the source of truth. Never edited, only added to. Organized into `academic/`, `creative/`, `technical/` (add `knowledge/` for AI-systems notes as needed).
 - `wiki/` holds the map: one synthesized Markdown page per real topic, tool, person, project, or idea, written in my own words — not copy-paste.

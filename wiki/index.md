@@ -17,6 +17,10 @@
 ## Academic
 - [Science FA2 Revision](science-fa2-revision.md) — Bilingual Science FA2 revision material.
 
+## Knowledge Base System
+- [Knowledge Base Protocol](knowledge-base-protocol.md) — Shared Claude+Antigravity contract: graph + wiki layers, extract/feed order.
+- [Knowledge Base Map](knowledge-base-map.md) — Front door across all repos: which has a graph / wiki.
+
 ## Administration
 - [Operating Brief](CLAUDE.md) — How ingest / answer / tidy and the nightly loop work.
 - [Log](log.md) — Activity history.

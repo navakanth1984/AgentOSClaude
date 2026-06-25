@@ -36,6 +36,14 @@
         "OLLAMA_MODEL": "llama3.2",
         "ACTIVE_PROVIDER": "ollama"
       }
+    },
+    "graphify": {
+      "command": "npx",
+      "args": [
+        "graphify",
+        "serve",
+        "C:/Users/navka/navakanth001/.graphify/graph.json"
+      ]
     }
   }
 }

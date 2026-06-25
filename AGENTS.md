@@ -1,7 +1,7 @@
 # AGENTS.md — Knowledge Base Operating Instructions
 
 > Applies to every AI agent run in this repo (Claude, Antigravity, Gemini, etc.).
-> The canonical, full operating brief is **[wiki/CLAUDE.md](wiki/CLAUDE.md)** — read it first. This file is the short, tool-neutral mirror of it.
+> The canonical, full operating brief is **[wiki/CLAUDE.md](wiki/CLAUDE.md)** — read it first. The shared Claude+Antigravity read/feed contract (graphify graph layer + wiki layer) is **[wiki/knowledge-base-protocol.md](wiki/knowledge-base-protocol.md)**; the cross-repo front door is **[wiki/knowledge-base-map.md](wiki/knowledge-base-map.md)**. This file is the short, tool-neutral mirror of them.
 
 ## Operating Brief
 
