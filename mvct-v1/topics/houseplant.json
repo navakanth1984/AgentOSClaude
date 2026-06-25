@@ -1,0 +1,5 @@
+{
+  "scenario": "houseplant",
+  "target_asset": "problem_decomposition",
+  "note": "HouseplantKnowledgeProvider in knowledge.py is the source of truth. Domain is mandatory (detector in-distribution constraint) — do not swap the topic."
+}
