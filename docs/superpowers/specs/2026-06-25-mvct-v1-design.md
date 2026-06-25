@@ -11,6 +11,8 @@ depends_on: "transfer-detector-v0 (validated: Construct 1.000 / Parity 0.900 / E
 
 # MVCT V1 Design Spec — "The Microscope" (Binary Answer-Gate)
 
+> **⚠ Scope discipline — read first.** MVCT V1 does **not** attempt to prove that Socratic tutoring is superior, nor that LLMs teach effectively. It evaluates **whether a validated capability detector can function as a constitutional gate governing answer release while preserving strict runtime invariants.** Everything below serves that one question.
+
 ## 1. Objective & The Single Falsifiable Claim
 
 Deploy a Minimum Viable Cognitive Tutor that governs **one topic** and proves **one binary hypothesis**:
@@ -223,3 +225,43 @@ Each is admitted only when it supports a new falsifiable hypothesis — not in a
 
 ## 10. Definition of Done (North Star)
 > On the houseplant topic, the experimental tutor refuses to state the answer until the detector measures genuine decomposition (under the active GatePolicy) and releases it the moment it does; the control tutor exposes the answer unconditionally; the runner emits a comparison (SAIR + unlock-latency + exposure timing) — all reproducible offline via the dry-run mock, with the three invariants covered by passing tests.
+
+---
+
+## 11. Threat Model
+
+| ID | Threat | Mitigation | Class |
+|----|--------|-----------|-------|
+| T1 | LLM leaks the answer while locked | Deterministic Python guard replaces the turn (Invariant 1) | Engineering |
+| T2 | Detector unavailable / errors | Fail-closed: no token → stays locked (§3.3) | Engineering |
+| T3 | Detector false positive (unlocks too early) | `GatePolicy` confidence floor; sweepable threshold (§3.2) | Research |
+| T4 | A module bypasses the Auditor to unlock | HMAC `PermissionToken` — only the Auditor holds the minting key (Invariant 3) | Engineering |
+| T5 | Equivalent-answer leakage (paraphrase) | Canonical-variable blocklist, best-effort (Invariant 2); known semantic gap | Engineering (partial) |
+| T6 | Token replay across turns | `expires_at_turn` — stale tokens rejected (§3.4) | Engineering |
+
+## 12. Risk Register — Engineering vs. Research
+
+Engineering risks are bugs we can close; research risks are open empirical questions the experiment exists to probe. Separating them prevents "the code works" from being mistaken for "the hypothesis holds."
+
+**Engineering risks (closable in V1):**
+- API/LLM failure → fail-closed + injectable `llm_fn`.
+- Prompt leakage → Python guard (T1).
+- Token forgery / Auditor bypass → HMAC capability (T4).
+- SQLite corruption / concurrency → single-process, per-run DB files.
+
+**Research risks (open questions, NOT closable by code):**
+- Detector construct validity — passed only a *synthetic* ceiling (§2.3).
+- Domain generalization — houseplant held fixed precisely because this is unknown.
+- Confidence calibration — is 0.90 meaningful? `GatePolicy` makes it a sweepable variable, not a verdict.
+- Transfer-metric validity — does SAIR track internalization, or merely a proxy?
+
+## 13. Success Hierarchy
+
+Four independent levels; passing a lower level does **not** imply the next. This prevents implementation success from being read as scientific success.
+
+| Level | Criterion | Evidence |
+|-------|-----------|----------|
+| Architecture | All three constitutional invariants hold | passing invariant tests |
+| Runtime | Gate behaves correctly under every scripted test | `test_runner.py` green + monitor logs |
+| Experiment | Control and experimental differ *only* by the gate | identical script/model/prompt, gate on/off |
+| Research | Results support or refute the gating hypothesis | comparison metrics + real-human re-validation |
