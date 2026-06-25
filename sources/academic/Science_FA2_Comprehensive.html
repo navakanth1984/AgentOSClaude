@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science FA2 Revision - Comprehensive Extract</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Gochi+Hand&family=Indie+Flower&family=Patrick+Hand&family=Shadows+Into+Light&display=swap');
+
+        body {
+            background-color: #cfd8dc;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook-page {
+            background-color: #fffef9;
+            width: 900px;
+            min-height: 1300px;
+            padding: 40px 60px;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.2);
+            position: relative;
+            background-image: 
+                linear-gradient(#e3f2fd 1px, transparent 1px),
+                linear-gradient(90deg, transparent 79px, #ffcdd2 79px, #ffcdd2 81px, transparent 81px);
+            background-size: 100% 32px, 100% 100%;
+            line-height: 32px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        /* Handwritten elements */
+        .blue-ink { color: #0d47a1; font-size: 22px; }
+        .red-ink { color: #d32f2f; font-family: 'Gochi Hand', cursive; font-size: 18px; }
+        .pencil { color: #455a64; font-family: 'Indie Flower', cursive; font-size: 19px; }
+
+        .header-box {
+            border: 2px solid #d32f2f;
+            padding: 5px 15px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border-radius: 10px 50px 10px 50px/50px 10px 50px 10px;
+            transform: rotate(-1deg);
+        }
+
+        .layout-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .q-num {
+            font-weight: bold;
+            color: #c62828;
+            margin-right: 10px;
+        }
+
+        /* Sketchy Diagram Styling */
+        .sketch-container {
+            margin: 30px 0;
+            border: 1.5px solid #0d47a1;
+            padding: 20px;
+            border-radius: 20px 100px 20px 80px/80px 20px 100px 20px;
+            background: rgba(13, 71, 161, 0.02);
+            position: relative;
+            min-height: 300px;
+        }
+
+        .label-callout {
+            position: absolute;
+            font-size: 16px;
+            border-bottom: 1px solid #0d47a1;
+            white-space: nowrap;
+        }
+
+        /* SVG Apparatus with "Wobbly" lines */
+        .apparatus-svg {
+            width: 100%;
+            height: 250px;
+            filter: url(#wobble);
+        }
+
+        .side-content {
+            border-left: 1px dashed #ccc;
+            padding-left: 20px;
+        }
+
+        .vitamins-list {
+            list-style-type: lower-roman;
+            margin-left: 20px;
+        }
+
+        .imperfection-smudge {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            background: rgba(0,0,0,0.03);
+            filter: blur(8px);
+            border-radius: 50%;
+            top: 200px;
+            left: 150px;
+        }
+
+        .margin-date {
+            position: absolute;
+            top: 20px;
+            right: 60px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Filter for hand-drawn effect -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <filter id="wobble">
+            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+        </filter>
+    </svg>
+
+    <div class="notebook-page">
+        <div class="margin-date red-ink">
+            Tuesday 2/9/25<br>
+            FA-2 Revision
+        </div>
+
+        <div class="header-box red-ink">
+            H/w
+        </div>
+
+        <div class="layout-container blue-ink">
+            <!-- Left Side: Distillation -->
+            <div class="main-content">
+                <p><span class="q-num">5B.</span> Draw a labelled diagram of the apparatus you would use to make distilled water in the laboratory.</p>
+                
+                <div class="sketch-container">
+                    <svg class="apparatus-svg" viewBox="0 0 300 200">
+                        <!-- Round flask -->
+                        <path d="M50 150 Q50 100 80 100 L80 80 L90 80 L90 100 Q120 100 120 150 Z" fill="none" stroke="#0d47a1" stroke-width="1.5" />
+                        <!-- Burner -->
+                        <path d="M70 180 L100 180 L100 190 L70 190 Z" fill="none" stroke="#0d47a1" stroke-width="1" />
+                        <path d="M80 180 Q85 160 90 180" fill="#ffa726" opacity="0.4" />
+                        <!-- Delivery tube -->
+                        <path d="M85 80 L85 50 L200 50 L200 120" fill="none" stroke="#0d47a1" stroke-width="1.2" />
+                        <!-- Beaker -->
+                        <path d="M180 120 L220 120 L220 170 L180 170 Z" fill="none" stroke="#0d47a1" stroke-width="1.5" />
+                        
+                        <!-- Wobbly connecting lines -->
+                        <line x1="40" y1="140" x2="10" y2="140" stroke="#0d47a1" stroke-dasharray="2,2" />
+                        <line x1="230" y1="150" x2="260" y2="150" stroke="#0d47a1" stroke-dasharray="2,2" />
+                    </svg>
+                    
+                    <div class="pencil label-callout" style="top: 130px; left: 0px;">Salt Solution</div>
+                    <div class="pencil label-callout" style="top: 140px; right: 10px;">Distilled Water</div>
+                    <div class="pencil label-callout" style="top: 180px; left: 110px;">Burner</div>
+                    <div class="pencil label-callout" style="top: 30px; left: 120px;">Delivery tube</div>
+                </div>
+            </div>
+
+            <!-- Right Side: Weaving & Vitamins -->
+            <div class="side-content">
+                <div style="margin-bottom: 40px;">
+                    <p><span class="q-num">4Q.</span> What is weaving?</p>
+                    <p class="pencil" style="margin-left: 20px;">Ans: Weaving is the process of arranging two sets of yarns together on a loom.</p>
+                </div>
+
+                <div>
+                    <p><span class="q-num">II.</span> Long Questions</p>
+                    <p><span class="q-num">1G.</span> Name five functions of vitamins.</p>
+                    <p class="pencil" style="margin-left: 20px;">Ans: Vitamins are essential for:</p>
+                    <ul class="pencil vitamins-list">
+                        <li>Vitamin A - for good vision</li>
+                        <li>Vitamin B - for energy production</li>
+                        <li>Vitamin C - for immunity</li>
+                        <li>Vitamin D - for bone health</li>
+                        <li>Vitamin E - for skin health</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--imperfections -->
+        <div class="imperfection-smudge"></div>
+        <div class="pencil" style="position: absolute; bottom: 50px; left: 100px; opacity: 0.4; font-size: 14px;">
+            * Label all parts carefully!
+        </div>
+        
+        <div style="position: absolute; top: 150px; left: 5px; transform: rotate(-90deg); font-size: 12px; color: #999;">
+            Tuesday | Wednesday | Revision Set
+        </div>
+    </div>
+
+</body>
+</html>
