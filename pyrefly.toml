@@ -16,5 +16,6 @@ search-path = [
     "daava_production/scripts",
     "mvct-v1",
     "transfer-detector-v0",
+    "tdh-labels-seed",
 ]
 python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
