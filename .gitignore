@@ -46,6 +46,7 @@ Thumbs.db
 *.log
 
 # Nested Repositories
+nth-brain/
 build-your-own-openclaw/
 Claude-Desktop-LLM/
 flutter_sdk/

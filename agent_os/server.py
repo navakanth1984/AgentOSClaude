@@ -470,12 +470,12 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             return
 
         elif path.startswith("/nth_brain/"):
-            # Serve static files from the standalone nth-brain repo (single source of truth).
-            # Override with NTH_BRAIN_DIR; defaults to ~/nth-brain.
+            # Serve static files from the nth-brain repo (single source of truth).
+            # Override with NTH_BRAIN_DIR; defaults to <navakanth001>/nth-brain.
             file_rel = urllib.parse.unquote(path[len("/nth_brain/"):])
             if not file_rel or file_rel.endswith("/"):
                 file_rel += "index.html"
-            prototype_dir = Path(os.environ.get("NTH_BRAIN_DIR", Path.home() / "nth-brain"))
+            prototype_dir = Path(os.environ.get("NTH_BRAIN_DIR", Path(__file__).parent.parent / "nth-brain"))
             target_file = (prototype_dir / file_rel).resolve()
             if prototype_dir.resolve() not in target_file.parents:
                 self._send(403, {"error": "Forbidden: Outside prototype dir"})
