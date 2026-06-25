@@ -1,0 +1,13 @@
+[project]
+name = "mvct-v1"
+version = "0.1.0"
+description = "Minimum Viable Cognitive Tutor — binary answer-gate over transfer-detector-v0"
+requires-python = ">=3.12"
+dependencies = ["google-generativeai>=0.7"]
+
+[tool.pytest.ini_options]
+# "." exposes mvct-v1 modules; the detector path exposes `import detector`
+# (the detector ships as a hatchling project whose import name is `detector`,
+# so we add it to the path rather than relying on an editable install).
+pythonpath = [".", "../transfer-detector-v0"]
+testpaths = ["tests"]
