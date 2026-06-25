@@ -1,6 +1,6 @@
 const { test } = require("node:test");
 const assert = require("node:assert");
-const { handle, buildPath, parseAllowlist } = require("../api/_core.js");
+const { handle, buildPath, parseAllowlist, githubCommit } = require("../api/_core.js");
 
 const ENV = { RATER_ALLOWLIST: "abcd:expert_a,efgh:expert_b", GITHUB_REPO: "x/y",
               GITHUB_TOKEN: "t", GITHUB_BRANCH: "main" };
@@ -88,4 +88,23 @@ test("commit throw -> 502", async () => {
   const body = JSON.stringify({ code: "abcd", labels: { t01: { classification: "transfer" } } });
   const r = await handle(EXPERT, body, ENV, async () => { throw new Error("boom"); });
   assert.equal(r.status, 502);
+});
+
+test("githubCommit PUTs base64 content to the contents API", async () => {
+  let url, opts;
+  const fakeFetch = async (u, o) => { url = u; opts = o; return { ok: true, status: 201 }; };
+  await githubCommit({ GITHUB_REPO: "o/r", GITHUB_TOKEN: "tok", GITHUB_BRANCH: "main" },
+    "expert/a/x.json", { hello: "world" }, fakeFetch);
+  assert.equal(url, "https://api.github.com/repos/o/r/contents/expert/a/x.json");
+  assert.equal(opts.method, "PUT");
+  assert.match(opts.headers.Authorization, /^Bearer tok$/);
+  const sent = JSON.parse(opts.body);
+  assert.equal(sent.branch, "main");
+  assert.equal(Buffer.from(sent.content, "base64").toString("utf8").includes("world"), true);
+});
+
+test("githubCommit throws on non-2xx", async () => {
+  const fakeFetch = async () => ({ ok: false, status: 403 });
+  await assert.rejects(() => githubCommit({ GITHUB_REPO: "o/r", GITHUB_TOKEN: "t" },
+    "p.json", {}, fakeFetch), /github 403/);
 });

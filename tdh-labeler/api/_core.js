@@ -75,5 +75,24 @@ async function handle(cfg, rawBody, env, commitFn, now = new Date()) {
   return { status: 200, body: { ok: true, file: path } };
 }
 
-module.exports = { handle, validate, buildPath, parseAllowlist,
+async function githubCommit(env, path, record, fetchFn = fetch) {
+  const repo = env.GITHUB_REPO;
+  const branch = env.GITHUB_BRANCH || "main";
+  const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+  const content = Buffer.from(JSON.stringify(record, null, 2), "utf8").toString("base64");
+  const res = await fetchFn(url, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
+      "Accept": "application/vnd.github+json",
+      "Content-Type": "application/json",
+      "User-Agent": "tdh-collector",
+    },
+    body: JSON.stringify({ message: `label: ${path}`, content, branch }),
+  });
+  if (!res.ok) throw new Error(`github ${res.status}`);
+  return true;
+}
+
+module.exports = { handle, validate, buildPath, parseAllowlist, githubCommit,
                    FROZEN_IDS, CLASS_ENUM, MAX_BYTES };
