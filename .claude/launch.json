@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "whiteboard-4d",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "whiteboard-4d", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5500
+    }
+  ]
+}

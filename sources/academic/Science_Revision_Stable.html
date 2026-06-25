@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Science Revision - Clean Rebuild</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&display=swap');
+
+        /* RESET & BASE */
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        /* STABLE CONTAINER */
+        .page {
+            background-color: #fff;
+            width: 850px;
+            min-height: 1100px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* HEADER SECTION - FIXED FLOW */
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffcdd2;
+            padding-bottom: 10px;
+        }
+
+        .hw-box {
+            border: 2px solid #b71c1c;
+            color: #b71c1c;
+            padding: 5px 15px;
+            font-family: 'Gochi Hand', cursive;
+            font-size: 24px;
+            border-radius: 4px;
+        }
+
+        .header-meta {
+            text-align: right;
+            color: #b71c1c;
+            font-family: 'Gochi Hand', cursive;
+        }
+
+        /* MAIN CONTENT AREA - GRID FOR STABILITY */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 120px 1fr; /* Fixed margin width */
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* SIDEBAR (MARGIN) */
+        .margin-col {
+            border-right: 2px solid #ffcdd2;
+            padding-right: 10px;
+            color: #546e7a;
+            font-size: 16px;
+            line-height: 1.4;
+            font-family: 'Gochi Hand', cursive;
+        }
+
+        /* BODY CONTENT */
+        .body-col {
+            color: #1a237e;
+            font-size: 22px;
+        }
+
+        .title {
+            font-size: 32px;
+            text-align: center;
+            text-decoration: underline;
+            margin-bottom: 30px;
+            font-family: 'Gochi Hand', cursive;
+            color: #b71c1c;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* DIAGRAM AREA - FIXED HEIGHT TO PREVENT OVERLAP */
+        .diagram-box {
+            width: 100%;
+            height: 450px;
+            border: 1px dashed #ccc;
+            margin: 30px 0;
+            background-color: #fafafa;
+            position: relative;
+        }
+
+        .apparatus-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .label-style {
+            font-family: 'Indie Flower', cursive;
+            font-size: 18px;
+            fill: #2e7d32;
+            font-weight: bold;
+        }
+
+        /* FOOTER Q&A */
+        .qa-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .ans-indent {
+            margin-left: 30px;
+            font-family: 'Indie Flower', cursive;
+            color: #37474f;
+        }
+
+        .vitamin-item {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <!-- Header: Stamp and Date -->
+        <div class="top-row">
+            <div class="hw-box">H/w</div>
+            <div class="header-meta">
+                Date: 20 / 1 / 2026<br>
+                Page Ref: 26
+            </div>
+        </div>
+
+        <!-- Main Body -->
+        <div class="main-layout">
+            <!-- Left Margin (Fixed Dates) -->
+            <div class="margin-col">
+                Tuesday<br>2/9/25<br><br>
+                Wednesday<br>25/9/25<br><br>
+                Science FA-2
+            </div>
+
+            <!-- Right Content (Scrollable/Flowing) -->
+            <div class="body-col">
+                <div class="title">FA-2 Revision</div>
+
+                <div class="question">
+                    5g. Draw a labelled diagram of the apparatus you would use to make distilled water in the laboratory.
+                </div>
+
+                <!-- SVG Diagram with clear boundaries -->
+                <div class="diagram-box">
+                    <svg class="apparatus-svg" viewBox="0 0 600 450">
+                        <!-- Retort Stand & Clamps -->
+                        <rect x="50" y="400" width="120" height="8" fill="#444" />
+                        <rect x="105" y="100" width="6" height="300" fill="#444" />
+                        
+                        <!-- Burner & Tripod -->
+                        <path d="M80 400 L105 320 L145 320 L170 400" fill="none" stroke="#222" stroke-width="2" />
+                        <rect x="110" y="360" width="30" height="30" fill="#666" />
+                        <path d="M120 360 Q125 330 130 360" fill="#ff9800" opacity="0.8" />
+
+                        <!-- Distillation Flask -->
+                        <circle cx="125" cy="280" r="45" fill="rgba(173, 216, 230, 0.2)" stroke="#1a237e" stroke-width="2" />
+                        <rect x="115" y="180" width="20" height="100" fill="rgba(173, 216, 230, 0.2)" stroke="#1a237e" stroke-width="2" />
+                        
+                        <!-- Thermometer -->
+                        <line x1="125" y1="150" x2="125" y2="260" stroke="#d32f2f" stroke-width="2" />
+                        
+                        <!-- Condenser (Diagonal Setup) -->
+                        <path d="M135 210 L250 210 L450 350" fill="none" stroke="#1a237e" stroke-width="3" />
+                        <rect x="260" y="190" width="180" height="50" rx="25" transform="rotate(30 260 190)" fill="rgba(200, 230, 201, 0.3)" stroke="#2e7d32" stroke-width="1.5" />
+                        
+                        <!-- Receiving Beaker -->
+                        <path d="M420 350 L480 350 L470 420 L430 420 Z" fill="rgba(173, 216, 230, 0.4)" stroke="#1a237e" stroke-width="2" />
+
+                        <!-- Label Text (Inside SVG boundaries) -->
+                        <text x="10" y="280" class="label-style">Salt Solution</text>
+                        <text x="140" y="140" class="label-style">Thermometer</text>
+                        <text x="350" y="200" class="label-style">Condenser</text>
+                        <text x="100" y="440" class="label-style">Burner</text>
+                        <text x="480" y="400" class="label-style">Distilled Water</text>
+                    </svg>
+                </div>
+
+                <div class="qa-footer">
+                    <p><strong>4Q. What is weaving?</strong></p>
+                    <p class="ans-indent">Ans: Weaving is the process of arranging two sets of yarns together to make a fabric on looms.</p>
+
+                    <p style="margin-top:30px;"><strong>II. Long Questions: Functions of Vitamins</strong></p>
+                    <div class="ans-indent">
+                        <div class="vitamin-item">1. Vit A: Healthy eyes & skin.</div>
+                        <div class="vitamin-item">2. Vit B: Energy metabolism.</div>
+                        <div class="vitamin-item">3. Vit C: Immunity & gum health.</div>
+                        <div class="vitamin-item">4. Vit D: Strong bones & teeth.</div>
+                        <div class="vitamin-item">5. Vit E: Skin and muscle health.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

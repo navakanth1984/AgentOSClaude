@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science FA2 Revision - Distillation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Gochi+Hand&family=Indie+Flower&family=Patrick+Hand&display=swap');
+
+        body {
+            background-color: #eceff1;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .paper {
+            background-color: #ffffff;
+            width: 800px;
+            min-height: 1100px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            border: 1px solid #ddd;
+            background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .header-date {
+            display: flex;
+            justify-content: space-between;
+            color: #c62828;
+            font-family: 'Gochi Hand', cursive;
+            font-size: 18px;
+            border-bottom: 2px solid #c62828;
+            margin-bottom: 30px;
+            padding-bottom: 5px;
+        }
+
+        .blue-ink {
+            color: #1565c0;
+            font-size: 24px;
+            line-height: 1.5;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-decoration: underline;
+        }
+
+        .diagram-container {
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+            width: 500px;
+            height: 400px;
+            border: 1px dashed #ccc;
+            background: #fafafa;
+        }
+
+        .labels {
+            position: absolute;
+            font-family: 'Indie Flower', cursive;
+            font-size: 18px;
+            color: #2e7d32;
+        }
+
+        /* Simplified Apparatus SVG */
+        .apparatus-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .label-line {
+            stroke: #2e7d32;
+            stroke-width: 1;
+            stroke-dasharray: 2,2;
+        }
+
+        .footer-note {
+            margin-top: 50px;
+            font-size: 16px;
+            color: #78909c;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="paper">
+        <div class="header-date">
+            <div>Tuesday 2/9/25 & Wednesday 25/9/25</div>
+            <div>FA-2 Revision</div>
+        </div>
+
+        <div class="blue-ink">
+            <div class="question">
+                Q. Draw a labelled diagram of the apparatus you would use to make distilled water in the laboratory.
+            </div>
+
+            <div class="diagram-container">
+                <svg class="apparatus-svg" viewBox="0 0 500 400">
+                    <!-- Distillation Flask -->
+                    <circle cx="150" cy="300" r="40" fill="none" stroke="#1565c0" stroke-width="2" />
+                    <rect x="140" y="220" width="20" height="50" fill="none" stroke="#1565c0" stroke-width="2" />
+                    
+                    <!-- Burner -->
+                    <rect x="130" y="350" width="40" height="20" fill="#eee" stroke="#555" stroke-width="1" />
+                    <path d="M140 350 Q150 320 160 350" fill="#ff9800" opacity="0.6" />
+
+                    <!-- Delivery Tube -->
+                    <path d="M150 220 L150 180 L350 180 L350 250" fill="none" stroke="#1565c0" stroke-width="2" />
+
+                    <!-- Condenser (simplified) -->
+                    <rect x="200" y="165" width="100" height="30" rx="10" fill="none" stroke="#1565c0" stroke-width="1" stroke-dasharray="2,2" />
+
+                    <!-- Receiving Flask -->
+                    <path d="M320 320 L380 320 L365 250 L335 250 Z" fill="none" stroke="#1565c0" stroke-width="2" />
+
+                    <!-- Labels & Lines -->
+                    <line x1="110" y1="300" x2="80" y2="300" class="label-line" />
+                    <text x="10" y="305" font-family="Indie Flower" font-size="16" fill="#2e7d32">Salt Solution</text>
+
+                    <line x1="150" y1="370" x2="150" y2="390" class="label-line" />
+                    <text x="130" y="395" font-family="Indie Flower" font-size="16" fill="#2e7d32">Burner</text>
+
+                    <line x1="250" y1="165" x2="250" y2="140" class="label-line" />
+                    <text x="220" y="135" font-family="Indie Flower" font-size="16" fill="#2e7d32">Condenser</text>
+
+                    <line x1="350" y1="320" x2="350" y2="350" class="label-line" />
+                    <text x="310" y="365" font-family="Indie Flower" font-size="16" fill="#2e7d32">Distilled Water</text>
+                </svg>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <strong>Labels Extracted:</strong>
+                <ul style="list-style-type: none; padding-left: 20px;">
+                    <li><span style="color: #e67e22;">→</span> Burner</li>
+                    <li><span style="color: #e67e22;">→</span> Salt Solution / Water Tape</li>
+                    <li><span style="color: #e67e22;">→</span> Condenser / Delivery Tube</li>
+                    <li><span style="color: #e67e22;">→</span> Distilled Water</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Organized from Science FA2 Revision Images (2 & 4).
+        </div>
+    </div>
+
+</body>
+</html>

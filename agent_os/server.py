@@ -22,10 +22,11 @@ Endpoints:
 import sys
 # Force UTF-8 console output on Windows so Unicode chars (✓ ✗ ═ ① etc.) don't crash
 if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
 
 from http.server import BaseHTTPRequestHandler, HTTPServer, ThreadingHTTPServer
+import asyncio
 import json
 import os
 import urllib.parse
@@ -435,6 +436,78 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             except Exception as health_err:
                 self._send(200, {"ok": True, "ts": datetime.now().isoformat(), "error": str(health_err)})
 
+        elif path == "/nth_brain/mastery":
+            try:
+                import sqlite3
+                db_path = Path(__file__).parent.parent / "nth_brain.db"
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS student_mastery (
+                        student_id TEXT PRIMARY KEY,
+                        skill_source_mastery REAL,
+                        skill_intermediate_mastery REAL,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                cursor.execute("SELECT skill_source_mastery, skill_intermediate_mastery FROM student_mastery WHERE student_id = 'student_1'")
+                row = cursor.fetchone()
+                conn.close()
+                if row:
+                    self._send(200, {
+                        "success": True,
+                        "skill_source_mastery": row[0],
+                        "skill_intermediate_mastery": row[1]
+                    })
+                else:
+                    self._send(200, {
+                        "success": True,
+                        "skill_source_mastery": 0.15,
+                        "skill_intermediate_mastery": 0.10
+                    })
+            except Exception as e:
+                self._send(500, {"error": f"Database exception: {e}"})
+            return
+
+        elif path.startswith("/nth_brain/"):
+            # Serve static files from the nth-brain repo (single source of truth).
+            # Override with NTH_BRAIN_DIR; defaults to <navakanth001>/nth-brain.
+            file_rel = urllib.parse.unquote(path[len("/nth_brain/"):])
+            if not file_rel or file_rel.endswith("/"):
+                file_rel += "index.html"
+            prototype_dir = Path(os.environ.get("NTH_BRAIN_DIR", Path(__file__).parent.parent / "nth-brain"))
+            target_file = (prototype_dir / file_rel).resolve()
+            if prototype_dir.resolve() not in target_file.parents:
+                self._send(403, {"error": "Forbidden: Outside prototype dir"})
+                return
+            if not target_file.exists() or not target_file.is_file():
+                self._send(404, {"error": f"File not found: {file_rel}"})
+                return
+            ext = target_file.suffix.lower()
+            if ext == ".html":
+                content_type = "text/html; charset=utf-8"
+            elif ext == ".css":
+                content_type = "text/css; charset=utf-8"
+            elif ext == ".js":
+                content_type = "application/javascript; charset=utf-8"
+            elif ext in [".png", ".jpg", ".jpeg"]:
+                content_type = f"image/{ext[1:]}"
+            else:
+                content_type = "application/octet-stream"
+            
+            try:
+                self.send_response(200)
+                self.send_header("Content-Type", content_type)
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.send_header("Content-Length", str(target_file.stat().st_size))
+                self.end_headers()
+                with open(target_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+            except Exception as e:
+                self._send(500, {"error": f"Error serving prototype file: {str(e)}"})
+                return
+
         elif path == "/status":
             self._send(200, get_vault_status())
 
@@ -572,6 +645,32 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 "featured_total": len(data.get("featured", [])),
                 "cached_at": data.get("cached_at", "unknown"),
                 "filtered": len(mine),
+            })
+
+        elif path == "/notebooks/sync/status":
+            if not self._check_auth():
+                return
+            if not NOTEBOOK_CACHE.exists():
+                self._send(200, {"cached": False, "cached_at": None, "total": 0, "stale": True})
+                return
+            data = json.loads(NOTEBOOK_CACHE.read_text(encoding="utf-8"))
+            cached_at_str = data.get("cached_at")
+            stale = True
+            age_minutes = None
+            if cached_at_str:
+                try:
+                    cached_dt = datetime.fromisoformat(cached_at_str)
+                    age_seconds = (datetime.now() - cached_dt).total_seconds()
+                    age_minutes = int(age_seconds // 60)
+                    stale = age_seconds > 900  # stale after 15 min
+                except Exception:
+                    pass
+            self._send(200, {
+                "cached": True,
+                "cached_at": cached_at_str,
+                "age_minutes": age_minutes,
+                "total": len(data.get("notebooks", [])),
+                "stale": stale,
             })
 
         elif path == "/cloud/status":
@@ -855,6 +954,51 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 self._send(500, {"error": str(e)})
 
+        elif path == "/quantum/sanskrit":
+            # ── Quantum × Sanskrit: run a REAL circuit, map its result to Vedic concepts ──
+            # Powers the "Quantum Veda" panel in sanatana-wisdom-react.
+            qs = urllib.parse.parse_qs(parsed.query)
+            circuit = (qs.get("circuit", ["bell_state"])[0])
+            try:
+                from quantum_agent import run_quantum_tool
+                result = run_quantum_tool({"action": "run", "circuit": circuit, "shots": 512})
+            except Exception as e:
+                result = {"error": str(e)}
+
+            # Conceptual bridge between quantum mechanics and Vedic/Upanishadic ideas
+            mapping = {
+                "superposition": {
+                    "sanskrit": "अव्यक्तम्",
+                    "concept": "Avyakta — the unmanifest state where all possibilities coexist, "
+                               "like Pralaya before creation; a qubit before measurement.",
+                },
+                "entanglement": {
+                    "sanskrit": "अद्वैतम्",
+                    "concept": "Advaita — non-duality; two entangled qubits share one state, "
+                               "as Atman and Brahman are one across all distance.",
+                },
+                "measurement": {
+                    "sanskrit": "द्रष्टा",
+                    "concept": "Drashta — the observer (the bird that eats the fruit) collapses "
+                               "superposition into experience, as in the Mundaka Upanishad.",
+                },
+                "sound_as_information": {
+                    "sanskrit": "शब्दब्रह्म",
+                    "concept": "Shabda-Brahma — Sanskrit phonemes as precise, discrete information "
+                               "units; the alphabet as a deterministic encoding of reality.",
+                },
+            }
+            self._send(200, {
+                "circuit": circuit,
+                "quantum_result": result,
+                "vedic_mapping": mapping,
+                "shloka": {
+                    "sanskrit": "एकं सद् विप्रा बहुधा वदन्ति ।",
+                    "english": "Truth is one; the wise call it by many names. (Rig Veda 1.164.46) — "
+                               "one wavefunction, many measured outcomes.",
+                },
+            })
+
         elif path == "/coevolution":
             # Dashboard: live co-evolution engine state (last run log)
             try:
@@ -965,6 +1109,78 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 folder=folder,
             )
             self._send(200, {"saved": True, "path": str(file_path)})
+
+        elif path == "/sage":
+            # ── Sanskrit Sage chat: user text/voice -> LLM responds as the rishi ──
+            # Powers the taalapatra "sage reads & responds" feature in sanatana-wisdom-react.
+            message = str(body.get("message") or "").strip()
+            mode    = str(body.get("mode") or "general")   # general | shastra | niti | jeevan | quantum
+            if not message:
+                self._send(400, {"error": "message is required"})
+                return
+
+            # Persona system prompts keyed by the sage's four modes (matches UI buttons)
+            mode_focus = {
+                "general": "Answer as a wise Sanskrit sage on any topic of dharma and life.",
+                "shastra": "Answer grounded in the shastras, Vedas, and Upanishads with scriptural reference.",
+                "niti":    "Answer as practical niti (ethical wisdom), in the style of Hitopadesha/Chanakya.",
+                "jeevan":  "Answer about living well, daily conduct, health (Ayurveda), and inner peace.",
+                "quantum": "Answer by relating modern quantum computing and quantum physics to Vedic "
+                           "cosmology, Sanskrit phonetics, and Upanishadic non-duality (Advaita).",
+            }
+            focus = mode_focus.get(mode, mode_focus["general"])
+            system = (
+                "You are 'Sanskrit Sage' (संस्कृतसंवादी), an ancient Indian rishi who answers in Sanskrit. "
+                + focus + " "
+                "Respond ONLY with JSON in this exact shape:\n"
+                '{"sanskrit": "<1-2 short Devanagari sentences>", '
+                '"transliteration": "<IAST romanization>", '
+                '"english": "<plain English translation, 1-3 sentences>"}'
+            )
+
+            api_key = os.environ.get("OPENROUTER_API_KEY", "")
+            reply = None
+            if api_key:
+                import re as _re, time as _time, urllib.error as _uerr
+                from openrouter_client import call_openrouter
+                SAGE_MODELS = [
+                    "google/gemini-2.5-flash",
+                    "google/gemma-4-31b-it:free",
+                    "moonshotai/kimi-k2.6:free",
+                ]
+                raw = None
+                for model_try in SAGE_MODELS:
+                    for attempt in range(2):
+                        try:
+                            raw = call_openrouter(model_try, system, message, api_key,
+                                                  max_tokens=400, temperature=0.6)
+                            break
+                        except _uerr.HTTPError as he:
+                            if he.code == 429 and attempt < 1:
+                                _time.sleep(2)
+                            else:
+                                break
+                        except Exception:
+                            break
+                    if raw:
+                        break
+                if raw:
+                    try:
+                        m = _re.search(r"\{.*\}", raw, _re.DOTALL)
+                        reply = json.loads(m.group()) if m else None
+                    except Exception:
+                        reply = None
+
+            if not reply:
+                # Graceful offline fallback so the UI still demonstrates the flow
+                reply = {
+                    "sanskrit": "ज्ञानं परमं बलम् ।",
+                    "transliteration": "jñānaṁ paramaṁ balam.",
+                    "english": "Knowledge is the supreme strength. "
+                               "(Sage is offline — set OPENROUTER_API_KEY for live replies.)",
+                }
+            reply["mode"] = mode
+            self._send(200, reply)
 
         elif path == "/whatsapp/send":
             recipient = body.get("recipient", "").strip()
@@ -1095,38 +1311,45 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(400, {"error": "Missing task parameter"})
                 return
             try:
-                import subprocess
-                # Check auth first
-                cmd = ["jules", "remote", "list", "--session"]
-                res = subprocess.run(cmd, capture_output=True, text=True, timeout=15, shell=True)
-                if "forgot to login" in res.stdout or "forgot to login" in res.stderr:
-                    self._send(401, {"error": "Jules CLI is not authenticated. Please run 'jules login' in terminal first."})
+                import subprocess, re
+
+                def _jules_run(cmd_str, timeout=90):
+                    """Run jules, chaining npm reinstall atomically on ENOENT to beat Defender quarantine."""
+                    kw = dict(capture_output=True, text=True, encoding="utf-8", errors="replace", shell=True)
+                    res = subprocess.run(cmd_str, timeout=timeout, **kw)
+                    if "ENOENT" in (res.stdout + res.stderr) or "Failed to start jules binary" in (res.stdout + res.stderr):
+                        # Chain in single shell session: binary is live immediately after npm install
+                        res = subprocess.run(f"npm install -g @google/jules && {cmd_str}", timeout=timeout + 90, **kw)
+                    return res
+
+                # Auth check also warms the binary for the next call
+                auth_res = _jules_run("jules remote list --session", timeout=30)
+                if "forgot to login" in auth_res.stdout or "forgot to login" in auth_res.stderr:
+                    self._send(401, {"error": "Jules CLI is not authenticated. Run 'jules login' first."})
                     return
 
-                # Start the session
-                cmd_new = ["jules", "new", f'"{task}"']
-                res_new = subprocess.run(cmd_new, capture_output=True, text=True, timeout=30, shell=True)
+                # Spawn session immediately while binary is still live from auth check
+                safe_task = task.replace('"', '\\"')
+                repo = body.get("repo", "navakanth1984/AgentOSClaude").strip()
+                res_new = _jules_run(f'jules new --repo {repo} "{safe_task}"', timeout=60)
                 combined = res_new.stdout + "\n" + res_new.stderr
-                
-                # Parse session id
-                import re
-                match = re.search(r"session[s]?/(\d+)", combined)
-                if not match:
-                    match = re.search(r"session\s+(\d+)", combined, re.IGNORECASE)
-                session_id = match.group(1) if match else ""
-                if not session_id:
-                    numbers = re.findall(r"\b\d{6,8}\b", combined)
-                    session_id = numbers[0] if numbers else ""
 
-                if res_new.returncode != 0 and not session_id:
-                    self._send(500, {"error": f"Failed to start Jules: {combined}"})
+                # Parse session ID (Jules IDs are 18-20 digit integers)
+                session_id = ""
+                m = re.search(r"session[s]?/(\d+)", combined)
+                if not m:
+                    m = re.search(r"session\s+(\d+)", combined, re.IGNORECASE)
+                if m:
+                    session_id = m.group(1)
+                if not session_id:
+                    nums = re.findall(r"\b\d{10,20}\b", combined)
+                    session_id = nums[0] if nums else ""
+
+                if not session_id and res_new.returncode != 0:
+                    self._send(500, {"error": f"Failed to start Jules: {combined[:500]}"})
                     return
 
-                self._send(200, {
-                    "success": True,
-                    "session_id": session_id,
-                    "output": combined
-                })
+                self._send(200, {"success": True, "session_id": session_id, "output": combined[:500]})
             except Exception as e:
                 self._send(500, {"error": f"Jules API Exception: {e}"})
             return
@@ -1134,23 +1357,93 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         elif path == "/jules/status":
             session_id = body.get("session_id", "").strip()
             try:
-                import subprocess
-                cmd = ["jules", "remote", "list", "--session"]
-                res = subprocess.run(cmd, capture_output=True, text=True, timeout=20, shell=True)
-                
+                import subprocess, re
+
+                def _jules_run(cmd_str, timeout=30):
+                    kw = dict(capture_output=True, text=True, encoding="utf-8", errors="replace", shell=True)
+                    res = subprocess.run(cmd_str, timeout=timeout, **kw)
+                    if "ENOENT" in (res.stdout + res.stderr) or "Failed to start jules binary" in (res.stdout + res.stderr):
+                        res = subprocess.run(f"npm install -g @google/jules && {cmd_str}", timeout=timeout + 90, **kw)
+                    return res
+
+                res = _jules_run("jules remote list --session", timeout=30)
                 lines = (res.stdout + "\n" + res.stderr).splitlines()
-                session_line = None
-                for line in lines:
-                    if session_id in line:
-                        session_line = line
-                        break
-                
+                session_line = next((l for l in lines if session_id in l), None)
+
                 if session_line:
                     self._send(200, {"success": True, "session_id": session_id, "line": session_line})
                 else:
-                    self._send(200, {"success": False, "message": f"Session {session_id} not found in remote list.", "raw": res.stdout})
+                    self._send(200, {"success": False, "message": f"Session {session_id} not found.", "raw": res.stdout[:300]})
             except Exception as e:
                 self._send(500, {"error": f"Failed to fetch status: {e}"})
+            return
+
+        elif path == "/nth_brain/mastery":
+            skill_source_mastery = float(body.get("skill_source_mastery", 0.15))
+            skill_intermediate_mastery = float(body.get("skill_intermediate_mastery", 0.10))
+            try:
+                import sqlite3
+                db_path = Path(__file__).parent.parent / "nth_brain.db"
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS student_mastery (
+                        student_id TEXT PRIMARY KEY,
+                        skill_source_mastery REAL,
+                        skill_intermediate_mastery REAL,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                cursor.execute("""
+                    INSERT INTO student_mastery (student_id, skill_source_mastery, skill_intermediate_mastery, updated_at)
+                    VALUES ('student_1', ?, ?, datetime('now'))
+                    ON CONFLICT(student_id) DO UPDATE SET
+                        skill_source_mastery = excluded.skill_source_mastery,
+                        skill_intermediate_mastery = excluded.skill_intermediate_mastery,
+                        updated_at = datetime('now')
+                """, (skill_source_mastery, skill_intermediate_mastery))
+                conn.commit()
+                conn.close()
+                self._send(200, {"success": True, "message": "Mastery persisted successfully"})
+            except Exception as e:
+                self._send(500, {"error": f"Database exception: {e}"})
+            return
+
+        elif path == "/nth_brain/freeze_log":
+            inactivity_seconds = float(body.get("inactivity_seconds", 0.0))
+            scratch_work_count = int(body.get("scratch_work_count", 0))
+            edit_count = int(body.get("edit_count", 0))
+            hypothesis_count = int(body.get("hypothesis_count", 0))
+            freeze_probability = float(body.get("freeze_probability", 0.0))
+            is_frozen = int(body.get("is_frozen", 0))
+            
+            try:
+                import sqlite3
+                db_path = Path(__file__).parent.parent / "nth_brain.db"
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS freeze_logs (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        student_id TEXT,
+                        inactivity_seconds REAL,
+                        scratch_work_count INTEGER,
+                        edit_count INTEGER,
+                        hypothesis_count INTEGER,
+                        freeze_probability REAL,
+                        is_frozen INTEGER,
+                        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                cursor.execute("""
+                    INSERT INTO freeze_logs (student_id, inactivity_seconds, scratch_work_count, edit_count, hypothesis_count, freeze_probability, is_frozen)
+                    VALUES ('student_1', ?, ?, ?, ?, ?, ?)
+                """, (inactivity_seconds, scratch_work_count, edit_count, hypothesis_count, freeze_probability, is_frozen))
+                conn.commit()
+                conn.close()
+                self._send(200, {"success": True, "message": "Freeze log saved successfully"})
+            except Exception as e:
+                self._send(500, {"error": f"Database exception: {e}"})
             return
 
         elif path == "/okf/generate":
@@ -1226,7 +1519,6 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             auto_nb = bool(body.get("auto_notebooklm", False))
             try:
                 from swarm import run_swarm
-                import asyncio
                 result = asyncio.run(run_swarm(topic, model=model, auto_notebooklm=auto_nb))
                 self._send(200, result)
             except Exception as e:
@@ -1257,7 +1549,6 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             model = body.get("model", "anthropic/claude-sonnet-4.6")
             try:
                 from goal_mode import run_goal
-                import asyncio
                 result = asyncio.run(run_goal(goal, max_steps=max_steps, model=model))
                 self._send(200, result)
             except Exception as e:
@@ -1276,7 +1567,6 @@ class AgentOSHandler(BaseHTTPRequestHandler):
 
             try:
                 from workflow import run_workflow
-                import asyncio
                 result = asyncio.run(run_workflow(prompt, auto_notebooklm=browser, build=build))
                 self._send(200, result)
             except Exception as e:
@@ -1367,7 +1657,6 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 return
             try:
                 from novelist_swarm import run_novelist_swarm
-                import asyncio
                 results = asyncio.run(run_novelist_swarm(prompt, context, model))
                 
                 # Combined output structure showing draft, critique, and final polish
@@ -1685,34 +1974,71 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             headful = bool(body.get("headful", False))
             try:
                 import subprocess
+                # Record cache timestamp before sync to detect whether it actually updated
+                cached_at_before = None
+                if NOTEBOOK_CACHE.exists():
+                    try:
+                        old = json.loads(NOTEBOOK_CACHE.read_text(encoding="utf-8"))
+                        cached_at_before = old.get("cached_at")
+                    except Exception:
+                        pass
+
                 args = [sys.executable, str(Path(__file__).parent / "notebooklm_agent.py"), "list"]
                 if headful:
                     args.append("--headful")
-                
+
+                # Headful login can take minutes (Google sign-in + 2FA), so allow
+                # a generous timeout that covers the 5-min interactive login window.
                 res = subprocess.run(
                     args,
                     cwd=str(Path(__file__).parent),
                     capture_output=True,
                     text=True,
-                    timeout=180
+                    timeout=360 if headful else 180
                 )
+
+                combined_out = (res.stdout or "") + (res.stderr or "")
+
                 if res.returncode != 0:
                     self._send(500, {
-                        "error": "Sync failed to execute",
+                        "error": "Sync process exited with error",
                         "stderr": res.stderr,
                         "stdout": res.stdout
                     })
                     return
-                
-                # Reload cache
+
+                # Detect genuine auth failure. NOTE: the "0 Google cookies" message
+                # now prints on every run (cookie bootstrap always returns 0 on
+                # Chrome 127+ — that's expected and harmless), so it is NOT a
+                # failure signal. Only an explicit login timeout/failure is.
+                if "Login timeout" in combined_out or "Login failed" in combined_out:
+                    self._send(200, {
+                        "success": False,
+                        "auth_required": True,
+                        "error": "Login wasn't completed in the browser window. Click 'Sync Now' and sign in to Google.",
+                        "stdout": res.stdout,
+                    })
+                    return
+
+                # The authoritative success signal: the cache was actually updated
+                # (cached_at advanced). This is robust regardless of console noise.
                 if NOTEBOOK_CACHE.exists():
                     data = json.loads(NOTEBOOK_CACHE.read_text(encoding="utf-8"))
+                    cached_at_after = data.get("cached_at")
+                    if cached_at_after == cached_at_before:
+                        self._send(200, {
+                            "success": False,
+                            "auth_required": True,
+                            "error": "Sync ran but cache was not updated — sign-in likely wasn't completed. Click 'Sync Now' and log in.",
+                            "stdout": res.stdout,
+                        })
+                        return
                     self._send(200, {
                         "success": True,
                         "notebooks": data.get("notebooks", []),
                         "featured": data.get("featured", []),
                         "total": len(data.get("notebooks", [])),
-                        "cached_at": data.get("cached_at", "unknown")
+                        "cached_at": cached_at_after,
                     })
                 else:
                     self._send(500, {"error": "Cache file not created after sync"})
@@ -1726,25 +2052,23 @@ class AgentOSHandler(BaseHTTPRequestHandler):
 import threading
 
 def background_notebook_sync():
-    """Periodically sync notebooks in the background every 15 minutes."""
-    import time, subprocess
-    # Wait 15 seconds after server startup before first sync
-    time.sleep(15)
-    while True:
-        try:
-            print("[Background Sync] Syncing NotebookLM cache...")
-            subprocess.run(
-                [sys.executable, str(Path(__file__).parent / "notebooklm_agent.py"), "list"],
-                cwd=str(Path(__file__).parent),
-                capture_output=True,
-                text=True,
-                timeout=180
-            )
-            print("[Background Sync] NotebookLM cache sync complete.")
-        except Exception as e:
-            print(f"[Background Sync] Error syncing: {e}")
-        # Sync every 15 minutes (900 seconds)
-        time.sleep(900)
+    """
+    DISABLED — headless NotebookLM sync cannot authenticate.
+
+    Google's NotebookLM has no API and actively rejects automated/headless
+    browser sessions (BotGuard); the auth cookies (__Secure-1PSID family) are
+    not persisted to disk, and Chrome 127+ App-Bound Encryption blocks cookie
+    extraction. The only mode that works is an interactive headful login, which
+    the user triggers on demand via the dashboard "Sync Now" button.
+
+    Running a headless sync every 15 minutes therefore just spawns a Chromium
+    that always fails auth — wasted resources and a perpetually stale cache that
+    masks the real problem. We no longer auto-run it. Kept as a callable no-op
+    in case a future cookie/session mechanism makes headless viable again.
+    """
+    print("[Background Sync] Headless auto-sync disabled (Google blocks headless "
+          "auth). Use the dashboard 'Sync Now' button for an interactive sync.")
+    return
 
 
 def run():

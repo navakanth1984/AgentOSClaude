@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Science FA2 Revision - Fidelity Replication</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Indie+Flower&family=Patrick+Hand&family=Shadows+Into+Light&display=swap');
+
+        :root {
+            --blue-ink: #1a237e;
+            --red-ink: #b71c1c;
+            --pencil: #455a64;
+            --margin-color: #ffcdd2;
+            --line-color: #e3f2fd;
+        }
+
+        body {
+            background-color: #546e7a;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .notebook {
+            background-color: #fffef7;
+            width: 900px;
+            min-height: 1200px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            position: relative;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+        }
+
+        /* The Lined Paper Background */
+        .lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* The Vertical Margin Line */
+        .margin-line {
+            position: absolute;
+            left: 100px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--margin-color);
+            z-index: 2;
+        }
+
+        /* Top Header Section */
+        .header {
+            height: 120px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 60px;
+            z-index: 3;
+            font-family: 'Gochi Hand', cursive;
+            color: var(--red-ink);
+        }
+
+        .hw-stamp {
+            border: 2px solid var(--red-ink);
+            padding: 5px 20px;
+            margin-right: 40px;
+            border-radius: 8px;
+            transform: rotate(-5deg);
+            font-size: 24px;
+        }
+
+        /* Content Area */
+        .main-body {
+            display: flex;
+            flex: 1;
+            z-index: 3;
+            position: relative;
+        }
+
+        /* Sidebar - Strictly in the margin */
+        .sidebar {
+            width: 100px;
+            padding-top: 20px;
+            text-align: center;
+            font-family: 'Gochi Hand', cursive;
+            font-size: 14px;
+            color: var(--pencil);
+            line-height: 1.4;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px 40px;
+            color: var(--blue-ink);
+        }
+
+        .title-underlined {
+            font-size: 28px;
+            text-decoration: underline;
+            margin-bottom: 30px;
+            color: var(--red-ink);
+            font-family: 'Gochi Hand', cursive;
+        }
+
+        .question-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+
+        /* Diagram Section - High Detail */
+        .diagram-container {
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.5);
+            border: 1px dashed #ccc;
+            position: relative;
+        }
+
+        .apparatus-svg {
+            width: 100%;
+            height: 400px;
+        }
+
+        .label-text {
+            font-family: 'Indie Flower', cursive;
+            font-size: 18px;
+            fill: #2e7d32;
+            font-weight: bold;
+        }
+
+        .leader {
+            stroke: #2e7d32;
+            stroke-width: 1.5;
+            stroke-dasharray: 3,3;
+            fill: none;
+        }
+
+        .qa-section {
+            margin-top: 60px;
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+
+        .vitamin-list {
+            column-count: 2;
+            font-family: 'Indie Flower', cursive;
+            font-size: 20px;
+            color: #37474f;
+            list-style-position: inside;
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            color: #aaa;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notebook">
+        <div class="lines"></div>
+        <div class="margin-line"></div>
+
+        <div class="header">
+            <div class="hw-stamp">H/w</div>
+            <div style="font-size: 22px;">Date: 20 / 1 / 26</div>
+        </div>
+
+        <div class="main-body">
+            <!-- Sidebar: Dates and Page Ref -->
+            <div class="sidebar">
+                Tues<br>2/9/25<br><br>
+                Wed<br>25/9/25<br><br>
+                <span style="border: 1px solid #ccc; padding: 2px;">Page: 26</span>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content">
+                <div class="title-underlined">FA-2 Revision</div>
+
+                <div class="question-text">
+                    5g. Draw a labelled diagram of the apparatus you would use to make distilled water in the laboratory.
+                </div>
+
+                <div class="diagram-container">
+                    <svg class="apparatus-svg" viewBox="0 0 700 400">
+                        <!-- Retort Stand Left -->
+                        <rect x="50" y="350" width="100" height="8" fill="#333" />
+                        <rect x="95" y="50" width="6" height="300" fill="#333" />
+                        <path d="M95 150 L140 150" stroke="#333" stroke-width="4" fill="none" /> <!-- Clamp -->
+
+                        <!-- Distillation Flask -->
+                        <circle cx="150" cy="250" r="45" fill="rgba(173, 216, 230, 0.2)" stroke="#1a237e" stroke-width="2" />
+                        <rect x="140" y="150" width="20" height="100" fill="rgba(173, 216, 230, 0.2)" stroke="#1a237e" stroke-width="2" />
+                        
+                        <!-- Thermometer -->
+                        <line x1="150" y1="130" x2="150" y2="230" stroke="#d32f2f" stroke-width="2" />
+                        <rect x="148" y="120" width="4" height="10" fill="#d32f2f" />
+
+                        <!-- Burner Setup -->
+                        <path d="M120 350 L135 295 L165 295 L180 350" fill="none" stroke="#222" stroke-width="2" /> <!-- Tripod -->
+                        <rect x="135" y="320" width="30" height="30" fill="#666" />
+                        <path d="M145 320 Q150 290 155 320" fill="#ff9100" opacity="0.8" />
+
+                        <!-- Liebig Condenser -->
+                        <path d="M165 180 L250 180 L500 300" fill="none" stroke="#1a237e" stroke-width="3" /> <!-- Inner Tube -->
+                        <rect x="260" y="160" width="200" height="50" rx="25" transform="rotate(25 260 160)" fill="rgba(200, 230, 201, 0.3)" stroke="#2e7d32" stroke-width="1.5" />
+                        
+                        <!-- Receiver Setup -->
+                        <rect x="500" y="350" width="100" height="8" fill="#333" />
+                        <rect x="545" y="200" width="6" height="150" fill="#333" />
+                        <path d="M480 300 L520 300 L540 380 L460 380 Z" fill="rgba(173, 216, 230, 0.4)" stroke="#1a237e" stroke-width="2" />
+
+                        <!-- Labels & Lines -->
+                        <!-- Salt Solution -->
+                        <path d="M100 250 L30 250" class="leader" />
+                        <text x="5" y="270" class="label-text">Salt Solution</text>
+
+                        <!-- Thermometer -->
+                        <path d="M150 125 L200 80" class="leader" />
+                        <text x="210" y="75" class="label-text">Thermometer</text>
+
+                        <!-- Condenser -->
+                        <path d="M350 180 L400 130" class="leader" />
+                        <text x="410" y="125" class="label-text">Condenser</text>
+
+                        <!-- Burner -->
+                        <path d="M150 330 L220 370" class="leader" />
+                        <text x="230" y="385" class="label-text">Burner</text>
+
+                        <!-- Distilled -->
+                        <path d="M500 340 L580 340" class="leader" />
+                        <text x="590" y="345" class="label-text">Distilled Water</text>
+                    </svg>
+                </div>
+
+                <div class="qa-section">
+                    <p><strong>4Q. What is weaving?</strong></p>
+                    <p style="margin-left: 30px; font-family: 'Indie Flower'; font-size: 20px;">
+                        Ans: Weaving is the process of arranging two sets of yarns together to make a fabric. It is done on looms.
+                    </p>
+
+                    <p style="margin-top: 40px;"><strong>II. Long Questions</strong></p>
+                    <p><strong>1G. Name five functions of vitamins.</strong></p>
+                    <ul class="vitamin-list">
+                        <li>Vitamin A: Eyes & Skin</li>
+                        <li>Vitamin B: Energy</li>
+                        <li>Vitamin C: Gums & Immunity</li>
+                        <li>Vitamin D: Bones</li>
+                        <li>Vitamin E: Muscles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-num">Page No: 26</div>
+    </div>
+
+</body>
+</html>
