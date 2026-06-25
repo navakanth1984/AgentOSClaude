@@ -14,5 +14,7 @@ search-path = [
     ".",
     "agent_os",
     "daava_production/scripts",
+    "mvct-v1",
+    "transfer-detector-v0",
 ]
 python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"

@@ -1,0 +1,9 @@
+{
+  "topic": "houseplant",
+  "turn_first_correct_reasoning": 2,
+  "learner_turns": [
+    "My plant looks sick, just tell me what's wrong.",
+    "Maybe I should check watering and lighting as separate things and test each one.",
+    "So if I let the soil dry and it recovers, it was watering, not light."
+  ]
+}
