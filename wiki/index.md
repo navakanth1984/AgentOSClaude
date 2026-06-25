@@ -13,6 +13,7 @@
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
 - [Microsoft Fabric (DP-700)](fabric-dp700.md) — Fabric data-engineering study stack.
+- [KB Sync Test](sync-test.md) — Canary verification page for Claude & Antigravity.
 
 ## Academic
 - [Science FA2 Revision](science-fa2-revision.md) — Bilingual Science FA2 revision material.
