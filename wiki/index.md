@@ -1,5 +1,5 @@
 # Knowledge Map Index
-> Welcome to your self-improving knowledge base index. This is the front door of your personal wiki.
+> Front door of the self-improving knowledge base. One synthesized page per topic; sources live in `sources/`. See [CLAUDE.md](CLAUDE.md) for how this folder operates.
 
 ## Creative Portfolio
 - [Love Lasts for Seven Seconds](love-lasts-seven-seconds.md) — Romantic novel and screenplay project.
@@ -7,8 +7,16 @@
 - [KAALIKA](kaalika.md) — Screenplay and media prompting pipeline.
 
 ## Technical & AI Engineering
-- [Microsoft Fabric (DP-700)](fabric-dp700.md) — Microsoft Fabric data engineering study guides.
-- [Agentic Loops Architecture](agentic-loops-architecture.md) — Agent OS pipelines, coding standards, and memory loops.
+- [Agentic Loops Architecture](agentic-loops-architecture.md) — Umbrella: self-updating agents, memory loops, RAG.
+- [Nth Dimension Academy](nth-dimension-academy.md) — Conversational AI teaching assistant on Google Cloud RAG.
+- [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
+- [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
+- [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
+- [Microsoft Fabric (DP-700)](fabric-dp700.md) — Fabric data-engineering study stack.
+
+## Academic
+- [Science FA2 Revision](science-fa2-revision.md) — Bilingual Science FA2 revision material.
 
 ## Administration
-- [Log](log.md) — Dynamic activity history log.
+- [Operating Brief](CLAUDE.md) — How ingest / answer / tidy and the nightly loop work.
+- [Log](log.md) — Activity history.
