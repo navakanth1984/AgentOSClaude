@@ -18,4 +18,4 @@ search-path = [
     "transfer-detector-v0",
     "tdh-labels-seed",
 ]
-python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
