@@ -79,6 +79,60 @@ Detailed artifacts: `corpus_output_kokoro/metrics/performance_profile.json`,
 
 ---
 
+## Baseline 2 — V1.1 Medium throughput (CPU, workers=2)
+
+**Benchmark Tier:** Medium — first meaningful concurrency/throughput reference.
+
+Deterministic input via `BenchmarkParser` (no LLM) over a generated corpus, so the
+entire input pipeline is reproducible (corpus + transcript SHA stable across runs).
+
+### Setup
+
+| Field | Value |
+|---|---|
+| Date | 2026-06-27 |
+| Engine / Provider | Kokoro ONNX v0.19 / `CPUExecutionProvider` |
+| Parser | `BenchmarkParser` (deterministic, offline) |
+| Corpus | `corpus/medium/chapter.txt` (generator v1.0, seed 20260627, 100 paragraphs) |
+| Chunks | 100 |
+| Workers | 2 |
+
+### Synthesis metrics
+
+| Metric | Value |
+|---|---|
+| total_audio_sec | 1188.8 |
+| synth wall_time_sec | 522.3 |
+| **stage RTF (2 workers)** | **0.439** |
+| average_chunk_rtf (single-thread) | 0.892 |
+| steady_state_rtf | 0.893 |
+| cold_start_warmup_ms | 3209 |
+| first_chunk_latency_ms | 10947 |
+| peak_rss_mb | 1338 |
+| peak_cpu_percent | 823 (cross-core sum) |
+| load balance (max/min, stddev) | 1.04, 1.0 |
+
+### Interpretation
+
+- **2 workers ≈ 2× throughput**: per-chunk single-thread RTF 0.892 → stage RTF
+  0.439 with 2 workers (≈2.03× efficiency). Near-linear at this width.
+- **Even load balance** (max/min 1.04) confirms the ThreadPool distributes work
+  fairly; no straggler at width 2.
+- **First-chunk latency (10.9 s) ≫ warmup (3.2 s) ≫ steady per-chunk**: warmup uses
+  a 1-word input, so the first *full-length* chunk triggers ONNX shape
+  specialization. This is the cold-start tax the instrumentation isolates — it must
+  not be averaged into steady-state RTF.
+- This is the reference for the `1→2→4→8` worker sweep (separate study).
+
+### Reproduce
+
+```bash
+python tools/generate_benchmark_corpus.py --tier medium
+python tools/run_full_benchmark.py --tier medium --workers 2 --engine kokoro
+```
+
+---
+
 ## Benchmark Tiers (standard)
 
 | Tier | Size | Purpose |

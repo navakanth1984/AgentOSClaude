@@ -1,0 +1,10 @@
+{
+  "generator_version": "1.0",
+  "seed": 20260627,
+  "tier": "large",
+  "paragraphs": 1000,
+  "target_chunks": 1000,
+  "sentence_distribution": "uniform(2, 4)",
+  "sha256": "2d5781e177c65ee65c0fcf15635949e72a157aa47e8d0b6c1fa8e80b270bb806",
+  "corpus_file": "chapter.txt"
+}
