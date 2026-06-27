@@ -133,6 +133,56 @@ python tools/run_full_benchmark.py --tier medium --workers 2 --engine kokoro
 
 ---
 
+## Baseline 3 — Worker Scaling Study (CPU, medium, 12 logical cores)
+
+Generated artifact — regenerate with:
+```bash
+python tools/aggregate_sweep.py --tier medium --engine kokoro --workers 1,2,4,8
+```
+Source of truth: `benchmark_results/scaling_medium_kokoro.{json,csv}` and the
+per-run `corpus_output_bench/medium_w<N>_kokoro/metrics/performance_profile.json`.
+
+| workers | stage RTF | speedup | efficiency | per-chunk RTF | first-chunk ms | peak RSS MB | peak CPU % | load max/min |
+|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| 1 | 0.569  | 1.00x | 1.00 | 0.567 | 7450  | 880  | 706  | 1.00 |
+| 2 | 0.439  | 1.30x | 0.65 | 0.892 | 10947 | 1338 | 823  | 1.04 |
+| 4 | 0.433  | 1.31x | 0.33 | 1.757 | 23279 | 1735 | 1059 | 1.08 |
+| 8 | 0.304  | 1.87x | 0.23 | 2.407 | 27957 | 2731 | 1380 | 1.17 |
+
+### Interpretation
+
+- **Throughput scales, but badly.** 8 workers yields only **1.87× the throughput of
+  1 worker (23% parallel efficiency)**. Adding workers helps far less than naive
+  per-chunk numbers imply.
+- **The plateau is real.** w=2 → w=4 is essentially flat (RTF 0.439 → 0.433); the
+  gain to w=8 (0.304) comes only once concurrency finally saturates all 12 cores
+  (peak CPU 706% → 1380%). No *inversion* within range — the earlier "regress at 8"
+  prediction assumed 8 cores; this box has 12, so the saturation point is higher.
+- **Root cause = ONNX intra-op parallelism.** Per-chunk RTF balloons 0.567 → 2.407
+  as workers rise: each chunk gets slower because the ONNX runtime is *already*
+  multi-threading every synthesis, so inter-op workers fight intra-op threads for
+  the same cores. Aggregate throughput still rises only because more chunks overlap.
+- **Cost of throughput is steep.** w=8 buys 1.87× throughput at **3.1× the memory**
+  (880 → 2731 MB) and 4× the first-chunk latency (7.5 s → 28 s).
+
+### Recommended workers — caveat on the rule
+
+The "smallest within 95% of peak throughput" rule returns **8** (peak is at 8). But
+that rule is throughput-only and ignores efficiency and memory. For a batch
+audiobook job where wall-time dominates, **8** is defensible. For latency- or
+memory-constrained contexts, **2** is the better default (1.30× at 0.65 efficiency,
+1.3 GB). This argues the recommendation rule should gain an efficiency/RSS guardrail
+before `recommended_workers` is baked into `EngineCapabilities`.
+
+### Next: the real lever (Phase 0.5)
+
+This curve measures the *uncontrolled* inter×intra thread grid. The actual
+optimization is the **ORT intra-op × workers matrix** (e.g. workers=4 × intra=2 vs
+workers=8 × intra=8 on 12 cores) — constraining intra so workers stop oversubscribing.
+That requires the `SessionOptions` knob and is the next experiment.
+
+---
+
 ## Benchmark Tiers (standard)
 
 | Tier | Size | Purpose |

@@ -1,0 +1,67 @@
+{
+  "tier": "medium",
+  "engine": "kokoro",
+  "logical_cpus": 12,
+  "recommended_workers": 8,
+  "recommendation_rule": "smallest workers within 95% of peak throughput",
+  "best_throughput_workers": 8,
+  "best_stage_rtf": 0.3043,
+  "rows": [
+    {
+      "workers": 1,
+      "ort_intra_threads": null,
+      "logical_cpus": 12,
+      "stage_rtf": 0.569,
+      "speedup": 1.0,
+      "efficiency": 1.0,
+      "oversubscription_ratio": null,
+      "avg_chunk_rtf": 0.5674,
+      "first_chunk_ms": 7450.3,
+      "peak_rss_mb": 879.7,
+      "peak_cpu_percent": 705.6,
+      "load_max_min": 1.0
+    },
+    {
+      "workers": 2,
+      "ort_intra_threads": null,
+      "logical_cpus": 12,
+      "stage_rtf": 0.4394,
+      "speedup": 1.295,
+      "efficiency": 0.647,
+      "oversubscription_ratio": null,
+      "avg_chunk_rtf": 0.8915,
+      "first_chunk_ms": 10947.0,
+      "peak_rss_mb": 1337.6,
+      "peak_cpu_percent": 823.3,
+      "load_max_min": 1.04
+    },
+    {
+      "workers": 4,
+      "ort_intra_threads": null,
+      "logical_cpus": 12,
+      "stage_rtf": 0.4333,
+      "speedup": 1.313,
+      "efficiency": 0.328,
+      "oversubscription_ratio": null,
+      "avg_chunk_rtf": 1.7573,
+      "first_chunk_ms": 23278.5,
+      "peak_rss_mb": 1735.2,
+      "peak_cpu_percent": 1058.5,
+      "load_max_min": 1.08
+    },
+    {
+      "workers": 8,
+      "ort_intra_threads": null,
+      "logical_cpus": 12,
+      "stage_rtf": 0.3043,
+      "speedup": 1.87,
+      "efficiency": 0.234,
+      "oversubscription_ratio": null,
+      "avg_chunk_rtf": 2.4071,
+      "first_chunk_ms": 27957.2,
+      "peak_rss_mb": 2731.0,
+      "peak_cpu_percent": 1379.7,
+      "load_max_min": 1.17
+    }
+  ]
+}
