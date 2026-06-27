@@ -9,6 +9,7 @@ class PipelineEvent:
 
     def to_json(self) -> Dict[str, Any]:
         return {
+            "event_version": "1.0",
             "event_type": self.event_type,
             "run_id": self.run_id,
             "timestamp": self.timestamp,

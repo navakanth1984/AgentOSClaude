@@ -84,6 +84,13 @@ class IncrementalExecutor:
             raise RuntimeError("IncrementalExecutor requires synthesize, trim, and append stages in DAG.")
 
         for entry in full_plan:
+            # Cooperative cancellation check
+            from agent_os.speech.schema.jobs import SpeechJobStore, JobState
+            current_job = SpeechJobStore.load(run_id)
+            if current_job and current_job.state == JobState.CANCELLED:
+                print(f"[IncrementalExecutor] Cooperative cancellation requested. Halting loop.")
+                break
+
             chunk_id = entry.chunk_id
             chapter_id = entry.chapter_id
             

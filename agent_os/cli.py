@@ -91,56 +91,17 @@ def run_synthesis_pipeline(text_path: str, engine_name: str, voice_name: str, st
     if not text_file.is_file():
         console.print(f"[bold red]Error: File {text_path} not found.[/bold red]")
         return None
-        
-    with open(text_file, "r", encoding="utf-8") as f:
-        text = f.read()
 
-    job_id = str(uuid.uuid4())
-    output_dir = os.path.abspath(f"output_{job_id}")
-    os.makedirs(output_dir, exist_ok=True)
-    progress = None
-    
-    # Initialize Job
-    job = SpeechJob(
-        job_id=job_id,
-        request_payload={
-            "text_path": text_path,
-            "engine": engine_name,
-            "voice": voice_name
-        },
-        output_directory=output_dir,
-        state=JobState.QUEUED
-    )
-    SpeechJobStore.save(job)
-    
-    # Load Engine
-    try:
-        engine = EngineRegistry.get_engine({"engine_name": engine_name})
-        engine.initialize()
-        engine.validate_model()
-        engine.warmup("minimal")
-        caps = engine.get_capabilities()
-    except Exception as e:
-        console.print(f"[bold red]Failed to load engine {engine_name}: {e}[/bold red]")
-        job.transition_to(JobState.FAILED)
-        SpeechJobStore.save(job)
-        return None
+    # Use SpeechService to create job
+    from agent_os.speech.service import SpeechService
+    job = SpeechService.create_job({
+        "text_path": text_path,
+        "engine": engine_name,
+        "voice": voice_name
+    })
 
-    # Setup EventBus
     bus = EventBus()
-    
-    # Subscribe job tracking
-    def job_event_listener(event):
-        job.record_event(event)
-        if event.event_type == "pipeline_started":
-            job.transition_to(JobState.PLANNING)
-        elif event.event_type == "chunk_started" and job.state == JobState.PLANNING:
-            job.transition_to(JobState.SYNTHESIZING)
-        elif event.event_type == "pipeline_completed":
-            job.transition_to(JobState.COMPLETED)
-        SpeechJobStore.save(job)
-
-    bus.subscribe(job_event_listener)
+    progress = None
 
     # Render Progress
     if stream_mode:
@@ -174,77 +135,30 @@ def run_synthesis_pipeline(text_path: str, engine_name: str, voice_name: str, st
             console.print(f"[Event] {event.event_type} - {event.to_json()}")
         bus.subscribe(simple_listener)
 
-    # Setup context and DAG
-    config = {
-        "input_text": text,
-        "chapter_id": "0",
-        "engine_capabilities": caps,
-        "tts_engine": engine,
-        "max_workers": 2
-    }
-    
-    ctx = StageContext(
-        project_dir=output_dir,
-        cache_dir=os.path.join(output_dir, "cache"),
-        config=config,
-        artifacts={},
-        metrics={},
-        event_bus=bus,
-        run_id=job_id
-    )
-
-    dag = DAG()
-    dag.add_node("normalize", NormalizeStage())
-    dag.add_node("parse", ParseStage(), depends_on=["normalize"])
-    dag.add_node("segment", SegmentStage(), depends_on=["parse"])
-    dag.add_node("context", ContextStage(), depends_on=["segment"])
-    dag.add_node("route", RouteStage(), depends_on=["context", "parse"])
-    dag.add_node("synthesize", SynthesizeStage(), depends_on=["route"])
-    dag.add_node("trim", TrimStage(), depends_on=["synthesize"])
-    dag.add_node("append", AppendStage(), depends_on=["trim"])
-    
-    executor = IncrementalExecutor(dag, ctx)
-    
     try:
-        executor.run()
+        SpeechService.run_job(job.job_id, background=False, custom_bus=bus)
     except KeyboardInterrupt:
         if stream_mode and progress is not None:
             progress.stop()
         console.print("\n[bold red]Synthesis cancelled by user.[/bold red]")
-        job.transition_to(JobState.CANCELLED)
-        SpeechJobStore.save(job)
-        return job_id
+        SpeechService.cancel_job(job.job_id)
+        return job.job_id
     except Exception as e:
         if stream_mode and progress is not None:
             progress.stop()
         console.print(f"\n[bold red]Pipeline failed: {e}[/bold red]")
-        job.transition_to(JobState.FAILED)
-        SpeechJobStore.save(job)
-        return job_id
+        return job.job_id
 
-    # Populate final job artifacts
-    job.assets_manifest = {
-        "engine": engine_name,
-        "voice": voice_name,
-        "output_directory": output_dir
-    }
-    
-    # Save completion details
-    SpeechJobStore.save(job)
-    
     console.print("\n[bold green]Completed[/bold green]")
     console.print("\n[bold]Artifacts[/bold]")
     console.print("-" * 40)
-    console.print(f"  Audio:              {os.path.join(output_dir, 'Chapter_0.wav')}")
-    console.print(f"  Job manifest:       {os.path.join(output_dir, 'job.json')}")
-    console.print(f"  Telemetry logs:     {os.path.join(output_dir, 'metrics')}")
+    console.print(f"  Audio:              {os.path.join(job.output_directory, 'Chapter_0.wav')}")
+    console.print(f"  Job manifest:       {os.path.join(job.output_directory, 'job.json')}")
+    console.print(f"  Structured events:  {os.path.join(job.output_directory, 'events.jsonl')}")
+    console.print(f"  Telemetry logs:     {os.path.join(job.output_directory, 'metrics')}")
     console.print("-" * 40)
-    
-    # Save job.json also in output directory directly
-    with open(os.path.join(output_dir, "job.json"), "w", encoding="utf-8") as f:
-        json.dump(job.to_dict(), f, indent=2)
 
-    return job_id
+    return job.job_id
 
 def main():
     parser = argparse.ArgumentParser(description="Agent OS Speech Command Center")
