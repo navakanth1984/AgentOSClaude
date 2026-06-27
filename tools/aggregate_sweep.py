@@ -25,7 +25,13 @@ RESULTS_DIR = Path("benchmark_results")
 
 def _load(tier: str, workers: int, engine: str):
     p = Path(f"corpus_output_bench/{tier}_w{workers}_{engine}/metrics/performance_profile.json")
-    return json.load(open(p, encoding="utf-8")) if p.is_file() else None
+    if p.is_file():
+        data = json.load(open(p, encoding="utf-8"))
+        schema_ver = data.get("benchmark", {}).get("schema_version")
+        if schema_ver != "1.1":
+            raise ValueError(f"Mismatched schema version in {p}: expected 1.1, got {schema_ver}")
+        return data
+    return None
 
 
 def main():

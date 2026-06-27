@@ -170,6 +170,7 @@ def build_performance_profile(
     return {
         "schema_version": PROFILE_SCHEMA_VERSION,
         "benchmark": benchmark or {"tier": None, "corpus": None, "generator_version": None},
+        "asset_manifest": "assets_manifest.json",
         "engine": engine_info,
         "startup": {
             "cold_start_warmup_ms": round(cold_start_warmup_ms, 1),
@@ -206,6 +207,15 @@ def write_performance_profile(metrics_dir: str, profile: Dict[str, Any]) -> str:
     out = path / "performance_profile.json"
     with open(out, "w", encoding="utf-8") as f:
         json.dump(profile, f, indent=2)
+    return str(out)
+
+
+def write_assets_manifest(metrics_dir: str, manifest: Dict[str, Any]) -> str:
+    path = Path(metrics_dir)
+    path.mkdir(parents=True, exist_ok=True)
+    out = path / "assets_manifest.json"
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2)
     return str(out)
 
 

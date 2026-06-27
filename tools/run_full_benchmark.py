@@ -77,14 +77,28 @@ def main():
     else:
         engine, capabilities = _dummy_engine_and_caps()
 
+    logical_cpus = os.cpu_count() or 1
+    intra = args.ort_intra or 1
+    estimated_threads = intra * args.workers
+    oversubscription = round(estimated_threads / logical_cpus, 2)
+
     config = {
         "input_path": str(corpus_path),
         "chapter_id": args.tier,
         "parser": "benchmark",
         "benchmark": {
+            "schema_version": "1.1",
+            "protocol_version": "1.0",
             "tier": args.tier, "corpus": "chapter.txt", "generator_version": "1.0",
-            "ort": {"intra_threads": args.ort_intra, "inter_threads": 1,
-                    "execution_mode": "sequential"},
+            "measurement": {"cache": "cold", "warmup": "cold", "provider": getattr(engine, "active_provider", "Unknown")},
+            "ort": {
+                "intra_threads": args.ort_intra, 
+                "inter_threads": 1,
+                "execution_mode": "sequential",
+                "estimated_total_threads": estimated_threads,
+                "logical_cpus": logical_cpus,
+                "oversubscription_ratio": oversubscription
+            },
         },
         "engine_capabilities": capabilities,
         "tts_engine": engine,

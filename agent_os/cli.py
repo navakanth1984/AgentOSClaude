@@ -9,19 +9,37 @@ def doctor_speech():
     
     engine = KokoroEngine()
     
+    import re
+    version = "unknown"
+    try:
+        m = re.search(r"v(\d+)[._](\d+)", "kokoro-v0_19.onnx") # fallback
+        if getattr(engine, "model_path", None):
+            m = re.search(r"v(\d+)[._](\d+)", engine.model_path.name)
+        if m:
+            version = f"{m.group(1)}.{m.group(2)}"
+    except Exception:
+        pass
+
     print("Engine:")
     print("  Kokoro ONNX")
+    print(f"  Version: {version}")
     
     print("\nModel:")
     try:
         engine.validate_model()
         print(f"  {engine.model_path.name} (OK Found)")
+        from agent_os.speech.pipeline.profiling import _sha256_file
+        print(f"  Checksum: {_sha256_file(str(engine.model_path))}")
     except Exception as e:
         print(f"  [ERROR] {e}")
         print("\nStatus:\n  FAILED")
         return
         
     capabilities = engine.get_capabilities()
+    
+    print("\nLanguages:")
+    langs = [lang.value if hasattr(lang, "value") else str(lang) for lang in capabilities.supported_languages]
+    print(f"  {', '.join(langs)}")
     
     print("\nSample Rate:")
     print(f"  {capabilities.sample_rate} Hz")
@@ -58,6 +76,31 @@ def doctor_speech():
         print("\nStatus:\n  FAILED")
         return
         
+    print("\nRecommendation:")
+    import os
+    import platform
+    import hashlib
+    cpu = os.cpu_count() or 1
+    # Ensure platform matches collect_environment
+    env_str = f"{platform.platform()}-{platform.processor() or 'unknown'}-{cpu}"
+    env_hash = hashlib.sha256(env_str.encode()).hexdigest()[:12]
+    print(f"  Environment Hash: {env_hash}")
+    import json
+    from pathlib import Path
+    rec_file = Path("benchmark_results/thread_matrix_medium_kokoro.json")
+    if rec_file.is_file():
+        try:
+            data = json.load(open(rec_file, encoding="utf-8"))
+            rec = data.get("recommendation", {})
+            if rec and rec.get("environment_hash") == env_hash:
+                print(f"  [Measured] Use {rec['workers']} workers, {rec['ort_intra_threads']} intra-op threads")
+            else:
+                print("  [Note] Benchmark recommendation exists but for a different environment.")
+        except Exception:
+            pass
+    else:
+        print("  Run `python tools/aggregate_matrix.py` on your grid to generate hardware-specific tuning.")
+
     print("\nStatus:")
     print("  READY")
 

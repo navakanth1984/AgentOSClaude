@@ -19,14 +19,28 @@ from pathlib import Path
 RESULTS_DIR = Path("benchmark_results")
 
 
+def _check_schema(data, p):
+    schema_ver = data.get("benchmark", {}).get("schema_version")
+    if schema_ver != "1.1":
+        raise ValueError(f"Mismatched schema version in {p}: expected 1.1, got {schema_ver}")
+
+
 def _profile(tier, w, i, engine):
     p = Path(f"corpus_output_bench/{tier}_w{w}_i{i}_{engine}/metrics/performance_profile.json")
-    return json.load(open(p, encoding="utf-8")) if p.is_file() else None
+    if p.is_file():
+        data = json.load(open(p, encoding="utf-8"))
+        _check_schema(data, p)
+        return data
+    return None
 
 
 def _baseline(tier, w, engine):
     p = Path(f"corpus_output_bench/{tier}_w{w}_{engine}/metrics/performance_profile.json")
-    return json.load(open(p, encoding="utf-8")) if p.is_file() else None
+    if p.is_file():
+        data = json.load(open(p, encoding="utf-8"))
+        _check_schema(data, p)
+        return data
+    return None
 
 
 def _row(label, w, i, prof, cpu):
@@ -117,6 +131,13 @@ def main():
                            f"lower RSS than {fastest['config']}")
         reasons.append(f"idle fraction {rec['worker_idle_fraction']}, runtime CV {rec['worker_runtime_cv']}")
         reasons.append("smallest worker count on the Pareto frontier")
+        
+        import hashlib
+        first_prof = _profile(args.tier, grid[0]["workers"], grid[0]["intra"], args.engine)
+        env = first_prof["environment"] if first_prof else {}
+        env_str = f"{env.get('os', '')}-{env.get('cpu', '')}-{cpu}"
+        env_hash = hashlib.sha256(env_str.encode()).hexdigest()[:12]
+        
         recommendation = {
             "config": rec["config"], "workers": rec["workers"], "ort_intra_threads": rec["intra"],
             "stage_rtf": rec["stage_rtf"], "peak_rss_mb": rec["peak_rss_mb"],
@@ -124,6 +145,7 @@ def main():
             "reason": reasons,
             "confidence": {"level": "measured", "benchmark_count": len(grid),
                            "corpus": args.tier, "repeated_runs": 1},
+            "environment_hash": env_hash,
         }
 
     RESULTS_DIR.mkdir(exist_ok=True)

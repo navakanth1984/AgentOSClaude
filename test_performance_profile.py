@@ -65,12 +65,16 @@ def main():
     prof = json.load(open(metrics_dir / "performance_profile.json", encoding="utf-8"))
 
     assert prof["schema_version"] == "1.0"
+    assert prof["asset_manifest"] == "assets_manifest.json"
     assert prof["synthesis"]["chunks"] == 8
     assert prof["synthesis"]["cache_misses"] == 8 and prof["synthesis"]["cache_hits"] == 0
     assert prof["synthesis"]["total_audio_sec"] == 8.0
     assert prof["startup"]["cold_start_warmup_ms"] is not None
     assert prof["startup"]["session_reused"] is False
     assert prof["engine"]["version"] == "0.19"
+    # verify asset manifest was written
+    manifest = json.load(open(metrics_dir / "assets_manifest.json", encoding="utf-8"))
+    assert manifest["engine_name"] == "kokoro"
     # race-free aggregation: per-worker chunk counts must sum to the total
     dist = prof["workers"]["distribution"]
     assert sum(w["chunks"] for w in dist.values()) == 8, dist

@@ -85,6 +85,17 @@ class KokoroEngine(TTSEngine):
     def initialize(self) -> None:
         pass
         
+    def _rebuild_session(self, intra: int, inter: int, providers: List[str]) -> None:
+        import onnxruntime as ort
+        so = ort.SessionOptions()
+        so.intra_op_num_threads = intra
+        so.inter_op_num_threads = inter
+        if self.kokoro is not None:
+            self.kokoro.sess = ort.InferenceSession(
+                str(self.model_path), sess_options=so, providers=providers
+            )
+        print(f"[KokoroEngine] ORT intra_op_num_threads={intra}, inter_op_num_threads={inter}")
+
     def warmup(self) -> None:
         from kokoro_onnx import Kokoro
         import onnxruntime as ort
@@ -104,14 +115,7 @@ class KokoroEngine(TTSEngine):
         # so to control intra-op threads we rebuild the session here (intra-op count
         # is fixed at session construction time and cannot be changed afterwards).
         if self.ort_intra_threads:
-            so = ort.SessionOptions()
-            so.intra_op_num_threads = self.ort_intra_threads
-            so.inter_op_num_threads = 1
-            self.kokoro.sess = ort.InferenceSession(
-                str(self.model_path), sess_options=so, providers=providers
-            )
-            print(f"[KokoroEngine] ORT intra_op_num_threads={self.ort_intra_threads}, inter_op_num_threads=1")
-
+            self._rebuild_session(self.ort_intra_threads, 1, providers)
         try:
             active = self.kokoro.sess.get_providers()
             print(f"[KokoroEngine] ONNX Runtime Active Provider: {active[0] if active else 'Unknown'}")

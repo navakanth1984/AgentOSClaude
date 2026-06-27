@@ -176,6 +176,32 @@ class SynthesizeStage:
                 model_path=str(getattr(engine, "model_path", "") or ""),
                 include_model_checksum=context.config.get("profile_model_checksum", True),
             )
+            
+            # Extract Asset Manifest
+            model_path_str = str(getattr(engine, "model_path", "") or "")
+            voices_path_str = str(getattr(engine, "voices_path", "") or "")
+            
+            assets_manifest = {
+                "engine_name": engine_info["name"],
+                "engine_version": engine_info["version"],
+                "provider": engine_info["provider"],
+                "sample_rate": getattr(getattr(engine, "capabilities_cache", None), "sample_rate", 24000),
+            }
+            if context.config.get("profile_model_checksum", True):
+                if model_path_str and Path(model_path_str).is_file():
+                    assets_manifest["model_sha256"] = environment.pop("model_sha256", None)
+                if voices_path_str and Path(voices_path_str).is_file():
+                    from agent_os.speech.pipeline.profiling import _sha256_file, _safe
+                    assets_manifest["voice_pack_sha256"] = _safe(lambda: _sha256_file(voices_path_str))
+            
+            if getattr(engine, "capabilities_cache", None):
+                assets_manifest["voice_count"] = len(engine.capabilities_cache.supported_voices)
+                
+            metrics_dir = str(Path(context.project_dir) / "metrics")
+            
+            from agent_os.speech.pipeline.profiling import write_assets_manifest
+            write_assets_manifest(metrics_dir, assets_manifest)
+
             profile = build_performance_profile(
                 engine_info=engine_info,
                 cold_start_warmup_ms=cold_start_warmup_ms,
@@ -188,7 +214,6 @@ class SynthesizeStage:
                 environment=environment,
                 benchmark=context.config.get("benchmark"),
             )
-            metrics_dir = str(Path(context.project_dir) / "metrics")
             profile_path = write_performance_profile(metrics_dir, profile)
             append_execution_history(metrics_dir, profile)
         except Exception as e:
