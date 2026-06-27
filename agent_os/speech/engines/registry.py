@@ -20,6 +20,10 @@ class EngineRegistry:
         if engine_name == "kokoro":
             ort_intra = config.get("ort_intra_threads")
             return KokoroEngine(ort_intra_threads=ort_intra)
+        elif engine_name == "piper":
+            model_path = config.get("piper_model_path")
+            from agent_os.speech.engines.piper_engine import PiperEngine
+            return PiperEngine(model_path=model_path)
             
         raise ValueError(f"Unknown engine name in config: {engine_name}")
 
