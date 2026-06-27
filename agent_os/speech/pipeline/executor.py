@@ -29,6 +29,15 @@ class StageContext:
     config: Dict[str, Any]
     artifacts: Dict[str, Any]  # name -> content/path
     metrics: Dict[str, Any]
+    event_listeners: List[Any] = dataclasses.field(default_factory=list)
+    run_id: str = "run_default"
+
+    def emit_event(self, event: Any) -> None:
+        for listener in self.event_listeners:
+            try:
+                listener(event)
+            except Exception as e:
+                print(f"[StageContext] Listener error: {e}")
 
 class Executor:
     def __init__(self, dag, context: StageContext):
