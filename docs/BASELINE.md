@@ -183,6 +183,56 @@ That requires the `SessionOptions` knob and is the next experiment.
 
 ---
 
+## Baseline 4 — ORT intra-op × workers thread matrix (medium, 12 cores)
+
+All grid configs hold the thread budget constant (`workers × intra = 12`,
+oversubscription 1.0) to isolate *partitioning* from *thread count*. Raw evidence
+snapshot: `benchmark_results/v1.1-thread-matrix/` (immutable).
+
+| config | total thr | oversub | stage RTF | per-chunk RTF | idle | CV | peak RSS MB |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| w2 (default) | - | - | 0.439 | 0.892 | 0.004 | 0.004 | 1338 |
+| w8 (default) | - | - | **0.304** | 2.407 | 0.027 | 0.018 | 2731 |
+| w2 × i6 | 12 | 1.0 | 0.427 | 0.858 | 0.005 | 0.005 | 1377 |
+| w4 × i3 | 12 | 1.0 | 0.352 | 1.415 | 0.012 | 0.009 | 2054 |
+| w6 × i2 | 12 | 1.0 | 0.311 | 1.844 | 0.021 | 0.013 | 2601 |
+| w12 × i1 | 12 | 1.0 | 0.314 | 3.651 | 0.033 | 0.021 | 3357 |
+
+### Findings — hypothesis NOT confirmed
+
+- **The predicted `w4×i3` / `w6×i2` "sweet spot" did not appear as a *win*.**
+  Throughput rises monotonically with **worker count**, not with balanced
+  partitioning: w6×i2 (0.311) ≈ w12×i1 (0.314) ≈ unconstrained w8 (0.304).
+  `w4×i3` (0.352) is middling; `w2×i6` (0.427) is basically unconstrained w2.
+- **Intra-op is a weak throughput lever for Kokoro on this CPU.** Even `w12×i1`
+  (zero ONNX intra-op parallelism) reaches near-peak throughput (0.314) — the
+  inter-op (worker) dimension dominates. Constraining intra mainly inflates
+  *per-chunk* latency (0.86 → 3.65) without unlocking throughput-per-memory.
+- **No deployability free lunch.** The goal was w8-class throughput at w2-class
+  memory. It doesn't exist here: **peak RSS tracks worker count, independent of
+  intra** (1377 / 2054 / 2601 / 3357 MB for w2/4/6/12). You cannot buy throughput
+  without buying workers, and workers cost RAM.
+- **The pool is healthy** — idle < 4% and CV < 0.03 everywhere; the plateau is CPU
+  compute contention, not scheduling imbalance.
+
+### Pareto frontier & recommendation
+
+Frontier (over RTF / RSS / idle / CV): **w2×i6, w4×i3, w6×i2**. `w12×i1` is strictly
+dominated by `w6×i2` (faster *and* less RAM). Pick by deployment profile:
+
+| Profile | Config | RTF | RSS |
+|:--|:--|--:|--:|
+| Memory-constrained | w2×i6 (≈ w2 default) | 0.427 | ~1.38 GB |
+| Balanced | w4×i3 | 0.352 | ~2.05 GB |
+| Throughput | w6×i2 (≈ w8 default, −5% RAM) | 0.311 | ~2.60 GB |
+
+**Practical takeaway:** the `ort_intra_threads` knob is *not* a throughput win for
+Kokoro/CPU; its real value is capping per-chunk latency or shaving a little RAM at
+the top end (w6×i2 ≈ w8 at 130 MB less). For tuning, trade **worker count** against
+RAM. This negative result is exactly why we measured instead of guessing.
+
+---
+
 ## Benchmark Tiers (standard)
 
 | Tier | Size | Purpose |

@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "benchmark": {
+    "tier": "medium",
+    "corpus": "chapter.txt",
+    "generator_version": "1.0",
+    "ort": {
+      "intra_threads": 1,
+      "inter_threads": 1,
+      "execution_mode": "sequential"
+    }
+  },
+  "engine": {
+    "name": "kokoro",
+    "version": "0.19",
+    "provider": "CPUExecutionProvider"
+  },
+  "startup": {
+    "cold_start_warmup_ms": 3785.7,
+    "first_chunk_latency_ms": 49229.0,
+    "session_reused": false
+  },
+  "synthesis": {
+    "chunks": 100,
+    "cache_hits": 0,
+    "cache_misses": 100,
+    "total_audio_sec": 1192.853,
+    "wall_time_sec": 374.326,
+    "rtf": 0.3138,
+    "average_chunk_rtf": 3.6511,
+    "steady_state_rtf": 3.6519,
+    "cache_hit_ratio": 0.0
+  },
+  "resources": {
+    "peak_rss_mb": 3356.7,
+    "peak_cpu_percent": 1333.1
+  },
+  "workers": {
+    "count": 12,
+    "load_balance": {
+      "active_workers": 12,
+      "mean_chunks_per_worker": 8.33,
+      "stddev_chunks_per_worker": 0.62,
+      "max_min_ratio": 1.29
+    },
+    "distribution": {
+      "worker_0": {
+        "chunks": 9,
+        "audio_sec": 104.619,
+        "wall_time_sec": 369.636,
+        "cache_hits": 0
+      },
+      "worker_1": {
+        "chunks": 9,
+        "audio_sec": 102.656,
+        "wall_time_sec": 365.245,
+        "cache_hits": 0
+      },
+      "worker_2": {
+        "chunks": 9,
+        "audio_sec": 99.435,
+        "wall_time_sec": 362.429,
+        "cache_hits": 0
+      },
+      "worker_3": {
+        "chunks": 8,
+        "audio_sec": 103.083,
+        "wall_time_sec": 374.314,
+        "cache_hits": 0
+      },
+      "worker_4": {
+        "chunks": 8,
+        "audio_sec": 98.347,
+        "wall_time_sec": 351.113,
+        "cache_hits": 0
+      },
+      "worker_5": {
+        "chunks": 8,
+        "audio_sec": 103.659,
+        "wall_time_sec": 366.239,
+        "cache_hits": 0
+      },
+      "worker_6": {
+        "chunks": 8,
+        "audio_sec": 90.112,
+        "wall_time_sec": 354.491,
+        "cache_hits": 0
+      },
+      "worker_7": {
+        "chunks": 8,
+        "audio_sec": 98.325,
+        "wall_time_sec": 349.422,
+        "cache_hits": 0
+      },
+      "worker_8": {
+        "chunks": 7,
+        "audio_sec": 95.851,
+        "wall_time_sec": 365.401,
+        "cache_hits": 0
+      },
+      "worker_9": {
+        "chunks": 9,
+        "audio_sec": 91.883,
+        "wall_time_sec": 359.534,
+        "cache_hits": 0
+      },
+      "worker_10": {
+        "chunks": 9,
+        "audio_sec": 109.952,
+        "wall_time_sec": 371.648,
+        "cache_hits": 0
+      },
+      "worker_11": {
+        "chunks": 8,
+        "audio_sec": 94.933,
+        "wall_time_sec": 355.355,
+        "cache_hits": 0
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.10",
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "onnxruntime": "1.27.0",
+    "kokoro_onnx": null,
+    "git_commit": "ac47b025b3738f8633a197c3fc7de5768f786304"
+  }
+}

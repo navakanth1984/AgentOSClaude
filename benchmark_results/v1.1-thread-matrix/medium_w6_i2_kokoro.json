@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "benchmark": {
+    "tier": "medium",
+    "corpus": "chapter.txt",
+    "generator_version": "1.0",
+    "ort": {
+      "intra_threads": 2,
+      "inter_threads": 1,
+      "execution_mode": "sequential"
+    }
+  },
+  "engine": {
+    "name": "kokoro",
+    "version": "0.19",
+    "provider": "CPUExecutionProvider"
+  },
+  "startup": {
+    "cold_start_warmup_ms": 3361.3,
+    "first_chunk_latency_ms": 23903.2,
+    "session_reused": false
+  },
+  "synthesis": {
+    "chunks": 100,
+    "cache_hits": 0,
+    "cache_misses": 100,
+    "total_audio_sec": 1204.011,
+    "wall_time_sec": 373.955,
+    "rtf": 0.3106,
+    "average_chunk_rtf": 1.8438,
+    "steady_state_rtf": 1.845,
+    "cache_hit_ratio": 0.0
+  },
+  "resources": {
+    "peak_rss_mb": 2601.1,
+    "peak_cpu_percent": 823.3
+  },
+  "workers": {
+    "count": 6,
+    "load_balance": {
+      "active_workers": 6,
+      "mean_chunks_per_worker": 16.67,
+      "stddev_chunks_per_worker": 0.75,
+      "max_min_ratio": 1.12
+    },
+    "distribution": {
+      "worker_0": {
+        "chunks": 16,
+        "audio_sec": 207.552,
+        "wall_time_sec": 371.413,
+        "cache_hits": 0
+      },
+      "worker_1": {
+        "chunks": 16,
+        "audio_sec": 196.715,
+        "wall_time_sec": 359.699,
+        "cache_hits": 0
+      },
+      "worker_2": {
+        "chunks": 16,
+        "audio_sec": 200.789,
+        "wall_time_sec": 363.966,
+        "cache_hits": 0
+      },
+      "worker_3": {
+        "chunks": 17,
+        "audio_sec": 195.221,
+        "wall_time_sec": 363.886,
+        "cache_hits": 0
+      },
+      "worker_4": {
+        "chunks": 18,
+        "audio_sec": 207.317,
+        "wall_time_sec": 373.938,
+        "cache_hits": 0
+      },
+      "worker_5": {
+        "chunks": 17,
+        "audio_sec": 196.416,
+        "wall_time_sec": 363.79,
+        "cache_hits": 0
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.10",
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "onnxruntime": "1.27.0",
+    "kokoro_onnx": null,
+    "git_commit": "ac47b025b3738f8633a197c3fc7de5768f786304"
+  }
+}

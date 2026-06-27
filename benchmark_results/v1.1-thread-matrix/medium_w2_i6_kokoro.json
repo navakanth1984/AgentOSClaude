@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "benchmark": {
+    "tier": "medium",
+    "corpus": "chapter.txt",
+    "generator_version": "1.0",
+    "ort": {
+      "intra_threads": 6,
+      "inter_threads": 1,
+      "execution_mode": "sequential"
+    }
+  },
+  "engine": {
+    "name": "kokoro",
+    "version": "0.19",
+    "provider": "CPUExecutionProvider"
+  },
+  "startup": {
+    "cold_start_warmup_ms": 4249.9,
+    "first_chunk_latency_ms": 10352.7,
+    "session_reused": false
+  },
+  "synthesis": {
+    "chunks": 100,
+    "cache_hits": 0,
+    "cache_misses": 100,
+    "total_audio_sec": 1193.237,
+    "wall_time_sec": 509.232,
+    "rtf": 0.4268,
+    "average_chunk_rtf": 0.8583,
+    "steady_state_rtf": 0.8594,
+    "cache_hit_ratio": 0.0
+  },
+  "resources": {
+    "peak_rss_mb": 1377.3,
+    "peak_cpu_percent": 823.3
+  },
+  "workers": {
+    "count": 2,
+    "load_balance": {
+      "active_workers": 2,
+      "mean_chunks_per_worker": 50,
+      "stddev_chunks_per_worker": 0.0,
+      "max_min_ratio": 1.0
+    },
+    "distribution": {
+      "worker_0": {
+        "chunks": 50,
+        "audio_sec": 591.445,
+        "wall_time_sec": 504.003,
+        "cache_hits": 0
+      },
+      "worker_1": {
+        "chunks": 50,
+        "audio_sec": 601.792,
+        "wall_time_sec": 509.121,
+        "cache_hits": 0
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.10",
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "onnxruntime": "1.27.0",
+    "kokoro_onnx": null,
+    "git_commit": "ac47b025b3738f8633a197c3fc7de5768f786304"
+  }
+}

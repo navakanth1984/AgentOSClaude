@@ -55,19 +55,23 @@ def main():
     ap.add_argument("--tier", default="medium")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--engine", choices=["kokoro", "dummy"], default="kokoro")
+    ap.add_argument("--ort-intra", type=int, default=None,
+                    help="ONNX intra-op thread count (rebuilds the session). Default: ORT default.")
     args = ap.parse_args()
 
     corpus_path = Path("corpus") / args.tier / "chapter.txt"
     if not corpus_path.is_file():
         raise SystemExit(f"corpus not found: {corpus_path} (run generate_benchmark_corpus.py --tier {args.tier})")
 
-    project_dir = os.path.abspath(f"corpus_output_bench/{args.tier}_w{args.workers}_{args.engine}")
+    intra_suffix = f"_i{args.ort_intra}" if args.ort_intra else ""
+    project_dir = os.path.abspath(
+        f"corpus_output_bench/{args.tier}_w{args.workers}{intra_suffix}_{args.engine}")
     cache_dir = os.path.join(project_dir, "cache")
     os.makedirs(cache_dir, exist_ok=True)
 
     if args.engine == "kokoro":
         from agent_os.speech.engines.kokoro_engine import KokoroEngine
-        engine = KokoroEngine()
+        engine = KokoroEngine(ort_intra_threads=args.ort_intra)
         engine.validate_model()
         capabilities = engine.get_capabilities()
     else:
@@ -77,7 +81,11 @@ def main():
         "input_path": str(corpus_path),
         "chapter_id": args.tier,
         "parser": "benchmark",
-        "benchmark": {"tier": args.tier, "corpus": "chapter.txt", "generator_version": "1.0"},
+        "benchmark": {
+            "tier": args.tier, "corpus": "chapter.txt", "generator_version": "1.0",
+            "ort": {"intra_threads": args.ort_intra, "inter_threads": 1,
+                    "execution_mode": "sequential"},
+        },
         "engine_capabilities": capabilities,
         "tts_engine": engine,
         "max_workers": args.workers,

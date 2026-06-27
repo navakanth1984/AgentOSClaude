@@ -14,10 +14,13 @@ class KokoroEngine(TTSEngine):
     Manages ONNX model loading and synthesis.
     """
     
-    def __init__(self, model_dir: Optional[str] = None):
+    def __init__(self, model_dir: Optional[str] = None, ort_intra_threads: Optional[int] = None):
         self.kokoro = None
         self.active_provider = "Unknown"
         self.capabilities_cache = None
+        # When set, the ONNX session is rebuilt with this intra-op thread count and
+        # inter_op_num_threads=1 (we parallelize at the executor/inter-op level).
+        self.ort_intra_threads = ort_intra_threads
         
         if model_dir:
             self.model_dir = Path(model_dir)
@@ -96,7 +99,19 @@ class KokoroEngine(TTSEngine):
         
         # Kokoro instantiation
         self.kokoro = Kokoro(str(self.model_path), str(self.voices_path))
-        
+
+        # Thread-grid knob: Kokoro builds its InferenceSession with default options,
+        # so to control intra-op threads we rebuild the session here (intra-op count
+        # is fixed at session construction time and cannot be changed afterwards).
+        if self.ort_intra_threads:
+            so = ort.SessionOptions()
+            so.intra_op_num_threads = self.ort_intra_threads
+            so.inter_op_num_threads = 1
+            self.kokoro.sess = ort.InferenceSession(
+                str(self.model_path), sess_options=so, providers=providers
+            )
+            print(f"[KokoroEngine] ORT intra_op_num_threads={self.ort_intra_threads}, inter_op_num_threads=1")
+
         try:
             active = self.kokoro.sess.get_providers()
             print(f"[KokoroEngine] ONNX Runtime Active Provider: {active[0] if active else 'Unknown'}")

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "benchmark": {
+    "tier": "medium",
+    "corpus": "chapter.txt",
+    "generator_version": "1.0"
+  },
+  "engine": {
+    "name": "kokoro",
+    "version": "0.19",
+    "provider": "CPUExecutionProvider"
+  },
+  "startup": {
+    "cold_start_warmup_ms": 4374.9,
+    "first_chunk_latency_ms": 27957.2,
+    "session_reused": false
+  },
+  "synthesis": {
+    "chunks": 100,
+    "cache_hits": 0,
+    "cache_misses": 100,
+    "total_audio_sec": 1180.544,
+    "wall_time_sec": 359.206,
+    "rtf": 0.3043,
+    "average_chunk_rtf": 2.4071,
+    "steady_state_rtf": 2.411,
+    "cache_hit_ratio": 0.0
+  },
+  "resources": {
+    "peak_rss_mb": 2731.0,
+    "peak_cpu_percent": 1379.7
+  },
+  "workers": {
+    "count": 8,
+    "load_balance": {
+      "active_workers": 8,
+      "mean_chunks_per_worker": 12.5,
+      "stddev_chunks_per_worker": 0.87,
+      "max_min_ratio": 1.17
+    },
+    "distribution": {
+      "worker_0": {
+        "chunks": 12,
+        "audio_sec": 145.749,
+        "wall_time_sec": 357.973,
+        "cache_hits": 0
+      },
+      "worker_1": {
+        "chunks": 14,
+        "audio_sec": 151.04,
+        "wall_time_sec": 342.573,
+        "cache_hits": 0
+      },
+      "worker_2": {
+        "chunks": 12,
+        "audio_sec": 155.52,
+        "wall_time_sec": 351.309,
+        "cache_hits": 0
+      },
+      "worker_3": {
+        "chunks": 12,
+        "audio_sec": 144.0,
+        "wall_time_sec": 341.351,
+        "cache_hits": 0
+      },
+      "worker_4": {
+        "chunks": 12,
+        "audio_sec": 138.667,
+        "wall_time_sec": 350.743,
+        "cache_hits": 0
+      },
+      "worker_5": {
+        "chunks": 14,
+        "audio_sec": 161.024,
+        "wall_time_sec": 359.19,
+        "cache_hits": 0
+      },
+      "worker_6": {
+        "chunks": 12,
+        "audio_sec": 148.523,
+        "wall_time_sec": 343.006,
+        "cache_hits": 0
+      },
+      "worker_7": {
+        "chunks": 12,
+        "audio_sec": 136.021,
+        "wall_time_sec": 350.233,
+        "cache_hits": 0
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.10",
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "onnxruntime": "1.27.0",
+    "kokoro_onnx": null,
+    "git_commit": "d1020392cef8653fc3e96a3d84778d51d6f84d5c"
+  }
+}
