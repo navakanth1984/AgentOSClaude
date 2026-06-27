@@ -96,7 +96,15 @@ class KokoroEngine(TTSEngine):
             )
         print(f"[KokoroEngine] ORT intra_op_num_threads={intra}, inter_op_num_threads={inter}")
 
-    def warmup(self) -> None:
+    def supports_language(self, language: Language) -> bool:
+        caps = self.get_capabilities()
+        return language in caps.supported_languages
+
+    def supports_voice(self, voice: str) -> bool:
+        caps = self.get_capabilities()
+        return voice in caps.supported_voices
+
+    def warmup(self, profile: str = "minimal") -> None:
         from kokoro_onnx import Kokoro
         import onnxruntime as ort
         
@@ -123,22 +131,23 @@ class KokoroEngine(TTSEngine):
         except AttributeError:
             pass
 
-        print("[KokoroEngine] Warming up with dummy tensor inference...")
+        print(f"[KokoroEngine] Warming up ({profile} profile)...")
         try:
             voices = self.kokoro.get_voices()
             if voices:
                 first_voice = next(iter(voices))
-                # Using a word instead of space to avoid "need at least one array" exception
-                self.synthesize("Warmup", first_voice, 1.0, "en")
+                text_to_synth = "Warmup" if profile == "minimal" else "This is a representative chunk length for shape specialization warmup."
+                if self.kokoro:
+                    self.synthesize(text_to_synth, first_voice, Language.EN, 1.0)
         except Exception as e:
             print(f"[KokoroEngine] Warmup silent failure: {e}")
         print("[KokoroEngine] Warmup complete.")
         
-    def synthesize(self, text: str, voice: str, speed: float, language: str) -> Tuple[int, np.ndarray]:
+    def synthesize(self, text: str, voice: str, language: Language, speed: float) -> Tuple[int, np.ndarray]:
         if self.kokoro is None:
             raise RuntimeError("Kokoro engine not warmed up. Call warmup() first.")
             
-        lang_code = language if language != "en" else "en-us"
+        lang_code = language.value if language.value != "en" else "en-us"
         
         samples, sample_rate = self.kokoro.create(
             text=text,

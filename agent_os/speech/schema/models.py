@@ -30,6 +30,7 @@ class EngineName(str, Enum):
     KOKORO = "kokoro"
     GCP = "gcp"
     SARVAM = "sarvam"
+    PIPER = "piper"
 
 @dataclass(frozen=True, slots=True)
 class DialogueSegment:
