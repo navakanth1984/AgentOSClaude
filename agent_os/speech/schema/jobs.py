@@ -2,6 +2,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, Any, List, Optional
 import time
+import os
+from pathlib import Path
 
 from agent_os.speech.schema.models import ExecutionPlanEntry
 from agent_os.speech.schema.events import PipelineEvent
@@ -62,8 +64,67 @@ class EventBus:
             self.listeners.remove(callback)
 
     def publish(self, event: PipelineEvent) -> None:
-        for listener in self.listeners:
+        for listener in self.event_listeners if hasattr(self, 'event_listeners') else self.listeners:
             try:
                 listener(event)
             except Exception as e:
                 print(f"[EventBus] Listener invocation error: {e}")
+
+class SpeechJobStore:
+    @staticmethod
+    def get_job_dir(job_id: str) -> Path:
+        p = Path(os.getcwd()) / "jobs" / job_id
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+
+    @classmethod
+    def save(cls, job: SpeechJob) -> None:
+        import json
+        job_dir = cls.get_job_dir(job.job_id)
+        job_file = job_dir / "job.json"
+        with open(job_file, "w", encoding="utf-8") as f:
+            json.dump(job.to_dict(), f, indent=2)
+
+    @classmethod
+    def load(cls, job_id: str) -> Optional[SpeechJob]:
+        import json
+        p = Path(os.getcwd()) / "jobs" / job_id / "job.json"
+        if not p.is_file():
+            return None
+        with open(p, "r", encoding="utf-8") as f:
+            d = json.load(f)
+            
+        plan = None
+        if d.get("execution_plan"):
+            plan = []
+            from agent_os.speech.schema.models import ExecutionPlanEntry, EngineName, Language
+            for e in d["execution_plan"]:
+                plan.append(ExecutionPlanEntry(
+                    chunk_id=e.get("chunk_id", 0),
+                    chapter_id=e.get("chapter_id", ""),
+                    text=e.get("text", ""),
+                    engine=EngineName(e.get("engine", "kokoro")),
+                    voice=e.get("voice", ""),
+                    language=Language(e.get("language", "en")),
+                    speed=e.get("speed", 1.0),
+                    pitch=e.get("pitch", 1.0),
+                    volume_gain_db=e.get("volume_gain_db", 0.0),
+                    cache_key=e.get("cache_key", ""),
+                    expected_output_path=e.get("expected_output_path", ""),
+                    pause_before_ms=e.get("pause_before_ms", 0),
+                    pause_after_ms=e.get("pause_after_ms", 0),
+                    status=e.get("status", "pending")
+                ))
+                
+        return SpeechJob(
+            job_id=d["job_id"],
+            request_payload=d["request_payload"],
+            output_directory=d["output_directory"],
+            state=JobState(d["state"]),
+            created_at=d["created_at"],
+            updated_at=d["updated_at"],
+            execution_plan=plan,
+            assets_manifest=d.get("assets_manifest"),
+            performance_profile=d.get("performance_profile"),
+            event_log=d.get("event_log", [])
+        )
