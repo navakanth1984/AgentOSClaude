@@ -143,11 +143,15 @@
 
     // --- DOM BUILDER ---
     function buildProgressAndHUDElements() {
-        // 1. Scroll Progress Bar & Pill Overlay
+        // Check query parameters to see if HUD/toasts are enabled
+        const urlParams = new URLSearchParams(window.location.search);
+        const hudEnabled = urlParams.has('hud') || urlParams.has('debug');
+
+        // 1. Scroll Progress Bar (and Pill Overlay only if HUD is enabled)
         const progressContainer = document.createElement('div');
         progressContainer.className = 'scroll-progress-container';
-        progressContainer.innerHTML = `
-            <div class="scroll-progress-bar"></div>
+        
+        const activePillHtml = hudEnabled ? `
             <div class="active-section-pill">
                 <div class="section-pill-content">
                     <span class="section-pill-dot"></span>
@@ -156,6 +160,11 @@
                     <span class="section-pill-progress">0%</span>
                 </div>
             </div>
+        ` : '';
+
+        progressContainer.innerHTML = `
+            <div class="scroll-progress-bar"></div>
+            ${activePillHtml}
         `;
         document.body.appendChild(progressContainer);
 
@@ -163,15 +172,17 @@
         elements.sectionNameEl = progressContainer.querySelector('.section-pill-name');
         elements.scrollPercentEl = progressContainer.querySelector('.section-pill-progress');
 
-        // 2. Toast Alert Container
-        elements.toastContainer = document.createElement('div');
-        elements.toastContainer.className = 'hud-toast-container';
-        document.body.appendChild(elements.toastContainer);
+        if (hudEnabled) {
+            // 2. Toast Alert Container
+            elements.toastContainer = document.createElement('div');
+            elements.toastContainer.className = 'hud-toast-container';
+            document.body.appendChild(elements.toastContainer);
 
-        // 3. Main HUD Wrapper
-        elements.hudWrapper = document.createElement('div');
-        elements.hudWrapper.className = 'engagement-hud-wrapper';
-        document.body.appendChild(elements.hudWrapper);
+            // 3. Main HUD Wrapper
+            elements.hudWrapper = document.createElement('div');
+            elements.hudWrapper.className = 'engagement-hud-wrapper';
+            document.body.appendChild(elements.hudWrapper);
+        }
     }
 
     // --- CORE LOGIC EVENT LISTENERS ---
