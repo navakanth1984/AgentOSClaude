@@ -97,6 +97,10 @@
 - 2026-06-28: Optimized both `nth-dimension-react` (dev) and `nthdimensionacademy` (live vanilla) for UX/SEO signals. Implemented event-driven Custom DOM Events, consolidated sessionStorage schema (`nth_learning_hud_v1`), completed the Vanilla DOM Migration, and created a unified telemetry adapter `analytics-adapter.js` that batches events over a 4-second window and hooks into pagehide/visibilitychange triggers for exit flushes.
 - 2026-06-28: Executed the usage-efficiency protocol for the current session (345a9714-72d4-4ccb-924b-fca9b4a713c4). Updated memory_os/model-usage-log.json and ran validate_usage_efficiency.py to log session metrics (today's cost $0.09/$2.00, routing efficiency 100.0%).
 - 2026-06-28: Optimized Core Web Vitals and media assets for Nth Dimension Academy. Created `optimize_assets.py` to compress large graphics to AVIF/WebP (shrinking files by 89%-96%) and generate responsive widths. Built `performance-observer.js` to monitor paint/layout shift indicators and integrated optimized picture stack elements, lazy-loading, and video poster configurations. Integrated real-user performance telemetry by routing `PerformanceObserver` captures to `analytics-adapter.js` for GA4 and Vercel Analytics tracking, enriched with page path, viewport width, and connection type context.
+- 2026-06-28: Executed the usage-efficiency protocol for the current session (1a86f99d-c304-4d6b-9044-8fd0f08ca797). Updated memory_os/model-usage-log.json and ran validate_usage_efficiency.py to log session metrics (today's cost $0.10/$2.00, routing efficiency 100.0%).
+- 2026-06-28: Gated visual Learning HUD elements behind a query-parameter check (?hud=true or ?debug=true) for both vanilla and React environments, keeping the background telemetry active. Promoted changes across the development lifecycle: merged dev changes to uat, checked out and committed UAT to master, and deployed React master live to Vercel production.
+
+
 
 
 
