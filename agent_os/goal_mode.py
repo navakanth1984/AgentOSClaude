@@ -29,8 +29,8 @@ from pathlib import Path
 
 # Force UTF-8 console output on Windows
 if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
 
 # ── Load .env ─────────────────────────────────────────────────────────────────
 sys.path.insert(0, str(Path(__file__).parent))
@@ -60,7 +60,16 @@ def _openrouter(prompt: str, model: str, system: str = "", api_key: str = "") ->
 
 # Free model for lightweight planning/checking calls (no credits needed on free tier)
 # Updated 2026-06-07: gemma-4-31b works; llama-3.3-70b rate-limited on this account
-_PLANNER_MODEL = "google/gemma-4-31b-it:free"
+# All three are env-overridable so you can avoid paid models that 402 when credits
+# run out. When offline (Ollama), the model string is ignored and OLLAMA_MODEL is used.
+_PLANNER_MODEL = os.environ.get("GOAL_PLANNER_MODEL", "google/gemma-4-31b-it:free")
+
+# Default execution model for summarise/analyse steps + handed to the swarm.
+# Was "anthropic/claude-sonnet-4.6" (paid → 402 when out of credits).
+_DEFAULT_MODEL = os.environ.get("GOAL_MODEL", "google/gemma-4-31b-it:free")
+
+# Model for the live-internet "research" step. Was "perplexity/sonar" (paid → 402).
+_RESEARCH_MODEL = os.environ.get("GOAL_RESEARCH_MODEL", "google/gemma-4-31b-it:free")
 
 
 # ── Step 1: PLAN ─────────────────────────────────────────────────────────────
@@ -159,8 +168,8 @@ async def execute_step(
             f"Goal: {goal}\n\nContext from prior steps:\n{context}\n\n"
             f"Now answer this specific question with concrete facts and data:\n{action}"
         )
-        # Use perplexity/sonar for live internet research
-        result = _openrouter(prompt, "perplexity/sonar", api_key=api_key)
+        # Live internet research model (env-overridable; defaults to a free model)
+        result = _openrouter(prompt, _RESEARCH_MODEL, api_key=api_key)
         return result or f"[Research returned no result for: {action}]"
 
     # ── save_note: write synthesis to Obsidian ────────────────────────────────
@@ -339,7 +348,7 @@ source: "Agent OS Goal Mode ({model})"
 async def run_goal(
     goal: str,
     max_steps: int = 8,
-    model: str = "anthropic/claude-sonnet-4.6",
+    model: str = "",
 ) -> dict:
     """
     Autonomous goal runner.
@@ -351,9 +360,11 @@ async def run_goal(
 
     Returns a summary dict with status, step count, and vault path.
     """
+    model = model or _DEFAULT_MODEL
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
-    if not api_key:
-        return {"error": "OPENROUTER_API_KEY not set in .env"}
+    from openrouter_client import backend_available
+    if not backend_available():
+        return {"error": "No LLM backend available — set OPENROUTER_API_KEY or GEMINI_API_KEY in .env, or start a local Ollama server (offline mode)."}
 
     print(f"\n{'='*60}")
     print(f"[GoalMode] Goal: {goal}")

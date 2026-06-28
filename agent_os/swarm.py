@@ -46,8 +46,22 @@ AGENT_ROLES = [
     ("Trends Agent",     "Describe the latest developments, trends, or future directions for this topic."),
 ]
 
-# Shared semaphore to prevent overwhelming free-tier API limits (max 2 concurrent requests)
-_SWARM_SEMAPHORE = asyncio.Semaphore(2)
+# Shared semaphore to throttle free-tier API concurrency (max 2 at once).
+# Created lazily and re-created per event loop: the server runs each request via
+# asyncio.run(), which spins up a NEW loop every time. A module-level Semaphore
+# binds to the loop it was created in and then raises "bound to a different event
+# loop" on every later request. Keying it to the running loop avoids that.
+_SWARM_SEMAPHORE = None
+_SWARM_SEMAPHORE_LOOP = None
+
+
+def _get_semaphore() -> asyncio.Semaphore:
+    global _SWARM_SEMAPHORE, _SWARM_SEMAPHORE_LOOP
+    loop = asyncio.get_running_loop()
+    if _SWARM_SEMAPHORE is None or _SWARM_SEMAPHORE_LOOP is not loop:
+        _SWARM_SEMAPHORE = asyncio.Semaphore(2)
+        _SWARM_SEMAPHORE_LOOP = loop
+    return _SWARM_SEMAPHORE
 
 # ── Single agent coroutine ────────────────────────────────────────────────────
 
@@ -73,7 +87,7 @@ async def _swarm_agent(
     )
     user = f"Topic: {topic}\n\nYour task: {task}"
 
-    async with _SWARM_SEMAPHORE:
+    async with _get_semaphore():
         last_error = None
         for attempt in range(max_retries):
             try:
@@ -231,8 +245,9 @@ async def run_swarm(
                         notebooks, notebook_audio, note_path, results
     """
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
-    if not api_key:
-        return {"error": "OPENROUTER_API_KEY not set in .env"}
+    from openrouter_client import backend_available
+    if not backend_available():
+        return {"error": "No LLM backend available — set OPENROUTER_API_KEY or GEMINI_API_KEY in .env, or start a local Ollama server (offline mode)."}
 
     # Import workflow helpers (lazy — avoids circular imports at module level)
     from workflow import analyze_prompt_llm, analyze_prompt, find_matching_notebooks
