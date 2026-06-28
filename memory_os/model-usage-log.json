@@ -1,0 +1,1118 @@
+{
+  "schema_version": "1.0",
+  "created": "2026-06-12",
+  "description": "Tracks model usage per session for cost analysis and routing optimization",
+  "sessions": [
+    {
+      "date": "2026-06-12",
+      "session_id": "6a2b819d-aa14-4b21-bdf7-7d0af319316b",
+      "model_used": "Claude Opus 4.6 (Thinking)",
+      "tier": 5,
+      "tasks_completed": [
+        {
+          "description": "AI model economics research and routing system design",
+          "complexity": "Research/Frontier",
+          "correct_tier": true,
+          "notes": "Correct use of Tier 5 \u00e2\u20ac\u201d novel architecture + deep research"
+        }
+      ],
+      "estimated_tokens": {
+        "input": 150000,
+        "output": 30000
+      },
+      "estimated_cost_usd": 1.5,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-13",
+      "session_id": "d6092fe0-6328-4d7d-ae2d-d7447e552897",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Website builder skill adaptation for Antigravity",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Correct tier utilized for designing and writing the new SKILL.md file."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 3500
+      },
+      "estimated_cost_usd": 0.02,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-13",
+      "session_id": "4ac0eb20-ca54-45dd-bab7-059160f48d23",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "4DGS Hologram WebGL prototype and Graphify parser integration",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Correct tier utilized. Scaffolding, shader packing optimization, and graphify running executed cheaply on Flash."
+        },
+        {
+          "description": "Quantum Walk visualizer integration into 4DGS Hologram Terminal",
+          "complexity": "Complex/Moderate",
+          "correct_tier": true,
+          "notes": "Utilized Gemini 3.5 Flash for writing JS-based Quantum Walk simulation loops and updating the 3D instanced buffers."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 75000,
+        "output": 7500
+      },
+      "estimated_cost_usd": 0.04,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-14",
+      "session_id": "77be1ffc-9861-4040-981d-925282a42480",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Cloud Agent loop implementation, auto-fallback, auto-dependency install, and native Gemini API integration",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Correct tier utilized. Writing CLI scripts, background threads, and direct API endpoints executed efficiently on Flash."
+        },
+        {
+          "description": "Full HTTP API Layer 3 and Layer 4 automated stress testing and validation of all server endpoints",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Validated auth headers, swarm execution, workflow, goal mode, logs, tune, and the new cloud endpoint."
+        },
+        {
+          "description": "Integration of Cloud Agent UI tab, options, and panel into dashboard.html",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Added HTML layout, tab handling, and runCloud() JS call mapping to the backend."
+        },
+        {
+          "description": "Cloud Agent thread-safety fix and comprehensive stress/integration testing",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Fixed run_loop race conditions with isolated scratch directories and verified with live integration tests."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 180000,
+        "output": 18000
+      },
+      "estimated_cost_usd": 0.12,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-14",
+      "session_id": "94d589f6-7344-4185-82b3-238c75aefc94",
+      "model_used": "Gemini 2.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Llama 3.1 70B Bad Request error root cause analysis, fallback debugging, client validation and robust multi-tier fallback implementation.",
+          "complexity": "Moderate/QA",
+          "correct_tier": true,
+          "notes": "Intercepted OpenRouter error codes and verified robust routing back to native Gemini."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 12000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-14",
+      "session_id": "94d589f6-7344-4185-82b3-238c75aefc94",
+      "model_used": "Gemini 2.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Re-ran co-evolution stress test suite (143/143 tests passed, Grade S-tier), verified all Layer 3 endpoints (29/29 passed), and validated Layer 4 live integration flows (23/23 passed).",
+          "complexity": "Moderate/QA",
+          "correct_tier": true,
+          "notes": "Full verification scorecard successfully passed."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 8000,
+        "output": 1000
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-14",
+      "session_id": "94d589f6-7344-4185-82b3-238c75aefc94",
+      "model_used": "Gemini 2.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Automated UI stress test checking tab switching, Novelist Swarm execution under Llama 3.1 70B fallback, and browser-triggered document exports.",
+          "complexity": "Moderate/QA",
+          "correct_tier": true,
+          "notes": "Verified client-side downloads and layout state."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 6000,
+        "output": 800
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-14",
+      "session_id": "94d589f6-7344-4185-82b3-238c75aefc94",
+      "model_used": "Gemini 2.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Moved committed changes to remote repository via git push and restarted/verified the live ngrok-exposed server.",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Fast verification and deployment commands."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 5000,
+        "output": 600
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-15",
+      "session_id": "94d589f6-7344-4185-82b3-238c75aefc94",
+      "model_used": "Gemini 2.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Scaffolded agent_os_mobile Flutter project, added dependencies, resolved lints/compiler errors, and committed/pushed to GitHub remote origin.",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Cross-platform mobile client implementation."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 8000,
+        "output": 1000
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-15",
+      "session_id": "72be4804-b676-43ff-8246-f1b2e6929e99",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Built and tested sql_translator.py which translates natural language to SQLite queries using Gemini 2.5 Pro with read-only connection limits and self-correcting retry loop.",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Utilized Gemini 3.5 Flash (Medium) for coding, testing, and verifying the application in the sandbox, which is highly cost-efficient."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 50000,
+        "output": 3500
+      },
+      "estimated_cost_usd": 0.03,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-15",
+      "session_id": "72be4804-b676-43ff-8246-f1b2e6929e99-complex",
+      "model_used": "Gemini 3.5 Flash (Medium) + Gemini 2.5 Pro",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Conducted complex query validation suite (test_complex_queries.py) against TranceSQL, executing 5 benchmark database challenges: Gaps & Islands, Recursive CTE BOM traversal, Sessionization, FIFO Allocation, and Dialect-Agnostic Median.",
+          "complexity": "Complex",
+          "correct_tier": true,
+          "notes": "Verified that all 5 complex SQL challenges passed on Attempt 1 with 100% correct data results on SQLite."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 120000,
+        "output": 12000
+      },
+      "estimated_cost_usd": 0.15,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-15",
+      "session_id": "72be4804-b676-43ff-8246-f1b2e6929e99-stress",
+      "model_used": "Gemini 3.5 Flash (Medium) + Gemini 2.5 Pro",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Executed full e-commerce database stress test suite (stress_test.py) with 15 queries covering running totals, retention, MoM growth, anti-joins, Top-N window partitions, cohort counts, and LTV groupings.",
+          "complexity": "Complex",
+          "correct_tier": true,
+          "notes": "Verified 100% pass rate (15/15 cases) on Attempt 1, generating high-quality SQL queries using CTEs and window partitions without requiring correction loops."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 350000,
+        "output": 35000
+      },
+      "estimated_cost_usd": 0.4,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-15",
+      "session_id": "dc8b8043-d5ec-41cf-a08d-d346cf14046b",
+      "model_used": "Gemini 2.5 Pro (Default)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Dialogflow removal, React chatbot widget branding update to Academy Assistant, api/chat.js rewrite to stream from Gemini API using user credits, Vercel production deployment, and Chrome DevTools verification.",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Correct tier utilized for frontend and backend integration and deployment."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 3500
+      },
+      "estimated_cost_usd": 0.05,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-16",
+      "session_id": "b3ddbd02-8c7e-4048-bfee-906b09902902",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "WhatsApp Cloud API integration (whatsapp_bridge.py, server.py, dashboard.html), and verification via Chrome DevTools.",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Correct tier utilized. Writing code, setting up endpoints, and running DevTools verification executed cheaply on Flash."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 50000,
+        "output": 4000
+      },
+      "estimated_cost_usd": 0.03,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-18",
+      "session_id": "f73f9406-82e3-494c-82fc-e2f8f94b58bd",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Finalized NTH Brain Phenotype (MVP v0.1) specification including Visual Bidding, Cognitive Load Reduction, Self-Erasure protocol, compressed runtime loops, and Section VI Failure Conditions.",
+          "complexity": "Moderate/Complex",
+          "correct_tier": true,
+          "notes": "Utilized Gemini 3.5 Flash (Medium) for writing framework specs and committing session details, keeping costs minimal."
+        },
+        {
+          "description": "Integrated a high-fidelity GCP Spend and Promo Credits Management Workspace tab directly into the Agent OS HTML dashboard. Implemented frontend cards, credentials binding form, handshake verification console, and interactive workload spend simulator. Added /gcp/credits, /gcp/save_config, and /gcp/verify API endpoints to server.py.",
+          "complexity": "Moderate/UI Coding",
+          "correct_tier": true,
+          "notes": "Correct tier utilized. Writing JS/HTML layout and python handler endpoints executed cheaply and safely on Flash."
+        },
+        {
+          "description": "Created gcp_billing_scraper.py using Playwright and browser-cookie3 to automatically extract session cookies, navigate the billing console, and parse the exact remaining values. Added /gcp/sync POST endpoint to server.py and wired the Sync button on the dashboard UI.",
+          "complexity": "Moderate/Automation",
+          "correct_tier": true,
+          "notes": "Utilized Gemini 3.5 Flash (Medium) for writing browser scraping logic and syncing live GCP records."
+        },
+        {
+          "description": "Designed and implemented adlc_pipeline.py, a custom orchestrator script that integrates Google's Jules CLI with git and local test suites to establish an automated CI/CD pipeline for the Agentic Development Life Cycle (ADLC).",
+          "complexity": "Moderate/Orchestration",
+          "correct_tier": true,
+          "notes": "Utilized Gemini 3.5 Flash (Medium) for command orchestration script development."
+        },
+        {
+          "description": "Successfully verified Jules CLI authentication and ran connection diagnostics (jules remote list) confirming successful pipeline integration.",
+          "complexity": "Moderate/Verification",
+          "correct_tier": true,
+          "notes": "Utilized Gemini 3.5 Flash (Medium) to run command line validations."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 65000,
+        "output": 9000
+      },
+      "estimated_cost_usd": 0.05,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-18",
+      "session_id": "ac5be7d9-836f-4d05-ab2f-c8e2919622fc",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "OKF Bundle Generator implementation and dependency configuration",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Used Tier 2 model to successfully generate schema metadata extractor, enricher, writer, and index pages."
+        },
+        {
+          "description": "E2E integration test against SQLite and Google GenAI API",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Verified generated markdown documents link correctly to other table schemas relatively."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 95000,
+        "output": 4500
+      },
+      "estimated_cost_usd": 0.05,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-18",
+      "session_id": "ac5be7d9-836f-4d05-ab2f-c8e2919622fc-commit",
+      "model_used": "Gemini 3.5 Flash (Medium)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Integrated OKF Bundle Generator tab and backend API into Agent OS Dashboard",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Added HTML structures, Javascript handlers, and HTTP POST endpoints."
+        },
+        {
+          "description": "Committed changes to Git and diagnosed Jules CLI package pathing",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Analyzed and resolved EEXIST and ENOENT errors in the npm wrapper, reinstalling @google/jules CLI."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 85000,
+        "output": 5000
+      },
+      "estimated_cost_usd": 0.04,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-21",
+      "session_id": "ba904040-fde9-4813-a056-f5196f6d3593",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Fixed practice test links in DP-750 and DP-800 subdirectories",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Correct tier utilized. Direct HTML updates and verification tests."
+        },
+        {
+          "description": "Added DP-750 and DP-800 nodes and layouts to 3D curriculum network graph",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Added vertices, tilts, and dataset mappings to NeuralCanvas.jsx."
+        },
+        {
+          "description": "Verified, built, and deployed the production build to Vercel and Git",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Performed npm run build, vercel --prod, and git commit/push successfully."
+        },
+        {
+          "description": "Executed HTTP concurrency stress tests on prod and non-prod website targets",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Logged latency statistics and verified protection layers under load."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 90000,
+        "output": 6000
+      },
+      "estimated_cost_usd": 0.05,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-25",
+      "session_id": "04f50850-78a6-4cc9-be45-df74db2d0224",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Folder Alignment Strategy & Graduation Automation",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Automated git/repo setup and staging-to-repository graduation pipeline using a custom PowerShell script."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 25000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.015,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "f3520f95-45de-48f1-8e72-f982b8d17b45",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Fix CloudRun ADC Timeout",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Diagnosed and resolved Firebase/Cloud Run MCP startup latency and Google Cloud credentials timeouts."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 60000,
+        "output": 5000
+      },
+      "estimated_cost_usd": 0.03,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "c1293bc5-13e8-48d5-8436-6cde4b2c7713",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage efficiency validation pipeline, updated logs, and configured session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 30000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "6b30b3d4-9d18-4482-a0a8-4475f77b7a7c",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Evaluate and update Usage Efficiency skill and execute validation",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed usage efficiency validation script, reviewed usage-efficiency skill instructions, and logged performance."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 30000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "9d125041-0cd1-4d4d-b7fb-cd7acf0b2695",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency validation for this skill/session",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "7b88f636-2cb0-4248-9e29-87c9488eba3a",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "10963429-9ffe-4da2-94de-00a217d2a24b",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "94908310-502d-4ec9-86a0-38b6a436e24c",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "6a28dbe6-ec0c-411f-87b8-0e8018e05959",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "d1b5f781-fbcc-4cf9-8634-32d8c0905c62",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-26",
+      "session_id": "fa944886-336e-48a0-b09a-0552d5956faf",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "f4c434f2-9dae-4ecf-96e6-9810c693e89f",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "0c4c86c3-6b3a-447d-805e-5a2ef75720c0",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "82783cf1-396d-486d-a634-1854d87569ef",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "0d1a0d47-1573-4a31-be6f-301a84626c0f",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "8578d77e-0926-4763-94ff-bed97e6c7b47",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "d2a077c4-9081-49f7-b590-bdf1e4fdf30e",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "1108ebe1-b269-4c7f-b031-bb733cae2c11",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "b06c581e-a0aa-47e6-8cb3-4848db203343",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "694d0e6b-97af-4e01-b97d-e4a12e024508",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "97b68d80-0d70-4d6d-b24a-a9ee2d9de001",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-27",
+      "session_id": "5616402c-2816-45ee-92c1-ad094f0be614",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "3c04c28a-591b-4168-9321-8d413d694a22",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Perform Generation 2 speech subsystem architecture review and document reconciliation",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Reviewed architectural invariants, generated drift report, resolved CLI coupling imports, and updated prim/sec docs."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 45000,
+        "output": 4500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "5616402c-2816-45ee-92c1-ad094f0be614",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "b6808c39-001d-4ee5-9fa8-2533184ab6fd",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "e7421534-2d4b-4b52-a690-6e1495031666",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "c11bb0c5-f370-411d-ae90-dd6ef09a47ba",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "4e8407a3-93a4-48a6-9d7c-5745bcee1dc8",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "34b68264-1041-4155-b5d8-7902598c1864",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "db31bba6-6676-4e69-b2ba-52bd4ddc724e",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "345a9714-72d4-4ccb-924b-fca9b4a713c4",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "1a86f99d-c304-4d6b-9044-8fd0f08ca797",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-28",
+      "session_id": "6ce3c56d-a1bf-4ad4-a139-85f54af0cec3",
+      "model_used": "Gemini 2.5 Pro (Thinking / High)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Core Web Vitals optimization, media asset transcode, unified analytics adapter instrumentation, URL-gated HUD, and UAT/master branch deployment promotion",
+          "complexity": "Complex",
+          "correct_tier": true,
+          "notes": "End-to-end performance refactoring and release lifecycle promotion."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 180000,
+        "output": 18000
+      },
+      "estimated_cost_usd": 0.15,
+      "routing_corrections": []
+    }
+  ],
+  "summary": {
+    "total_sessions": 51,
+    "tier_distribution": {
+      "tier_1": 0,
+      "tier_2": 47,
+      "tier_3": 0,
+      "tier_4": 3,
+      "tier_5": 1
+    },
+    "total_estimated_cost_usd": 3.075,
+    "correct_routing_rate": 1.0,
+    "last_updated": "2026-06-28"
+  }
+}
