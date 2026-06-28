@@ -12,7 +12,14 @@ A production conversational agent that answers student questions on DP-600, DP-7
 - Cost is covered by GenAI App Builder and Dialogflow CX credits.
 - Source: [nth_dimension_architecture.md](file:///C:/Users/navka/navakanth001/sources/technical/nth_dimension_architecture.md)
 
+## Engagement & Telemetry Framework (v1.0)
+A vendor-agnostic client-side architecture that monitors active user attention, calculates learning index scores, and batches events for resilient delivery:
+- **Observation Engine (`engagement-framework.js`)**: Runs intersection observers over defined `data-section` modules, captures interactive CTA clicks (using event delegation), and applies the Page Visibility API to pause dwell-timers when tabs are hidden.
+- **Curiosity Index**: Computes a weighted attention rating (Active Dwell Time: 35%, Max Scroll Depth: 30%, Interaction Clicks: 20%, Section Entries: 15%) and maps milestones (e.g. "Master Explorer"). Saves state in versioned `sessionStorage` (`nth_learning_hud_v1`).
+- **Telemetry Adapter (`analytics-adapter.js`)**: Subscribes to Custom DOM Events (`academy:sectionVisited`, `academy:milestoneUnlocked`, `academy:curiosityChanged`). Accumulates and flushes events every 4 seconds (with direct bypasses for milestone conversions) to GA4 (`gtag`) and Vercel Analytics. Automatically enriches payloads with page path, viewport width, and network connection type context.
+- **Performance Observing & Delivery (`performance-observer.js`)**: Uses browser APIs to trace runtime paint/load signals (FCP, LCP, CLS, INP) and dispatches performance telemetry. Complemented by AVIF/WebP image generation pipelines (reducing asset weight by 89%-96%) and lazy-loading / video poster configurations for layout protection.
+
 ## Connections
-- The site itself is an active project at the repo root: `nthdimensionacademy/` and `nth-dimension-react/`.
+- The site itself is an active project at the repo root: [nthdimensionacademy/](file:///c:/Users/navka/navakanth001/nthdimensionacademy/) and [nth-dimension-react/](file:///c:/Users/navka/navakanth001/nth-dimension-react/).
 - Course content overlaps [Microsoft Fabric (DP-700)](fabric-dp700.md).
 - Shares the RAG-over-Markdown approach with [OKF Bundle Generator](okf-bundle-generator.md); contrasts with the unofficial-API approach in [NotebookLM Bridge](notebooklm-bridge.md).
