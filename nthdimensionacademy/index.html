@@ -27,6 +27,7 @@
         right: 16px;
       }
     </style>
+    <script src="performance-observer.js"></script>
 </head>
 <body>
     <div class="cursor-glow"></div>
@@ -34,7 +35,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="assets/logo_gold.jpeg" alt="Logo">
+                <img src="assets/logo_gold.webp" alt="Logo" loading="eager" decoding="async">
                 <span>Nth Dimension Academy</span>
             </div>
             <ul class="nav-links">
@@ -47,15 +48,20 @@
         </div>
     </nav>
 
-    <header class="hero">
+    <header class="hero" data-section="Academy Ascent">
         <div class="hero-bg">
-            <video autoplay loop muted playsinline>
-                <source src="assets/hero_video.mp4" type="video/mp4">
+            <video autoplay loop muted playsinline poster="assets/glass_bg.webp" style="object-fit: cover; width: 100%; height: 100%;">
+                <source src="assets/_Maintain_the_3D_hyper-realistic_crystalline_202605061839.mp4" type="video/mp4" media="(min-width: 768px)">
+                <source src="assets/Continue_with_pulsating_text_and_202605061853.mp4" type="video/mp4" media="(max-width: 767px)">
             </video>
         </div>
         <div class="hero-content">
             <div class="hero-badge-wrapper">
-                <img src="assets/media__1777542950074.jpg" alt="Microsoft Certified Trainer" class="mct-hero-badge">
+                <picture>
+                    <source srcset="assets/badge_mct_hero.avif" type="image/avif">
+                    <source srcset="assets/badge_mct_hero.webp" type="image/webp">
+                    <img src="assets/badge_mct_hero.jpg" alt="Microsoft Certified Trainer" class="mct-hero-badge" fetchpriority="high" decoding="async">
+                </picture>
             </div>
             <h1>Master the <br><span class="text-gradient">Azure Data Ecosystem</span></h1>
             <p class="subtitle">Led by Navakanth Reddy Dumpa, Senior Data Analytics Architect. Bridging the gap between complex cloud engineering and scalable technical enablement.</p>
@@ -64,17 +70,25 @@
                 <a href="#expertise" class="btn btn-secondary">View Expertise</a>
             </div>
             <div class="cert-bar">
-                <img src="assets/media__1777541920190.jpg" alt="MCT Badge" class="inline-cert-badge">
+                <picture>
+                    <source srcset="assets/badge_mct_small.avif" type="image/avif">
+                    <source srcset="assets/badge_mct_small.webp" type="image/webp">
+                    <img src="assets/badge_mct_small.jpg" alt="MCT Badge" class="inline-cert-badge" decoding="async">
+                </picture>
                 <span>MCT</span> • <span>DP-600</span> • <span>DP-203</span> • <span>DA-100</span> • <span>DP-900</span>
             </div>
         </div>
     </header>
 
-    <section id="about" class="about-section">
+    <section id="about" class="about-section" data-section="About MCT">
         <div class="container glass-panel">
             <div class="about-grid">
                 <div class="about-image reveal">
-                    <img src="assets/media__1777541920144.jpg" alt="Navakanth Reddy Dumpa - MCT" class="profile-img">
+                    <picture>
+                        <source srcset="assets/profile_mct.avif" type="image/avif">
+                        <source srcset="assets/profile_mct.webp" type="image/webp">
+                        <img src="assets/profile_mct.jpg" alt="Navakanth Reddy Dumpa - MCT" class="profile-img" loading="lazy" decoding="async">
+                    </picture>
                 </div>
                 <div class="about-content">
                     <div class="about-text">
@@ -105,7 +119,7 @@
         </div>
     </section>
 
-    <section id="expertise" class="expertise-section">
+    <section id="expertise" class="expertise-section" data-section="Core Expertise">
         <div class="container">
             <div class="section-header center">
                 <h2>Technical <span class="text-gradient">Expertise</span></h2>
@@ -114,13 +128,13 @@
             
             <div class="feature-media-container reveal">
                 <div class="video-carousel">
-                    <video autoplay loop muted playsinline>
+                    <video loop muted playsinline controls poster="assets/fabric_demo_thumbnail.webp" preload="none">
                         <source src="assets/fabric_video.mp4" type="video/mp4">
                     </video>
-                    <video autoplay loop muted playsinline>
+                    <video loop muted playsinline controls preload="none">
                         <source src="assets/ppt_video_1.mp4" type="video/mp4">
                     </video>
-                    <video autoplay loop muted playsinline>
+                    <video loop muted playsinline controls preload="none">
                         <source src="assets/ppt_video_2.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -166,7 +180,7 @@
     </section>
 
     <!-- NEW KNOWLEDGE GRAPH SECTION -->
-    <section id="knowledge-graph" class="graph-section">
+    <section id="knowledge-graph" class="graph-section" data-section="Curriculum Map">
         <div class="container">
             <div class="section-header center">
                 <h2>Interactive <span class="text-gradient">Curriculum Map</span></h2>
@@ -177,12 +191,18 @@
                 <div class="graph-overlay-hint" style="position: absolute; top: 10px; left: 10px; color: var(--accent-blue); font-size: 0.9rem; z-index: 10; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px var(--accent-blue);">
                     <i class="ph-fill ph-mouse"></i> Drag to rotate | Scroll to zoom
                 </div>
+                <!-- Mobile: tap-to-activate shield prevents scroll hijacking -->
+                <div class="graph-mobile-shield">
+                    <i class="ph ph-hand-tap"></i>
+                    <button class="btn btn-primary" id="activate-graph-btn">Tap to Interact</button>
+                    <p>Use two fingers to scroll page when active</p>
+                </div>
             </div>
         </div>
     </section>
 
 
-    <section id="training" class="training-section">
+    <section id="training" class="training-section" data-section="Training Pathways">
         <div class="container">
             <div class="section-header">
                 <h2>Training & <span class="text-gradient">Instructional Portfolio</span></h2>
@@ -220,7 +240,7 @@
         </div>
     </section>
 
-    <section id="experience" class="experience-section">
+    <section id="experience" class="experience-section" data-section="Professional Experience">
         <div class="container">
             <div class="section-header center">
                 <h2>Professional <span class="text-gradient">Experience</span></h2>
@@ -267,7 +287,7 @@
         </div>
     </section>
 
-    <section class="achievements-section">
+    <section class="achievements-section" data-section="Key Achievements">
         <div class="container glass-panel reveal">
             <h2 class="center">Key <span class="text-gradient">Achievements</span></h2>
             <div class="achieve-grid">
@@ -290,12 +310,12 @@
         </div>
     </section>
 
-    <footer>
+    <footer data-section="Contact & Connect">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="logo">
-                        <img src="assets/logo_gold.jpeg" alt="Logo">
+                        <img src="assets/logo_gold.webp" alt="Logo" loading="lazy" decoding="async">
                         <span>Nth Dimension Academy</span>
                     </div>
                     <p>Empowering the next generation of Cloud & Data Architects.</p>
@@ -313,8 +333,34 @@
         </div>
     </footer>
 
+    <!-- Floating Bottom Nav (mobile thumb zone) -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <a href="#about" class="mobile-nav-item active">
+            <i class="ph ph-user"></i>
+            <span>About</span>
+        </a>
+        <a href="#expertise" class="mobile-nav-item">
+            <i class="ph ph-laptop"></i>
+            <span>Expertise</span>
+        </a>
+        <a href="#knowledge-graph" class="mobile-nav-item">
+            <i class="ph ph-network"></i>
+            <span>Map</span>
+        </a>
+        <a href="#training" class="mobile-nav-item">
+            <i class="ph ph-graduation-cap"></i>
+            <span>Training</span>
+        </a>
+        <a href="mailto:navkanthr@gmail.com" class="mobile-nav-item">
+            <i class="ph ph-envelope"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+
     <!-- 3D Graph Library -->
     <script src="https://unpkg.com/3d-force-graph"></script>
+    <script src="analytics-adapter.js"></script>
+    <script src="engagement-framework.js"></script>
     <script src="script.js"></script>
 
     <!-- Dialogflow Messenger -->
