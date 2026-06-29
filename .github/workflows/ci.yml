@@ -20,7 +20,7 @@ jobs:
       - name: Install deps (speech parse path — offline, no ML models)
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pydantic google-genai python-dotenv
+          pip install pytest pydantic google-genai python-dotenv numpy scipy soundfile
 
       - name: Compile-check speech subsystem
         run: python -m compileall -q agent_os/speech
