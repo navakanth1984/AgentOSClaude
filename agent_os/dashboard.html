@@ -1164,6 +1164,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   <div class="tab" onclick="switchTab('whatsapp')">💬 WhatsApp</div>
   <div class="tab" onclick="switchTab('credits')">💳 GCP Credits</div>
   <div class="tab" onclick="switchTab('okf')">📦 OKF Generator</div>
+  <div class="tab" onclick="switchTab('sitebuilder')">🌐 Site Builder</div>
 </div>
 
 <!-- ══ TAB: SWARM ══════════════════════════════════════════════ -->
@@ -1992,6 +1993,44 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   </div>
 </div>
 
+<div id="tab-sitebuilder" class="tab-content">
+  <div class="card">
+    <h2>🌐 Site Builder</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:16px">
+      Generate a self-contained HTML site from a prompt. Routes through the shared model router
+      (model economics governed). Optionally paste a brand URL to style it via Firecrawl.
+    </p>
+    <div style="margin-bottom:12px">
+      <label>Describe the site</label>
+      <textarea id="site-prompt" rows="4" placeholder="e.g. A one-page landing site for a Telugu audiobook studio — hero, 3 features, pricing, contact. Warm, editorial." style="width:100%"></textarea>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <div style="flex:1;min-width:220px">
+        <label>Brand URL (optional)</label>
+        <input id="site-brand" type="text" placeholder="https://example.com — scraped for colors + fonts" style="width:100%" />
+      </div>
+      <div style="min-width:220px">
+        <label>Model</label>
+        <select id="site-model">
+          <option value="anthropic/claude-opus-4">Opus (highest quality)</option>
+          <option value="anthropic/claude-sonnet-4.6">Sonnet (balanced)</option>
+          <option value="openrouter/free">Free tier (cheapest)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-blue" id="site-btn" onclick="generateSite()">⚡ Build Site</button>
+    <span id="site-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
+
+    <div style="margin-top:18px">
+      <pre id="site-log" class="output empty" style="max-height:160px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">No jobs running.</pre>
+      <div id="site-result" style="display:none;margin-top:14px">
+        <a id="site-open" class="btn btn-green" href="#" target="_blank" rel="noopener">↗ Open generated site</a>
+        <iframe id="site-preview" style="width:100%;height:420px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-top:12px;background:#fff"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>Agent OS · ClawGlove + OpenClaw · Navakanth Reddy Dumpa &nbsp;|&nbsp; Auto-refresh 5s</footer>
 
 <script>
@@ -2203,7 +2242,7 @@ async function apiPost(path, body, timeoutMs=360000) {
 // ── Tabs ───────────────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll(".tab").forEach((t,i) => {
-    const names = ["swarm","notebooks","goal","cloud","search","save","tune","system","simulations","quantum","creative","whatsapp","credits","okf"];
+    const names = ["swarm","notebooks","goal","cloud","search","save","tune","system","simulations","quantum","creative","whatsapp","credits","okf","sitebuilder"];
     t.classList.toggle("active", names[i]===name);
   });
   document.querySelectorAll(".tab-content").forEach(c => {
@@ -3493,6 +3532,77 @@ function updateAudiobookVoices() {
 
 // Populate initial voices
 setTimeout(updateAudiobookVoices, 100);
+
+// ── Site Builder ───────────────────────────────────────────────
+let siteJobId = null;
+let sitePollInterval = null;
+
+async function generateSite() {
+  const prompt = el("site-prompt").value.trim();
+  if (!prompt) { showToast("Describe the site you want to build.", "warning"); return; }
+
+  const brand_url = el("site-brand").value.trim() || null;
+  const model = el("site-model").value;
+
+  const btn = el("site-btn");
+  btn.disabled = true;
+  el("site-status").innerHTML = '<span class="spinner"></span> Generating...';
+  el("site-result").style.display = "none";
+
+  const logPre = el("site-log");
+  logPre.className = "output running";
+  logPre.textContent = "Launching site build...\n";
+
+  try {
+    const res = await apiPost("/sitebuilder", { prompt, brand_url, model });
+    siteJobId = res.job_id;
+    el("site-status").textContent = `⚡ Building (ID: ${siteJobId})`;
+    logPre.textContent += `Job ${siteJobId} scheduled${brand_url ? " (scraping brand…)" : ""}.\n`;
+    if (sitePollInterval) clearInterval(sitePollInterval);
+    sitePollInterval = setInterval(pollSiteStatus, 3000);
+  } catch (e) {
+    logPre.className = "output error";
+    logPre.textContent = "Request failed: " + e.message;
+    el("site-status").textContent = "✗ Launch Failed";
+    btn.disabled = false;
+  }
+}
+
+async function pollSiteStatus() {
+  if (!siteJobId) return;
+  try {
+    const res = await apiPost("/sitebuilder/status", { job_id: siteJobId });
+    const logPre = el("site-log");
+
+    if (res.status === "running") {
+      logPre.textContent = `Job ${res.job_id}: RUNNING…\n`;
+      return;
+    }
+
+    if (sitePollInterval) clearInterval(sitePollInterval);
+    el("site-btn").disabled = false;
+
+    if (res.status === "failed") {
+      logPre.className = "output error";
+      logPre.textContent = "Build failed: " + (res.error || "unknown error");
+      el("site-status").textContent = "✗ Failed";
+      return;
+    }
+
+    const m = res.manifest || {};
+    logPre.className = "output success";
+    logPre.textContent = `✓ Done — ${m.bytes} bytes via ${m.model}${m.brand_used ? " (brand applied)" : ""}.\n${m.web_path}`;
+    el("site-status").textContent = "✓ Built";
+    el("site-open").href = m.web_path;
+    el("site-preview").src = m.web_path;
+    el("site-result").style.display = "block";
+  } catch (e) {
+    if (sitePollInterval) clearInterval(sitePollInterval);
+    el("site-btn").disabled = false;
+    el("site-log").className = "output error";
+    el("site-log").textContent = "Status error: " + e.message;
+  }
+}
 
 let audiobookJobId = null;
 let audiobookPollInterval = null;
