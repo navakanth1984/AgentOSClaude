@@ -1667,6 +1667,15 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 self._send(500, {"error": f"PDF export failed: {e}"})
 
+        elif path == "/sitebuilder/log":
+            # Body: {"limit": 20}  → recent generation records (newest first)
+            try:
+                from site_builder import read_log
+                limit = int(body.get("limit", 20))
+                self._send(200, {"entries": read_log(limit)})
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
         elif path == "/swarm":
             # Parallel sub-agent deep research + NotebookLM integration
             # Body: {"topic": "...", "model": "anthropic/claude-sonnet-4.6", "auto_notebooklm": false}

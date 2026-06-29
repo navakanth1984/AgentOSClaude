@@ -2032,6 +2032,15 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       </div>
     </div>
   </div>
+
+  <div class="card" style="margin-top:14px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <h3 style="margin:0">Recent generations</h3>
+      <button class="btn btn-outline" onclick="loadSiteLog()" style="padding:4px 10px;font-size:11px">🔄 Refresh</button>
+      <span style="font-size:11px;color:var(--muted)">measured facts per build — model, size, duration</span>
+    </div>
+    <div id="site-log-history" style="margin-top:12px;font-size:12px;color:var(--muted)">No generations logged yet.</div>
+  </div>
 </div>
 
 <footer>Agent OS · ClawGlove + OpenClaw · Navakanth Reddy Dumpa &nbsp;|&nbsp; Auto-refresh 5s</footer>
@@ -2256,6 +2265,7 @@ function switchTab(name) {
   if (name==="quantum") loadQuantumTab();
   if (name==="whatsapp") loadWhatsAppTab();
   if (name==="credits") loadGCPCredits();
+  if (name==="sitebuilder") loadSiteLog();
 }
 
 // ── Health / status polling ────────────────────────────────────
