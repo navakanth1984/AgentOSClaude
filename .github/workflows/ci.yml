@@ -45,6 +45,7 @@ jobs:
           --ignore-missing-imports piper.voice
           --ignore-missing-imports psutil
           --ignore-missing-imports sarvamai
+          --ignore-missing-imports docx
 
       - name: Run speech subsystem tests (deterministic, offline mock)
         env:
