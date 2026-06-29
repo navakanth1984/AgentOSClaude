@@ -69,10 +69,20 @@ class SarvamEngine(TTSEngine):
     def get_capabilities(self) -> EngineCapabilities:
         if self.capabilities_cache:
             return self.capabilities_cache
+            
+        female_voices = {
+            "ritu", "priya", "neha", "pooja", "simran", "kavya", "ishita", "shreya",
+            "roopa", "tanya", "shruti", "suhani", "kavitha", "rupali", "niharika"
+        }
+        voices_meta = {}
+        for s in _SPEAKERS:
+            gender = "female" if s in female_voices else "male"
+            voices_meta[s] = {"gender": gender}
+
         self.capabilities_cache = EngineCapabilities(
             engine_name=EngineName.SARVAM,
             supported_languages=list(_SARVAM_LANGS),
-            supported_voices={s: {"gender": "unknown"} for s in _SPEAKERS},
+            supported_voices=voices_meta,
             max_text_length=1000,          # bulbul per-request soft limit
             max_concurrent_requests=2,     # be polite to the API
             supports_streaming=False,
@@ -108,21 +118,43 @@ class SarvamEngine(TTSEngine):
         if not self.supports_language(language):
             raise ValueError(f"Sarvam does not support language {language!r}")
 
-        resp = client.text_to_speech.convert(
-            text=text,
-            target_language_code=self._lang_code(language),
-            speaker=speaker,
-            model=self.model,
-            output_audio_codec="wav",
-        )
-        if not resp.audios:
-            raise RuntimeError("Sarvam returned no audio for the chunk.")
+        # Chunk text if it exceeds max_text_length (1000 characters)
+        max_len = 1000
+        text_chunks = []
+        if len(text) <= max_len:
+            text_chunks = [text]
+        else:
+            import re
+            sentences = re.split(r'(?<=[.!?])\s+', text)
+            current_chunk = ""
+            for sentence in sentences:
+                if len(current_chunk) + len(sentence) + 1 <= max_len:
+                    current_chunk = (current_chunk + " " + sentence).strip()
+                else:
+                    if current_chunk:
+                        text_chunks.append(current_chunk)
+                    current_chunk = sentence
+            if current_chunk:
+                text_chunks.append(current_chunk)
 
-        # Sarvam may split long input into several base64 WAV segments — join them.
-        parts: List[np.ndarray] = []
+        all_audio_parts: List[np.ndarray] = []
         sr = self.SAMPLE_RATE
-        for b64 in resp.audios:
-            data, sr = sf.read(io.BytesIO(base64.b64decode(b64)), dtype="int16")
-            parts.append(data)
-        audio = parts[0] if len(parts) == 1 else np.concatenate(parts)
+
+        for chunk in text_chunks:
+            resp = client.text_to_speech.convert(
+                text=chunk,
+                target_language_code=self._lang_code(language),
+                speaker=speaker,
+                model=self.model,
+                output_audio_codec="wav",
+                pace=speed,
+            )
+            if not resp.audios:
+                raise RuntimeError("Sarvam returned no audio for the chunk.")
+
+            for b64 in resp.audios:
+                data, sr = sf.read(io.BytesIO(base64.b64decode(b64)), dtype="int16")
+                all_audio_parts.append(data)
+
+        audio = all_audio_parts[0] if len(all_audio_parts) == 1 else np.concatenate(all_audio_parts)
         return sr, audio

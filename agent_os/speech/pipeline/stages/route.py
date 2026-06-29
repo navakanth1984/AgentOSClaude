@@ -93,9 +93,9 @@ class RouteStage:
             # Normalization for hashing: lowercase, remove extra spaces
             normalized_text = re.sub(r'\s+', ' ', spoken_text.strip().lower())
 
-            # SHA256(schema_version + engine + engine_version + voice + language + speed + pitch + normalized_text)
-            # Default speed/pitch for now
-            speed, pitch, volume_gain_db = 1.0, 1.0, 0.0
+            speed = float(context.config.get("speed", 1.0))
+            pitch = float(context.config.get("pitch", 1.0))
+            volume_gain_db = float(context.config.get("volume_gain_db", 0.0))
             language = chunk.language
             engine_version = "1.0"
 
