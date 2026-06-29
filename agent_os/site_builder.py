@@ -100,3 +100,41 @@ def build_site(
         "brand_used": bool(brand_hint),
         "bytes": len(html),
     }
+
+
+def export_pdf(site_id: str) -> dict:
+    """Render an already-generated site's index.html to a print-fidelity PDF.
+
+    Uses headless Chromium (Playwright) so CSS renders exactly as in a browser —
+    python-pptx/wkhtmltopdf can't match that. Returns a manifest with the served
+    web path to the PDF. Raises FileNotFoundError if the site hasn't been built.
+    """
+    from playwright.sync_api import sync_playwright
+
+    out_dir = SITES_DIR / site_id
+    html_path = out_dir / "index.html"
+    if not html_path.exists():
+        raise FileNotFoundError(f"No generated site for id '{site_id}' — build it first.")
+
+    pdf_path = out_dir / "site.pdf"
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page()
+            # 'load' (not 'networkidle') — the page is fully self-contained, so waiting
+            # for network idle adds nothing and can hang headless Chromium on Windows.
+            page.goto(html_path.as_uri(), wait_until="load", timeout=20000)
+            page.pdf(
+                path=str(pdf_path),
+                format="A4",
+                print_background=True,
+                margin={"top": "0", "bottom": "0", "left": "0", "right": "0"},
+            )
+        finally:
+            browser.close()
+
+    return {
+        "pdf_path": str(pdf_path),
+        "web_path": f"/asset_library/sites/{site_id}/site.pdf",
+        "bytes": pdf_path.stat().st_size,
+    }
