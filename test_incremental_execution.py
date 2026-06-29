@@ -58,11 +58,12 @@ def test_incremental_execution_flow():
         
         config = {
             "input_text": text,
-            "chapter_id": "chapter_test",
+            "chapter_id": "0",
             "engine_capabilities": capabilities,
             "tts_engine": engine,
             "max_workers": 1,
-            "trim": {"frame_ms": 20, "multiplier": 3.0, "minimum_threshold": 50.0}
+            "trim": {"frame_ms": 20, "multiplier": 3.0, "minimum_threshold": 50.0},
+            "parser": "benchmark"
         }
         
         from agent_os.speech.schema.jobs import EventBus

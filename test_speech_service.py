@@ -48,7 +48,8 @@ def test_speech_service_lifecycle():
             payload = {
                 "text_path": str(text_file),
                 "engine": "kokoro",
-                "voice": "af_heart"
+                "voice": "af_heart",
+                "parser": "benchmark"
             }
             
             # Modify os.getcwd to save jobs in temp dir
