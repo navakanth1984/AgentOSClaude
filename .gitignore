@@ -121,3 +121,7 @@ agent_os/Screenshot *.png
 jobs/
 audiobooks/
 corpus_output*/
+
+# Installed agent skill content (tool-managed, ~99MB, not repo source).
+# Files stay on disk; scripts that read them by absolute path are unaffected.
+.agents/
