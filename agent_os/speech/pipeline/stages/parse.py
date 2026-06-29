@@ -37,11 +37,12 @@ class ParseStage:
         except ValueError:
             policy = ParsePolicy.BALANCED
             
+        allow_mock = context.config.get("allow_mock_parse", False)
         if classification.document_type == "screenplay" or (classification.document_type == "plain_text" and "INT." in text):
-            parser = ScreenplayParser(policy=policy)
+            parser = ScreenplayParser(policy=policy, allow_mock=allow_mock)
         else:
             # Default to NovelParser for novels and markdown
-            parser = NovelParser(policy=policy)
+            parser = NovelParser(policy=policy, allow_mock=allow_mock)
             
         # 4. LLM Extraction and Schema Validation
         # The parser internal logic uses Pydantic schema validation to ensure types

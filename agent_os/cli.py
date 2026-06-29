@@ -12,22 +12,18 @@ from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
 from rich.panel import Panel
 
+import agent_os.env_boot  # noqa: F401 — load .env so engine/parser keys are visible
 from agent_os.speech.engines.registry import EngineRegistry, resolve_engine
 from agent_os.speech.schema.models import Language, EngineName, ExecutionPlanEntry
 from agent_os.speech.schema.jobs import SpeechJob, JobState, SpeechJobStore, EventBus
-from agent_os.speech.pipeline.executor import StageContext
-from agent_os.speech.pipeline.graph import DAG
-from agent_os.speech.pipeline.stages.normalize import NormalizeStage
-from agent_os.speech.pipeline.stages.parse import ParseStage
-from agent_os.speech.pipeline.stages.segment import SegmentStage
-from agent_os.speech.pipeline.stages.context import ContextStage
-from agent_os.speech.pipeline.stages.route import RouteStage
-from agent_os.speech.pipeline.stages.synthesize import SynthesizeStage
-from agent_os.speech.pipeline.stages.trim import TrimStage
-from agent_os.speech.pipeline.stages.append import AppendStage
-from agent_os.speech.pipeline.incremental_executor import IncrementalExecutor
 
 console = Console()
+
+# Per-engine default speaker when the user doesn't pass --voice.
+_DEFAULT_VOICES = {"kokoro": "af_heart", "sarvam": "rohan", "piper": "default"}
+
+def _default_voice(engine: str) -> str:
+    return _DEFAULT_VOICES.get(engine, "default")
 
 def run_doctor():
     console.print("[bold cyan]Speech Engine Health[/bold cyan]")
@@ -171,7 +167,7 @@ def main():
     # jobs create
     create_parser = jobs_sub.add_parser("create", help="Create new speech job")
     create_parser.add_argument("file", help="Source file path (.txt or .md)")
-    create_parser.add_argument("--engine", choices=["kokoro", "piper"], default="kokoro", help="Speech engine name")
+    create_parser.add_argument("--engine", choices=["kokoro", "piper", "sarvam"], default="kokoro", help="Speech engine name")
     create_parser.add_argument("--voice", default="default", help="Voice model ID")
     
     # jobs status / show / cancel / events / artifacts
@@ -183,7 +179,7 @@ def main():
     for verb in ["synth", "stream"]:
         s_parser = subparsers.add_parser(verb, help=f"Execute speech synthesis (standard/stream)")
         s_parser.add_argument("file", help="Source file path (.txt or .md)")
-        s_parser.add_argument("--engine", choices=["kokoro", "piper"], default="kokoro", help="Speech engine name")
+        s_parser.add_argument("--engine", choices=["kokoro", "piper", "sarvam"], default="kokoro", help="Speech engine name")
         s_parser.add_argument("--voice", default="default", help="Voice model ID")
 
     # 3. DOCTOR subparser
@@ -194,7 +190,7 @@ def main():
     engines_sub = engines_parser.add_subparsers(dest="action", help="Engine actions")
     engines_sub.add_parser("list", help="List all registered engines")
     inspect_p = engines_sub.add_parser("inspect", help="Inspect engine details")
-    inspect_p.add_argument("engine_name", choices=["kokoro", "piper"])
+    inspect_p.add_argument("engine_name", choices=["kokoro", "piper", "sarvam"])
 
     # 5. VOICES subparser
     voices_parser = subparsers.add_parser("voices", help="Inspect voice registries")
@@ -203,24 +199,77 @@ def main():
 
     # 6. BENCHMARK subparser
     bench_parser = subparsers.add_parser("benchmark", help="Run harness benchmarks")
-    bench_parser.add_argument("--engine", choices=["kokoro", "piper", "mock"], default="kokoro")
+    bench_parser.add_argument("--engine", choices=["kokoro", "piper", "sarvam", "mock"], default="kokoro")
     bench_parser.add_argument("--chunks", type=int, default=10)
 
-    # 7. EVENTS subparser
-    events_parser = subparsers.add_parser("events", help="Watch pipeline events")
-    events_sub = events_parser.add_subparsers(dest="action", help="Events action")
-    watch_p = events_sub.add_parser("watch", help="Watch job event bus live")
-    watch_p.add_argument("job_id", help="Job ID to watch")
+    # 8. QUALIFY subparser
+    qualify_parser = subparsers.add_parser("qualify", help="Run production-readiness qualification suite")
+
+    # 9. AUDIOBOOK subparser (book-level: per-chapter jobs -> merge -> MP3)
+    ab = subparsers.add_parser("audiobook", help="Generate a full audiobook (merge chapters + optional MP3)")
+    ab.add_argument("input", help="A .txt/.md file, or a directory of chapter files")
+    ab.add_argument("--name", default=None, help="Book name (output folder under audiobooks/)")
+    ab.add_argument("--engine", choices=["kokoro", "piper", "sarvam"], default="kokoro")
+    ab.add_argument("--voice", default="default", help="Voice/speaker ID (engine-specific)")
+    ab.add_argument("--parser", choices=["benchmark"], default=None,
+                    help="Use the offline benchmark parser (no API key)")
+    ab.add_argument("--mp3", action="store_true", help="Also export an MP3")
 
     args = parser.parse_args()
     
-    if args.resource == "doctor":
+    if args.resource == "qualify":
+        from agent_os.speech.qualification import SpeechQualification
+        qualifier = SpeechQualification()
+        console.print("[bold yellow]Running Speech Qualification Suite...[/bold yellow]")
+        results, html_path, json_path = qualifier.run_all()
+        
+        table = Table(title="Speech Qualification Results", show_header=True)
+        table.add_column("Scenario", style="cyan")
+        table.add_column("Status")
+        table.add_column("Details")
+        
+        all_passed = True
+        for r in results:
+            status_str = f"[green]{r.status}[/green]" if r.status == "PASS" else f"[bold red]{r.status}[/bold red]"
+            table.add_row(r.name, status_str, r.details)
+            if r.status != "PASS":
+                all_passed = False
+                
+        console.print(table)
+        
+        if all_passed:
+            console.print("\n[bold green]Verdict: READY FOR RELEASE[/bold green]")
+            console.print(f"HTML Report generated at: [underline]{html_path}[/underline]")
+            console.print(f"JSON Report generated at: [underline]{json_path}[/underline]")
+            return 0
+        else:
+            console.print("\n[bold red]Verdict: QUALIFICATION FAILED[/bold red]")
+            console.print(f"HTML Report generated at: [underline]{html_path}[/underline]")
+            console.print(f"JSON Report generated at: [underline]{json_path}[/underline]")
+            return 1
+
+    elif args.resource == "audiobook":
+        from agent_os.speech.audiobook import build_audiobook
+        voice = args.voice if args.voice != "default" else _default_voice(args.engine)
+        try:
+            m = build_audiobook(args.input, book_name=args.name, engine=args.engine,
+                                voice=voice, export_mp3=args.mp3, parser=args.parser)
+        except Exception as e:
+            console.print(f"[bold red]Audiobook failed: {e}[/bold red]")
+            return 1
+        console.print(f"\n[bold green]Audiobook complete[/bold green]: "
+                      f"{m['book_wav']} ({m['duration_sec']}s, {m['chapter_count']} chapters)")
+        if m.get("book_mp3"):
+            console.print(f"MP3: {m['book_mp3']}")
+        return 0
+
+    elif args.resource == "doctor":
         run_doctor()
         return 0
 
     elif args.resource == "jobs":
         if args.action == "create":
-            voice = args.voice if args.voice != "default" else ("af_heart" if args.engine == "kokoro" else "default")
+            voice = args.voice if args.voice != "default" else _default_voice(args.engine)
             run_synthesis_pipeline(args.file, args.engine, voice, stream_mode=True)
             return 0
             
@@ -265,7 +314,7 @@ def main():
         return 0
 
     elif args.resource in ["synth", "stream"]:
-        voice = args.voice if args.voice != "default" else ("af_heart" if args.engine == "kokoro" else "default")
+        voice = args.voice if args.voice != "default" else _default_voice(args.engine)
         run_synthesis_pipeline(args.file, args.engine, voice, stream_mode=(args.resource == "stream"))
         return 0
 
@@ -275,7 +324,7 @@ def main():
             table.add_column("Engine Name", style="cyan")
             table.add_column("Status")
             
-            for name in ["kokoro", "piper"]:
+            for name in ["kokoro", "piper", "sarvam"]:
                 try:
                     eng = EngineRegistry.get_engine({"engine_name": name})
                     eng.validate_model()
@@ -295,7 +344,7 @@ def main():
 
     elif args.resource == "voices":
         if args.action == "list":
-            for name in ["kokoro", "piper"]:
+            for name in ["kokoro", "piper", "sarvam"]:
                 try:
                     eng = EngineRegistry.get_engine({"engine_name": name})
                     caps = eng.get_capabilities()

@@ -25,6 +25,15 @@ class Language(str, Enum):
     TE = "te"
     JA = "ja"
     ZH = "zh"
+    # Indian languages (Sarvam bulbul coverage)
+    TA = "ta"  # Tamil
+    BN = "bn"  # Bengali
+    KN = "kn"  # Kannada
+    ML = "ml"  # Malayalam
+    MR = "mr"  # Marathi
+    OD = "od"  # Odia (Sarvam code od-IN)
+    PA = "pa"  # Punjabi
+    GU = "gu"  # Gujarati
 
 class EngineName(str, Enum):
     KOKORO = "kokoro"

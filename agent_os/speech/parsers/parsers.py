@@ -1,5 +1,6 @@
 import os
 import json
+import agent_os.env_boot  # noqa: F401 — load .env so GEMINI_API_KEY is visible
 from pydantic import BaseModel, Field
 from typing import List, Optional, Tuple
 from google import genai
@@ -21,12 +22,14 @@ class ExtractionResult(BaseModel):
     segments: List[ExtractedSegment]
 
 class BaseParser:
-    def __init__(self, policy: ParsePolicy = ParsePolicy.BALANCED):
+    def __init__(self, policy: ParsePolicy = ParsePolicy.BALANCED, allow_mock: bool = False):
         self.policy = policy
+        # Explicit, opt-in offline mock. NEVER a silent fallback: production must
+        # fail loudly when the API key is missing rather than synthesize fake audio.
+        self.allow_mock = allow_mock
         self.model_name = self._resolve_model()
         # Initialize GenAI client
         api_key = os.environ.get("GEMINI_API_KEY")
-        # In a real environment we require the API key. For the golden tests, we might mock it.
         self.client: Optional[genai.Client] = genai.Client(api_key=api_key) if api_key else None
         
     def _resolve_model(self) -> str:
@@ -43,7 +46,15 @@ class BaseParser:
         full_prompt = prompt.replace("{{text}}", text)
         
         if not self.client:
-            # Mock mode if no API key
+            if not self.allow_mock:
+                # Loud failure beats silently synthesizing "Mock text" as audio.
+                raise RuntimeError(
+                    "GEMINI_API_KEY is not set, so the production parser cannot run. "
+                    "Set GEMINI_API_KEY to use the real parser, or select the deterministic "
+                    "offline parser with config {'parser': 'benchmark'}. (Tests may opt into a "
+                    "stub with config {'allow_mock_parse': True}.)"
+                )
+            # Explicit opt-in stub (tests only)
             raw_json = json.dumps({"segments": [{"speaker": "Mock", "text": "Mock text", "language": "en", "confidence": 1.0}]})
             segments = [
                 DialogueSegment(
@@ -54,7 +65,7 @@ class BaseParser:
                 )
             ]
             return segments, raw_json
-        
+
         try:
             response = self.client.models.generate_content(
                 model=self.model_name,
@@ -86,16 +97,9 @@ class BaseParser:
                 
             return segments, raw_json
         except Exception as e:
-            raw_json = json.dumps({"error": str(e)})
-            segments = [
-                DialogueSegment(
-                    segment_id=1,
-                    chapter_id="0",
-                    speaker="System",
-                    text=f"API Error: {str(e)}"
-                )
-            ]
-            return segments, raw_json
+            # Do NOT return the error as a speakable segment — that would synthesize
+            # "API Error: ..." into the audiobook and report success. Fail loudly.
+            raise RuntimeError(f"Gemini parse failed ({self.model_name}): {e}") from e
 
 class ScreenplayParser(BaseParser):
     version = "1.0"
