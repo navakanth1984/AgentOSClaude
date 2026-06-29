@@ -16,7 +16,7 @@
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
 - [Workspace Productivity Upgrades](antigravity-upgrades.md) — Integration of four productivity upgrades (Roast, Verification, Handoff, Goals) into the self-improving KB.
 - [Code Development Lifecycle](development-lifecycle.md) — Standard branch→verify→commit→push→PR→merge flow + deprecate-before-delete rule for code.
-- [Agent OS Speech — Next Steps](agent-os-speech-next-steps.md) — Cold-start handoff (P0–P2) for the next agent continuing the speech pipeline.
+- [Agent OS Speech — Next Steps](agent-os-speech-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [Microsoft Fabric (DP-700)](fabric-dp700.md) — Fabric data-engineering study stack.
 - [KB Sync Test](sync-test.md) — Canary verification page for Claude & Antigravity.
 
