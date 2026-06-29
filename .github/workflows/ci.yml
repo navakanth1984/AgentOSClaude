@@ -33,10 +33,18 @@ jobs:
         # Optional engine/runtime SDKs (Kokoro/Piper/Sarvam/psutil) are not
         # installed in CI on purpose — type-check our code, not their stubs —
         # so treat those imports as Any when absent.
+        # pyrefly takes one module per --ignore-missing-imports occurrence;
+        # a comma-joined list is not split, so the flag must be repeated.
         run: >-
           pyrefly check agent_os/speech
           --python-interpreter-path "$(which python)"
-          --ignore-missing-imports kokoro_onnx,onnxruntime,piper,piper.config,piper.voice,psutil,sarvamai
+          --ignore-missing-imports kokoro_onnx
+          --ignore-missing-imports onnxruntime
+          --ignore-missing-imports piper
+          --ignore-missing-imports piper.config
+          --ignore-missing-imports piper.voice
+          --ignore-missing-imports psutil
+          --ignore-missing-imports sarvamai
 
       - name: Run speech subsystem tests (deterministic, offline mock)
         env:
