@@ -33,8 +33,32 @@ from agent_os.speech.schema.jobs import SpeechJobStore, JobState
 
 CHAPTER_GAP_SEC = 0.7
 
+# A markerless document longer than this is split into bounded synthetic chapters.
+# A whole book processed as one chapter becomes ~800+ synthesis chunks, which
+# fragments kokoro's per-chunk ONNX rebuild (OpenBLAS abort) and balloons sarvam's
+# sequential API calls (one failure aborts the book). ~5k chars keeps each chapter
+# well under the empirically safe per-job chunk count.
+MAX_MARKERLESS_CHAPTER_CHARS = 5000
+
 # Per-engine default speaker when the caller passes "default"/None.
 _DEFAULT_SPEAKERS = {"kokoro": "af_heart", "sarvam": "rohan", "piper": "default"}
+
+
+def _split_text_by_budget(text: str, budget: int) -> List[str]:
+    """Pack paragraphs/lines into parts of at most `budget` chars, never splitting
+    a line across parts. A single line longer than `budget` becomes its own part."""
+    parts: List[str] = []
+    buf: List[str] = []
+    size = 0
+    for line in text.splitlines(keepends=True):
+        if buf and size + len(line) > budget:
+            parts.append("".join(buf))
+            buf, size = [], 0
+        buf.append(line)
+        size += len(line)
+    if buf:
+        parts.append("".join(buf))
+    return [p for p in (s.strip() for s in parts) if p]
 
 
 def _split_in_file_chapters(input_file: Path, book_dir: Path) -> List[Path]:
@@ -73,8 +97,24 @@ def _split_in_file_chapters(input_file: Path, book_dir: Path) -> List[Path]:
         matches = list(pattern.finditer(content))
         
     if not matches:
-        return [input_file]
-        
+        # No chapter markers. Small inputs stay a single chapter (prior behaviour).
+        # Large inputs are split into bounded synthetic chapters so each SpeechService
+        # job processes a sane number of chunks — see MAX_MARKERLESS_CHAPTER_CHARS.
+        if len(content) <= MAX_MARKERLESS_CHAPTER_CHARS:
+            return [input_file]
+        src_chapters_dir = book_dir / "src_chapters"
+        src_chapters_dir.mkdir(parents=True, exist_ok=True)
+        parts = _split_text_by_budget(content, MAX_MARKERLESS_CHAPTER_CHARS)
+        chapters_paths = []
+        for idx, part in enumerate(parts):
+            part_path = src_chapters_dir / f"{idx + 1:03d}_part.txt"
+            with open(part_path, "w", encoding="utf-8") as out_f:
+                out_f.write(part)
+            chapters_paths.append(part_path)
+        print(f"[audiobook] No chapter markers found; split {len(content)} chars "
+              f"into {len(chapters_paths)} bounded chapters (<= {MAX_MARKERLESS_CHAPTER_CHARS} chars each).")
+        return chapters_paths
+
     chapters_paths = []
     src_chapters_dir = book_dir / "src_chapters"
     src_chapters_dir.mkdir(parents=True, exist_ok=True)
