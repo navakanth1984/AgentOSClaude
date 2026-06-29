@@ -78,8 +78,6 @@ class PiperEngine(TTSEngine):
             sample_rate=sample_rate,
             output_format="wav"
         )
-        # Override the enum if needed or just use GCP/SARVAM placeholder until we add PIPER to Enum
-        # Wait, I'll update EngineName in models.py to include PIPER.
         return self.capabilities_cache
 
     def supports_language(self, language: Language) -> bool:

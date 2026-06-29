@@ -177,7 +177,7 @@ if __name__ == "__main__":
     else:
         engine_provider = lambda name: DummyEngineForBenchmarking()
         print("Engine: Mock")
-        engine_name = EngineName.GCP
+        engine_name = EngineName.PIPER
         voice_name = "mock"
         
     num_chunks = args.chunks
