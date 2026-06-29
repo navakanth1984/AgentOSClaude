@@ -30,7 +30,13 @@ jobs:
       - name: Type-check speech subsystem (pyrefly — mirrors local pre-commit gate)
         # pyrefly.toml pins a Windows interpreter path; override it with the
         # runner's interpreter so import resolution works on Linux.
-        run: pyrefly check agent_os/speech --python-interpreter-path "$(which python)"
+        # Optional engine/runtime SDKs (Kokoro/Piper/Sarvam/psutil) are not
+        # installed in CI on purpose — type-check our code, not their stubs —
+        # so treat those imports as Any when absent.
+        run: >-
+          pyrefly check agent_os/speech
+          --python-interpreter-path "$(which python)"
+          --ignore-missing-imports kokoro_onnx,onnxruntime,piper,piper.config,piper.voice,psutil,sarvamai
 
       - name: Run speech subsystem tests (deterministic, offline mock)
         env:
