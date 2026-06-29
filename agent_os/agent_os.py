@@ -53,9 +53,10 @@ COMMANDS = {
     "notebook":   "NotebookLM: list | studio <url> | generate <url> | screenshot <url>",
     "hermes":     "Hermes video agent: load <file> | generate <file> (Step 4)",
     "cloud":      "Cloud Agent: self-correcting task execution in background",
-    "creative":   "Creative: screenplay | audiography | prompt (AI filmmaking tools)",
+    "creative":   "Creative: screenplay | audiography | prompt | novelist | studio (AI filmmaking tools)",
     "sql":        "Translate natural language questions into executable SQL queries against jobs.db",
     "session":    "Save the current session summary to Obsidian",
+    "audiobook":  "Generate an audiobook from a text file: audiobook <file> [--voice] [--engine] [--output] [--resume] [--parallel] [--cache]",
     "quit":       "Exit Agent OS",
 }
 
@@ -329,12 +330,12 @@ def cmd_cloud(args: list[str]):
 def cmd_creative(args: list[str]):
     """Creative filmmaking pipeline commands. Usage: creative screenplay | audiography | prompt | novelist <prompt/script> [--model <model_id>]"""
     if not args:
-        print("  Usage: creative screenplay | audiography | prompt | novelist \"<content/prompt>\" [--model <model_id>]")
+        print("  Usage: creative screenplay | audiography | prompt | novelist | studio \"<content/prompt>\" [--model <model_id>]")
         return
 
     sub = args[0].lower()
     content_args = args[1:]
-    
+
     # Parse --model if specified
     model = None
     if "--model" in content_args:
@@ -345,6 +346,40 @@ def cmd_creative(args: list[str]):
                 content_args = content_args[:m_idx] + content_args[m_idx+2:]
         except ValueError:
             pass
+
+    # ── Filmmaking Studio: canon-chained bible → screenplay → novel → sound ──
+    if sub == "studio":
+        concept = " ".join(content_args).strip().strip('"').strip("'")
+        if not concept:
+            print('  Usage: creative studio "<concept>" [--model <id>]')
+            return
+        import time
+        from filmmaking_studio import start_studio, status_studio
+        r = start_studio(concept, model=model)
+        if not r.get("started"):
+            print(f"  Error: {r.get('error')}")
+            return
+        jid = r["job_id"]
+        print(f"[Studio] Started job {jid}. Local-first generation — this is a long run.")
+        print(f"[Studio] Targets: {r['targets']}")
+        last = None
+        while True:
+            s = status_studio(jid)
+            line = f"[{s.get('percent',0):>3}%] {s.get('phase','')}"
+            if line != last:
+                print(f"  {line}")
+                last = line
+            st = s.get("status")
+            if st == "done":
+                print(f"\n[Studio] ✓ Complete · {s.get('words_done')} words")
+                print(f"[Studio] Bundle: {s.get('bundle_dir')}")
+                for k, p in (s.get("vault_paths") or {}).items():
+                    print(f"  - {k}: {p}")
+                return
+            if st == "error":
+                print(f"\n[Studio] ✗ Error: {s.get('error')}")
+                return
+            time.sleep(5)
 
     content = " ".join(content_args).strip()
     if (content.startswith('"') and content.endswith('"')) or (content.startswith("'") and content.endswith("'")):
@@ -445,6 +480,49 @@ def cmd_sql(args: list[str]):
         print(f"  [ERROR] Failed to run SQL translator: {e}")
 
 
+def cmd_audiobook(args: list[str]):
+    """Audiobook generation — delegates to the V1.1 speech pipeline."""
+    import argparse
+    from agent_os.speech.audiobook import build_audiobook
+
+    if not args:
+        print("  Usage: audiobook <file-or-dir> [--name <name>] [--voice <voice>] "
+              "[--engine kokoro|sarvam|piper] [--output wav/mp3] [--parser benchmark]")
+        return
+
+    parser = argparse.ArgumentParser(prog="audiobook", description="Generate an audiobook (V1.1 pipeline).")
+    parser.add_argument("file", help="Input text/markdown file, or a directory of chapter files")
+    parser.add_argument("--name", default=None, help="Book name (output folder under audiobooks/)")
+    parser.add_argument("--voice", default="default", help="Voice/speaker id (engine-specific)")
+    parser.add_argument("--engine", default="kokoro", choices=["kokoro", "sarvam", "piper"], help="TTS engine")
+    parser.add_argument("--output", default="wav", choices=["wav", "mp3"], help="Output format")
+    parser.add_argument("--parser", default=None, choices=["benchmark"],
+                        help="Use the offline benchmark parser (no API key)")
+
+    try:
+        parsed_args = parser.parse_args(args)
+    except SystemExit:
+        return
+
+    if not Path(parsed_args.file).exists():
+        print(f"  [ERROR] Path not found: {parsed_args.file}")
+        return
+
+    try:
+        m = build_audiobook(
+            parsed_args.file, book_name=parsed_args.name, engine=parsed_args.engine,
+            voice=parsed_args.voice, export_mp3=(parsed_args.output == "mp3"),
+            parser=parsed_args.parser,
+        )
+    except Exception as e:
+        print(f"  [ERROR] {e}")
+        return
+
+    print(f"  Audiobook complete: {m['book_wav']} ({m['duration_sec']}s, {m['chapter_count']} chapters)")
+    if m.get("book_mp3"):
+        print(f"  MP3: {m['book_mp3']}")
+
+
 # ─── Main Loop ────────────────────────────────────────────────
 
 def run():
@@ -501,6 +579,8 @@ def run():
             cmd_creative(args)
         elif cmd == "sql":
             cmd_sql(args)
+        elif cmd == "audiobook":
+            cmd_audiobook(args)
         else:
             print(f"  Unknown command: '{cmd}'. Type 'help' for options.")
 
@@ -536,6 +616,8 @@ if __name__ == "__main__":
             cmd_creative(args)
         elif cmd == "sql":
             cmd_sql(args)
+        elif cmd == "audiobook":
+            cmd_audiobook(args)
         else:
             print(f"  Unknown command: '{cmd}'.")
     else:

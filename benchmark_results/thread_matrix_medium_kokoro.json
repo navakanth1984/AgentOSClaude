@@ -1,0 +1,122 @@
+{
+  "tier": "medium",
+  "engine": "kokoro",
+  "logical_cpus": 12,
+  "best_config": "w8 (ORT default)",
+  "recommendation": {
+    "config": "w2 x i6",
+    "workers": 2,
+    "ort_intra_threads": 6,
+    "stage_rtf": 0.4268,
+    "peak_rss_mb": 1377.3,
+    "pareto_frontier": [
+      "w2 x i6",
+      "w4 x i3",
+      "w6 x i2"
+    ],
+    "reason": [
+      "72.8% of peak grid throughput",
+      "47.0% lower RSS than w6 x i2",
+      "idle fraction 0.005, runtime CV 0.005",
+      "smallest worker count on the Pareto frontier"
+    ],
+    "confidence": {
+      "level": "measured",
+      "benchmark_count": 4,
+      "corpus": "medium",
+      "repeated_runs": 1
+    }
+  },
+  "rows": [
+    {
+      "config": "w2 (ORT default)",
+      "workers": 2,
+      "intra": null,
+      "total_threads": null,
+      "oversubscription": null,
+      "stage_rtf": 0.4394,
+      "per_chunk_rtf": 0.8915,
+      "worker_idle_fraction": 0.004,
+      "worker_runtime_cv": 0.004,
+      "first_chunk_ms": 10947.0,
+      "peak_rss_mb": 1337.6,
+      "peak_cpu_percent": 823.3,
+      "load_max_min": 1.04
+    },
+    {
+      "config": "w8 (ORT default)",
+      "workers": 8,
+      "intra": null,
+      "total_threads": null,
+      "oversubscription": null,
+      "stage_rtf": 0.3043,
+      "per_chunk_rtf": 2.4071,
+      "worker_idle_fraction": 0.027,
+      "worker_runtime_cv": 0.018,
+      "first_chunk_ms": 27957.2,
+      "peak_rss_mb": 2731.0,
+      "peak_cpu_percent": 1379.7,
+      "load_max_min": 1.17
+    },
+    {
+      "config": "w2 x i6",
+      "workers": 2,
+      "intra": 6,
+      "total_threads": 12,
+      "oversubscription": 1.0,
+      "stage_rtf": 0.4268,
+      "per_chunk_rtf": 0.8583,
+      "worker_idle_fraction": 0.005,
+      "worker_runtime_cv": 0.005,
+      "first_chunk_ms": 10352.7,
+      "peak_rss_mb": 1377.3,
+      "peak_cpu_percent": 823.3,
+      "load_max_min": 1.0
+    },
+    {
+      "config": "w4 x i3",
+      "workers": 4,
+      "intra": 3,
+      "total_threads": 12,
+      "oversubscription": 1.0,
+      "stage_rtf": 0.3516,
+      "per_chunk_rtf": 1.4154,
+      "worker_idle_fraction": 0.012,
+      "worker_runtime_cv": 0.009,
+      "first_chunk_ms": 19230.2,
+      "peak_rss_mb": 2053.8,
+      "peak_cpu_percent": 705.6,
+      "load_max_min": 1.0
+    },
+    {
+      "config": "w6 x i2",
+      "workers": 6,
+      "intra": 2,
+      "total_threads": 12,
+      "oversubscription": 1.0,
+      "stage_rtf": 0.3106,
+      "per_chunk_rtf": 1.8438,
+      "worker_idle_fraction": 0.021,
+      "worker_runtime_cv": 0.013,
+      "first_chunk_ms": 23903.2,
+      "peak_rss_mb": 2601.1,
+      "peak_cpu_percent": 823.3,
+      "load_max_min": 1.12
+    },
+    {
+      "config": "w12 x i1",
+      "workers": 12,
+      "intra": 1,
+      "total_threads": 12,
+      "oversubscription": 1.0,
+      "stage_rtf": 0.3138,
+      "per_chunk_rtf": 3.6511,
+      "worker_idle_fraction": 0.033,
+      "worker_runtime_cv": 0.021,
+      "first_chunk_ms": 49229.0,
+      "peak_rss_mb": 3356.7,
+      "peak_cpu_percent": 1333.1,
+      "load_max_min": 1.29
+    }
+  ]
+}

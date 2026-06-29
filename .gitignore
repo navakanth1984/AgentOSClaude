@@ -116,3 +116,8 @@ agent_os/dashboard_screenshot.png
 agent_os/neural_3d_screenshot.png
 agent_os/Screenshot *.png
 
+
+# Speech pipeline generated output
+jobs/
+audiobooks/
+corpus_output*/
