@@ -8,16 +8,53 @@ generating, so the page can be styled to match an existing brand.
 """
 from __future__ import annotations
 
+import json
 import re
 import subprocess
+import time
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
 from openrouter_client import call_openrouter
 
 SITES_DIR = Path(__file__).parent / "asset_library" / "sites"
+LOG_FILE = Path(__file__).parent / "output" / "site_builder_log.jsonl"
 DEFAULT_MODEL = "anthropic/claude-opus-4"
+
+
+def _log_generation(record: dict) -> None:
+    """Append one generation record as a JSON line. Logging never breaks a build."""
+    try:
+        LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        record = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), **record}
+        with LOG_FILE.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(record) + "\n")
+    except Exception:
+        pass
+
+
+def read_log(limit: int = 20) -> list[dict]:
+    """Return the most recent generation records (newest first). Empty if no log yet."""
+    if not LOG_FILE.exists():
+        return []
+    try:
+        lines = LOG_FILE.read_text(encoding="utf-8").splitlines()
+    except Exception:
+        return []
+    out: list[dict] = []
+    for line in reversed(lines):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except Exception:
+            continue
+        if len(out) >= limit:
+            break
+    return out
 
 SYSTEM_PROMPT = (
     "You are an expert front-end designer. Produce ONE complete, self-contained "
@@ -76,11 +113,13 @@ def build_site(
     Returns a manifest dict with the on-disk path, the dashboard-served web path,
     the model used, whether a brand hint was applied, and the byte size.
     """
+    started = time.monotonic()
+    used_model = model or DEFAULT_MODEL
     brand_hint = _scrape_brand(brand_url) if brand_url else ""
     user = prompt if not brand_hint else f"{prompt}\n\n{brand_hint}"
 
     raw = call_openrouter(
-        model=model or DEFAULT_MODEL,
+        model=used_model,
         system=SYSTEM_PROMPT,
         user=user,
         max_tokens=8000,
@@ -93,10 +132,19 @@ def build_site(
     html_path = out_dir / "index.html"
     html_path.write_text(html, encoding="utf-8")
 
+    _log_generation({
+        "site_id": site_id,
+        "model": used_model,
+        "prompt_chars": len(prompt),
+        "bytes": len(html),
+        "brand_used": bool(brand_hint),
+        "duration_ms": round((time.monotonic() - started) * 1000),
+    })
+
     return {
         "html_path": str(html_path),
         "web_path": f"/asset_library/sites/{site_id}/index.html",
-        "model": model or DEFAULT_MODEL,
+        "model": used_model,
         "brand_used": bool(brand_hint),
         "bytes": len(html),
     }
