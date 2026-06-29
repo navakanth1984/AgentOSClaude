@@ -19,6 +19,8 @@ import json
 import time
 import shutil
 import subprocess
+import re
+import concurrent.futures
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
@@ -33,6 +35,57 @@ CHAPTER_GAP_SEC = 0.7
 
 # Per-engine default speaker when the caller passes "default"/None.
 _DEFAULT_SPEAKERS = {"kokoro": "af_heart", "sarvam": "rohan", "piper": "default"}
+
+
+def _split_in_file_chapters(input_file: Path, book_dir: Path) -> List[Path]:
+    """
+    Parses input_file, splits it by chapter markers (e.g. 'Chapter 1', 'CHAPTER II'),
+    writes each chapter to a separate file, and returns the list of Paths.
+    If no chapter markers are found, returns the input_file as a single-element list.
+    """
+    with open(input_file, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # Pattern matching "Chapter X" or "CHAPTER X" at the start of a line
+    pattern = re.compile(r'^(?:Chapter|CHAPTER)\s+[0-9IVXLCDMivxlcdm]+.*$', re.MULTILINE | re.IGNORECASE)
+    matches = list(pattern.finditer(content))
+    
+    if not matches:
+        # Try a fallback pattern: lines starting with "Chapter" or "CHAPTER"
+        pattern = re.compile(r'^(?:Chapter|CHAPTER)\b.*$', re.MULTILINE | re.IGNORECASE)
+        matches = list(pattern.finditer(content))
+        
+    if not matches:
+        return [input_file]
+        
+    chapters_paths = []
+    src_chapters_dir = book_dir / "src_chapters"
+    src_chapters_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Check if there is text before the first chapter marker
+    preface_text = content[:matches[0].start()].strip()
+    if preface_text:
+        preface_path = src_chapters_dir / "000_preface.txt"
+        with open(preface_path, "w", encoding="utf-8") as out_f:
+            out_f.write(preface_text)
+        chapters_paths.append(preface_path)
+        
+    for idx, match in enumerate(matches):
+        start_idx = match.start()
+        end_idx = matches[idx + 1].start() if idx + 1 < len(matches) else len(content)
+        chapter_text = content[start_idx:end_idx].strip()
+        
+        header_line = match.group(0).strip()
+        # Clean header for filename
+        clean_name = re.sub(r'[^a-zA-Z0-9_\-]', '_', header_line)[:50]
+        chapter_filename = f"{idx + 1:03d}_{clean_name}.txt"
+        chapter_path = src_chapters_dir / chapter_filename
+        
+        with open(chapter_path, "w", encoding="utf-8") as out_f:
+            out_f.write(chapter_text)
+        chapters_paths.append(chapter_path)
+        
+    return chapters_paths
 
 
 def _resolve_chapters(input_path: str) -> List[Path]:
@@ -98,39 +151,77 @@ def build_audiobook(
     export_mp3: bool = False,
     parser: Optional[str] = None,
     base_dir: str = "audiobooks",
+    max_workers: int = 2,
 ) -> Dict[str, Any]:
     """Generate a full audiobook. Returns a manifest dict (also written to disk)."""
-    chapters = _resolve_chapters(input_path)
     src = Path(input_path)
     book_name = book_name or (src.stem if src.is_file() else src.name)
+    book_dir = Path(base_dir) / book_name
+
+    # Resolve chapters with in-file splitting support
+    if src.is_dir():
+        chapters = _resolve_chapters(input_path)
+    elif src.is_file():
+        chapters = _split_in_file_chapters(src, book_dir)
+    else:
+        raise FileNotFoundError(f"Input path not found: {input_path}")
+
     if not voice or voice == "default":
         voice = _DEFAULT_SPEAKERS.get(engine, "default")
 
-    book_dir = Path(base_dir) / book_name
     chapters_dir = book_dir / "chapters"
     chapters_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"[audiobook] '{book_name}': {len(chapters)} chapter(s), engine={engine}, voice={voice}")
+    print(f"[audiobook] '{book_name}': {len(chapters)} chapter(s), engine={engine}, voice={voice}, max_workers={max_workers}")
 
-    chapter_wavs: List[Path] = []
-    chapter_meta: List[Dict[str, Any]] = []
-    for i, cf in enumerate(chapters, start=1):
+    def process_chapter(args) -> tuple[int, Path, Dict[str, Any]]:
+        i, cf = args
+        out_dir = str(chapters_dir / f"{i:03d}_{cf.stem}")
+        wav = _chapter_wav(out_dir)
+        job_json_path = Path(out_dir) / "job.json"
+        
+        # Resume: skip already completed chapters
+        if wav and wav.exists() and job_json_path.exists():
+            try:
+                with open(job_json_path, "r", encoding="utf-8") as f:
+                    job_data = json.load(f)
+                if job_data.get("state") == "completed":
+                    print(f"[audiobook]   chapter {i}: {cf.name} -> already completed (skipping)")
+                    return i, wav, {"index": i, "source": cf.name, "wav": str(wav), "job_id": job_data.get("job_id")}
+            except Exception:
+                pass
+
         payload: Dict[str, Any] = {"text_path": str(cf), "engine": engine, "voice": voice}
         if parser:
             payload["parser"] = parser
-        out_dir = str(chapters_dir / f"{i:03d}_{cf.stem}")
+            
         job = SpeechService.create_job(payload, output_dir=out_dir)
-        print(f"[audiobook]   chapter {i}/{len(chapters)}: {cf.name} -> job {job.job_id[:8]}")
+        print(f"[audiobook]   chapter {i}: {cf.name} -> job {job.job_id[:8]}")
         SpeechService.run_job(job.job_id, background=False)
+        
         done = SpeechJobStore.load(job.job_id)
         if done is None:
             raise RuntimeError(f"Chapter '{cf.name}' job disappeared after run; aborting book.")
         wav = _chapter_wav(done.output_directory)
         if done.state != JobState.COMPLETED or not wav:
             raise RuntimeError(f"Chapter '{cf.name}' failed (state={done.state.value}); aborting book.")
-        chapter_wavs.append(wav)
-        chapter_meta.append({"index": i, "source": cf.name, "wav": str(wav),
-                             "job_id": done.job_id})
+            
+        return i, wav, {"index": i, "source": cf.name, "wav": str(wav), "job_id": done.job_id}
+
+    # Execute in parallel or sequential
+    results = []
+    if max_workers > 1 and len(chapters) > 1:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+            futures = [pool.submit(process_chapter, (i, cf)) for i, cf in enumerate(chapters, start=1)]
+            results = [f.result() for f in futures]
+    else:
+        for i, cf in enumerate(chapters, start=1):
+            results.append(process_chapter((i, cf)))
+
+    # Keep output in original sequence
+    results.sort(key=lambda x: x[0])
+    chapter_wavs = [r[1] for r in results]
+    chapter_meta = [r[2] for r in results]
 
     book_wav = book_dir / f"{book_name}.wav"
     audio_info = _concat_wavs(chapter_wavs, book_wav)

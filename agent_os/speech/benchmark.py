@@ -15,7 +15,7 @@ class DummyEngineForBenchmarking:
     def initialize(self): pass
     def warmup(self): pass
     def shutdown(self): pass
-    def synthesize(self, text, voice, speed, language):
+    def synthesize(self, text, voice, language, speed):
         import numpy as np
         # 1 second of audio at 24kHz
         return 24000, np.zeros(24000, dtype=np.int16)

@@ -214,6 +214,7 @@ def main():
     ab.add_argument("--parser", choices=["benchmark"], default=None,
                     help="Use the offline benchmark parser (no API key)")
     ab.add_argument("--mp3", action="store_true", help="Also export an MP3")
+    ab.add_argument("--max-workers", type=int, default=2, help="Number of parallel worker threads for chapter generation")
 
     args = parser.parse_args()
     
@@ -247,13 +248,14 @@ def main():
             console.print(f"HTML Report generated at: [underline]{html_path}[/underline]")
             console.print(f"JSON Report generated at: [underline]{json_path}[/underline]")
             return 1
-
+ 
     elif args.resource == "audiobook":
         from agent_os.speech.audiobook import build_audiobook
         voice = args.voice if args.voice != "default" else _default_voice(args.engine)
         try:
             m = build_audiobook(args.input, book_name=args.name, engine=args.engine,
-                                voice=voice, export_mp3=args.mp3, parser=args.parser)
+                                voice=voice, export_mp3=args.mp3, parser=args.parser,
+                                max_workers=args.max_workers)
         except Exception as e:
             console.print(f"[bold red]Audiobook failed: {e}[/bold red]")
             return 1
