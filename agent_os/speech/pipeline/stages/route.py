@@ -40,64 +40,7 @@ def strip_performance_tags(text: str) -> str:
     text = re.sub(r"\s{2,}", " ", text)
     return text.strip()
 
-class VoiceAssignmentPolicy:
-    """
-    Handles the generation of a deterministic voice lockfile (voice_map.json)
-    if one does not already exist.
-    """
-    
-    @staticmethod
-    def ensure_lockfile(project_dir: str, transcript: ParseResult, capabilities: EngineCapabilities) -> VoiceMap:
-        lockfile_path = Path(project_dir) / "voice_map.json"
-        
-        if lockfile_path.exists():
-            with open(lockfile_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            return VoiceMap(
-                schema_version=data.get("schema_version", "1.0"),
-                engine=data.get("engine", capabilities.engine_name),
-                voices=data.get("voices", {})
-            )
-            
-        # Needs generation
-        print("voice_map.json not found. Generating default VoiceAssignmentPolicy lockfile...")
-        
-        voices = {}
-        
-        # Identify all unique speakers
-        speakers = set()
-        for segment in transcript.segments:
-            speakers.add(segment.speaker)
-            
-        # Simple assignment heuristic
-        available_voices = list(capabilities.supported_voices.keys())
-        voice_index = 0
-        
-        for speaker in sorted(list(speakers)):
-            # Fallback to cycling available voices if we have more speakers than voices
-            v = available_voices[voice_index % len(available_voices)]
-            voices[speaker] = v
-            # If we know it's a Narrator, maybe we explicitly prefer the first stable voice,
-            # but for a heuristic we'll just assign linearly.
-            voice_index += 1
-            
-        voice_map = VoiceMap(
-            schema_version="1.0",
-            engine=capabilities.engine_name,
-            voices=voices
-        )
-        
-        # Write to disk
-        lockfile_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(lockfile_path, "w", encoding="utf-8") as f:
-            json.dump({
-                "schema_version": voice_map.schema_version,
-                "engine": voice_map.engine,
-                "voices": voice_map.voices
-            }, f, indent=4)
-            
-        return voice_map
-
+from agent_os.speech.pipeline.voice_manager import VoiceManager
 
 class RouteStage:
     """
@@ -128,8 +71,8 @@ class RouteStage:
         transcript: ParseResult = ensure_parse_result(inputs["parse"]["transcript"])
         capabilities: EngineCapabilities = context.config["engine_capabilities"]
         
-        # 1. Enforce or Load VoiceMap Lockfile
-        voice_map = VoiceAssignmentPolicy.ensure_lockfile(context.project_dir, transcript, capabilities)
+        # 1. Enforce or Load VoiceMap Lockfile via VoiceManager
+        voice_map = VoiceManager.ensure_lockfile(context.project_dir, transcript, capabilities)
         
         # We need a quick lookup of parent_segment_id -> speaker
         segment_to_speaker = {s.segment_id: s.speaker for s in transcript.segments}
@@ -143,7 +86,7 @@ class RouteStage:
         # 2. Map Chunks to ExecutionPlanEntry
         for chunk in chunks:
             speaker = segment_to_speaker.get(chunk.parent_segment_id, "Narrator")
-            voice_id = voice_map.voices.get(speaker, list(capabilities.supported_voices.keys())[0]) # fallback to first
+            voice_id = VoiceManager.resolve_voice(speaker, voice_map, capabilities)
 
             spoken_text = chunk.text if supports_emotions else strip_performance_tags(chunk.text)
 

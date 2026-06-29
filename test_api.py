@@ -69,6 +69,7 @@ def test_api_jobs_lifecycle():
                 assert any(a["name"] == "Chapter_0.wav" for a in artifacts)
                 assert any(a["name"] == "events.jsonl" for a in artifacts)
                 assert any(a["name"] == "job.json" for a in artifacts)
+                assert any(a["name"] == "protocol_manifest.json" for a in artifacts)
 
 def test_api_websocket_stream():
     with tempfile.TemporaryDirectory() as tmp_dir:

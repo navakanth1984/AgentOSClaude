@@ -81,6 +81,7 @@ def test_speech_service_lifecycle():
                 assert (Path(completed_job.output_directory) / "Chapter_0.wav").exists()
                 assert (Path(completed_job.output_directory) / "events.jsonl").exists()
                 assert (Path(completed_job.output_directory) / "job.json").exists()
+                assert (Path(completed_job.output_directory) / "protocol_manifest.json").exists()
                 
                 assert len(events) > 0
                 assert events[0].event_type == "pipeline_started"

@@ -1100,19 +1100,119 @@
       },
       "estimated_cost_usd": 0.15,
       "routing_corrections": []
+    },
+    {
+      "date": "2026-06-29",
+      "session_id": "1a86f99d-c304-4d6b-9044-8fd0f08ca797",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-29",
+      "session_id": "4b900ffd-a2a5-4384-8452-ba4fdefbf2a2",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-29",
+      "session_id": "42075bd5-8cd8-4c7a-9970-fb6b3439bebc",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-29",
+      "session_id": "7f2c175a-664a-4ea2-a09c-75227c49ab63",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-29",
+      "session_id": "8e5768b7-f787-4f27-a1c4-15c2db954f60",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
     }
   ],
   "summary": {
-    "total_sessions": 51,
+    "total_sessions": 56,
     "tier_distribution": {
       "tier_1": 0,
-      "tier_2": 47,
+      "tier_2": 52,
       "tier_3": 0,
       "tier_4": 3,
       "tier_5": 1
     },
-    "total_estimated_cost_usd": 3.075,
+    "total_estimated_cost_usd": 3.125,
     "correct_routing_rate": 1.0,
-    "last_updated": "2026-06-28"
+    "last_updated": "2026-06-29"
   }
 }

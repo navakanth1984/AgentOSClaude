@@ -22,6 +22,11 @@ The graph answers *"how is the code wired"*; the wiki answers *"what is this and
 ## FEED — how either agent writes back (keep both layers current)
 - **After changing code:** run `graphify update <repo-path>` (or `graphify update .`) so the graph reflects the new structure. AST-only, no API cost. Check freshness with `git rev-parse HEAD` vs the hash in `GRAPH_REPORT.md`.
 - **After adding notes/sources:** drop raw material in `sources/`, then ingest into `wiki/` — update or create the right page (never duplicate), cross-link it, and add a dated line to `wiki/log.md`.
+- **After running Upgrades** (full spec: [antigravity-upgrades.md](antigravity-upgrades.md)):
+  - **Roast (Upgrade 1):** Green Light / Reshape verdicts → `memory_os/taste_library/<domain>-approved.md`. Killed ideas → `memory_os/long_term_knowledge/model-routing-corrections.md`. Every run → one-line entry in `wiki/log.md`.
+  - **Verification (Upgrade 2):** New edge cases → `sources/technical/` test checklists. Loose Done metrics found → update `memory_os/north-star-protocol.md`. Recurring failure patterns → `memory_os/long_term_knowledge/`.
+  - **Session Handoff (Upgrade 3):** Write to `memory_os/session_memory/YYYY-MM-DD-handoff-[project].md`. Reference path in `wiki/log.md`. Never delete old handoffs — they form a project timeline.
+  - **Sub-agent / Goal runs (Upgrade 4):** Run summary → `wiki/log.md`. Effective agent prompts → `sources/technical/agent-prompts/`. Goal criteria that caused 3+ evaluator loops → `memory_os/long_term_knowledge/`.
 - **New repo/app:** add a row to [knowledge-base-map.md](knowledge-base-map.md); build its graph with `graphify <path>` if it has code.
 - The nightly task `wiki-nightly-ingest` (2:06 AM) runs the wiki side automatically.
 
