@@ -37,6 +37,11 @@ from typing import Optional
 # Import our bridge
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
+# Repo root must precede the agent_os/ dir on sys.path so that `import agent_os.*`
+# (used by the speech subsystem, e.g. audiobook.py) resolves to the agent_os *package*
+# rather than the sibling script agent_os/agent_os.py, which would otherwise shadow it
+# in script mode and break the /speech/audiobook endpoint with "agent_os is not a package".
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from obsidian_bridge import (
     save_note,
     search_vault,
