@@ -1652,6 +1652,21 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 self._send(500, {"error": str(e)})
 
+        elif path == "/sitebuilder/export":
+            # Body: {"site_id": "..."}  → render the built site to PDF (headless Chromium)
+            site_id = str(body.get("site_id") or "").strip()
+            if not site_id:
+                self._send(400, {"error": "Missing 'site_id' field"})
+                return
+            try:
+                from site_builder import export_pdf
+                manifest = export_pdf(site_id)
+                self._send(200, manifest)
+            except FileNotFoundError as e:
+                self._send(404, {"error": str(e)})
+            except Exception as e:
+                self._send(500, {"error": f"PDF export failed: {e}"})
+
         elif path == "/swarm":
             # Parallel sub-agent deep research + NotebookLM integration
             # Body: {"topic": "...", "model": "anthropic/claude-sonnet-4.6", "auto_notebooklm": false}

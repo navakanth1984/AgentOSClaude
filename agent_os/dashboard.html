@@ -2025,6 +2025,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       <pre id="site-log" class="output empty" style="max-height:160px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">No jobs running.</pre>
       <div id="site-result" style="display:none;margin-top:14px">
         <a id="site-open" class="btn btn-green" href="#" target="_blank" rel="noopener">↗ Open generated site</a>
+        <button class="btn btn-outline" id="site-pdf-btn" onclick="exportSitePDF()">⬇ Export PDF</button>
+        <a id="site-pdf-link" class="btn btn-blue" href="#" target="_blank" rel="noopener" style="display:none">↗ Open PDF</a>
+        <span id="site-pdf-status" style="margin-left:10px;font-size:12px;color:var(--muted)"></span>
         <iframe id="site-preview" style="width:100%;height:420px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-top:12px;background:#fff"></iframe>
       </div>
     </div>
@@ -3595,12 +3598,36 @@ async function pollSiteStatus() {
     el("site-status").textContent = "✓ Built";
     el("site-open").href = m.web_path;
     el("site-preview").src = m.web_path;
+    // reset any PDF state from a previous build
+    el("site-pdf-link").style.display = "none";
+    el("site-pdf-status").textContent = "";
+    el("site-pdf-btn").disabled = false;
     el("site-result").style.display = "block";
   } catch (e) {
     if (sitePollInterval) clearInterval(sitePollInterval);
     el("site-btn").disabled = false;
     el("site-log").className = "output error";
     el("site-log").textContent = "Status error: " + e.message;
+  }
+}
+
+async function exportSitePDF() {
+  if (!siteJobId) return;
+  const btn = el("site-pdf-btn");
+  btn.disabled = true;
+  el("site-pdf-status").innerHTML = '<span class="spinner"></span> Rendering PDF…';
+  el("site-pdf-link").style.display = "none";
+  try {
+    // PDF render runs headless Chromium server-side; allow generous timeout
+    const res = await apiPost("/sitebuilder/export", { site_id: siteJobId }, 120000);
+    const link = el("site-pdf-link");
+    link.href = res.web_path;
+    link.style.display = "inline-block";
+    el("site-pdf-status").textContent = `✓ PDF ready (${Math.round(res.bytes/1024)} KB)`;
+  } catch (e) {
+    el("site-pdf-status").textContent = "✗ " + e.message;
+  } finally {
+    btn.disabled = false;
   }
 }
 
