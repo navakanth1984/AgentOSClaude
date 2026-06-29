@@ -96,8 +96,18 @@ class SpeechService:
             
         # Load text
         try:
-            with open(text_path, "r", encoding="utf-8") as f:
-                text = f.read()
+            ext = os.path.splitext(text_path.lower())[1]
+            if ext == ".docx":
+                import docx
+                doc = docx.Document(text_path)
+                text = "\n".join(p.text for p in doc.paragraphs)
+            elif ext == ".pdf":
+                import fitz  # type: ignore
+                doc = fitz.open(text_path)
+                text = "\n".join(page.get_text() for page in doc)
+            else:
+                with open(text_path, "r", encoding="utf-8") as f:
+                    text = f.read()
         except Exception as e:
             job.transition_to(JobState.FAILED)
             SpeechJobStore.save(job)
