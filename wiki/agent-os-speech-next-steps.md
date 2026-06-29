@@ -4,15 +4,15 @@
 
 **As of 2026-06-29:** speech V1.1 + Sarvam (Indian languages) + audiobook orchestrator are merged to `master` (PR #3, #4). `master` is branch-protected: every change needs a **PR + green `build` CI check** (compileall `agent_os/speech` + `pytest test_parse_stage.py`), `enforce_admins=true`. Follow the [Code Development Lifecycle](development-lifecycle.md): branch → verify with a real run → commit (pyrefly hook) → push → PR → merge.
 
-## P0 — Hygiene / unblock (do first)
-1. **Resolve the dirty working tree on `milestone/v1.1.0`.** ~41 uncommitted changes remain (WIP edits to `agent_os/speech/{service,executor,incremental_executor,route,interfaces,api}.py`, deletions, `memory_os/model-usage-log.json`, and the `CLAUDE.md` ADLC edit). Triage each: commit the keepers via branch→PR, discard the rest. Until this is sorted, branch switching/merging on that branch is risky.
-2. **Commit the speech test suite.** These are untracked and missing from CI: `tests/speech/`, `test_segment_route_stage.py`, `test_synthesis_slice.py`, `test_smoke_kokoro.py`, `test_chaos.py`. Add them (branch→PR) and extend `.github/workflows/ci.yml` to run them so the gate is meaningful (currently only `test_parse_stage.py`).
-3. **Commit the `CLAUDE.md` ADLC + handoff-process edits** (currently on disk only, in the WIP tree) so the per-session brief is durable on `master`.
+## P0 — Hygiene / unblock (COMPLETED 2026-06-29)
+1. **Resolve the dirty working tree on `milestone/v1.1.0`.** (Completed: Cleaned and triaged working tree, fixed IncrementalExecutor cooperative cancellation bug).
+2. **Commit the speech test suite.** (Completed: Added tests/speech fixtures and all offline test files, extended CI workflow `.github/workflows/ci.yml` to run the test suite).
+3. **Commit the `CLAUDE.md` ADLC + handoff-process edits** (Completed: Staged and merged CLAUDE.md/AGENTS.md edits to master).
 
-## P1 — Sarvam + audiobook completeness
-4. **Multi-speaker Indian-language casting.** Verify/finish per-character voice assignment for Sarvam via `voice_map.json` (route stage). Goal: a Telugu/Hindi screenplay casts distinct Sarvam speakers per character (38 v3 speakers available). Acceptance: a 2-speaker Telugu sample produces two distinct voices.
-5. **Wire Sarvam `pace`/speed.** `SarvamEngine.synthesize` currently ignores `speed` — pass it as `pace` to `text_to_speech.convert`. Populate voice gender metadata (currently `"unknown"`) and validate `max_text_length=1000` against Sarvam's real per-request limit + multi-segment join.
-6. **Audiobook book-level features.** Add: resume (skip already-completed chapters), parallel chapter processing (currently sequential), and in-file chapter splitting (split one file on `Chapter N` markers). File: `agent_os/speech/audiobook.py`.
+## P1 — Sarvam + audiobook completeness (COMPLETED 2026-06-29)
+4. **Multi-speaker Indian-language casting.** (Completed: voice_map.json cycles available voices per speaker, enabling distinct speakers/voices for multi-speaker screenplays).
+5. **Wire Sarvam `pace`/speed.** (Completed: Wired pace/speed to convert(), populated voice gender metadata for all 38 bulbul speakers, implemented auto-chunking & joining of texts >1000 characters).
+6. **Audiobook book-level features.** (Completed: Implemented chapter resume skipping, parallel ThreadPoolExecutor chapter synthesis, and regex-based in-file chapter splitting).
 
 ## P2 — Governance / cleanup
 7. **Resolve `EngineName.GCP`.** The enum value remains (`schema/models.py`) but the legacy GCP engine was deleted. Either implement a GCP engine in the new pipeline or remove the enum value.
