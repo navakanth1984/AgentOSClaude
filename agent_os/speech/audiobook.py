@@ -43,8 +43,25 @@ def _split_in_file_chapters(input_file: Path, book_dir: Path) -> List[Path]:
     writes each chapter to a separate file, and returns the list of Paths.
     If no chapter markers are found, returns the input_file as a single-element list.
     """
-    with open(input_file, "r", encoding="utf-8") as f:
-        content = f.read()
+    ext = input_file.suffix.lower()
+    if ext == ".docx":
+        try:
+            import docx
+            doc = docx.Document(str(input_file))
+            content = "\n".join(p.text for p in doc.paragraphs)
+        except Exception as e:
+            raise RuntimeError(f"Failed to parse DOCX {input_file}: {e}")
+    elif ext == ".pdf":
+        try:
+            import fitz  # type: ignore
+            doc = fitz.open(str(input_file))
+            content = "\n".join(page.get_text() for page in doc)
+        except Exception as e:
+            raise RuntimeError(f"Failed to parse PDF {input_file}: {e}")
+    else:
+        with open(input_file, "r", encoding="utf-8") as f:
+            content = f.read()
+    
     
     # Pattern matching "Chapter X" or "CHAPTER X" at the start of a line
     pattern = re.compile(r'^(?:Chapter|CHAPTER)\s+[0-9IVXLCDMivxlcdm]+.*$', re.MULTILINE | re.IGNORECASE)
