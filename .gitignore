@@ -125,3 +125,33 @@ corpus_output*/
 # Installed agent skill content (tool-managed, ~99MB, not repo source).
 # Files stay on disk; scripts that read them by absolute path are unaffected.
 .agents/
+.adal/
+.augment/
+.bob/
+.codebuddy/
+.codex/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+
