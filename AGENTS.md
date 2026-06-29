@@ -46,3 +46,12 @@ Applies to **code** changes (the `wiki/`+`sources/` "never delete" rule above is
 **Removing legacy code** follows the deprecation lifecycle, never a blind delete: **deprecate** (add `DeprecationWarning` + pointer to the replacement) → **migrate every importer** (grep for all call sites) → **verify each still works** → **delete** → commit as an isolated `refactor:`. Deletion is legitimate here because git makes it revertable — this does **not** conflict with the KB "never delete" guardrail.
 
 **Feed the KB:** after the work lands, add a dated `wiki/log.md` line and update the relevant wiki page (see the Continuous Loop above).
+
+### Next-Steps Handoff (regular process — end of every significant work item)
+
+When wrapping a feature, milestone, or hand-off to another agent (e.g. Antigravity), **always write a forward-looking handoff** so the next session/agent can resume cold:
+1. **KB** — create/update a `wiki/<topic>-next-steps.md` page (prioritized P0/P1/P2, file pointers, acceptance criteria), link it in `wiki/index.md`, and add a `wiki/log.md` line.
+2. **Session memory** — append the same next-steps to the current `memory_os/session_memory/session_<YYYYMMDD>.md` and refresh `.remember/remember.md` (the cross-session buffer).
+3. Keep it **cold-start friendly**: assume no prior context; name exact files, commands, and the branch/PR/CI state.
+
+This is part of the self-improving loop — the handoff is how work survives across sessions and across agents.
