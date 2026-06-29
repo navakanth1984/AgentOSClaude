@@ -58,17 +58,23 @@ def test_incremental_execution_flow():
         
         config = {
             "input_text": text,
-            "chapter_id": "chapter_test",
+            "chapter_id": "0",
             "engine_capabilities": capabilities,
             "tts_engine": engine,
             "max_workers": 1,
-            "trim": {"frame_ms": 20, "multiplier": 3.0, "minimum_threshold": 50.0}
+            "trim": {"frame_ms": 20, "multiplier": 3.0, "minimum_threshold": 50.0},
+            "parser": "benchmark"
         }
         
+        from agent_os.speech.schema.jobs import EventBus
+
         events_emitted = []
         def listener(event):
             events_emitted.append(event)
             print(f"[TEST EVENT] {event.event_type} - {event.to_json()}")
+
+        bus = EventBus()
+        bus.subscribe(listener)
 
         context = StageContext(
             project_dir=project_dir,
@@ -76,7 +82,7 @@ def test_incremental_execution_flow():
             config=config,
             artifacts={},
             metrics={},
-            event_listeners=[listener],
+            event_bus=bus,
             run_id="test_run_123"
         )
         

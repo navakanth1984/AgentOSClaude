@@ -40,9 +40,11 @@ source: "Agent OS Setup"
 - **agent_os.py** — CLI command loop
 
 ## Current Focus (update this section each session)
-- Phase 1 Implementation of NTH Brain Phenotype MVP v0.1: Design database schemas for coordinate logging (`student_mind_graph.py`, `interaction_logger.py`, `schema.sql`).
-- Write rolling-window algorithms to calculate student exploration velocity and pause duration metrics.
-- Track empirical measurements for learner independence and cognitive load reduction ($C_E$).
+- **Agent OS Speech subsystem — V1.1 shipped (2026-06-27):** 8-stage artifact-driven TTS DAG (Kokoro ONNX) hardened, architecture **frozen** and git-tagged `v1.1.0` on branch `milestone/v1.1.0`. Deterministic benchmark harness + scaling/thread-matrix studies done (Baselines 1–4; thread-tuning was a documented negative result). Docs: `docs/ARCHITECTURE_STATUS.md`, `docs/BASELINE.md`, `docs/HANDOFF.md`. **Next — Antigravity takes V1.2:** start with the **Asset Manifest** (`assets_manifest.json`, highest-value reproducibility), then Doctor++/EngineRegistry, then ADR-gated Protocol/VoiceManager. Defer voice blending/download manager/routing until a 2nd engine exists.
+- **NTH Brain / MVCT — Milestone M1 reached (2026-06-25):** MVCT V1 "The Microscope" built & merged to `master` (PR #2). A validated capability sensor (`transfer-detector-v0`) is now coupled to a Python-enforced constitutional governor (`mvct-v1/`) via the `TransferSensor` seam. Constitution (HMAC PermissionToken, deterministic guard, fail-closed) lives in code, not prompts. 28 offline tests green.
+- **Next — Stage B (real-human validation):** the detector passed only a *synthetic* ceiling. Run a small human pilot; annotate transcripts **blind to detector output** (permanent rule: never evaluate the detector against labels derived from its own output); compute real κ_human; feed failure modes back via the `TransferSensor` seam (no tutor changes).
+- **Then — Stage C:** controlled gated-vs-ungated comparative study (SAIR, unlock latency).
+- **Model routing:** implementation/codegen → Gemini 2.5 Flash (Tier 1/2); reserve Opus for architecture/design.
 
 ## Operational Infrastructure
 - **AntigravityUsageMonitor** — 5-hour scheduled background cost and economics check.

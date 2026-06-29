@@ -20,6 +20,12 @@ from agent_os.speech.pipeline.stages.append import AppendStage
 from agent_os.speech.pipeline.incremental_executor import IncrementalExecutor
 
 class SpeechService:
+    _active_threads: Dict[str, threading.Thread] = {}
+
+    @classmethod
+    def is_job_running(cls, job_id: str) -> bool:
+        return job_id in cls._active_threads
+
     @staticmethod
     def create_job(payload: Dict[str, Any], output_dir: Optional[str] = None) -> SpeechJob:
         job_id = str(uuid.uuid4())
@@ -34,6 +40,22 @@ class SpeechService:
             state=JobState.QUEUED
         )
         SpeechJobStore.save(job)
+        
+        # Write unified protocol manifest
+        import json
+        manifest_data = {
+            "protocols": {
+                "events": "1.0",
+                "benchmark": "1.0",
+                "assets_manifest": "1.0",
+                "performance_profile": "1.1",
+                "job": "1.0"
+            },
+            "speech_framework_version": "1.2.0"
+        }
+        with open(os.path.join(output_dir, "protocol_manifest.json"), "w", encoding="utf-8") as f:
+            json.dump(manifest_data, f, indent=2)
+
         return job
 
     @classmethod
@@ -45,12 +67,20 @@ class SpeechService:
         if background:
             t = threading.Thread(target=cls._execute, args=(job_id, custom_bus))
             t.daemon = True
+            cls._active_threads[job_id] = t
             t.start()
         else:
             cls._execute(job_id, custom_bus)
 
     @classmethod
     def _execute(cls, job_id: str, custom_bus: Optional[EventBus] = None) -> None:
+        try:
+            cls._execute_inner(job_id, custom_bus)
+        finally:
+            cls._active_threads.pop(job_id, None)
+
+    @classmethod
+    def _execute_inner(cls, job_id: str, custom_bus: Optional[EventBus] = None) -> None:
         job = SpeechJobStore.load(job_id)
         if not job:
             return
@@ -114,7 +144,8 @@ class SpeechService:
             "chapter_id": "0",
             "engine_capabilities": caps,
             "tts_engine": engine,
-            "max_workers": 2
+            "max_workers": 2,
+            **{k: v for k, v in payload.items() if k not in ["text_path", "engine", "voice"]}
         }
         
         ctx = StageContext(
@@ -142,6 +173,8 @@ class SpeechService:
         try:
             executor.run()
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             # Check if job was cancelled cooperatively
             current_job = SpeechJobStore.load(job_id)
             if current_job and current_job.state == JobState.CANCELLED:

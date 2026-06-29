@@ -2,11 +2,51 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "nthdimensionacademy",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "nthdimensionacademy", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5501
+    },
+    {
       "name": "whiteboard-4d",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "whiteboard-4d", "--no-clipboard"],
       "autoPort": true,
       "port": 5500
+    },
+    {
+      "name": "nth-dimension-react",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "nth-dimension-react"],
+      "port": 5173
+    },
+    {
+      "name": "sanatana-wisdom-react",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "sanatana-wisdom-react"],
+      "port": 5174
+    },
+    {
+      "name": "articraft",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "articraft", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5502
+    },
+    {
+      "name": "tdh-labeler",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "tdh-labeler", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5503
+    },
+    {
+      "name": "tdh-bluff",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "tdh-bluff", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5504
     }
   ]
 }

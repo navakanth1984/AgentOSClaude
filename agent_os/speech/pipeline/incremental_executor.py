@@ -21,9 +21,10 @@ class IncrementalExecutor:
         os.makedirs(self.context.cache_dir, exist_ok=True)
 
     def run(self) -> None:
-        import uuid
-        run_id = str(uuid.uuid4())
-        self.context.run_id = run_id
+        if not self.context.run_id or self.context.run_id == "run_default":
+            import uuid
+            self.context.run_id = str(uuid.uuid4())
+        run_id = self.context.run_id
         
         # Start Pipeline Event
         self.context.emit_event(PipelineStarted(run_id=run_id, timestamp=time.time()))
@@ -73,7 +74,16 @@ class IncrementalExecutor:
         chapter_completed = defaultdict(int)
         
         pipeline_start_time = time.time()
-        
+
+        # Clean up existing final chapter audio files to ensure clean idempotency on resume
+        for chapter_id in chapter_totals.keys():
+            out_file = Path(self.context.project_dir) / f"Chapter_{chapter_id}.wav"
+            if out_file.exists():
+                try:
+                    out_file.unlink()
+                except Exception:
+                    pass
+
         # Run chunk by chunk incremental loop
         # We run Synthesize -> Trim -> Append per chunk.
         synthesize_stage = self.dag.nodes.get("synthesize")

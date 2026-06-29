@@ -135,6 +135,8 @@ Load the four Agent OS layers in order — they build on each other:
 
 - Follow the Session-Start Routine above — this is non-negotiable
 - Run the Model Economics Checkpoint autonomously — don't wait for the user to ask
+- Leverage the four workspace productivity upgrades (Roast, Verification, Session Handoff, Sub-agent Goals) dynamically. See [antigravity-upgrades.md](wiki/antigravity-upgrades.md) for details.
+- For ANY non-trivial code change, follow the **Code Development Lifecycle (ADLC)**: branch → implement + verify with a real run → commit (pyrefly hook must pass; never `--no-verify`) → push → open a PR into `master` → CI/review → merge → delete branch. Removing legacy code = deprecate → migrate every importer → verify → delete (isolated `refactor:` commit). Never commit directly to `master` (it is branch-protected). A merge requires a clean working tree — never merge over uncommitted WIP. Full spec: [development-lifecycle.md](wiki/development-lifecycle.md) and [AGENTS.md](AGENTS.md).
 - When touching the vault, always confirm the file path before writing
 - Suggest tagging and linking notes to relevant projects
 - If I share a YouTube URL, offer to create a vault note from it

@@ -16,6 +16,7 @@ app = FastAPI(
 )
 
 class JobCreatePayload(BaseModel):
+    model_config = {"extra": "allow"}
     text_path: str
     engine: str = "kokoro"
     voice: str = "default"

@@ -21,8 +21,19 @@ class FakeEngine:
 
     def initialize(self): pass
     def validate_model(self): pass
-    def warmup(self): self.kokoro = object()
+    def warmup(self, profile: str = "minimal"): self.kokoro = object()
     def shutdown(self): pass
+
+    def get_capabilities(self):
+        from agent_os.speech.schema.models import EngineCapabilities, EngineName, Language
+        return EngineCapabilities(
+            engine_name=EngineName.KOKORO,
+            supported_languages=[Language.EN],
+            supported_voices={"af": {}},
+        )
+
+    def supports_language(self, language) -> bool: return True
+    def supports_voice(self, voice: str) -> bool: return True
 
     def synthesize(self, text, voice, speed, language):
         self.synth_calls += 1

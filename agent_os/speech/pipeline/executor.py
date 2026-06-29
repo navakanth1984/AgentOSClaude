@@ -22,6 +22,8 @@ def _default_encoder(obj):
         f"cache/fingerprint. Provide a dataclass, a .model_dump(), or a JSON-native value."
     )
 
+from agent_os.speech.schema.jobs import EventBus
+
 @dataclass
 class StageContext:
     project_dir: str
@@ -29,15 +31,11 @@ class StageContext:
     config: Dict[str, Any]
     artifacts: Dict[str, Any]  # name -> content/path
     metrics: Dict[str, Any]
-    event_listeners: List[Any] = dataclasses.field(default_factory=list)
+    event_bus: EventBus = dataclasses.field(default_factory=EventBus)
     run_id: str = "run_default"
 
     def emit_event(self, event: Any) -> None:
-        for listener in self.event_listeners:
-            try:
-                listener(event)
-            except Exception as e:
-                print(f"[StageContext] Listener error: {e}")
+        self.event_bus.publish(event)
 
 class Executor:
     def __init__(self, dag, context: StageContext):
