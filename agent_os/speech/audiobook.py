@@ -31,6 +31,9 @@ from agent_os.speech.schema.jobs import SpeechJobStore, JobState
 
 CHAPTER_GAP_SEC = 0.7
 
+# Per-engine default speaker when the caller passes "default"/None.
+_DEFAULT_SPEAKERS = {"kokoro": "af_heart", "sarvam": "rohan", "piper": "default"}
+
 
 def _resolve_chapters(input_path: str) -> List[Path]:
     p = Path(input_path)
@@ -100,6 +103,8 @@ def build_audiobook(
     chapters = _resolve_chapters(input_path)
     src = Path(input_path)
     book_name = book_name or (src.stem if src.is_file() else src.name)
+    if not voice or voice == "default":
+        voice = _DEFAULT_SPEAKERS.get(engine, "default")
 
     book_dir = Path(base_dir) / book_name
     chapters_dir = book_dir / "chapters"
