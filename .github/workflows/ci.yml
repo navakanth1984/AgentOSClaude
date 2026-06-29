@@ -16,16 +16,37 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: '.github/workflows/ci.yml'
 
       - name: Install deps (speech parse path — offline, no ML models)
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pydantic google-genai python-dotenv numpy scipy soundfile fastapi httpx
+          pip install pytest pydantic google-genai python-dotenv numpy scipy soundfile fastapi httpx pyrefly sarvamai
 
       - name: Compile-check speech subsystem
         run: python -m compileall -q agent_os/speech
 
+      - name: Type-check speech subsystem (pyrefly — mirrors local pre-commit gate)
+        # pyrefly.toml pins a Windows interpreter path; override it with the
+        # runner's interpreter so import resolution works on Linux.
+        # Optional engine/runtime SDKs (Kokoro/Piper/Sarvam/psutil) are not
+        # installed in CI on purpose — type-check our code, not their stubs —
+        # so treat those imports as Any when absent.
+        # pyrefly takes one module per --ignore-missing-imports occurrence;
+        # a comma-joined list is not split, so the flag must be repeated.
+        run: >-
+          pyrefly check agent_os/speech
+          --python-interpreter-path "$(which python)"
+          --ignore-missing-imports kokoro_onnx
+          --ignore-missing-imports onnxruntime
+          --ignore-missing-imports piper
+          --ignore-missing-imports piper.config
+          --ignore-missing-imports piper.voice
+          --ignore-missing-imports psutil
+          --ignore-missing-imports sarvamai
+
       - name: Run speech subsystem tests (deterministic, offline mock)
         env:
           PYTHONPATH: .
-        run: pytest test_parse_stage.py test_incremental_execution.py test_performance_profile.py test_speech_service.py test_segment_route_stage.py test_synthesis_slice.py test_smoke_kokoro.py test_chaos.py -q
+        run: pytest test_parse_stage.py test_incremental_execution.py test_performance_profile.py test_speech_service.py test_segment_route_stage.py test_synthesis_slice.py test_smoke_kokoro.py test_chaos.py test_audiobook_features.py -q

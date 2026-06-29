@@ -37,7 +37,6 @@ class Language(str, Enum):
 
 class EngineName(str, Enum):
     KOKORO = "kokoro"
-    GCP = "gcp"
     SARVAM = "sarvam"
     PIPER = "piper"
 
