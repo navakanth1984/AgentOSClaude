@@ -165,7 +165,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         if not bridge_url:
             return False
             
-        bridge_url = bridge_url.rstrip("/")
+        bridge_url = str(bridge_url).rstrip("/")
         target_url = f"{bridge_url}{self.path}"
         
         import urllib.request
@@ -1507,6 +1507,83 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 from omi_bridge import receive_memory
                 result = receive_memory(body)
                 self._send(200, result)
+
+        elif path == "/speech/audiobook":
+            # Body: {"input": "...", "name": "...", "engine": "...", "voice": "...", "mp3": false, "max_workers": 2, "parser": null}
+            input_path = str(body.get("input") or "").strip()
+            if not input_path:
+                self._send(400, {"error": "Missing 'input' field"})
+                return
+            
+            book_name = str(body.get("name") or "").strip() or None
+            engine = str(body.get("engine") or "kokoro").strip()
+            voice = str(body.get("voice") or "default").strip()
+            mp3 = bool(body.get("mp3", False))
+            parser = str(body.get("parser") or "").strip() or None
+            max_workers = int(body.get("max_workers", 2))
+
+            # Import build_audiobook from agent_os.speech.audiobook
+            import threading
+            import uuid
+            from agent_os.speech.audiobook import build_audiobook
+
+            # We'll run the build_audiobook in a background thread to prevent blocking HTTP server.
+            # We will save status logs in a JSON file the UI can poll.
+            job_id = uuid.uuid4().hex[:8]
+            status_file = Path(__file__).parent / f"output/audiobook_{job_id}.json"
+            status_file.parent.mkdir(parents=True, exist_ok=True)
+
+            status_data = {
+                "job_id": job_id,
+                "status": "running",
+                "progress": 0,
+                "book": book_name or os.path.basename(input_path),
+                "error": None,
+                "manifest": None
+            }
+            status_file.write_text(json.dumps(status_data), encoding="utf-8")
+
+            def bg_build():
+                try:
+                    # Run the builder
+                    manifest = build_audiobook(
+                        input_path=input_path,
+                        book_name=book_name,
+                        engine=engine,
+                        voice=voice,
+                        export_mp3=mp3,
+                        parser=parser,
+                        max_workers=max_workers
+                    )
+                    status_data["status"] = "completed"
+                    status_data["progress"] = 100
+                    status_data["manifest"] = manifest
+                except Exception as ex:
+                    status_data["status"] = "failed"
+                    status_data["error"] = str(ex)
+                
+                status_file.write_text(json.dumps(status_data), encoding="utf-8")
+
+            threading.Thread(target=bg_build, daemon=True).start()
+            self._send(200, {"job_id": job_id, "status": "running"})
+
+        elif path == "/speech/audiobook/status":
+            # Body: {"job_id": "..."}
+            job_id = str(body.get("job_id") or "").strip()
+            if not job_id:
+                self._send(400, {"error": "Missing 'job_id' field"})
+                return
+            
+            status_file = Path(__file__).parent / f"output/audiobook_{job_id}.json"
+            if not status_file.exists():
+                self._send(404, {"error": f"Job {job_id} not found"})
+                return
+            
+            try:
+                data = json.loads(status_file.read_text(encoding="utf-8"))
+                self._send(200, data)
+            except Exception as e:
+                self._send(500, {"error": str(e)})
 
         elif path == "/swarm":
             # Parallel sub-agent deep research + NotebookLM integration

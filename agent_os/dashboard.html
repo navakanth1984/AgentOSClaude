@@ -1731,7 +1731,73 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       <pre id="creative-output" class="output empty" style="max-height:400px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">Output will appear here.</pre>
     </div>
   </div>
+
+  <div class="panel" style="margin-top:20px">
+    <h2>📖 Audiobook Studio (CLI Pipeline)</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">
+      Synthesize large-volume screenplays or novels (120 to 300+ pages) into continuous high-fidelity audiobooks.
+    </p>
+
+    <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
+      <div style="flex:1;min-width:300px">
+        <label>Input File or Folder Path</label>
+        <input id="audiobook-input" type="text" placeholder="e.g. C:\Users\navka\navakanth001\sources\creative\DAAVA_Draft2_Screenplay.docx" style="width:100%" />
+      </div>
+      <div style="width:200px">
+        <label>Book Name (Optional)</label>
+        <input id="audiobook-name" type="text" placeholder="e.g. DAAVA_Book" />
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
+      <div style="width:180px">
+        <label>Speech Engine</label>
+        <select id="audiobook-engine" onchange="updateAudiobookVoices()">
+          <option value="kokoro">Kokoro ONNX (Default)</option>
+          <option value="sarvam">Sarvam (Indian Languages)</option>
+          <option value="piper">Piper (Offline TTS)</option>
+        </select>
+      </div>
+      <div style="width:180px">
+        <label>Voice / Speaker</label>
+        <select id="audiobook-voice">
+          <option value="default">Default Speaker</option>
+        </select>
+      </div>
+      <div style="width:180px">
+        <label>Parser Mode</label>
+        <select id="audiobook-parser">
+          <option value="production">Production (LLM emotional tags)</option>
+          <option value="benchmark">Offline Benchmark (No API Key)</option>
+        </select>
+      </div>
+      <div style="width:120px">
+        <label>Parallel Workers</label>
+        <input id="audiobook-workers" type="number" value="2" min="1" max="8" />
+      </div>
+      <div style="display:flex;align-items:center;padding-top:20px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none">
+          <input type="checkbox" id="audiobook-mp3" style="width:auto" checked />
+          Export MP3 (Transcode)
+        </label>
+      </div>
+    </div>
+
+    <div class="row" style="align-items:center;margin-bottom:14px">
+      <button class="btn btn-blue" id="audiobook-btn" onclick="generateAudiobook()">⚡ Build Audiobook</button>
+      <span id="audiobook-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
+    </div>
+
+    <div style="margin-top:15px">
+      <div style="display:flex;align-items:center;margin-bottom:8px;gap:6px">
+        <h4>Job Manifest & Log</h4>
+        <button class="btn btn-outline" id="audiobook-refresh-btn" onclick="pollAudiobookStatus(true)" style="margin-left:auto;padding:2px 8px;font-size:10px" disabled>🔄 Refresh Status</button>
+      </div>
+      <pre id="audiobook-log" class="output empty" style="max-height:220px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">No jobs running.</pre>
+    </div>
+  </div>
 </div>
+
 
 <!-- ══ TAB: WHATSAPP/HERMES ══════════════════════════════════════ -->
 <div id="tab-whatsapp" class="tab-content">
@@ -3401,6 +3467,135 @@ async function exportCreative(format) {
   } catch (e) {
     el("creative-status").textContent = "✗ Export Error";
     showToast("Export failed: " + e.message, "error");
+  }
+}
+
+// ── Audiobook Tab ───────────────────────────────────────────────
+const AUDIOBOOK_VOICES = {
+  kokoro: ["default", "af_heart", "af_bella", "af_nicole", "af_sarah", "af_sky", "am_adam", "am_michael", "bf_emma", "bf_isabella", "bm_george", "bm_lewis"],
+  sarvam: ["default", "rohan", "aditi", "harsh", "kavya", "deepak", "nisha"],
+  piper: ["default"]
+};
+
+function updateAudiobookVoices() {
+  const engine = el("audiobook-engine").value;
+  const select = el("audiobook-voice");
+  select.innerHTML = "";
+  
+  const voices = AUDIOBOOK_VOICES[engine] || ["default"];
+  voices.forEach(voice => {
+    const opt = document.createElement("option");
+    opt.value = voice;
+    opt.textContent = voice.charAt(0).toUpperCase() + voice.slice(1);
+    select.appendChild(opt);
+  });
+}
+
+// Populate initial voices
+setTimeout(updateAudiobookVoices, 100);
+
+let audiobookJobId = null;
+let audiobookPollInterval = null;
+
+async function generateAudiobook() {
+  const input = el("audiobook-input").value.trim();
+  if (!input) { showToast("Please specify the input file or chapter folder path.", "warning"); return; }
+  
+  const name = el("audiobook-name").value.trim();
+  const engine = el("audiobook-engine").value;
+  const voice = el("audiobook-voice").value;
+  const parser = el("audiobook-parser").value;
+  const workers = parseInt(el("audiobook-workers").value) || 2;
+  const mp3 = el("audiobook-mp3").checked;
+
+  const btn = el("audiobook-btn");
+  btn.disabled = true;
+  el("audiobook-status").innerHTML = '<span class="spinner"></span> Initializing...';
+  
+  const logPre = el("audiobook-log");
+  logPre.className = "output running";
+  logPre.textContent = "Launching audiobook job...\n";
+  
+  try {
+    const res = await apiPost("/speech/audiobook", {
+      input,
+      name,
+      engine,
+      voice,
+      parser,
+      max_workers: workers,
+      mp3
+    });
+    
+    if (res.error) {
+      logPre.className = "output error";
+      logPre.textContent = "Error: " + res.error;
+      el("audiobook-status").textContent = "✗ Launch Failed";
+      btn.disabled = false;
+    } else {
+      audiobookJobId = res.job_id;
+      el("audiobook-status").textContent = `⚡ Job Running (ID: ${audiobookJobId})`;
+      el("audiobook-refresh-btn").disabled = false;
+      logPre.textContent += `Job scheduled successfully with ID: ${audiobookJobId}\n`;
+      
+      if (audiobookPollInterval) clearInterval(audiobookPollInterval);
+      audiobookPollInterval = setInterval(() => pollAudiobookStatus(), 3000);
+    }
+  } catch (e) {
+    logPre.className = "output error";
+    logPre.textContent = "Request failed: " + e.message;
+    el("audiobook-status").textContent = "✗ Connection Error";
+    btn.disabled = false;
+  }
+}
+
+async function pollAudiobookStatus(manual = false) {
+  if (!audiobookJobId) return;
+  
+  try {
+    const res = await apiPost("/speech/audiobook/status", { job_id: audiobookJobId });
+    const logPre = el("audiobook-log");
+    
+    if (res.error) {
+      logPre.className = "output error";
+      logPre.textContent = "Status Error: " + res.error;
+      if (audiobookPollInterval) clearInterval(audiobookPollInterval);
+      el("audiobook-btn").disabled = false;
+      return;
+    }
+    
+    let statusText = `Job ID: ${res.job_id}\nBook: ${res.book}\nStatus: ${res.status.toUpperCase()}\n`;
+    if (res.error) {
+      statusText += `Error: ${res.error}\n`;
+    }
+    
+    if (res.manifest) {
+      statusText += `\n--- Manifest ---\n` + JSON.stringify(res.manifest, null, 2);
+    } else {
+      statusText += `Progress: ${res.progress}%\nProcessing chapters...`;
+    }
+    
+    logPre.textContent = statusText;
+    
+    if (res.status === "completed") {
+      logPre.className = "output success";
+      el("audiobook-status").textContent = "✓ Audiobook Completed!";
+      if (audiobookPollInterval) clearInterval(audiobookPollInterval);
+      el("audiobook-btn").disabled = false;
+      showToast("Audiobook generation complete!", "success");
+    } else if (res.status === "failed") {
+      logPre.className = "output error";
+      el("audiobook-status").textContent = "✗ Job Failed";
+      if (audiobookPollInterval) clearInterval(audiobookPollInterval);
+      el("audiobook-btn").disabled = false;
+      showToast("Audiobook generation failed.", "error");
+    } else {
+      el("audiobook-status").textContent = `⚡ Job Running (ID: ${audiobookJobId}) - Progress: ${res.progress}%`;
+    }
+    
+    if (manual) showToast("Status refreshed.", "info");
+  } catch (e) {
+    if (manual) showToast("Failed to refresh status: " + e.message, "error");
   }
 }
 
