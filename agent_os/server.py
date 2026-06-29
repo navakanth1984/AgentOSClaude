@@ -1525,7 +1525,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             # Import build_audiobook from agent_os.speech.audiobook
             import threading
             import uuid
-            from agent_os.speech.audiobook import build_audiobook
+            from speech.audiobook import build_audiobook
 
             # We'll run the build_audiobook in a background thread to prevent blocking HTTP server.
             # We will save status logs in a JSON file the UI can poll.
