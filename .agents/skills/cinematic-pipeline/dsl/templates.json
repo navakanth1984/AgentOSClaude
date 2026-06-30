@@ -1,0 +1,30 @@
+{
+  "flow_omni": {
+    "character": "{name} with {hair} hair wearing {clothes} positioned at {x_pct}% on X-axis and {y_pct}% on Y-axis at {depth} depth facing {facing}. Action: {action_desc} (Feeling: {psychological}, Face: {facial}, Body: {body}, Micro: {micro}).",
+    "camera": "Camera: {movement_type} {movement_dir} at {movement_speed} speed, shot size: {distance}, height: {height}, angle: {angle}, lens: {focal_length}mm, aperture: {aperture}, focus: {focus_mode}.",
+    "lighting": "Light: key is {key_light}, fill is {fill_light}, atmosphere is {atmosphere}.",
+    "style": "Style: {look}. {frame_rate} fps.",
+    "turn_1_full": "{characters} in {location}. {camera} {lighting} {style}",
+    "turn_2_refine": "In the clip you just made, keep everything else the same, but execute: {actions}. {frame_rate} fps.",
+    "multi_shot_establish": "A multi-shot sequence with sequential cuts: {beats_prompts} {lighting} Style: {look}. {frame_rate} fps.",
+    "cut_format": "[Cut {id}: {content} with camera {camera}]"
+  },
+  "higgsfield": {
+    "character": "SoulID character {name} wearing {clothes} positioned at {x_pct}% on X-axis and {y_pct}% on Y-axis facing {facing}. Action: {action_desc} with facial expression {facial} and body pose {body}.",
+    "camera": "Camera movement: {movement_type} {movement_dir} ({focal_length}mm lens, aperture {aperture})",
+    "color": "Color schema: {dominant_ratio}% {dominant_colors}, {secondary_ratio}% {secondary_colors}, {accent_ratio}% {accent_colors}.",
+    "full": "{characters}. Located in {location}. {camera}. {color} {frame_rate} fps. No morphing, highly consistent identity.",
+    "multi_shot": "A continuous multi-shot video featuring sequential cuts: {beats_prompts} {lighting} Style schema: {color} {frame_rate} fps. Keep environment, characters, and lighting highly consistent across cuts.",
+    "cut_format": "[Cut {id}: {content} with camera {camera}]",
+    "lighting": "Lighting: key {key_light}, fill {fill_light}."
+  },
+  "chatgpt": {
+    "character": "A {name} with {hair} hair wearing {clothes} positioned at {x_pct}% on X-axis and {y_pct}% on Y-axis at {depth} depth facing {facing}, displaying {facial}, {body}, and {micro}.",
+    "camera": "Shot on a {focal_length}mm lens at {aperture} aperture, {height} height, {angle} angle, displaying {focus_mode} focus.",
+    "lighting": "Lighting: {key_light} and {fill_light} with {atmosphere} atmosphere.",
+    "color": "The composition strictly adheres to the 60-30-10 color rule with {dominant_ratio}% {dominant_colors}, {secondary_ratio}% {secondary_colors}, and {accent_ratio}% {accent_colors} accents.",
+    "full": "A cinematic photographic movie screenshot, {frame_rate} fps frame style. {characters} in {location}. {camera} {lighting} {color} Mood/look: {look}.",
+    "multi_shot": "A cinematic storyboard sequence showing multiple cuts sequentially in one image: {beats_prompts} {lighting} Composition strictly follows the 60-30-10 color rule with {dominant_ratio}% {dominant_colors}, {secondary_ratio}% {secondary_colors}, and {accent_ratio}% {accent_colors} accents. Mood/look: {look}.",
+    "cut_format": "[Cut {id}: {content} with camera {camera}]"
+  }
+}
