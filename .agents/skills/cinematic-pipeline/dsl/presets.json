@@ -1,0 +1,118 @@
+{
+  "camera_profiles": {
+    "PortalReveal": {
+      "lens": {
+        "focal_length": 35,
+        "aperture": "f/4"
+      },
+      "position": {
+        "distance": "medium",
+        "height": "eye-level",
+        "angle": "frontal"
+      },
+      "movement": {
+        "type": "dolly",
+        "direction": "forward",
+        "speed": "slow"
+      },
+      "focus": {
+        "mode": "deep focus"
+      }
+    },
+    "SuspenseDolly": {
+      "lens": {
+        "focal_length": 50,
+        "aperture": "f/2.0"
+      },
+      "position": {
+        "distance": "medium",
+        "height": "low-angle",
+        "angle": "frontal"
+      },
+      "movement": {
+        "type": "dolly",
+        "direction": "back",
+        "speed": "medium"
+      },
+      "focus": {
+        "mode": "shallow focus"
+      }
+    },
+    "IntimateCU": {
+      "lens": {
+        "focal_length": 85,
+        "aperture": "f/1.8"
+      },
+      "position": {
+        "distance": "close-up",
+        "height": "eye-level",
+        "angle": "frontal"
+      },
+      "movement": {
+        "type": "static"
+      },
+      "focus": {
+        "mode": "shallow focus"
+      }
+    },
+    "ThreeQuarterDepth": {
+      "lens": {
+        "focal_length": 24,
+        "aperture": "f/5.6"
+      },
+      "position": {
+        "distance": "wide shot",
+        "height": "eye-level",
+        "angle": "3/4 angle tilted view"
+      },
+      "movement": {
+        "type": "static"
+      },
+      "focus": {
+        "mode": "deep focus"
+      }
+    },
+    "CCTVCornerView": {
+      "lens": {
+        "focal_length": 18,
+        "aperture": "f/8"
+      },
+      "position": {
+        "distance": "extreme wide",
+        "height": "ceiling-corner CCTV height",
+        "angle": "downward CCTV angle"
+      },
+      "movement": {
+        "type": "static"
+      },
+      "focus": {
+        "mode": "natural wide focus"
+      }
+    }
+  },
+  "lighting_profiles": {
+    "MoonPortal": {
+      "key": "soft moonlight from left (5600K)",
+      "fill": "dark shadows (20% intensity)",
+      "atmosphere": "thin fog"
+    },
+    "CyberpunkHighContrast": {
+      "key": "harsh cyan side key",
+      "fill": "vermillion bounce fill",
+      "atmosphere": "haze and steam"
+    },
+    "EarthyNoon": {
+      "key": "harsh noon sunlight",
+      "fill": "warm dust bounce",
+      "atmosphere": "dry heat shimmer"
+    }
+  },
+  "style_packs": {
+    "IndianCyberpunkNoir": {
+      "look": "analog warmth vs digital coldness"
+    },
+    "RayalaseemaRealism": {
+      "look": "vivid, raw documentary realism"
+    }
+  }
+}
