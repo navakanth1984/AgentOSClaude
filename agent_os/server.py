@@ -20,9 +20,13 @@ Endpoints:
 """
 
 import sys
-# Force UTF-8 console output on Windows so Unicode chars (✓ ✗ ═ ① etc.) don't crash
+# Force UTF-8 console output on Windows so Unicode chars (✓ ✗ ═ → etc.) in any
+# print() don't raise UnicodeEncodeError on the cp1252 console and crash the
+# request/generation thread. errors="replace" degrades gracefully if a stream
+# can't be reconfigured.
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
+if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
 
 from http.server import BaseHTTPRequestHandler, HTTPServer, ThreadingHTTPServer
@@ -78,6 +82,7 @@ if _env_path.exists():
 # API key for external access — read from .env
 # Localhost callers (same PC) are always allowed without a key
 _API_KEY = os.environ.get("AGENT_OS_API_KEY", "")
+_longform_jobs: dict = {}  # job_id → {status, chunks, total_chunks, result, error}
 _REVIEW_API_KEY = os.environ.get("AGENT_OS_REVIEW_KEY", "agent-os-review")
 
 
@@ -283,6 +288,39 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 return
             except Exception as e:
                 self._send(500, {"error": f"Error serving file: {str(e)}"})
+                return
+
+        # Long-form creative job status (GET poll)
+        if path.startswith("/creative/longform/status/"):
+            if not self._check_auth():
+                return
+            job_id = path.split("/")[-1]
+            job = _longform_jobs.get(job_id)
+            if not job:
+                self._send(404, {"error": f"Job {job_id} not found"})
+                return
+            total = job.get("total_chunks", 0)
+            done = len(job.get("chunks", []))
+            percent = round((done / total) * 100) if total else 0
+            resp: dict = {
+                "job_id": job_id,
+                "status": job["status"],
+                "chunks_done": done,
+                "total_chunks": total,
+                "percent": percent,
+                "error": job.get("error"),
+            }
+            chunks = job.get("chunks", [])
+            resp["latest_chunk"] = chunks[-1] if chunks else ""
+            if job["status"] == "done":
+                resp["result"] = job.get("result", "")
+            self._send(200, resp)
+            return
+
+        # Cinematic OS endpoints
+        if path.startswith("/api/v1/cinematic/"):
+            from api.cinematic_routes import dispatch_cinematic_get
+            if dispatch_cinematic_get(self, path):
                 return
 
         # Cloud mode: use Git sync for vault access, or forward to ngrok bridge as fallback
@@ -1088,6 +1126,12 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             self._send(400, {"error": f"Invalid JSON body: {e}"})
             return
 
+        # Cinematic OS endpoints
+        if path.startswith("/api/v1/cinematic/"):
+            from api.cinematic_routes import dispatch_cinematic_post
+            if dispatch_cinematic_post(self, path, body):
+                return
+
         # Cloud mode: use Git sync for vault writes, or forward to ngrok bridge as fallback
         if path in ["/save", "/note", "/omi", "/notebooks/sync"]:
             if _HAS_VAULT_SYNC and is_cloud_mode():
@@ -1836,6 +1880,46 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                 self._send(200, {"result": combined_output})
             except Exception as e:
                 self._send(500, {"error": str(e)})
+
+        elif path == "/creative/longform":
+            # Long-form chunked generation endpoint
+            # Runs in a background thread; returns job_id immediately.
+            # Poll /creative/longform/status/<job_id> for progress.
+            mode = body.get("mode", "screenplay").strip()
+            prompt = body.get("prompt", "").strip()
+            context = body.get("context", "").strip()
+            model = body.get("model") or None
+            target_pages = int(body.get("target_pages", 30))
+            if not prompt:
+                self._send(400, {"error": "Missing 'prompt' field"})
+                return
+            import uuid, threading
+            job_id = f"lf_{uuid.uuid4().hex[:8]}"
+            _longform_jobs[job_id] = {"status": "running", "chunks": [], "total_chunks": 0, "error": None}
+
+            def _run_longform():
+                try:
+                    from creative_pipeline import generate_longform
+                    chunks_collected: list[str] = []
+
+                    def _on_chunk(chunk_num: int, total: int, text: str) -> None:
+                        _longform_jobs[job_id]["total_chunks"] = total
+                        chunks_collected.append(text)
+                        _longform_jobs[job_id]["chunks"] = list(chunks_collected)
+
+                    result = generate_longform(
+                        mode=mode, prompt=prompt, context=context,
+                        target_pages=target_pages, model=model,
+                        progress_callback=_on_chunk,
+                    )
+                    _longform_jobs[job_id]["status"] = "done"
+                    _longform_jobs[job_id]["result"] = result
+                except Exception as e:
+                    _longform_jobs[job_id]["status"] = "failed"
+                    _longform_jobs[job_id]["error"] = str(e)
+
+            threading.Thread(target=_run_longform, daemon=True).start()
+            self._send(202, {"job_id": job_id, "status": "running"})
 
         elif path == "/creative/export":
             content = body.get("content", "").strip()

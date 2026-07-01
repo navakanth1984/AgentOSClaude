@@ -9,7 +9,7 @@ import json
 import os
 import urllib.request
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 
 # Load environment variables
@@ -129,3 +129,190 @@ def generate_visual_prompt(scene_or_shot: str, context: str = "", model: Optiona
     )
     user_prompt = f"Scene/Shot:\n{scene_or_shot}\n\nContext:\n{context}" if context else f"Scene/Shot:\n{scene_or_shot}"
     return call_llm(system, user_prompt, model)
+
+
+def generate_video_prompts(prompt: str, context: str = "", num_shots: int = 20, model: Optional[str] = None) -> str:
+    """Generate a numbered list of video/shot prompts for AI video generators (Veo, Higgsfield, Runway)."""
+    system = (
+        "You are a Cinematic Shot Director. Generate a numbered sequence of production-ready video prompts "
+        "for AI video generators (Google Veo, Higgsfield, Runway, Kling). Each shot prompt must specify: "
+        "camera movement (dolly/pan/tilt/crane/handheld), lens type, subject framing, lighting mood, "
+        "color palette, duration (2-8s), and emotional tone. Output each shot on its own numbered line."
+    )
+    user_prompt = (
+        f"Create {num_shots} shot prompts for: {prompt}"
+        + (f"\n\nContext:\n{context}" if context else "")
+    )
+    return call_llm(system, user_prompt, model)
+
+
+def generate_audio_design_prompts(prompt: str, context: str = "", model: Optional[str] = None) -> str:
+    """Generate full audio design specification: music cues, foley, ambience, and Dolby Atmos spatial map."""
+    system = (
+        "You are a Director of Audiography. Design a complete audio specification including: "
+        "1. Background score cues (BPM, key, instrumentation, emotional arc). "
+        "2. Foley map (footsteps, textures, impact sounds with spatial positions). "
+        "3. Ambience layers (room tones, environment, crowd dynamics). "
+        "4. Dolby Atmos spatial map (overhead/surround/LFE assignments). "
+        "5. Sound effects library list with frequency ranges. "
+        "6. Vocal texture notes (Biryani Method, mic placement, EQ matching visual grade). "
+        "Output as a structured audio design document."
+    )
+    user_prompt = (
+        f"Design the audio specification for: {prompt}"
+        + (f"\n\nContext:\n{context}" if context else "")
+    )
+    return call_llm(system, user_prompt, model)
+
+
+def generate_image_prompts(prompt: str, context: str = "", num_images: int = 20, model: Optional[str] = None) -> str:
+    """Generate numbered image prompts for AI image generators (Midjourney, Flux, DALL-E, Firefly)."""
+    system = (
+        "You are a Visual Art Director specialising in AI image generation. "
+        "Generate a numbered list of detailed image prompts for Midjourney, Flux, DALL-E, or Adobe Firefly. "
+        "Each prompt must include: subject description, art style, lighting setup, colour palette, "
+        "camera/lens analogue (e.g. 85mm portrait, wide-angle), mood keywords, and negative prompt hints. "
+        "Number each prompt clearly."
+    )
+    user_prompt = (
+        f"Create {num_images} image prompts for: {prompt}"
+        + (f"\n\nContext:\n{context}" if context else "")
+    )
+    return call_llm(system, user_prompt, model)
+
+
+# ── Long-form chunked generation ────────────────────────────────────────────
+
+_LONGFORM_SYSTEMS = {
+    "screenplay": (
+        "You are the Master Screenplay Architect. Write in standard screenplay format "
+        "(INT./EXT. sluglines, action blocks, CHARACTER dialogue with parentheticals). "
+        "Follow McKee's Story principles: every scene turns the value charge. "
+        "Inject subtle vocal cues (hoarse, restrained, suppressed anger) in action lines. "
+        "Keep dialogue subtext-heavy, never on-the-nose. "
+        "End the chunk mid-action if needed — a continuation prompt will follow."
+    ),
+    "novel": (
+        "You are the OpenClaw Novelist. Write immersive literary prose. "
+        "Use all five senses in scene setting. Keep internal monologue layered. "
+        "Dialogue must carry subtext. Pacing: mix long atmospheric paragraphs with short punchy beats. "
+        "End the chunk at a natural paragraph break — a continuation prompt will follow."
+    ),
+    "video_prompts": (
+        "You are a Cinematic Shot Director. Generate numbered shot prompts for AI video generators "
+        "(Google Veo, Higgsfield, Runway). Each prompt: camera movement, lens, framing, lighting, "
+        "colour palette, duration (2-8s), emotional tone. One shot per line, numbered."
+    ),
+    "audio_design": (
+        "You are a Director of Audiography. Generate a numbered list of audio design cues: "
+        "music cue (BPM, key, mood), foley items, ambience layers, Dolby Atmos positions, SFX. "
+        "Each entry numbered and formatted as: [CUE-N] TYPE | Description | Spatial position."
+    ),
+    "image_prompts": (
+        "You are a Visual Art Director. Generate numbered image prompts for Midjourney/Flux/Firefly. "
+        "Each prompt: subject, art style, lighting, colour palette, lens analogue, mood. One prompt per line, numbered."
+    ),
+}
+
+# Approximate words per page by mode
+_WORDS_PER_PAGE = {
+    "screenplay": 200,    # ~1 min screen time per page
+    "novel": 300,
+    "video_prompts": 50,  # ~5 shots per page
+    "audio_design": 80,
+    "image_prompts": 60,
+}
+
+# Words per LLM chunk call
+_CHUNK_TARGET_WORDS = {
+    "screenplay": 1200,
+    "novel": 1800,
+    "video_prompts": 500,
+    "audio_design": 600,
+    "image_prompts": 500,
+}
+
+# Frontend/subtab names that don't match backend mode keys. The dashboard's
+# "Novelist Swarm" long-form subtab sends mode="novelist", but the engine keys
+# the novel prose system prompt under "novel". Normalise before lookup.
+_MODE_ALIASES = {
+    "novelist": "novel",
+}
+
+# LLMs reliably under-produce against their per-chunk word target (a "1200-word"
+# chunk often comes back as ~250 words), so a computed chunk count of N yields
+# roughly N/3 pages in practice. Generate 3× the chunks so a 300-page request
+# actually lands near 300 pages instead of ~30. Applies to every page selection.
+_CHUNK_MULTIPLIER = 3
+
+
+def _summarise_chunk(text: str, model: Optional[str] = None) -> str:
+    """Produce a short continuity seed from the last chunk for the next one."""
+    system = "Summarise the following creative content in 3-5 sentences, capturing: key story beats, character emotional states, setting, and where it ended. This will be used as continuity context for the next section."
+    return call_llm(system, f"Content:\n{text[-3000:]}", model)
+
+
+def generate_longform(
+    mode: str,
+    prompt: str,
+    context: str = "",
+    target_pages: int = 30,
+    model: Optional[str] = None,
+    progress_callback: Optional[Callable[[int, int, str], None]] = None,
+) -> str:
+    """
+    Generate long-form creative content in chunks with continuity carry-forward.
+
+    Each chunk calls the LLM with a continuity seed from the previous chunk.
+    Suitable for 30-300 page screenplays, novels, or large prompt batches.
+    """
+    mode = _MODE_ALIASES.get(mode, mode)
+    if mode not in _LONGFORM_SYSTEMS:
+        raise ValueError(f"Unknown mode: {mode}. Choose from {list(_LONGFORM_SYSTEMS)}")
+
+    words_per_page = _WORDS_PER_PAGE.get(mode, 250)
+    chunk_words = _CHUNK_TARGET_WORDS.get(mode, 1000)
+    total_words = target_pages * words_per_page
+    num_chunks = max(1, round(total_words / chunk_words) * _CHUNK_MULTIPLIER)
+
+    system = _LONGFORM_SYSTEMS[mode]
+    full_text: list[str] = []
+    continuity_seed = context
+
+    print(f"[LongForm] mode={mode} target_pages={target_pages} -> {num_chunks} chunks (~{chunk_words} words each)")
+
+    for i in range(num_chunks):
+        chunk_num = i + 1
+        is_first = i == 0
+        is_last = i == num_chunks - 1
+
+        if is_first:
+            user_prompt = (
+                f"CONCEPT:\n{prompt}\n\n"
+                + (f"CONTEXT:\n{context}\n\n" if context else "")
+                + f"Write chunk 1 of {num_chunks}. Target approximately {chunk_words} words."
+                + (" Begin from the very start." if is_first else "")
+                + (" This is the final chunk — bring the narrative to a satisfying close." if is_last else "")
+            )
+        else:
+            user_prompt = (
+                f"ORIGINAL CONCEPT:\n{prompt}\n\n"
+                f"CONTINUITY FROM PREVIOUS CHUNK:\n{continuity_seed}\n\n"
+                f"Write chunk {chunk_num} of {num_chunks}. Target approximately {chunk_words} words. "
+                f"Continue directly from where the previous chunk left off."
+                + (" This is the final chunk — bring the narrative to a satisfying close." if is_last else "")
+            )
+
+        print(f"[LongForm] Generating chunk {chunk_num}/{num_chunks}…")
+        chunk_text = call_llm(system, user_prompt, model)
+        full_text.append(chunk_text)
+
+        if progress_callback:
+            progress_callback(chunk_num, num_chunks, chunk_text)
+
+        # Build continuity seed for next chunk (not needed after the last)
+        if not is_last:
+            continuity_seed = _summarise_chunk(chunk_text, model)
+
+    separator = "\n\n" + ("─" * 60) + "\n\n"
+    return separator.join(full_text)
