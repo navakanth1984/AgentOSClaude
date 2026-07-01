@@ -131,23 +131,31 @@ def export_to_html(blocks: list[dict], is_screenplay: bool = True) -> str:
             margin-bottom: 12px;
             text-align: left;
         }
+        /* Dialogue block is a narrow column CENTERED on the page (equal L/R
+           indents), with the words inside left-aligned so wrapping reads
+           naturally — the industry-standard screenplay look. The CHARACTER
+           cue is centered directly above that column. */
         .character {
             text-transform: uppercase;
-            margin-left: 2.2in; /* 3.7 inches from paper edge (1.5in margin + 2.2in indent) */
+            margin-left: 1.5in;
+            margin-right: 1.5in;
+            text-align: center;
             margin-top: 12px;
             margin-bottom: 0px;
             page-break-after: avoid;
         }
         .parenthetical {
-            margin-left: 1.6in;
+            margin-left: 2.0in;
             margin-right: 2.0in;
+            text-align: left;
             margin-top: 0px;
             margin-bottom: 0px;
             page-break-after: avoid;
         }
         .dialogue {
-            margin-left: 1.0in;
+            margin-left: 1.5in;
             margin-right: 1.5in;
+            text-align: left;
             margin-top: 0px;
             margin-bottom: 12px;
         }
@@ -329,19 +337,28 @@ def export_to_docx(blocks: list[dict], output_path: str, is_screenplay: bool = T
                 p_format.space_after = Pt(6)
                 p.add_run(text)
             elif b_type == "character":
-                p_format.left_indent = Inches(2.2) # indents inside 1.5 margin
+                # Centered directly above the centered dialogue column: equal
+                # L/R indents + CENTER alignment place the cue over the column.
+                p_format.left_indent = Inches(1.5)
+                p_format.right_indent = Inches(1.5)
+                p_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 p_format.space_before = Pt(12)
                 p_format.space_after = Pt(0)
                 p.add_run(text.upper())
             elif b_type == "parenthetical":
-                p_format.left_indent = Inches(1.6)
+                # Sits inside the dialogue column, slightly narrower, flush-left.
+                p_format.left_indent = Inches(2.0)
                 p_format.right_indent = Inches(2.0)
+                p_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
                 p_format.space_before = Pt(0)
                 p_format.space_after = Pt(0)
                 p.add_run(text)
             elif b_type == "dialogue":
-                p_format.left_indent = Inches(1.0)
+                # Narrow column CENTERED on the page (equal 1.5in L/R indents),
+                # with the text left-aligned so wrapped lines stay flush-left.
+                p_format.left_indent = Inches(1.5)
                 p_format.right_indent = Inches(1.5)
+                p_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
                 p_format.space_before = Pt(0)
                 p_format.space_after = Pt(6)
                 p.add_run(text)
