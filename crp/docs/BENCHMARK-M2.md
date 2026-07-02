@@ -6,9 +6,11 @@ Date: 2026-07-02 | Host: Windows 11, AMD Ryzen 5 5600H | Build: --release, stabl
 |---|---|---|
 | Rust `record()` (criterion mean, 312M iters) | 17.7 ns (CI 17.0–18.4 ns) | target <5 µs: **pass** (~280×) |
 | Python `record()` (pytest mean, N=50k) | 0.238 µs | hard limit 10 µs: **pass** (42×); target 5 µs: **pass** (21×) |
+| Python `record()` (ledger, N=200k) | mean 0.224 µs, p50 0.20 µs, p99 0.40 µs | pass |
+| End-to-end record+drain (100k events, batch 4096) | 0.395 µs/event, 0 dropped | pass |
 | Drop behavior under full buffer | non-blocking, counted (`dropped()`) | required: **pass** |
 
-Evidence: `crp/telemetry/target/criterion` report (`cargo +stable-x86_64-pc-windows-gnu bench`) and `pytest crp/runtime/tests/test_budget.py -v -s` output.
+Evidence: `crp/telemetry/target/criterion` report (`cargo +stable-x86_64-pc-windows-gnu bench`), `pytest crp/runtime/tests/test_budget.py -v -s` output, and the append-only **Benchmark Ledger** `crp/docs/benchmarks/ledger.jsonl` (one JSON line per run: hardware, OS, Python, rustc, toolchain, git commit, and per-layer statistics — native Rust / FFI / end-to-end — so regressions can be localized to a layer). Reproduce with `py -3.12 crp/tools/bench_ledger.py`.
 
 Toolchain note: MSVC linking is unavailable on this host (VS 2026 without the
 Windows SDK; Git's coreutils `link.exe` shadows MSVC link). Builds use the GNU
