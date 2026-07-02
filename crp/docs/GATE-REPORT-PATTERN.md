@@ -1,33 +1,44 @@
 # Gate Report Pattern
 
-Every CRP gate/exit report uses the same four sections, in this order.
-Adopted from Phase 0 exit review (2026-07-03); `crp/docs/PHASE0-EXIT.md`
+**Mandatory for:** gate reports, exit reports, promotion reports, and RFC
+implementation reports. Every one of these artifacts is evaluated the same
+way. Adopted from Phase 0 exit review (2026-07-03); `crp/docs/PHASE0-EXIT.md`
 is the reference implementation.
+
+Four sections, in order:
 
 1. **Hard Acceptance** — machine-checked criteria; any FAIL blocks the gate.
 2. **Soft Objectives** — aspirational targets, reported as `n / m met`;
-   misses never block, but each MISSED line must be machine-checked so it
-   flips to MET automatically when the fix lands.
+   misses never block, but each line must be machine-checked (measured
+   value + target + status) so it flips to MET automatically when the fix
+   lands — no subjective judgment, no report edits.
 3. **Known Issues** — every soft miss and defect, each linking to its RFC
    or risk-register entry. Nothing is silently forgotten.
 4. **Future RFCs** — capabilities observed but deferred behind governance.
 
-Plus, always: environment metadata (CPU, OS, Python, NumPy, BLAS, threads,
-power profile, affinity) and longitudinal history (mean/p95/std across all
-recorded runs), because a number without its environment is noise.
+Plus, always: environment metadata and longitudinal history per the
+versioned [Benchmark Spec](benchmarks/BENCHMARK-SPEC-v1.md). Determinism
+claims defer to [DETERMINISM.md](DETERMINISM.md). Research KPI definitions
+live in the Benchmark Spec and their owning RFCs — never in this document.
 
-## Deferred items (recorded 2026-07-03; RFC-gated, not Phase 0 work)
+## Promotion authority
 
-- **Independent schema versions** — `database_schema`, `ledger_schema`, and
-  `bundle_schema` evolve separately (e.g. DB=2, bundle=4, replay=1) without
-  synchronized migrations. Today only `PRAGMA user_version=1` exists.
-- **Per-dimension latency history** — group by workload_id / plugin /
-  representation / hardware_profile instead of one pooled distribution
-  (lands with RFC-0005 benchmarks).
-- **Research-loop KPIs** (once hypothesis generation matures):
-  `experiment_efficiency = accepted_experiments / executed_experiments`;
-  `false_optimism = predicted_gain / measured_gain`.
-- **Gate 2 determinism principle** — treat the compiler as a deterministic
-  build system: IR -> canonicalization -> hash -> template selection ->
-  plugin -> manifest -> replay. Two identical canonical IR documents
-  producing different artifacts is a compiler regression, by definition.
+| Artifact | Promotion authority |
+|---|---|
+| RFC Draft | Research |
+| RFC Accepted | Maintainer |
+| Gate Complete | Acceptance tests |
+| Gate Frozen | Maintainer + green regression suite |
+| Promotion to master | Maintainer after frozen gate |
+
+## Deferred work registry
+
+Deferred work lives here, not in TODO comments. Each entry is auditable.
+
+| Item | Rationale | Owning RFC | Affected gate | Promotion blocker |
+|---|---|---|---|---|
+| Shared Stage-0 analysis cache | Per-plugin stat recomputation dominates decision latency, linear in plugin count | RFC-0005 | Gate 2 (post) | No (soft target) |
+| Independent schema versions (database / ledger / bundle) | Schemas evolve at different rates; avoid synchronized migrations | future RFC | Gate 3 | No |
+| Per-dimension latency history (workload / plugin / representation / hardware) | Pooled distributions hide regressions | RFC-0005 (benchmark plan) | Gate 2 (post) | No |
+| Research-loop KPIs (`experiment_efficiency`, `false_optimism`) | Meaningful only once hypothesis generation matures | future RFC | Gate 4 (post) | No |
+| Full replay provenance (replay/compiler versions, plugin+manifest hashes) | Replays must name what produced their baseline | future RFC (Gate 3 scope) | Gate 3 | Yes — blocks Gate 3 completion |
