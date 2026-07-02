@@ -17,5 +17,6 @@ search-path = [
     "mvct-v1",
     "transfer-detector-v0",
     "tdh-labels-seed",
+    "crp/runtime",
 ]
 python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
