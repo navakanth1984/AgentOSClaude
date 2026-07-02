@@ -1,0 +1,25 @@
+name: crp-ci
+on:
+  pull_request:
+    paths: ["crp/**", ".github/workflows/crp-ci.yml"]
+  push:
+    branches: [master]
+    paths: ["crp/**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Rust tests
+        run: cargo test --manifest-path crp/telemetry/Cargo.toml
+      - name: Build extension + Python tests
+        run: |
+          pip install maturin
+          pip install -e ./crp[dev]
+          maturin build -m crp/telemetry/Cargo.toml --release -o dist
+          pip install dist/*.whl
+          pytest crp/runtime/tests -v
