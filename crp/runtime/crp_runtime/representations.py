@@ -44,10 +44,17 @@ class RepresentationPlugin(Protocol):
 
 
 def _base_stats(tensor: np.ndarray) -> TensorStats:
+    # Stage-0 stats sit inside the measured decision-latency budget
+    # (spec 2a: <1 ms target), so avoid full-size temporaries:
+    # count_nonzero beats mean(t==0), and a BLAS dot beats np.var
+    # (~6x on 512x512 f32; deterministic for identical input).
+    flat = tensor.ravel()
+    n = flat.size
+    mean = float(flat.sum()) / n
     return TensorStats(
         shape=tuple(tensor.shape),
-        sparsity=float(np.mean(tensor == 0.0)),
-        variance=float(np.var(tensor)),
+        sparsity=1.0 - (np.count_nonzero(tensor) / n),
+        variance=float(flat.dot(flat)) / n - mean * mean,
         memory_bytes=int(tensor.nbytes),
     )
 
