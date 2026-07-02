@@ -20,6 +20,8 @@ from typing import Any
 from crp_runtime.harness import RunRecord
 from crp_runtime.policy import Constraints, Profile
 
+SCHEMA_VERSION = 1
+
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,7 +91,13 @@ class ExperienceDB:
     def __init__(self, path: str | Path) -> None:
         self._conn = sqlite3.connect(str(path))
         self._conn.executescript(_SCHEMA)
+        self._conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
         self._conn.commit()
+
+    @property
+    def schema_version(self) -> int:
+        row = self._conn.execute("PRAGMA user_version").fetchone()
+        return int(row[0])
 
     def insert_run(
         self, record: RunRecord, constraints: Constraints, profile: Profile

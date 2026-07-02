@@ -53,6 +53,47 @@ def _git_commit() -> str:
     ).stdout.strip()
 
 
+def _environment() -> dict[str, str]:
+    """Benchmark environment metadata (reviewer point A): without this,
+    cross-run latency comparisons are noise."""
+    import platform
+
+    import numpy as np
+
+    blas = "unknown"
+    try:
+        cfg = np.__config__.CONFIG["Build Dependencies"]["blas"]  # type: ignore[attr-defined]
+        blas = f"{cfg.get('name', 'unknown')} {cfg.get('version', '')}".strip()
+    except (AttributeError, KeyError, TypeError):
+        pass
+    import os
+
+    return {
+        "cpu": platform.processor(),
+        "os": platform.platform(),
+        "python": platform.python_version(),
+        "numpy": np.__version__,
+        "blas": blas,
+        "thread_count": str(os.cpu_count()),
+        "power_profile": "unrecorded",
+        "affinity": "default",
+    }
+
+
+def _latency_history(db: ExperienceDB) -> dict[str, float]:
+    """Decision-latency history across every recorded run (reviewer point E)."""
+    latencies = sorted(
+        db.get_run(run_id).decision_latency_ms for run_id in db.runs()
+    )
+    n = len(latencies)
+    return {
+        "runs": float(n),
+        "mean_ms": statistics.mean(latencies),
+        "p95_ms": latencies[min(n - 1, int(n * 0.95))],
+        "std_dev_ms": statistics.stdev(latencies) if n > 1 else 0.0,
+    }
+
+
 def main() -> int:
     # Warm the numpy/BLAS path once so recorded decision latencies measure
     # the steady-state runtime, not one-time library initialization. The
@@ -94,26 +135,56 @@ def main() -> int:
         latency_verdict = f"HARD FAIL (max {worst:.3f} ms > 5 ms)"
         decision_ok = False
     commit = _git_commit()
-    checks = [
+    env = _environment()
+    history = _latency_history(db)
+    hard_checks = [
         ("Runtime measured itself (Tier-0 events on the run path)", telemetry_seen),
         ("Telemetry overhead measured (BENCHMARK-M2.md: 17.7 ns / 0.238 us)", True),
         ("Representation decision recorded in Experience DB", len(rows) == len(SPECS)),
-        ("Decision replayable (same inputs => same decision)", all_deterministic),
+        ("Decision replayable (same inputs => same decision, 100%)", all_deterministic),
         ("Better representation selected per workload, per evidence", True),
-        (f"Decision latency within spec 2a budget — {latency_verdict}", decision_ok),
+        (f"Decision latency under 5 ms hard budget (max {worst:.3f} ms)", decision_ok),
     ]
-    verdict = all(ok for _, ok in checks)
+    soft_checks = [
+        (f"Decision latency < 1 ms target — {latency_verdict}", worst < 1.0),
+        ("All Stage-0 statistics computed exactly once", False),  # RFC-0005
+    ]
+    verdict = all(ok for _, ok in hard_checks)
 
     lines = [
         "# CRP Phase 0 Exit Report",
         "",
-        f"Date: {time.strftime('%Y-%m-%d')} | Commit: {commit} | DB: `crp/experience.db`",
+        f"Date: {time.strftime('%Y-%m-%d')} | Commit: {commit} | DB: `crp/experience.db`"
+        f" (schema v{db.schema_version})",
         "",
-        "## North Star (spec section 2)",
+        "## Environment",
+        "",
+        "| Key | Value |",
+        "|---|---|",
+        *[f"| {k} | {v} |" for k, v in env.items()],
+        "",
+        "## Hard requirements (spec section 2 / 2a)",
         "",
         "| Criterion | Verdict |",
         "|---|---|",
-        *[f"| {name} | {'PASS' if ok else 'FAIL'} |" for name, ok in checks],
+        *[f"| {name} | {'PASS' if ok else 'FAIL'} |" for name, ok in hard_checks],
+        "",
+        f"## Soft targets ({sum(ok for _, ok in soft_checks)} / {len(soft_checks)} met)",
+        "",
+        "| Target | Verdict |",
+        "|---|---|",
+        *[f"| {name} | {'MET' if ok else 'MISSED'} |" for name, ok in soft_checks],
+        "",
+        "## Known issues",
+        "",
+        "- Stage-0 statistics recomputed per plugin (dominant decision-latency"
+        " term; linear in plugin count) — tracked as"
+        " [RFC-0005](rfcs/RFC-0005-shared-stage0-analysis.md).",
+        "",
+        "## Decision-latency history (all recorded runs)",
+        "",
+        f"runs={int(history['runs'])}, mean={history['mean_ms']:.3f} ms,"
+        f" p95={history['p95_ms']:.3f} ms, std_dev={history['std_dev_ms']:.3f} ms",
         "",
         "## Recorded runs",
         "",
@@ -140,6 +211,9 @@ def main() -> int:
                     "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
                     "subject": "phase0-exit",
                     "git_commit": commit,
+                    "environment": env,
+                    "db_schema_version": db.schema_version,
+                    "latency_history": history,
                     "decision_latency_ms": {
                         "max": max(latencies),
                         "mean": statistics.mean(latencies),
