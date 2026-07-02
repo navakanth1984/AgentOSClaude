@@ -1,0 +1,23 @@
+[package]
+name = "crp-telemetry"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "crp_telemetry"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+crossbeam = "0.8"
+pyo3 = { version = "0.22", features = ["extension-module"], optional = true }
+
+[features]
+default = []
+python = ["dep:pyo3"]
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "record_overhead"
+harness = false
