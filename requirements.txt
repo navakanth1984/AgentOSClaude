@@ -1,3 +1,5 @@
-pyyaml
-google-genai
-sqlalchemy
+pydantic
+opentelemetry-api
+opentelemetry-sdk
+pytest
+pytest-benchmark

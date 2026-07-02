@@ -1,0 +1,13 @@
+[build-system]
+requires = ["maturin>=1.5"]
+build-backend = "maturin"
+
+[project]
+name = "crp-telemetry"
+version = "0.1.0"
+description = "CRP Tier-0 telemetry ring buffer (Rust extension)"
+requires-python = ">=3.12"
+
+[tool.maturin]
+features = ["python"]
+module-name = "crp_telemetry"
