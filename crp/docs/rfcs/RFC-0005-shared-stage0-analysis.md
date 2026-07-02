@@ -54,6 +54,14 @@ environment metadata. Adds architectural-efficiency metrics:
 | `scheduler_overhead_ms` | Time outside plugin execution |
 | `plugin_compute_ms` | Actual candidate computation time |
 
+Formal KPIs (stable definitions; reported per workload, not pooled):
+
+    analysis_efficiency = shared_stage0_ms / total_decision_ms
+    reuse_ratio         = reused_statistics / total_statistics_requests
+
+Latency history gains dimensions with this RFC: workload_id, plugin,
+representation, hardware_profile — no more mixed-distribution aggregates.
+
 Accept only if decision latency reaches <1 ms on the Phase 0 reference host
 with replay determinism preserved (100%).
 
