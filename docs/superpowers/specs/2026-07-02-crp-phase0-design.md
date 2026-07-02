@@ -1,7 +1,7 @@
 # CRP Phase 0 — Design Document
 
 - **Date:** 2026-07-02
-- **Status:** Approved (user-reviewed brainstorm, refinements incorporated)
+- **Status:** Frozen (approved 2026-07-02; changes limited to defect corrections — new ideas become future RFCs)
 - **Project:** Cognitive Runtime Platform (CRP) — Project Genesis
 - **Location:** `crp/` inside `navakanth001` (staging convention; graduates to its own repo when mature)
 
@@ -29,6 +29,16 @@ Every Phase-0 decision must be validatable, replaceable, or extensible through e
 
 Max 3 iterations per failing milestone; persistent failure means the context/design is wrong, not the effort.
 
+## 2a. Success Metrics (machine-readable; future CI gates)
+
+| Metric | Target | Hard Fail |
+|---|---|---|
+| Tier-0 overhead | < 5 µs | > 10 µs |
+| Replay determinism | 100% | Any divergence |
+| Representation decision latency | < 1 ms | > 5 ms |
+| Benchmark reproducibility | ±2% | > 10% variance |
+| Policy determinism | 100% | Nondeterministic |
+
 ## 3. Scope
 
 ### In scope (Phase 0)
@@ -41,6 +51,27 @@ Max 3 iterations per failing milestone; persistent failure means the context/des
 ### Explicitly out of scope (RFC stubs only, no implementation)
 
 Mobile/Android, desktop launcher, contextual bandit / learned policies, drift detection, plugin sandboxing & cryptographic verification, tensor-network representations (TT/Tucker/CP), photonic/quantum/neuromorphic anything, distributed cognition, SDK beyond internal interfaces.
+
+### Non-goals
+
+- Not an operating system kernel
+- Not a scheduler replacement
+- Not a tensor-network research platform
+- Not a distributed runtime
+- Not a production security architecture
+- Not mobile-first
+- Not performance-optimized beyond measured telemetry paths
+
+Every RFC must carry its own Non-goals section.
+
+### Risk Register (`crp/docs/RISKS.md`, tracked separately from tasks)
+
+| ID | Risk | Mitigation |
+|---|---|---|
+| R-001 | Python orchestration becomes bottleneck | Move hot path to Rust |
+| R-002 | Telemetry overhead exceeds budget | Reduce Tier-0 payload |
+| R-003 | Representation API proves insufficient | Version interfaces |
+| R-004 | Replay system diverges | Deterministic serialization |
 
 ## 4. Repository Layout
 
