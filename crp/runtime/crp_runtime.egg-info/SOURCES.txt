@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-runtime/crp_runtime/__init__.py
-runtime/crp_runtime.egg-info/PKG-INFO
-runtime/crp_runtime.egg-info/SOURCES.txt
-runtime/crp_runtime.egg-info/dependency_links.txt
-runtime/crp_runtime.egg-info/requires.txt
-runtime/crp_runtime.egg-info/top_level.txt
-runtime/tests/test_package.py
