@@ -59,3 +59,25 @@ class SyntheticTensorWorkload:
             mask = rng.random((rows, cols)) < sparsity
             t = np.where(mask, 0.0, t)
         return [t.astype(np.float32)]
+
+
+class EmbeddingSearchWorkload:
+    """Seeded unit-norm embedding corpus + queries; exact cosine top-k ground truth."""
+
+    def __init__(self, spec: WorkloadSpec) -> None:
+        self.spec = spec
+
+    def tensors(self) -> list[np.ndarray]:
+        p = self.spec.params
+        n, dim, q = int(p["n"]), int(p["dim"]), int(p["queries"])
+        rng = np.random.default_rng(self.spec.seed)
+        corpus = rng.standard_normal((n, dim)).astype(np.float32)
+        queries = rng.standard_normal((q, dim)).astype(np.float32)
+        corpus /= np.linalg.norm(corpus, axis=1, keepdims=True)
+        queries /= np.linalg.norm(queries, axis=1, keepdims=True)
+        return [corpus, queries]
+
+    @staticmethod
+    def top_k(corpus: np.ndarray, queries: np.ndarray, k: int) -> np.ndarray:
+        scores = queries @ corpus.T
+        return np.argsort(-scores, axis=1)[:, :k].astype(np.int64)
