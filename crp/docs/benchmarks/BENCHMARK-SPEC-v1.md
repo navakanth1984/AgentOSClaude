@@ -5,6 +5,10 @@ evolves with research; governance rarely changes. A methodology change means
 Benchmark Spec v2, never an edit to v1 — ledger entries reference the spec
 version they were measured under.
 
+**Comparability rule:** a benchmark result is only comparable to another
+result if both reference the same benchmark specification version.
+Cross-version comparisons are methodology errors, not findings.
+
 ## Methodology (v1)
 
 - **Warm-up:** one unrecorded run precedes measurement to exclude one-time
