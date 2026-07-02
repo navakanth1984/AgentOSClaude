@@ -1,0 +1,1 @@
+{"ir_abi":1,"ir_version":"1.0.0","name":"UniformQuant","objective":{"constraints":{"max_accuracy_loss":0.05,"max_latency_ms":5},"primary":"memory","secondary":"latency"},"parameters":{"quantization_bits":8,"symmetric":true},"strategy":"quantization.uniform.v1"}

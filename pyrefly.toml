@@ -17,6 +17,9 @@ search-path = [
     "mvct-v1",
     "transfer-detector-v0",
     "tdh-labels-seed",
+    "ClawGlove",
+    ".agents/skills/cinematic-pipeline",
     "crp/runtime",
+    "crp",
 ]
 python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
