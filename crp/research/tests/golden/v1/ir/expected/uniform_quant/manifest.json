@@ -1,0 +1,22 @@
+{
+  "manifest_version": "1.0.0",
+  "compiler_pipeline": "IRCompiler-v1",
+  "compiler_abi": 1,
+  "compiler_version": "1.0.0",
+  "ir_version": "1.0.0",
+  "ir_abi": 1,
+  "ir_hash": "11ee57369b86be7cccfccd308bbb97a0292acf1c6849a4b52655443a5ba0d51e",
+  "template_id": "TEMPLATE-001",
+  "template_version": "1.0.0",
+  "template_abi": 1,
+  "template_hash": "7a5846ab5730b382fd6ef8df40efabe24a68cd05cb389d39bd67d1bf95f9ad96",
+  "registry_version": 1,
+  "registry_hash": "c5420de11103dbd440f262bfafc9e426145d54371865d03473c249c8f7f2664d",
+  "plugin_hash": "87bdbfbefcb42d80bbd380c02ba86c559c6af046b930d349f97dbf1a6b8a6bf8",
+  "generator": "IRCompiler",
+  "deterministic": true,
+  "canonicalization": "RFC8785",
+  "ast_guard_version": "1",
+  "manifest_hash": "379d89a3fcd4715db1b6a7fe71b04d4b95f35655894801c78ccb0d76f9ce4da9",
+  "generated_at": "1970-01-01T00:00:00Z"
+}
