@@ -12,6 +12,7 @@ Legend: **Graph** = graphify code graph (`.graphify/` or `graphify-out/`, read `
 |---|---|
 | `nthdimensionacademy` | Academy site — see [Nth Dimension Academy](nth-dimension-academy.md) |
 | `puli-meka-app` | Game app (scaffold/v2/validation graphs also under `graphify-out/`) |
+| crp | Cognitive Runtime Platform — see [Cognitive Runtime Platform](cognitive-runtime-platform.md); graph under crp/.graphify/ |
 
 ## Graph only (code graphs; no synthesis wiki yet)
 | Repo | |
@@ -23,6 +24,7 @@ Legend: **Graph** = graphify code graph (`.graphify/` or `graphify-out/`, read `
 | `daava_production` | DAAVA pipeline — see [DAAVA](daava.md) |
 | `build-your-own-openclaw` | |
 | `graphify-analysis` | graphify tooling experiments |
+| `nth-brain` | |
 
 ## Wiki only (synthesis; no code graph yet)
 | Repo | |
@@ -34,7 +36,12 @@ Legend: **Graph** = graphify code graph (`.graphify/` or `graphify-out/`, read `
 | `git-template` | repo scaffolding template |
 
 ## Git repos with no KB layer yet (candidates for `graphify <path>`)
-`Anuvedhai` · `Claude-Desktop-LLM` · `ClawGlove` · `TranceSQL` · `flutter_sdk` · `nth-brain` · `ltx_video_source` · `open-design` · `openclaw` · `sanatana-wisdom-react`
+`Anuvedhai` · `Claude-Desktop-LLM` · `ClawGlove` · `TranceSQL` · `flutter_sdk` · `ltx_video_source` · `open-design` · `openclaw` · `sanatana-wisdom-react`
+
+## External (not under this workspace root)
+| Repo | Notes |
+|---|---|
+| `nth-absolute-cinema` | AI filmmaking Creative OS — lives at `E:\nth-absolute-cinema\` (external SSD, portable by design), not staged under `navakanth001`. Design frozen in `docs/superpowers/specs/2026-07-03-nth-absolute-cinema-design.md`. See [Nth Absolute Cinema](nth-absolute-cinema.md). No graph/wiki layer of its own yet — will get `.graphify/` once code exists. |
 
 > To onboard one: `graphify <repo-path>` builds its graph; add a `wiki/` overview page if it warrants synthesis; then move its row up into the right section above.
 
