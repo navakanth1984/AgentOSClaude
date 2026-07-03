@@ -451,3 +451,27 @@ uncommitted work from a prior sprint.
   machine with none of the referenced local models installed, and Model Manager
   installs only the models actually needed to resume work — not a full bundle (§19,
   §21).
+
+## 26. Sprint 0 status and naming update (2026-07-03)
+
+**Naming:** the engine/SDK codename is **NAC**. Product naming going forward:
+- **NAC** — the core engine and SDK (this document's `engine/` tree).
+- **Nth Absolute Cinema Studio** — the desktop application (Sprint 6, Director
+  Dashboard evolves into this).
+- **`.nac`** — the portable project/package format (§21).
+- **NAC Packs** — tool integrations (§7), e.g. the Google Flow pack.
+
+**Sprint 0 complete:** all 14 governing documents (Manifesto, Creative Graph Spec,
+Compiler ABI, Pack ABI, `.nac` Package Spec, Event Spec, Plugin ABI, Workspace Spec,
+Compute Manager Spec, Module Boundaries, Repository Interfaces, Extensibility,
+Versioning Policy, and the Sprint 0.5 Architecture Validation gate) are frozen under
+`E:\nth-absolute-cinema\docs\specs\v1\` — see
+`docs/superpowers/plans/2026-07-03-nac-sprint0-architecture-freeze.md` in this repo
+for the plan that produced them, and `SPRINT0_FREEZE.md` at the NAC repo root for the
+freeze declaration itself. Sprint 0.5 validation (`SPRINT0.5-VALIDATION.md`) passed
+all 8 architecture-guarantee questions (replay, traceability, tool extensibility,
+machine portability, offline operation, generation reproducibility, independent
+compiler replacement, independent graph evolution) before this freeze was declared.
+This document (`2026-07-03-nth-absolute-cinema-design.md`) remains the origin design
+rationale; the `docs/specs/v1/` documents are now the authoritative technical specs
+Sprint 1+ build against.

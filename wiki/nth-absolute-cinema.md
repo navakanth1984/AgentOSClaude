@@ -54,7 +54,16 @@ CRP as an execution substrate later (same relationship CRP has to TITAN), but
    path-resolver contract, execution-profile schema, `.nac` manifest schema.
 
 ## Status
-Design frozen (2026-07-03), Sprint 0 (Manifesto + Spec write-up) not yet started. No
-code exists yet. See the design doc for the full 6-sprint plan (Sprint 0-6) and
-explicit Phase 1 non-goals (Director Memory, feature-length support, non-film domains,
-cross-machine live sync — all deferred).
+
+**Sprint 0 (Architecture Freeze) complete** (2026-07-03). 14 governing documents
+frozen under `E:\nth-absolute-cinema\docs\specs\v1\` (Manifesto, Creative Graph Spec,
+Compiler ABI, Pack ABI, `.nac` Package Spec, Event Spec, Plugin ABI, Workspace Spec,
+Compute Manager Spec, Module Boundaries, Repository Interfaces, Extensibility,
+Versioning Policy, and the Sprint 0.5 Architecture Validation gate). Sprint 0.5
+validation passed all 8 architecture-guarantee questions (replay, traceability, tool
+extensibility, machine portability, offline operation, generation reproducibility,
+independent compiler replacement, independent graph evolution) before the freeze was
+declared. Engine codename is now **NAC**; product name **Nth Absolute Cinema** /
+desktop app **Nth Absolute Cinema Studio** remain unchanged. No engine code exists
+yet — Sprint 1 (Kernel, Knowledge Graph, Storage, Model Manager, Compute Manager) is
+next.
