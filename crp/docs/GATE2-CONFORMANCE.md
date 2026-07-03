@@ -17,7 +17,7 @@ Date: 2026-07-03 | Commit: 12b8e50f (merged to master via PR #27) | Spec: [IR_SP
 
 ## Hard Acceptance
 
-Every criterion below is machine-checked by `research/tests/acceptance/test_g2_compiler_pipeline.py` (5 tests) plus `research/tests/unit/test_compiler.py` (8 tests). Full suite: **23/23 passed** (`pytest research/tests`, `PYTHONPATH=crp`).
+Every criterion below is machine-checked by `research/tests/acceptance/test_g2_compiler_pipeline.py` (6 tests) plus `research/tests/unit/test_compiler.py` (8 tests). Full suite: **24/24 passed** (`pytest research/tests`, `PYTHONPATH=crp`).
 
 | Criterion | Evidence | Verdict |
 |---|---|---|
@@ -46,6 +46,8 @@ Every criterion below is machine-checked by `research/tests/acceptance/test_g2_c
 | `manifest_hash` | `379d89a3fcd4715db1b6a7fe71b04d4b95f35655894801c78ccb0d76f9ce4da9` |
 
 `generated_at` is fixed to the epoch constant (`1970-01-01T00:00:00Z`) precisely so timestamps never enter the hash — determinism is unconditional, not "same machine, same day."
+
+`test_conformance_report_cites_golden_hashes` re-derives these four values from the golden fixture files at test time and asserts they appear verbatim in this report — this table is not a one-time manual transcription; a stale value here fails CI.
 
 ## Compiler Purity
 
@@ -92,6 +94,6 @@ Gate 2 has no soft (aspirational) targets in [BENCHMARK-M3M4.md](BENCHMARK-M3M4.
 
 ## Freeze Declaration
 
-**Gate 2 (IR Compiler): FROZEN.** All hard-acceptance criteria pass (23/23 tests), determinism is proven per fixed golden hashes, purity is enforced by AST-level import allow-listing, and Gate 1 sandbox compatibility is unaffected. Per [GATE-REPORT-PATTERN.md](GATE-REPORT-PATTERN.md), `COMPILER_ABI.md` and `IR_SPEC.md` remain frozen; further compiler changes require an RFC or a documented defect. Reproduce with `PYTHONPATH=crp pytest crp/research/tests` from repo root, or `pytest research/tests` from `crp/`.
+**Gate 2 (IR Compiler): FROZEN.** All hard-acceptance criteria pass (24/24 tests), determinism is proven per fixed golden hashes, purity is enforced by AST-level import allow-listing, and Gate 1 sandbox compatibility is unaffected. Per [GATE-REPORT-PATTERN.md](GATE-REPORT-PATTERN.md), `COMPILER_ABI.md` and `IR_SPEC.md` remain frozen; further compiler changes require an RFC or a documented defect. Reproduce with `PYTHONPATH=crp pytest crp/research/tests` from repo root, or `pytest research/tests` from `crp/`.
 
 Gate 3 (Provenance) may now treat `CompilerArtifact`/`CompilerManifest` as an immutable input per the provenance chain in `ROADMAP-R1.md`.
