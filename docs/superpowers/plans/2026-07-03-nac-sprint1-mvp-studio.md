@@ -47,6 +47,34 @@ for Ollama HTTP calls. `pyttsx3` for offline TTS. `pytest` for tests. No web fra
 no FastAPI, no dashboard — `engine.api` (per `MODULE_BOUNDARIES.md`) is a Phase-later
 concern; the CLI calls compiler classes directly for Sprint 1.
 
+## Execution amendment (2026-07-03, before implementation begins)
+
+- **Checkpoint grouping, not task-by-task stops:** A=Tasks 1-4 (Studio() + create_project
+  works), B=Tasks 5-8 (Idea→Screenplay works), C=Tasks 9-12 (full `nac create` works,
+  exports files), D=Task 13 (Agent OS bridge). Report back at each checkpoint boundary.
+- **Every commit leaves the system runnable and its own smoke test passing** — never a
+  commit that only makes sense once a later commit lands.
+- **Optimize for demonstrability over completeness.** A simple compiler that works beats
+  a sophisticated one that's 30% done.
+- **Structured metrics on every compiler run**, alongside the artifact text, not instead
+  of it: `{compiler, duration_s, tokens, model, cost_usd, confidence, warnings,
+  output_hash, knowledge_version, compiler_version}`. `CompilerBase.run()` (or each
+  subclass's `run()`) returns `(output_text, Provenance, metrics_dict)` — a three-tuple,
+  not two — applied uniformly to Tasks 4-8's `run()` signatures as implemented (this
+  supersedes the two-tuple `(output, Provenance)` shown in Tasks 5-8's plan code below;
+  the actual implementation adds the metrics dict).
+- **SDK import surface stays absolute:** only `from nac import Studio` is public.
+  `from nac.compilers...`, `from nac.storage...`, `from nac.graphs...` never exist as
+  supported imports — enforced by `nac/__init__.py` not re-exporting anything but
+  `Studio`/`OllamaNotReachableError`.
+- **`nac build` alias:** Task 11's CLI gets a `build` subcommand as an alias for
+  `create` (matches the recommended end-of-sprint UX: `nac create "<idea>"` then
+  `nac build` — for MVP, `build` on an existing project re-runs stages 2-6 against
+  the most recent project id).
+- **Demo regression artifact:** after Checkpoint C, generate one real example end to
+  end and commit its output under `examples/temple_of_varuna/` — not test fixtures,
+  actual generated output, becoming the baseline for comparing future compiler changes.
+
 ## Global Constraints
 
 - Everything under `E:\nth-absolute-cinema\engine\` — a separate repo from
