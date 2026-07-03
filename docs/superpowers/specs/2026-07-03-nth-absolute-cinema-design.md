@@ -177,46 +177,66 @@ local audio → cloud), local model lifecycle, and GPU scheduling.
 
 ## 13. Storage
 
+Storage is split into three tiers (see §20.3) rather than one undifferentiated
+filesystem tree:
+
 - **SQLite** — authoritative store for all five graphs, version history, task/job
-  state, provenance, asset metadata. Primary query/inspection layer.
+  state, provenance, asset metadata. Primary query/inspection layer. Lives in the
+  **project tier**.
 - **Filesystem** — all generated artifacts (screenplays, prompts, audio, images, video,
   music, exports), organized per project, content-addressed by hash for reuse/cache.
+  Split across **cache**, **project**, and **archive** tiers per §20.3.
 - **DuckDB** — optional analytics layer, introduced in a later phase, not Phase 1.
 - **Local vector DB** — optional semantic retrieval feature, not a dependency.
+
+All paths are resolved relative to a runtime-detected project root (§20.1) — no
+component hardcodes an absolute path.
 
 ## 14. Tech stack
 
 - **Engine (core, compilers, graphs, storage, routing):** Python — reuses existing
   `crp-runtime` patterns and `agent_os/` local-model glue (Kokoro, transformers).
 - **Dashboard (Sprint 6, Director Dashboard):** Node/React.
-- **Location:** new top-level folder `nth-absolute-cinema/` under
-  `C:\Users\navka\navakanth001\` (staging workshop pattern — graduates to its own repo
-  later, same as `nth-brain`).
+- **Location:** `E:\nth-absolute-cinema\` — an external SSD, chosen from the start so
+  the project is portable and hardware-adaptive by construction (§20). Not staged
+  under `C:\Users\navka\navakanth001\`: this project's storage tiers (cache/renders/
+  assets/temp/archive) are large and drive-portability is a first-class requirement,
+  which the usual staging-workshop pattern (`[[staging-to-repo-workflow]]`) doesn't
+  need to handle. Git remains the source of truth for `engine/`, `dashboard/`,
+  `templates/`, `docs/`, `examples/`, `tests/`; `local_models/`, `projects/`, `cache/`,
+  `renders/`, `assets/`, `temp/`, `archive/` are gitignored, populated at runtime.
 
 ## 15. Folder structure
 
 ```
-nth-absolute-cinema/
-  engine/
-    kernel/          # Compiler base class, contracts, event bus
-    knowledge/        # Knowledge Graph, Style Genome, four-layer Validators
-    cinematic/          # Cinematic Graph: shots, camera, cuts, music cues
-    assets/               # Asset Graph, hashing, cache
-    production/             # Production Graph, Production Planner, job queue
-    review/                   # Review Graph, multi-stage approval workflow
-    compilers/                 # ScreenplayCompiler, AudioCompiler, PromptCompiler, ...
-    packs/                       # google_flow/, higgsfield/, openart/, ...
-    model_manager/                 # Model Manager, Scheduler, GPU Manager, Router
-    storage/                         # SQLite (5 graphs) + filesystem (assets)
-    api/                                # FastAPI boundary (only door to the dashboard/CLI)
-    plugins/                              # extension points
-  dashboard/           # Node/React Director Dashboard (Sprint 6)
-  local_models/        # model weights/configs
-  templates/            # pack templates, project templates
-  projects/              # per-project SQLite DB + asset tree (gitignored)
-  examples/
-  docs/
-  tests/
+E:\nth-absolute-cinema\
+  engine\
+    kernel\          # Compiler base class, contracts, event bus
+    knowledge\        # Knowledge Graph, Style Genome, four-layer Validators
+    cinematic\          # Cinematic Graph: shots, camera, cuts, music cues
+    assets\               # Asset Graph, hashing, cache
+    production\             # Production Graph, Production Planner, job queue
+    review\                   # Review Graph, multi-stage approval workflow
+    compilers\                 # ScreenplayCompiler, AudioCompiler, PromptCompiler, ...
+    packs\                       # google_flow/, higgsfield/, openart/, ...
+    model_manager\                 # Model Manager, Scheduler, GPU Manager, Router
+    compute_manager\                 # Hardware profiling + execution profile selection
+    storage\                         # SQLite (5 graphs) + filesystem (assets)
+    portability\                       # .nac package export/import (§20.4)
+    api\                                # FastAPI boundary (only door to the dashboard/CLI)
+    plugins\                              # extension points
+  dashboard\           # Node/React Director Dashboard (Sprint 6)
+  local_models\        # installed model weights/configs (on-demand, §20.2 — gitignored)
+  projects\              # per-project SQLite DB + project-tier asset tree (gitignored)
+  templates\            # pack templates, project templates
+  docs\
+  examples\
+  cache\                  # cache tier: derived/regeneratable data (§20.3 — gitignored)
+  renders\                  # rendered video/image outputs pending review (gitignored)
+  assets\                     # shared/reusable asset library across projects (gitignored)
+  temp\                         # scratch space, safe to delete anytime (gitignored)
+  archive\                        # archive tier: cold storage, exported .nac packages
+  tests\
 ```
 
 ## 16. Review workflow (multi-stage, not a single gate)
@@ -227,18 +247,163 @@ Compile → AI Self-Review → Human Review → Graph Update → Recompile
 
 Every compiler supports this loop, not just a final approval screen.
 
-## 17. Sprint plan
+## 17. Portability (relocatable project root)
+
+The project root is never hardcoded. At startup, the engine resolves its root by
+walking up from the running module's location to find a marker file
+(`.nac-root`) rather than reading a fixed path — the same mechanism whether the
+project lives at `E:\nth-absolute-cinema\`, `D:\...`, or a different drive letter
+entirely on another machine. All internal path construction (storage, packs,
+local_models, cache/renders/assets/temp/archive) goes through a single
+`engine.kernel.paths` resolver that returns paths relative to that detected root; no
+other module is allowed to build an absolute path itself. This makes "copy the
+`E:\nth-absolute-cinema\` directory (or move the SSD) to another computer and keep
+working" a property of the architecture, not a migration step.
+
+This is additive to the existing design: it constrains how `engine.storage` and
+`engine.model_manager` are implemented, it does not change the graph schema, compiler
+contract, or any Sprint 0-6 deliverable.
+
+## 18. Compute Manager (hardware-adaptive execution profiles)
+
+New subsystem, `engine.compute_manager`, sitting alongside Model Manager. At startup
+(and on demand) it profiles the host machine — CPU, RAM, GPU, VRAM, storage speed/free
+space, and which local models are already installed — and selects one of four
+execution profiles. Nothing else in the architecture assumes a fixed hardware tier;
+every compiler asks Model Manager for a model, and Model Manager asks Compute Manager
+which tier it's allowed to use.
+
+| Profile  | Maps to (your terms) | Local scope |
+|----------|----------------------|-------------|
+| Micro    | Profile A — Laptop   | Lightweight local LLMs, local TTS, prompt compilation, story generation, audio screenplay. Cloud video generation only when needed. |
+| Standard | Profile B — Gaming PC | Everything local except premium video. |
+| Pro      | Profile C — Studio Workstation | Almost everything local. |
+| Studio   | Profile D — Cloud    | Heavy rendering, distributed generation, team collaboration. |
+
+The same project — same Knowledge Graph, same compilers, same `.nac` package — runs
+unmodified on all four; only which Tier 0-4 route Model Manager picks changes. Profile
+selection is re-evaluated whenever Compute Manager detects the hardware changed (e.g.
+project moved to a different machine) — see §17 and §20.
+
+This is additive: it does not change the Tier 0-4 routing concept already in the
+design (§9 Model Manager), it adds the automatic profiling step that decides which
+tiers are actually available on the current machine.
+
+## 19. On-demand model installation
+
+Model Manager (§9/§12) is extended, not replaced: instead of requiring all local
+models up front, it installs models lazily, one at a time, the first time a compiler
+actually needs them:
 
 ```
-Sprint 0 — Manifesto v1.0 + Creative Graph Specification v1.0 (frozen)
-Sprint 1 — Kernel, Knowledge Graph, Storage, Model Manager (Tier 0/1)
+Compiler requests capability (e.g. narration)
+  → Model Manager checks Capability Registry: is a model installed for this?
+    → No → Compute Manager profile permits it? → download that one model package
+    → Yes → use it
+```
+
+Each local model (Kokoro, Whisper, Gemma, etc.) is its own installable package under
+`local_models/`, with its own manifest (size, VRAM requirement, capability tags). There
+is no "download everything" step; a fresh `Micro`-profile install may end up with only
+a couple of small models present, and that is expected and correct.
+
+## 20. Storage tiers
+
+Storage under the project root is split into three tiers, each with different
+portability and lifecycle guarantees:
+
+- **Cache tier** (`cache/`) — fully derived/regeneratable data: model inference caches,
+  resized/thumbnailed intermediates, compiled prompt caches. Safe to delete entirely;
+  never included in a `.nac` export; rebuilt on demand from the project tier.
+- **Project tier** (`projects/<project>/`) — authoritative, non-regeneratable data: the
+  five graphs (SQLite), Style Genomes, provenance, review history, source assets. This
+  is what a `.nac` package is built from.
+- **Archive tier** (`archive/`) — cold storage: exported `.nac` packages, completed
+  project snapshots, old versions kept for provenance/replay but not actively worked
+  on.
+
+`renders/`, `assets/`, and `temp/` (§15 folder structure) are cache-tier siblings used
+by specific subsystems (Cinematic/Asset Graph renders, shared asset library, scratch
+space respectively) — same "safe to delete, not exported" guarantee as `cache/`.
+
+## 21. Portable Project Package (`.nac`)
+
+`engine.portability` (new module) can export any project to a single `.nac` file and
+import it back on a different machine.
+
+**Exported (project-tier data only — reproducible/authoritative):**
+- Creative Graph Specification version + all five graphs (Knowledge, Cinematic, Asset
+  metadata, Production, Review) as of export time
+- Style Genomes
+- Provenance records (`knowledge_version, compiler_version, pack_version, model, seed,
+  output_hash` per artifact, §9)
+- Prompts (compiled Prompt IR, not just raw text)
+- Review history
+- Manifest: Creative Graph Spec version, Manifesto version, compiler versions, pack
+  versions used, list of referenced local models (by name+version, not weights)
+- References to assets (content hashes + relative paths), not necessarily the full
+  binary asset payload for large renders — see below
+
+**Not exported (cache-tier, regeneratable on the destination machine):**
+- Local model weights
+- Derived caches, thumbnails, inference caches
+- Anything under `cache/`, `renders/` (unless the referenced render is also the
+  authoritative source asset — see next point), `temp/`
+
+**Asset handling:** small/source assets (reference images, approved takes) are
+embedded in the package by content hash; large generated renders are referenced by
+hash with an optional embed toggle at export time, so a `.nac` can be either a full
+self-contained archive or a lightweight "resume-me" package that regenerates renders
+from provenance on import.
+
+**Import flow on the destination machine:**
+```
+Import .nac → verify manifest/graph-spec version compatible
+  → restore five graphs + genomes + provenance + review history into projects/
+  → Compute Manager profiles destination hardware → selects execution profile
+  → Model Manager diffs manifest's referenced models against what's installed
+    → installs only what's missing, per §19
+  → missing cache-tier data (thumbnails, renders not embedded) regenerated on demand
+    from provenance, not re-generated from scratch via new AI calls unless the
+    original asset truly wasn't embedded and can't be re-derived deterministically
+```
+
+This preserves Manifesto principle 4 (reproducibility through provenance): a `.nac`
+import reconstructs project state exactly, even when the destination's installed
+models or cache are empty.
+
+This is additive: `.nac` is a new export/import format layered on top of the existing
+Storage design (§13) and Provenance schema (§9); it introduces no change to any graph
+node/edge type or compiler contract.
+
+## 22. Compatibility statement
+
+Everything in §17-21 is additive to the design approved in §1-16: no graph schema,
+compiler contract, pack format, or review workflow changes. The only structural change
+to prior sections is the project root moving from `C:\Users\navka\navakanth001\
+nth-absolute-cinema\` to `E:\nth-absolute-cinema\` (§14-15) and the addition of three
+new engine subsystems (`compute_manager/`, `portability/`) plus the three storage-tier
+directories (`cache/`, `renders/`, `assets/`, `temp/`, `archive/`) — none of which
+existing sections' compilers, graphs, or contracts need to know about directly; they
+only ever go through `engine.kernel.paths` and `engine.model_manager`.
+
+## 23. Sprint plan
+
+```
+Sprint 0 — Manifesto v1.0 + Creative Graph Specification v1.0 (frozen), including
+           path-resolver contract (§17), execution-profile schema (§18), and .nac
+           manifest schema (§21)
+Sprint 1 — Kernel (incl. engine.kernel.paths, §17), Knowledge Graph, Storage (3 tiers,
+           §20), Model Manager with on-demand install (§19), Compute Manager (§18)
 Sprint 2 — Story Compiler (Screenplay/Story Bible/Novel), 4-layer Validators, Review Graph
 Sprint 3 — Prompt Compiler, Capability Packs, Asset Graph, Cinematic Graph,
            aspect-ratio-native shots (Google Flow pack first)
 Sprint 4 — Audio Compiler, Narration, Dialogue (local TTS routing)
 Sprint 5 — Generation: Storyboard, Motion Poster, Teaser, Trailer compilers,
            Production Planner wired to real estimates
-Sprint 6 — Director Dashboard, export, full-pipeline cost-optimizer tuning
+Sprint 6 — Director Dashboard, .nac export/import (§21), full-pipeline cost-optimizer
+           tuning, cross-profile verification (run one project on Micro and Standard
+           profiles, confirm identical graph output)
 ```
 
 Rationale for this order over a naive Core→Story→Audio→Prompt sequence: everything
@@ -251,7 +416,7 @@ clean) → push → PR into `master` → CI/review → merge → delete branch, 
 standard ADLC (`wiki/development-lifecycle.md`, `AGENTS.md`). No sprint merges over
 uncommitted work from a prior sprint.
 
-## 18. Explicit non-goals for Phase 1
+## 24. Explicit non-goals for Phase 1
 
 - Director Memory (reusable cross-project style profiles) — real value, deferred to
   Phase 2. Sprint 0 spec should leave a schema hook for it but it is not implemented.
@@ -262,8 +427,13 @@ uncommitted work from a prior sprint.
   not preclude them, but none are built in Phase 1.
 - DuckDB analytics layer, local vector DB — optional, later phase.
 - Cloud-only generation paths without a local fallback — violates Manifesto principle 5.
+- Automated cross-machine sync/merge of two live `.nac`-derived projects (conflict
+  resolution) — Phase 1 supports export/import as a snapshot handoff, not concurrent
+  multi-machine editing.
+- Team collaboration features under the Studio (Cloud) profile — Compute Manager can
+  *select* that profile, but multi-user collaboration workflows are Phase 2.
 
-## 19. Success criteria for Phase 1
+## 25. Success criteria for Phase 1
 
 - A single idea, entered once, produces: Story Bible, Screenplay (20-30 pages),
   Audio Screenplay, Storyboard, Motion Poster, Teaser, and at least one aspect-ratio
@@ -274,3 +444,10 @@ uncommitted work from a prior sprint.
 - Production Planner estimate is produced before generation starts for at least one
   full sprint-5 pipeline run, and actual cost/time is logged against the estimate for
   comparison (measurement over assumption, per Manifesto principle 4/7).
+- No component contains a hardcoded absolute path; the engine runs correctly when
+  `E:\nth-absolute-cinema\` is copied to a different drive letter on the same machine
+  (minimum portability smoke test for §17).
+- A project exported to `.nac` on one profile (e.g. Micro) imports successfully on a
+  machine with none of the referenced local models installed, and Model Manager
+  installs only the models actually needed to resume work — not a full bundle (§19,
+  §21).
