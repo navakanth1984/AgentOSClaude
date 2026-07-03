@@ -13,7 +13,7 @@
           "description": "AI model economics research and routing system design",
           "complexity": "Research/Frontier",
           "correct_tier": true,
-          "notes": "Correct use of Tier 5 \u00e2\u20ac\u201d novel architecture + deep research"
+          "notes": "Correct use of Tier 5 — novel architecture + deep research"
         }
       ],
       "estimated_tokens": {
@@ -1200,19 +1200,259 @@
       },
       "estimated_cost_usd": 0.01,
       "routing_corrections": []
+    },
+    {
+      "date": "2026-06-30",
+      "session_id": "d5411213-3a3d-4db5-ad65-2304673d8130",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-30",
+      "session_id": "335345ce-a072-4969-a035-6d18e213d04c",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-30",
+      "session_id": "a3d33a84-f0da-4fcd-b977-ed5d196341db",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-30",
+      "session_id": "1a074889-c9dd-44d5-874e-6a5ca9aea5e2",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-30",
+      "session_id": "2026-06-30-notebooklm-fix",
+      "model_used": "Claude Haiku 4.5 (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "NotebookLM agent DOM selector debugging and fix (aria-labelledby pattern for notebook name extraction)",
+          "complexity": "Moderate/QA",
+          "correct_tier": true,
+          "notes": "Debugged NotebookLM Angular app HTML structure, identified aria-labelledby sibling element pattern, and implemented correct DOM selector for fetching real notebook names instead of 'Untitled'."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 18000,
+        "output": 2000
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-06-30",
+      "session_id": "a8b31c64-d4cf-4f19-af7b-2f477612b808",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-02",
+      "session_id": "7d5cf1a4-7aca-41b1-8618-f58c9b4aeafe",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-02",
+      "session_id": "0d55d307-77ec-4a06-a77d-fc11c3945584",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-02",
+      "session_id": "14026094-d4cd-43ec-beea-8eeb8765a89e",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-03",
+      "session_id": "b138ced5-fe40-4dc3-bd1a-439c2dc304aa",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-03",
+      "session_id": "ce8525cd-af1b-4b11-a631-6bb1ac585426",
+      "model_used": "Gemini 3.5 Flash (Low)",
+      "tier": 2,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Moderate",
+          "correct_tier": true,
+          "notes": "Executed the usage-efficiency validation pipeline, updated model-usage-log.json, and verified budget and routing rates."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 15000,
+        "output": 1500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-03",
+      "session_id": "2026-07-03-nac-sprint1-completion",
+      "model_used": "Claude Sonnet 5",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Nth Absolute Cinema (NAC) — Sprint 0 Architecture Freeze and Sprint 1 MVP Studio Build",
+          "complexity": "Complex/Hands-on",
+          "correct_tier": true,
+          "notes": "Full MVP implementation from brainstorm to working code. Sprint 0: Named NAC separately from CRP TITAN, froze five-graph architecture, 14 v1.0 spec docs, 8-question gate passed. Sprint 1: Built nac.Studio SDK (pip-installable), provider abstraction (Ollama->OpenRouter->Mock), Story/Screenplay/Audio/Prompt compilers, Capability Registry, Production Package export, CLI, thin bridge, real example (temple_of_varuna with 21.8MB narrated audio). Live verification via OpenRouter free tier. 40+ commits, 49/49 tests green. Bugs found/fixed: Windows cp1252 console encoding crash (ASCII markers), pyrefly editable install resolution (added to pyrefly.toml search-path). Subagent verification lesson: caught false status report by checking git/filesystem instead of trusting report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 450000,
+        "output": 45000
+      },
+      "estimated_cost_usd": 0.45,
+      "routing_corrections": []
     }
   ],
   "summary": {
-    "total_sessions": 56,
+    "total_sessions": 68,
     "tier_distribution": {
       "tier_1": 0,
-      "tier_2": 52,
+      "tier_2": 63,
       "tier_3": 0,
-      "tier_4": 3,
+      "tier_4": 4,
       "tier_5": 1
     },
-    "total_estimated_cost_usd": 3.125,
+    "total_estimated_cost_usd": 3.68,
     "correct_routing_rate": 1.0,
-    "last_updated": "2026-06-29"
+    "last_updated": "2026-07-03"
   }
 }
