@@ -5,9 +5,25 @@
 **Goal:** Idea → Story Bible → Screenplay → Audio Screenplay → Motion Poster prompt →
 `.nac`-style project export, working end to end, local-first, on the frozen
 `E:\nth-absolute-cinema\` architecture (`ARCHITECTURE_FINGERPRINT.md`,
-`30637b99...`). CLI first (`nac` command) — this is the MVP surface, not a GUI; the
-six-step flow works the same whether typed or clicked, and a thin UI can wrap this CLI
-later without touching the pipeline.
+`30637b99...`) — packaged as a standalone, pip-installable SDK (`nac`) with a CLI on
+top, and a thin bridge module inside `navakanth001/agent_os/` that consumes NAC only
+through that SDK. NAC remains fully independent and reusable; Agent OS becomes one
+consumer of it, not its host.
+
+**Hybrid architecture decision (2026-07-03, revises the original "CLI only" framing
+below without touching anything frozen in `docs/specs/v1/`):** NAC is never built
+inside `agent_os/`. It stays a standalone package rooted at `E:\nth-absolute-cinema\`,
+installed via `pip install -e E:\nth-absolute-cinema`, exposing a public `nac` package
+(`from nac import Studio`) as the *only* surface anything outside the NAC repo may
+touch — internals (`engine.knowledge`, `engine.compilers`, `engine.storage`,
+`engine.model_manager`, etc.) stay private to NAC, exactly as `MODULE_BOUNDARIES.md`
+already requires for `engine.api`. Agent OS gets one new, small module,
+`agent_os/filmmaking/nac_bridge.py`, that imports `nac.Studio` and exposes the same
+six actions the CLI exposes (create project, generate story bible, generate
+screenplay, generate audio, generate prompt, export) — no filmmaking logic, no graph
+knowledge, no compiler code lives in `agent_os/`. Both the CLI (Task 11) and the
+future Agent OS Filmmaking UI call the same SDK, so there is exactly one
+implementation of the pipeline, not two.
 
 **Architecture:** One vertical slice through the frozen ABIs — real but minimal
 implementations of `PathResolver` (`WORKSPACE_SPEC.md`), a SQLite-backed subset of the
@@ -84,7 +100,11 @@ E:\nth-absolute-cinema\
     portability\
       __init__.py
       export.py                            (Task 9 — MVP folder export)
-    cli.py                                   (Task 10 — `nac` CLI entrypoint)
+  nac\
+    __init__.py                              (Task 10 — public SDK: `from nac import Studio`)
+  cli\
+    __init__.py
+    __main__.py                                (Task 11 — `nac` CLI, calls nac.Studio only)
   tests\
     test_paths.py                           (Task 1)
     test_knowledge_repo.py                   (Task 2)
@@ -94,10 +114,21 @@ E:\nth-absolute-cinema\
     test_audio_compiler.py                       (Task 7)
     test_prompt_compiler.py                       (Task 8)
     test_export.py                                 (Task 9)
+    test_sdk.py                                      (Task 10)
   scratchpad\
-    smoke_test_full_pipeline.py                     (Task 11 — manual, unmocked)
-  requirements.txt                                    (Task 1)
-  .nac-root                                             (Task 1 — marker file, empty)
+    smoke_test_full_pipeline.py                     (Task 12 — manual, unmocked)
+  pyproject.toml                                        (Task 10 — `pip install -e .`)
+  requirements.txt                                        (Task 1)
+  .nac-root                                                 (Task 1 — marker file, empty)
+```
+
+In `navakanth001` (existing repo, new files only — no existing agent_os code
+modified):
+```
+agent_os\
+  filmmaking\
+    __init__.py
+    nac_bridge.py                (Task 13 — thin wrapper over nac.Studio only)
 ```
 
 ---
@@ -1268,28 +1299,92 @@ git commit -m "feat(portability): MVP project export (MyMovie/ folder layout)"
 
 ---
 
-### Task 10: CLI entrypoint tying the six steps together
+### Task 10: Public SDK (`nac` package) + `pyproject.toml`
 
 **Files:**
-- Create: `E:\nth-absolute-cinema\engine\cli.py`
+- Create: `E:\nth-absolute-cinema\nac\__init__.py`
+- Create: `E:\nth-absolute-cinema\pyproject.toml`
+- Test: `E:\nth-absolute-cinema\tests\test_sdk.py`
 
 **Interfaces:**
-- Consumes: everything from Tasks 1-9.
-- Produces: `nac create "<idea>" --out <dir>` — runs the full pipeline, prints
-  progress per step, writes the export folder.
+- Consumes: everything from Tasks 1-9 (`engine.*` internals).
+- Produces: `nac.Studio` — the **only** class anything outside this repo (the CLI in
+  Task 11, and later `agent_os/filmmaking/nac_bridge.py` in Task 13) is allowed to
+  import. `Studio` methods: `create_project(idea_text) -> str (project_id)`,
+  `generate_story(project_id) -> str`, `generate_screenplay(project_id) -> str`,
+  `generate_audio(project_id) -> Path`, `generate_prompt(project_id) -> str`,
+  `export(project_id, out_dir) -> Path`. No method takes or returns an `engine.*`
+  type — only strings, `Path`, and project IDs cross the SDK boundary.
 
-- [ ] **Step 1: Write `engine/cli.py`**
+- [ ] **Step 1: Write the failing test**
+
+`E:\nth-absolute-cinema\tests\test_sdk.py`:
+```python
+from pathlib import Path
+import sys
+from unittest.mock import patch, MagicMock
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from nac import Studio
+
+
+def test_studio_full_pipeline_calls_each_stage_once(tmp_path, monkeypatch):
+    monkeypatch.setenv("NAC_ROOT_OVERRIDE", str(tmp_path))
+    (tmp_path / ".nac-root").write_text("")
+
+    fake_provider = MagicMock()
+    fake_provider.model = "gemma2:9b"
+    fake_provider.generate.side_effect = [
+        "# Story Bible\n...",
+        "INT. TEMPLE - DAY\n\nWater drips.",
+        "Bioluminescent ruins, cinematic, 16:9",
+    ]
+    fake_tts = MagicMock()
+    audio_out = tmp_path / "fake_audio.wav"
+    audio_out.write_bytes(b"RIFF")
+    fake_tts.synthesize.return_value = audio_out
+
+    with patch("nac.OllamaProvider", return_value=fake_provider), \
+         patch("nac.TtsProvider", return_value=fake_tts):
+        studio = Studio()
+        project_id = studio.create_project("A forgotten temple beneath the sea")
+        bible = studio.generate_story(project_id)
+        screenplay = studio.generate_screenplay(project_id)
+        audio_path = studio.generate_audio(project_id)
+        prompt = studio.generate_prompt(project_id)
+        out_dir = studio.export(project_id, tmp_path / "MyMovie")
+
+    assert "Story Bible" in bible
+    assert "INT." in screenplay
+    assert audio_path.exists()
+    assert "16:9" in prompt
+    assert (out_dir / "manifest.json").exists()
+    assert fake_provider.generate.call_count == 3
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `cd E:\nth-absolute-cinema && py -3 -m pytest tests/test_sdk.py -v`
+Expected: FAIL — `ModuleNotFoundError: No module named 'nac'`
+
+- [ ] **Step 3: Write `nac/__init__.py`**
 
 ```python
-"""nac CLI — the Sprint 1 MVP surface. `py -3 engine\\cli.py create "<idea>"`
-runs: Idea -> Story Bible -> Screenplay -> Audio -> Motion Poster prompt -> Export."""
+"""nac — the public NAC SDK. This is the ONLY module anything outside the
+E:\\nth-absolute-cinema repository may import (MODULE_BOUNDARIES.md's engine.api
+boundary rule, applied here for Sprint 1's SDK-shaped surface instead of a REST API).
+Consumers (the CLI, agent_os/filmmaking/nac_bridge.py) see only Studio — never
+engine.knowledge, engine.compilers, engine.storage, or engine.model_manager
+directly."""
 from __future__ import annotations
 
-import argparse
+import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+_repo_root = Path(__file__).resolve().parent
+if str(_repo_root) not in sys.path:
+    sys.path.insert(0, str(_repo_root))
 
 from engine.kernel.paths import PathResolver
 from engine.storage.db import init_db
@@ -1302,40 +1397,149 @@ from engine.compilers.audio_compiler import AudioCompiler
 from engine.compilers.prompt_compiler import PromptCompiler
 from engine.portability.export import export_project
 
+__all__ = ["Studio", "OllamaNotReachableError"]
+
+
+class Studio:
+    """The NAC public SDK. One Studio instance = one Ollama model + one project DB."""
+
+    def __init__(self, model: str = "gemma2:9b") -> None:
+        resolver = PathResolver()
+        start = Path(os.environ.get("NAC_ROOT_OVERRIDE", str(_repo_root)))
+        self._root = resolver.find_root(start)
+        self._resolver = resolver
+        db_path = resolver.resolve("projects/mvp.db")
+        self._conn = init_db(db_path)
+        self._repo = KnowledgeRepo(self._conn)
+        self._provider = OllamaProvider(model=model)
+        self._tts = TtsProvider()
+
+    def create_project(self, idea_text: str) -> str:
+        return self._repo.create_story(idea_text)
+
+    def generate_story(self, project_id: str) -> str:
+        story = self._repo.get_story(project_id)
+        bible_text, _ = StoryCompiler(self._provider).run(story["idea_text"])
+        self._repo.save_story_bible(project_id, bible_text)
+        return bible_text
+
+    def generate_screenplay(self, project_id: str) -> str:
+        story = self._repo.get_story(project_id)
+        screenplay_text, _ = ScreenplayCompiler(self._provider).run(story["story_bible"])
+        self._repo.save_screenplay(project_id, screenplay_text)
+        return screenplay_text
+
+    def generate_audio(self, project_id: str) -> Path:
+        story = self._repo.get_story(project_id)
+        audio_out = self._resolver.resolve(f"projects/{project_id}_audio.wav")
+        audio_path, _ = AudioCompiler(self._tts).run(story["screenplay"], audio_out)
+        self._repo.save_audio_path(project_id, str(audio_path))
+        return audio_path
+
+    def generate_prompt(self, project_id: str) -> str:
+        story = self._repo.get_story(project_id)
+        prompt_text, _ = PromptCompiler(self._provider).run(story["screenplay"])
+        self._repo.save_motion_poster_prompt(project_id, prompt_text)
+        return prompt_text
+
+    def export(self, project_id: str, out_dir: Path) -> Path:
+        story = self._repo.get_story(project_id)
+        return export_project(story, Path(out_dir))
+```
+
+- [ ] **Step 4: Write `pyproject.toml`**
+
+```toml
+[project]
+name = "nac"
+version = "0.1.0"
+description = "Nth Absolute Cinema — Creative Operating System SDK"
+requires-python = ">=3.12"
+dependencies = ["requests>=2.31", "pyttsx3>=2.90"]
+
+[project.scripts]
+nac = "cli.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["nac", "engine", "cli"]
+```
+
+- [ ] **Step 5: Run tests to verify they pass**
+
+Run: `cd E:\nth-absolute-cinema && py -3 -m pytest tests/test_sdk.py -v`
+Expected: 1 passed
+
+- [ ] **Step 6: Install the package editable, confirm the import surface works**
+
+```powershell
+cd E:\nth-absolute-cinema
+py -3 -m pip install -e .
+py -3 -c "from nac import Studio; print(Studio)"
+```
+
+Expected: prints `<class 'nac.Studio'>`, no import errors.
+
+- [ ] **Step 7: Commit**
+
+```powershell
+cd E:\nth-absolute-cinema
+git add nac\__init__.py pyproject.toml tests\test_sdk.py
+git commit -m "feat(sdk): public nac.Studio SDK — the only cross-boundary import surface"
+```
+
+---
+
+### Task 11: CLI entrypoint (`cli/`), calling only `nac.Studio`
+
+**Files:**
+- Create: `E:\nth-absolute-cinema\cli\__init__.py`
+- Create: `E:\nth-absolute-cinema\cli\__main__.py`
+
+**Interfaces:**
+- Consumes: `nac.Studio` (Task 10) — **never** `engine.*` directly; this is the CLI
+  dogfooding the same SDK boundary `agent_os/filmmaking/nac_bridge.py` (Task 13) will
+  use.
+- Produces: `nac create "<idea>" --out <dir>` — runs the full pipeline via `Studio`,
+  prints progress per step, writes the export folder.
+
+- [ ] **Step 1: Write `cli/__main__.py`**
+
+```python
+"""nac CLI — the Sprint 1 MVP surface, built entirely on nac.Studio (Task 10).
+`py -3 -m cli create "<idea>"` or, once pip-installed, `nac create "<idea>"`."""
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+from nac import Studio, OllamaNotReachableError
+
 
 def run_pipeline(idea_text: str, out_dir: Path, model: str = "gemma2:9b") -> Path:
-    resolver = PathResolver()
-    root = resolver.find_root(Path(__file__).resolve())
-    db_path = resolver.resolve(f"projects/mvp.db")
-    conn = init_db(db_path)
-    repo = KnowledgeRepo(conn)
-
-    provider = OllamaProvider(model=model)
-    tts = TtsProvider()
+    studio = Studio(model=model)
 
     print(f"[1/6] Creating project for idea: {idea_text!r}")
-    story_id = repo.create_story(idea_text)
+    project_id = studio.create_project(idea_text)
 
     print("[2/6] Generating Story Bible...")
-    bible_text, _ = StoryCompiler(provider).run(idea_text)
-    repo.save_story_bible(story_id, bible_text)
+    studio.generate_story(project_id)
 
     print("[3/6] Generating Screenplay...")
-    screenplay_text, _ = ScreenplayCompiler(provider).run(bible_text)
-    repo.save_screenplay(story_id, screenplay_text)
+    studio.generate_screenplay(project_id)
 
     print("[4/6] Generating Audio Screenplay...")
-    audio_out = resolver.resolve(f"projects/{story_id}_audio.wav")
-    audio_path, _ = AudioCompiler(tts).run(screenplay_text, audio_out)
-    repo.save_audio_path(story_id, str(audio_path))
+    studio.generate_audio(project_id)
 
     print("[5/6] Generating Motion Poster prompt...")
-    prompt_text, _ = PromptCompiler(provider).run(screenplay_text)
-    repo.save_motion_poster_prompt(story_id, prompt_text)
+    studio.generate_prompt(project_id)
 
     print("[6/6] Exporting project...")
-    story = repo.get_story(story_id)
-    result_dir = export_project(story, out_dir)
+    result_dir = studio.export(project_id, out_dir)
 
     return result_dir
 
@@ -1365,11 +1569,13 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 2: Manual smoke test (Ollama must be running)**
+- [ ] **Step 2: Write `cli/__init__.py`** (empty)
+
+- [ ] **Step 3: Manual smoke test (Ollama must be running)**
 
 ```powershell
 cd E:\nth-absolute-cinema
-py -3 engine\cli.py create "A forgotten temple beneath the sea" --out projects\demo_movie --model gemma2:9b
+py -3 -m cli create "A forgotten temple beneath the sea" --out projects\demo_movie --model gemma2:9b
 ```
 
 Expected: 6 numbered progress lines print, no traceback, `projects\demo_movie\`
@@ -1378,23 +1584,24 @@ contains `story.md`, `story_bible.md`, `screenplay.md`, `screenplay_audio.wav`,
 isn't pulled, expect the actionable `OllamaNotReachableError` message, not a
 traceback.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 4: Commit**
 
 ```powershell
 cd E:\nth-absolute-cinema
-git add engine\cli.py
-git commit -m "feat(cli): nac create — full Idea-to-Export pipeline entrypoint"
+git add cli\__init__.py cli\__main__.py
+git commit -m "feat(cli): nac create — CLI built entirely on the nac.Studio SDK boundary"
 ```
 
 ---
 
-### Task 11: Unmocked smoke-test script (proof, not CI)
+### Task 12: Unmocked smoke-test script (proof, not CI)
 
 **Files:**
 - Create: `E:\nth-absolute-cinema\scratchpad\smoke_test_full_pipeline.py`
 
 **Interfaces:**
-- Consumes: everything (Tasks 1-10). Not part of `pytest` — run manually.
+- Consumes: `cli.__main__.run_pipeline` (Task 11), which itself only calls
+  `nac.Studio` (Task 10). Not part of `pytest` — run manually.
 
 - [ ] **Step 1: Write `scratchpad/smoke_test_full_pipeline.py`**
 
@@ -1410,7 +1617,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from engine.cli import run_pipeline
+from cli.__main__ import run_pipeline
 
 IDEA = "A forgotten temple beneath the sea, guarded by something that still remembers"
 OUT_DIR = Path(__file__).resolve().parents[1] / "projects" / "smoke_test_movie"
@@ -1459,24 +1666,139 @@ git commit -m "test: add unmocked full-pipeline smoke test script"
 
 ---
 
+### Task 13: Minimal Agent OS Filmmaking bridge (in `navakanth001`, SDK-only)
+
+**Files:**
+- Create: `C:\Users\navka\navakanth001\agent_os\filmmaking\__init__.py`
+- Create: `C:\Users\navka\navakanth001\agent_os\filmmaking\nac_bridge.py`
+
+**Interfaces:**
+- Consumes: `nac.Studio` (Task 10) via the pip-installed `nac` package — **never**
+  `engine.*`, never a relative filesystem import into `E:\nth-absolute-cinema\`. If
+  `import nac` fails, that means the package wasn't installed into whatever venv
+  `agent_os` uses — see Step 1's install note, not a code fix.
+- Produces: the six bridge functions the user specified verbatim:
+  `launch_nac_project(idea_text)`, `generate_story(project_id)`,
+  `generate_screenplay(project_id)`, `generate_audio(project_id)`,
+  `generate_prompt(project_id)`, `export_project(project_id, out_dir)`. This module
+  contains zero filmmaking logic — it is a 1:1 rename/passthrough onto `Studio`'s
+  methods, existing only so Agent OS's eventual "Filmmaking" UI has stable,
+  Agent-OS-flavored function names to call instead of reaching into a third-party
+  SDK's class directly everywhere.
+
+- [ ] **Step 1: Install `nac` into the environment `agent_os` runs in**
+
+Confirm which Python/venv `agent_os/server.py` actually runs under (per
+[[agent-os-runner-fixes]] memory: `py -3`, Python312), then install NAC editable into
+that same environment:
+
+```powershell
+py -3 -m pip install -e E:\nth-absolute-cinema
+py -3 -c "from nac import Studio; print('nac import OK:', Studio)"
+```
+
+Expected: `nac import OK: <class 'nac.Studio'>` — if this fails, stop here and fix
+the install (wrong venv, or Task 10 wasn't completed) before writing the bridge file.
+
+- [ ] **Step 2: Write `agent_os/filmmaking/nac_bridge.py`**
+
+```python
+"""Thin bridge from Agent OS into the NAC SDK. Contains NO filmmaking logic —
+every function here is a direct passthrough to nac.Studio (E:\\nth-absolute-cinema).
+Agent OS must never import engine.* directly; this file is the only permitted door."""
+from __future__ import annotations
+
+from pathlib import Path
+
+from nac import Studio
+
+_studio: Studio | None = None
+
+
+def _get_studio() -> Studio:
+    global _studio
+    if _studio is None:
+        _studio = Studio()
+    return _studio
+
+
+def launch_nac_project(idea_text: str) -> str:
+    return _get_studio().create_project(idea_text)
+
+
+def generate_story(project_id: str) -> str:
+    return _get_studio().generate_story(project_id)
+
+
+def generate_screenplay(project_id: str) -> str:
+    return _get_studio().generate_screenplay(project_id)
+
+
+def generate_audio(project_id: str) -> Path:
+    return _get_studio().generate_audio(project_id)
+
+
+def generate_prompt(project_id: str) -> str:
+    return _get_studio().generate_prompt(project_id)
+
+
+def export_project(project_id: str, out_dir: str) -> Path:
+    return _get_studio().export(project_id, Path(out_dir))
+```
+
+- [ ] **Step 3: Write `agent_os/filmmaking/__init__.py`** (empty — this package
+  intentionally has no other files yet; a real UI/route layer is Sprint 2+, this task
+  only proves the SDK boundary works from inside Agent OS)
+
+- [ ] **Step 4: Manual verification (Ollama must be running)**
+
+```powershell
+cd C:\Users\navka\navakanth001
+py -3 -c "from agent_os.filmmaking.nac_bridge import launch_nac_project, generate_story; pid = launch_nac_project('A forgotten temple beneath the sea'); print(generate_story(pid)[:200])"
+```
+
+Expected: prints the first 200 characters of a generated Story Bible — proof that
+Agent OS can drive NAC through the bridge without touching any `engine.*` internals.
+
+- [ ] **Step 5: Commit (in the `navakanth001` repo)**
+
+```powershell
+cd C:\Users\navka\navakanth001
+git add agent_os\filmmaking\__init__.py agent_os\filmmaking\nac_bridge.py
+git commit -m "feat(agent_os): add filmmaking bridge module consuming nac.Studio SDK only"
+```
+
+Note: this repo has a pyrefly pre-commit hook — `nac_bridge.py` imports `from nac
+import Studio`, which requires `nac` to be installed (Step 1) for pyrefly to resolve
+the import; if the hook fails on an unresolved import, that confirms Step 1 needs to
+be re-run in whichever environment the hook itself runs under.
+
+---
+
 ## Self-Review
 
-**Spec coverage** — the six user-specified steps (Open→Create Project→Enter
-Idea→Story Bible→Screenplay→Audio→Motion Poster→Export) map onto Tasks 1-10 in
-order; "what NOT to build" (dashboard, collaboration, marketplace, plugins,
-multi-user, cloud sync, 8K, IMAX, mobile, Experience Graph, Director Memory) has no
-corresponding task — confirmed absent by design, not by oversight.
+**Spec coverage** — the six user-specified pipeline steps (Open→Create Project→Enter
+Idea→Story Bible→Screenplay→Audio→Motion Poster→Export) map onto Tasks 1-12 in order;
+the hybrid-architecture requirement (standalone pip-installable NAC, SDK-only
+boundary, thin Agent OS bridge with zero filmmaking logic) maps onto Tasks 10 and 13;
+"what NOT to build" (dashboard, collaboration, marketplace, plugins, multi-user, cloud
+sync, 8K, IMAX, mobile, Experience Graph, Director Memory) has no corresponding task —
+confirmed absent by design, not by oversight.
 
 **Placeholder scan** — every task's code is complete and runnable; MVP
 simplifications (Repair as no-op, Review as ai_self_review-only, Export as a folder
-not a `.nac` zip) are explicitly documented as intentional scope decisions in
-`base.py`'s docstring and Task 9's description, not left as silent gaps or TODOs.
+not a `.nac` zip, `agent_os/filmmaking/` as a bridge module with no UI yet) are
+explicitly documented as intentional scope decisions in `base.py`'s docstring, Task
+9's description, and Task 13's interface note, not left as silent gaps or TODOs.
 
 **Type consistency** — `Provenance`/`Estimate` field names (Task 1) are reused
 verbatim by `base.py` (Task 4) and all four compilers (Tasks 5-8); `KnowledgeRepo`'s
-method names (Task 2) are reused verbatim by `cli.py` (Task 10); `OllamaProvider`
-and `TtsProvider` constructor signatures (Task 3) match how they're instantiated in
-`cli.py` exactly.
+method names (Task 2) are reused verbatim inside `nac.Studio` (Task 10);
+`OllamaProvider`/`TtsProvider` constructor signatures (Task 3) match how `Studio`
+instantiates them exactly; `cli/__main__.py` (Task 11) and
+`agent_os/filmmaking/nac_bridge.py` (Task 13) both call the identical `Studio` method
+names (`create_project`, `generate_story`, `generate_screenplay`, `generate_audio`,
+`generate_prompt`, `export`) — no drift between the two consumers of the SDK boundary.
 
 ---
 
