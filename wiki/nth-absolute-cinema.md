@@ -64,6 +64,15 @@ validation passed all 8 architecture-guarantee questions (replay, traceability, 
 extensibility, machine portability, offline operation, generation reproducibility,
 independent compiler replacement, independent graph evolution) before the freeze was
 declared. Engine codename is now **NAC**; product name **Nth Absolute Cinema** /
-desktop app **Nth Absolute Cinema Studio** remain unchanged. No engine code exists
-yet — Sprint 1 (Kernel, Knowledge Graph, Storage, Model Manager, Compute Manager) is
-next.
+desktop app **Nth Absolute Cinema Studio** remain unchanged.
+
+**Sprint 1 (MVP Studio) complete** (2026-07-03, same session). `nac.Studio` SDK is a
+real, pip-installable package (`pip install -e E:\nth-absolute-cinema`), CLI (`nac
+create "<idea>"`) proven live via OpenRouter: Idea → Story Bible → Screenplay →
+narrated Audio → Motion Poster prompt → Production Package export. Director
+validation tools (`nac status/regenerate/review/import-asset`) and a thin Agent OS
+bridge (`agent_os/filmmaking/nac_bridge.py` in `navakanth001`) both verified live.
+40 commits, 49/49 tests green. Real example at
+`E:\nth-absolute-cinema\examples\temple_of_varuna\`. `nac.SDK_VERSION` (0.1.0) marks
+the SDK/schema/`.nac` format as versioned public interfaces going forward. Full
+detail: `docs/superpowers/plans/2026-07-03-nac-sprint1-mvp-studio.md`.
