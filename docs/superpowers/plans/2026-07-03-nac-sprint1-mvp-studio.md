@@ -51,7 +51,16 @@ concern; the CLI calls compiler classes directly for Sprint 1.
 
 - **Checkpoint grouping, not task-by-task stops:** A=Tasks 1-4 (Studio() + create_project
   works), B=Tasks 5-8 (Idea→Screenplay works), C=Tasks 9-12 (full `nac create` works,
-  exports files), D=Task 13 (Agent OS bridge). Report back at each checkpoint boundary.
+  exports files), C.5=director validation (status/regenerate_stage/record_review/
+  import_asset added to Studio + CLI, additive, no new import surface — inserted
+  2026-07-03 after Checkpoint C shipped, per user request, before D), D=Task 13
+  (Agent OS bridge). Report back at each checkpoint boundary.
+- **Checkpoint C.5 also marks `nac.Studio`, the Knowledge Graph schema
+  (`engine.storage.db.SCHEMA`), compiler contracts, and the Production Package/`.nac`
+  layout as versioned public interfaces going forward** (`nac.SDK_VERSION`, currently
+  `0.1.0`) — new fields/methods are additive; removing or renaming an existing one is
+  a breaking change requiring a version bump, mirroring `VERSIONING_POLICY.md`'s
+  semver rules already frozen in Sprint 0.
 - **Every commit leaves the system runnable and its own smoke test passing** — never a
   commit that only makes sense once a later commit lands.
 - **Optimize for demonstrability over completeness.** A simple compiler that works beats
