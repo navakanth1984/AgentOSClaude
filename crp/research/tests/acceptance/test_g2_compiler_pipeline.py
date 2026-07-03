@@ -171,6 +171,43 @@ def test_determinism_verification():
         assert art.ir_hash == base.ir_hash
 
 
+def test_conformance_report_cites_golden_hashes():
+    """Verify GATE2-CONFORMANCE.md quotes the actual golden-fixture hashes.
+
+    The conformance report hand-transcribes ir_hash/plugin_hash/registry_hash/
+    manifest_hash as evidence. This test re-derives those values from the
+    golden fixture files and the report text itself, so any fixture
+    regeneration that changes a hash breaks this test instead of leaving the
+    report silently stale.
+    """
+    expected_dir = os.path.join(GOLDEN_V1_DIR, "ir", "expected", "uniform_quant")
+    with open(os.path.join(expected_dir, "ir.sha256"), encoding="utf-8") as f:
+        ir_hash = f.read().strip()
+    with open(os.path.join(expected_dir, "plugin.sha256"), encoding="utf-8") as f:
+        plugin_hash = f.read().strip()
+    with open(os.path.join(expected_dir, "manifest.sha256"), encoding="utf-8") as f:
+        manifest_hash = f.read().strip()
+    with open(os.path.join(expected_dir, "manifest.json"), encoding="utf-8") as f:
+        registry_hash = json.load(f)["registry_hash"]
+
+    report_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..", "docs", "GATE2-CONFORMANCE.md")
+    )
+    with open(report_path, encoding="utf-8") as f:
+        report_text = f.read()
+
+    for label, value in (
+        ("ir_hash", ir_hash),
+        ("plugin_hash", plugin_hash),
+        ("registry_hash", registry_hash),
+        ("manifest_hash", manifest_hash),
+    ):
+        assert value in report_text, (
+            f"GATE2-CONFORMANCE.md is stale: current golden {label}={value} "
+            f"is not quoted in the report."
+        )
+
+
 def test_compiler_purity():
     """Verify that the compiler package imports only allow-listed modules."""
     allow_list = {
