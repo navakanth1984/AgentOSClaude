@@ -76,3 +76,7 @@ bridge (`agent_os/filmmaking/nac_bridge.py` in `navakanth001`) both verified liv
 `E:\nth-absolute-cinema\examples\temple_of_varuna\`. `nac.SDK_VERSION` (0.1.0) marks
 the SDK/schema/`.nac` format as versioned public interfaces going forward. Full
 detail: `docs/superpowers/plans/2026-07-03-nac-sprint1-mvp-studio.md`.
+
+**Sprint 3A (Portability Backend & Director Studio UI) complete** (2026-07-04). Implemented pluggable Storage Manager (Phase 1), Snapshot Manager (Phase 2), and .nac Serializer/Deserializer (Phase 3). Redesigned Director Studio UI with department-level navigation, global aspect ratio selectors, context panels, multi-track timeline footers, and interactive Canvas-drawn Creative Graphs. Exposed storage health, snapshot metrics, and graph validation in the diagnostics panel. Rebuilt the graphify index.
+
+**Sprint 3A.7 (ElevenLabs Integration) complete** (2026-07-04, evening). Implemented ElevenLabs as a first-class Voice Provider (`ElevenLabsProvider`). Standardized Voice Providers (ElevenLabs, Sarvam, pyttsx3) to conform to the new protocol returning voice metrics (latency, duration, cost, credits, sample_rate, size). Supported fallback chains (`ElevenLabs -> Sarvam -> pyttsx3`) and manual overrides. Integrated status into diagnostics API and dashboard. All 155+ unit and integration tests are passing successfully. Draft PR #3 has been created on origin.
