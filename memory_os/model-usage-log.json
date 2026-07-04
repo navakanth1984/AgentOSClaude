@@ -13,7 +13,7 @@
           "description": "AI model economics research and routing system design",
           "complexity": "Research/Frontier",
           "correct_tier": true,
-          "notes": "Correct use of Tier 5 — novel architecture + deep research"
+          "notes": "Correct use of Tier 5 \u2014 novel architecture + deep research"
         }
       ],
       "estimated_tokens": {
@@ -1428,7 +1428,7 @@
       "tier": 4,
       "tasks_completed": [
         {
-          "description": "Nth Absolute Cinema (NAC) — Sprint 0 Architecture Freeze and Sprint 1 MVP Studio Build",
+          "description": "Nth Absolute Cinema (NAC) \u2014 Sprint 0 Architecture Freeze and Sprint 1 MVP Studio Build",
           "complexity": "Complex/Hands-on",
           "correct_tier": true,
           "notes": "Full MVP implementation from brainstorm to working code. Sprint 0: Named NAC separately from CRP TITAN, froze five-graph architecture, 14 v1.0 spec docs, 8-question gate passed. Sprint 1: Built nac.Studio SDK (pip-installable), provider abstraction (Ollama->OpenRouter->Mock), Story/Screenplay/Audio/Prompt compilers, Capability Registry, Production Package export, CLI, thin bridge, real example (temple_of_varuna with 21.8MB narrated audio). Live verification via OpenRouter free tier. 40+ commits, 49/49 tests green. Bugs found/fixed: Windows cp1252 console encoding crash (ASCII markers), pyrefly editable install resolution (added to pyrefly.toml search-path). Subagent verification lesson: caught false status report by checking git/filesystem instead of trusting report."
@@ -1440,19 +1440,61 @@
       },
       "estimated_cost_usd": 0.45,
       "routing_corrections": []
+    },
+    {
+      "date": "2026-07-04",
+      "session_id": "2026-07-04-nac-sprint2a",
+      "model_used": "Claude Sonnet 5",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Sprint 2A Director Studio UI: FastAPI + vanilla HTML/CSS/JS dashboard, 13+ REST routes, left/center/right/bottom panel layout, command palette. Real-world verification found 4 critical bugs (unhandled 429 rate-limit, ThreadPoolExecutor timeout semantics, PATH issue, commit message vs git state). Full 18-step UAT PASS. Demo project seeding. PR #1 open (85/85 tests). Character Genome Spec v1.2 frozen + merged (PR #2). Architecture reframe: departments inside a film studio. Handoff to Antigravity for Sprint 2B.",
+          "complexity": "Moderate/Implementation",
+          "correct_tier": true,
+          "notes": "Verification-heavy session. Real-world UAT forced bug fixes test suites missed. Explicit freeze on further spec work. Sprint 2B authorized pending fresh approval."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 95000,
+        "output": 8500
+      },
+      "estimated_cost_usd": 0.06,
+      "routing_corrections": [
+        "Auto-logged by session-memory subagent as 'Claude Haiku 4.5, Tier 2' - corrected post-hoc to 'Claude Sonnet 5, Tier 4' (actual model per system info). Same class of error as a prior NAC session (see memory: mvct/nac model-misrecording incident) - the subagent has no ground truth on which model is actually running and should not be trusted to self-report this field without a human/primary-session correction pass."
+      ]
+    },
+    {
+      "date": "2026-07-04",
+      "session_id": "2026-07-04-nac-director-studio-v2-gates-abc",
+      "model_used": "Claude Sonnet 5",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "NAC Director Studio V2: ground-up React/TS/Vite rewrite of the Director Studio UI in E:\nth-absolute-cinema (separate repo, feat/director-studio-v2), executed as 3 explicit human-reviewed gates. Gate A: Vite+React+TS+Tailwind v4+shadcn deps+React Router+Zustand+React Query+Framer Motion scaffold wired live to the existing FastAPI backend via CORS (693a5a1). Gate B: layout (AppLayout/TopBar/Sidebar/InspectorPanel/BottomTimeline/Workspace), real routing, Zustand split 4 ways, typed API layer by resource, design system with department/status color tokens (052a497). Gate C: Welcome rewrite (real per-project progress %, real activity feed from reviews+packages, Demo Project) and a 3-step Creation Wizard with a large visual aspect-ratio picker, verified live end-to-end creating a real project through the actual browser (c42830f). Also restructured wiki/nac-next-steps.md into wiki/CURRENT.md/DECISIONS.md/ROADMAP.md/CHANGELOG.md in navakanth001 (f2b33386) and wrote a HANDOFF TO ANTIGRAVITY section for cold-start pickup.",
+          "complexity": "Complex/Architecture+Implementation",
+          "correct_tier": true,
+          "notes": "Multi-gate build with mandatory stop-and-review after each gate, set up specifically to avoid the earlier Sprint 2A pattern of declaring complete then finding bugs. Every gate verified live in a real browser (screenshots, console/network checks, actual project creation) before being reported done, not just built. One deliberate deviation from the user's own product-brief mockup (aspirational outputs like Thumbnail/Character Art rendered as \"Soon\" instead of fabricated, per the frozen No Mock UI rule) was surfaced explicitly rather than silently applied."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
     }
   ],
   "summary": {
-    "total_sessions": 68,
+    "total_sessions": 70,
     "tier_distribution": {
       "tier_1": 0,
       "tier_2": 63,
       "tier_3": 0,
-      "tier_4": 4,
+      "tier_4": 6,
       "tier_5": 1
     },
-    "total_estimated_cost_usd": 3.68,
+    "total_estimated_cost_usd": 3.74,
     "correct_routing_rate": 1.0,
-    "last_updated": "2026-07-03"
+    "last_updated": "2026-07-04"
   }
 }
