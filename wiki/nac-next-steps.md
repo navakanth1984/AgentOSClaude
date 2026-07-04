@@ -1,6 +1,189 @@
 # NAC Next Steps — Sprint 3 Handoff (Director Studio Experience & Portability Backend)
 
+# 🚦Production Readiness Gate (Mandatory)
+
+**Status:** 🚧 NOT PASSED
+
+Although Sprint 3A infrastructure is largely complete, the Director Studio has **not yet been declared production ready**.
+
+No new departments (Character, Location, Scene, Beat, etc.) may begin until this gate is explicitly passed.
+
+---
+
+## Current State
+
+### Completed
+
+* Sprint 2A Director Studio
+* Sprint 2A.1 Integration fixes
+* Sprint 2A.2 Acceptance workflow
+* Sprint 3A Director Experience Pass 1
+* Storage Manager
+* Snapshot Manager
+* Serializer / Deserializer
+* Provider Orchestration
+* Local Provider Smoke Gate
+
+---
+
+### Pending
+
+* Live Gemini smoke test
+* Live Sarvam smoke test
+* Live ElevenLabs smoke test
+* Director Studio UX Pass 2
+* End-to-end dogfooding
+* Production Readiness checklist
+
+---
+
+## Mandatory Rule
+
+Do **not** begin:
+
+* Restore Manager
+* Migration Manager
+* Character Department
+* Department Framework expansion
+* Creative Knowledge Graph Phase 2
+
+until this checklist is complete.
+
+---
+
+## Director Studio Pass 2
+
+Before building more backend infrastructure, improve the Director Studio into something a filmmaker would genuinely enjoy using.
+
+Areas of focus:
+
+### Workspace
+
+* Better onboarding
+* Guided workflow
+* Progressive disclosure
+* Empty states
+* Helpful animations
+* Keyboard shortcuts
+* Drag & drop
+* Better navigation
+
+---
+
+### Timeline
+
+Improve:
+
+* runtime ruler
+* pipeline visualization
+* department status
+* render progress
+* dependency graph
+
+---
+
+### Creative Graph
+
+Make relationships understandable.
+
+Not just nodes.
+
+Show flow.
+
+Show lineage.
+
+Show provenance.
+
+---
+
+### Providers
+
+Diagnostics should become a live control center.
+
+Display:
+
+* Gemini
+* OpenRouter
+* Ollama
+* ElevenLabs
+* Sarvam
+* Mock
+
+with real status.
+
+---
+
+### Packages
+
+Make snapshots visual.
+
+Users should understand:
+
+Project
+
+↓
+
+Snapshot
+
+↓
+
+.nac Package
+
+↓
+
+Restore
+
+↓
+
+Continue Working
+
+without documentation.
+
+---
+
+### Storage
+
+Visualize
+
+* Local
+* External SSD
+* Azure (planned)
+* Google (planned)
+
+---
+
+### Production Readiness Checklist
+
+Only pass when all are true:
+
+* UI feels intuitive
+* No dead clicks
+* No silent failures
+* Providers report honestly
+* Snapshots verified
+* Packages verified
+* Diagnostics complete
+* Dogfooding completed
+* Live provider smoke tests passed
+
+---
+
+## After the Gate
+
+Then proceed in this order:
+
+1. Live Gemini smoke
+2. Live Sarvam smoke
+3. Live ElevenLabs smoke
+4. Restore Manager
+5. Migration Manager
+6. Department Framework
+7. Character Department
+
+---
+
 ## HANDOFF TO NEXT SESSION (2026-07-04 evening, ElevenLabs Integration Complete)
+
 
 **Branch:** `feat/provider-orchestration` (PR #3, draft) on `E:\nth-absolute-cinema`, base `master` (encompasses `feat/storage-manager` work).
 
