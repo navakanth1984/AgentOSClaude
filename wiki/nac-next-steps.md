@@ -1,184 +1,45 @@
-# NAC Next Steps — Sprint 3 Handoff (Director Studio Experience & Portability Backend)
+# NAC Next Steps — Historical Handoffs (Director Studio Experience & Portability Backend)
 
-# 🚦Production Readiness Gate (Mandatory)
-
-**Status:** 🚧 NOT PASSED
-
-Although Sprint 3A infrastructure is largely complete, the Director Studio has **not yet been declared production ready**.
-
-No new departments (Character, Location, Scene, Beat, etc.) may begin until this gate is explicitly passed.
+> **This file is a historical journal, not the live operating manual.** For current gate status, stop line, and next action, read [CURRENT.md](CURRENT.md). For architecture decisions, read [DECISIONS.md](DECISIONS.md). For what comes after the gate, read [ROADMAP.md](ROADMAP.md). For a one-line-per-milestone summary, read [CHANGELOG.md](CHANGELOG.md). Everything below this line is session-by-session narrative, kept for retrospective review — do not treat it as current instruction.
 
 ---
 
-## Current State
+## HANDOFF TO ANTIGRAVITY (2026-07-04 night, Director Studio V2 — Gates A/B/C shipped, read this section first)
 
-### Completed
+**Branch:** `feat/director-studio-v2` on `E:\nth-absolute-cinema`, base `feat/provider-orchestration` (which is itself unmerged, PR #3 draft, still blocked on the ElevenLabs 401 key). **Not yet merged anywhere. Not yet PR'd.** Three commits, reviewed and approved gate-by-gate in conversation (not just self-reported):
 
-* Sprint 2A Director Studio
-* Sprint 2A.1 Integration fixes
-* Sprint 2A.2 Acceptance workflow
-* Sprint 3A Director Experience Pass 1
-* Storage Manager
-* Snapshot Manager
-* Serializer / Deserializer
-* Provider Orchestration
-* Local Provider Smoke Gate
+- `693a5a1` — Gate A: Vite+React+TS+Tailwind v4+shadcn deps+React Router+Zustand+React Query+Framer Motion scaffold, wired to the existing FastAPI backend via CORS. Old vanilla-JS dashboard untouched.
+- `052a497` — Gate B: architecture foundation — `AppLayout`/`TopBar`/`Sidebar`/`InspectorPanel`/`BottomTimeline`/`Workspace` layout, real routes (`/`, `/project/:id`, `/providers`, `/settings`), Zustand split 4 ways (`ui`/`project`/`provider`/`preferences`), typed API layer under `src/api/` split by resource, design system (department color tokens, status/lifecycle tokens, Button/Badge/Card/StatusDot/ProgressIndicator).
+- `c42830f` — Gate C: Experience Layer — Welcome rewrite (animated greeting, 3 Creation Mode cards, real per-project progress %, real Recent Activity from reviews+packages, Demo Project button), 3-step Creation Wizard (`/create`) with a large visual Aspect Ratio picker, Name+Idea+Provider details step, wired end-to-end to real project creation.
 
----
+### Why this branch exists (context for a cold start)
 
-### Pending
+The user explicitly paused all Character Department / Restore Manager / Migration Manager / CKG work (see [CURRENT.md](CURRENT.md)'s Stop Line and [DECISIONS.md](DECISIONS.md) ADR-007) and redirected effort into a full Director Studio UX redesign — described as turning it into a "Creative Operating System" closer to DaVinci Resolve/Figma/Unreal Editor than a CRUD dashboard. This was explicitly sequenced as small, human-reviewed gates (A/B/C) rather than one large unsupervised build, specifically to avoid the recurring "declared complete, then real bugs surface" pattern documented in Sprint 2A's history further down this file.
 
-* Live Gemini smoke test
-* Live Sarvam smoke test
-* Live ElevenLabs smoke test
-* Director Studio UX Pass 2
-* End-to-end dogfooding
-* Production Readiness checklist
+### What was verified live at each gate (not just asserted)
 
----
+- **Gate A:** both dev servers (`:5173` React, `:8421` FastAPI) running concurrently, hot reload confirmed, CORS round-trip confirmed via `/api/diagnostics`, production build (`npm run build`) succeeds, 153/155 backend tests still pass (2 skip - Ollama not installed).
+- **Gate B:** full click-through of `/`, `/project/:id`, `/providers`, `/settings` at a real desktop viewport (1440×900 - the shell looked broken at a 730px test viewport, which is expected desktop-first behavior, not a bug, see below). Cross-component Zustand reactivity confirmed (Settings aspect-ratio click updates TopBar instantly) and `persist` middleware confirmed surviving a full page reload via direct `localStorage` inspection.
+- **Gate C:** a complete real user flow was driven through the actual browser: Welcome → click "YouTube Shorts" mode card → aspect ratio + runtime step → Name/Idea/Provider step → **Create Project** → real project created via the live API → landed on `/project/:id` with correct live status. Demo Project button separately verified (real seeded "Temple of Varuna"). Images mode (no runtime options) verified not to crash. Zero console errors, zero failed network requests across the whole flow.
 
-## Mandatory Rule
+### One deliberate, flagged deviation from the product brief
 
-Do **not** begin:
+The user's own Gate C mockup implied outputs like Thumbnail, Captions, Character Art, Storyboard, and Reference Sheet exist today. None do - only Story/Screenplay/Audio/Motion Prompt are backed by a real capability (see `dashboard/server.py`'s `_VALID_STAGES` and the live `/api/diagnostics` capability list). `lib/creationModes.ts` therefore splits `realOutputs` (solid badges) from `aspirationalOutputs` (grayed "Soon" badges), per the frozen No Mock UI rule in [CURRENT.md](CURRENT.md) - applied even though it meant not fully matching the user's own mockup. This was surfaced to the user directly rather than silently deviating; not yet re-confirmed whether to keep this discipline or relax it for pitch purposes.
 
-* Restore Manager
-* Migration Manager
-* Character Department
-* Department Framework expansion
-* Creative Knowledge Graph Phase 2
+### A pre-existing flaky test, not caused by this branch
 
-until this checklist is complete.
+`tests/test_list_projects.py::test_list_projects_multiple_ordered_most_recent_first` failed once under full-suite load (`153 passed` becomes `1 failed, 152 passed` intermittently), but passes standalone and on a clean re-run. It uses a fully isolated `tmp_path`-scoped `Studio` instance never touched by any frontend work - looks like a timestamp-precision race when three `create_project()` calls land in the same DB under CPU load during a big test run. Not investigated further this session (zero backend files were touched); worth a look if it starts failing consistently.
 
----
+### Known things NOT yet done (explicitly out of scope so far, not forgotten)
 
-## Director Studio Pass 2
+- Old vanilla-JS dashboard (`dashboard/static/`) is completely untouched and still fully functional at `:8421/` - this is intentional per the user's "keep the old UI accessible until React reaches parity" instruction. No `/legacy` routing has been built because in dev the two apps are already on separate ports; that question only becomes real once there's a single production origin (Vercel frontend + Azure backend), which is still Phase 6 in [wiki/ROADMAP.md](ROADMAP.md) - deliberately deferred rather than guessed at now.
+- Department workspaces (Story/Screenplay/Audio/Prompt editors) inside `/project/:id` are still a placeholder Card saying "Phase 4" - Gate C was Welcome + Creation Wizard only, per the user's explicit scope list.
+- No Gate D has been scoped yet (the user's own numbering in their Gate B message: A=scaffold, B=architecture, C=experience, D=storage/snapshots/packages UI, E=Character Department) - do not start Gate D content without the user explicitly opening it, same discipline as every gate so far.
+- CORS origins are currently hardcoded to `localhost:5173`/`127.0.0.1:5173` via `NAC_STUDIO_CORS_ORIGINS` env var default in `dashboard/server.py` - fine for dev, will need the real Vercel origin added before any production deploy.
 
-Before building more backend infrastructure, improve the Director Studio into something a filmmaker would genuinely enjoy using.
+### Immediate next step
 
-Areas of focus:
-
-### Workspace
-
-* Better onboarding
-* Guided workflow
-* Progressive disclosure
-* Empty states
-* Helpful animations
-* Keyboard shortcuts
-* Drag & drop
-* Better navigation
-
----
-
-### Timeline
-
-Improve:
-
-* runtime ruler
-* pipeline visualization
-* department status
-* render progress
-* dependency graph
-
----
-
-### Creative Graph
-
-Make relationships understandable.
-
-Not just nodes.
-
-Show flow.
-
-Show lineage.
-
-Show provenance.
-
----
-
-### Providers
-
-Diagnostics should become a live control center.
-
-Display:
-
-* Gemini
-* OpenRouter
-* Ollama
-* ElevenLabs
-* Sarvam
-* Mock
-
-with real status.
-
----
-
-### Packages
-
-Make snapshots visual.
-
-Users should understand:
-
-Project
-
-↓
-
-Snapshot
-
-↓
-
-.nac Package
-
-↓
-
-Restore
-
-↓
-
-Continue Working
-
-without documentation.
-
----
-
-### Storage
-
-Visualize
-
-* Local
-* External SSD
-* Azure (planned)
-* Google (planned)
-
----
-
-### Production Readiness Checklist
-
-Only pass when all are true:
-
-* UI feels intuitive
-* No dead clicks
-* No silent failures
-* Providers report honestly
-* Snapshots verified
-* Packages verified
-* Diagnostics complete
-* Dogfooding completed
-* Live provider smoke tests passed
-
----
-
-## After the Gate
-
-Then proceed in this order:
-
-1. Live Gemini smoke
-2. Live Sarvam smoke
-3. Live ElevenLabs smoke
-4. Restore Manager
-5. Migration Manager
-6. Department Framework
-7. Character Department
+Wait for the user (or whoever picks this up) to review Gate C and either approve moving to Gate D (storage/snapshot/package UI polish) or request changes to what's already built. Do not proceed past Gate C unsupervised - that is the entire point of the gate structure the user set up this session.
 
 ---
 
@@ -822,42 +683,9 @@ first click on "Create" after filling the New Project dialog was observed to
 silently no-op once during live testing, requiring a second click - not
 reproduced on any other attempt and not root-caused. Worth a closer look if
 it recurs, not worth blocking on a single unreproduced flake.
-## Portability Service Implementation Roadmap (Refined by User)
+## Portability Service Implementation Roadmap (Refined by User, 2026-07-04)
 
-To ensure clean architecture and avoid premature packaging and compression complexity, the Portability Service and `.nac` format will be implemented in the following order:
-
-### Phase 1: Storage Manager (Provider Abstraction Only)
-Build the storage abstraction interface and local/external stubs:
-- **`StorageProvider`** protocol / base interface defining basic read/write/delete/list operations.
-- **`LocalStorage`** implementation mapping directly to local workspace paths.
-- **`ExternalStorage`** implementation mapping to external storage devices.
-- **`CloudStorage`** stub (initially throws `NotImplementedError` for Azure, Google, etc., keeping it cloud-agnostic).
-- *Strictly no serialization or zip compression at this stage.*
-
-### Phase 2: Snapshot Manager (Collects Project State)
-Responsible for collecting the project's creative state into a memory representation:
-- Collects: Knowledge Graph, Cinematic Graph, Asset Graph (metadata only), Production Graph, Review Graph.
-- Collects all 9 Genome types (`CharacterGenome`, `DialogueGenome`, etc.) using `GenomeReference` IDs.
-- Collects all compiled Prompts and project Metadata.
-- Assembles a `NacManifest` containing metadata, content hashes, and version info.
-- *Strictly no serialization or zip compression; output is a memory-resident `Snapshot` object.*
-
-### Phase 3: `.nac` Serializer/Deserializer
-Handles the persistence of `Snapshot` objects:
-- Serializes the `Snapshot` object into: `manifest.json`, `graphs/`, `genomes/`, `prompts/`, `provenance/`, `review_history/`, and `assets/` references.
-- **Crucial Rule:** During the initial implementation, keep the `.nac` package as an *uncompressed directory layout* (e.g. `Temple.nac/` containing the file layout).
-- Once the directory-based serializer works and passes tests, implement zip compression (`Temple.nac.zip`) as the final step.
-
-### Phase 4: Restore Manager
-Reverses the serialization:
-- Given a `.nac` container (or folder), deserializes its manifest and graphs back into a memory-resident `Snapshot` object.
-- Feeds the snapshot back to the **Storage Manager** to restore the project structure under the local workspace.
-- This shifts the model away from "importing projects" to **restoring snapshots** (`Project -> Snapshot -> Package -> Restore -> Continue Working`).
-
-### Phase 5: Migration Manager
-Handles snapshot movement and environment registration:
-- Moves snapshots between storage providers: `Snapshot -> Move -> Verify -> Register`.
-- Enables relocation and multi-device setup with minimal, highly decoupled code.
+Phase ordering (Storage Manager → Snapshot Manager → `.nac` Serializer/Deserializer → Restore Manager → Migration Manager) is now recorded as [DECISIONS.md](DECISIONS.md) ADR-003 and ADR-004; current phase progress lives in [CURRENT.md](CURRENT.md); remaining phases are sequenced in [ROADMAP.md](ROADMAP.md).
 
 ---
 

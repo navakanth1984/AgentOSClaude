@@ -24,7 +24,11 @@
 - [Agent OS Speech — Next Steps](agent-os-speech-next-steps.md)
 - [Validator Research — Next Steps](20260702-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [CRP Next Steps](crp-next-steps.md) — Cold-start handoff for CRP Plan 3/3 after M3-M4 shipped.
-- [NAC Next Steps](nac-next-steps.md) — Sprint 2 handoff for Antigravity: Director Experience directive after Sprint 0+1 completion.
+- [NAC Current State](CURRENT.md) — live operating manual: Production Readiness Gate, Stop Line, Definition of Done, Milestone Lifecycle. Start here for NAC status.
+- [NAC Roadmap](ROADMAP.md) — what comes after the Gate passes (UX Pass 2 → Restore Manager → Character Department → ...).
+- [NAC Decisions](DECISIONS.md) — architecture decision log (Departments replace Compilers, Genome composition, local-first, etc.).
+- [NAC Changelog](CHANGELOG.md) — one line per dated milestone.
+- [NAC Next Steps](nac-next-steps.md) — historical session-by-session handoffs (journal, not live status — see CURRENT.md instead).
 - [Microsoft Fabric (DP-700)](fabric-dp700.md) — Fabric data-engineering study stack.
 - [KB Sync Test](sync-test.md) — Canary verification page for Claude & Antigravity.
 
