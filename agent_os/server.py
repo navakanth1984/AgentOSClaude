@@ -234,6 +234,13 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         params = urllib.parse.parse_qs(parsed.query)
         path = parsed.path
 
+        if path == "/health":
+            self._send(200, {
+                "version": "execution-framework-v1",
+                "pid": os.getpid()
+            })
+            return
+
         # Handle static file downloads/serving for exports and assets
         if path.startswith("/asset_library/") or path.startswith("/output/"):
             if not self._check_auth():
@@ -1732,6 +1739,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             models = body.get("models") or []
             profile = str(body.get("profile") or "").strip() or None
             aggregation = str(body.get("aggregation") or "standard").strip()
+            category = str(body.get("category") or "").strip() or None
 
             import threading
             import uuid
@@ -1762,6 +1770,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                     request = ExecutionRequest(
                         prompt=prompt, mode=mode, models=models,
                         profile=profile, aggregation=aggregation,
+                        category=category
                     )
                     manager = ExecutionManager()
                     result = asyncio.run(manager.execute(request, status_cb=status_cb))

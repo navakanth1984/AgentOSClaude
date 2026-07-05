@@ -5,7 +5,7 @@ Coordinates the database extractor, LLM enricher, and file writer.
 
 import os
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 from okf_generator.extractor import get_schema_metadata
 from okf_generator.enricher import generate_markdown_content
 from okf_generator.writer import write_okf_file
@@ -87,7 +87,7 @@ def main():
 
     # 4. Create an index.md linking to all generated files
     index_path = os.path.join(args.output_dir, "index.md")
-    current_date = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    current_date = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
     index_content = f"""# OKF Bundle Schema Index
 

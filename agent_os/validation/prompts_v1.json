@@ -1,0 +1,48 @@
+[
+    {"category": "Coding", "prompt": "Write a Python function to compute the 95th percentile of a list of numbers.", "profile": "Coding"},
+    {"category": "Coding", "prompt": "Write a React hook to manage debounced state with typescript.", "profile": "Coding"},
+    {"category": "Coding", "prompt": "Implement a binary search tree insertion and search algorithm in Go.", "profile": "Coding"},
+    {"category": "Coding", "prompt": "Write a SQL query to find the second highest salary from an Employee table.", "profile": "Coding"},
+    {"category": "Coding", "prompt": "How do I implement rate limiting using Redis and Node.js?", "profile": "Coding"},
+    {"category": "Coding", "prompt": "Write a bash script to backup a directory and upload it to an S3 bucket.", "profile": "Coding"},
+
+    {"category": "Architecture", "prompt": "What are the tradeoffs of using a message queue versus an event bus in a microservices architecture?", "profile": "Best Overall"},
+    {"category": "Architecture", "prompt": "Explain the differences between API Gateway and Service Mesh patterns.", "profile": "Best Overall"},
+    {"category": "Architecture", "prompt": "Design a scalable URL shortener system. What are the key components?", "profile": "Best Overall"},
+    {"category": "Architecture", "prompt": "How would you architect a real-time multiplayer game server backend?", "profile": "Best Overall"},
+    {"category": "Architecture", "prompt": "What are the tradeoffs between monolithic databases vs database-per-service?", "profile": "Best Overall"},
+    {"category": "Architecture", "prompt": "Explain Event Sourcing and CQRS patterns and when to use them.", "profile": "Best Overall"},
+
+    {"category": "Research", "prompt": "Summarize the key differences between Transformer and Mamba architectures.", "profile": "Research"},
+    {"category": "Research", "prompt": "What are the most effective treatments currently available for Long COVID?", "profile": "Research"},
+    {"category": "Research", "prompt": "Explain the significance of room temperature superconductors if they are discovered.", "profile": "Research"},
+    {"category": "Research", "prompt": "What are the economic implications of Universal Basic Income according to recent pilot studies?", "profile": "Research"},
+    {"category": "Research", "prompt": "How does quantum key distribution actually guarantee security against eavesdropping?", "profile": "Research"},
+    {"category": "Research", "prompt": "Summarize the history and impact of the Gutenberg printing press.", "profile": "Research"},
+
+    {"category": "Math", "prompt": "Prove that the square root of 2 is irrational.", "profile": "Best Overall"},
+    {"category": "Math", "prompt": "Solve the differential equation dy/dx = y * sin(x).", "profile": "Best Overall"},
+    {"category": "Math", "prompt": "Explain the Monty Hall problem and prove the correct strategy using probability.", "profile": "Best Overall"},
+    {"category": "Math", "prompt": "Calculate the integral of x * e^x dx.", "profile": "Best Overall"},
+    {"category": "Math", "prompt": "What is the probability of rolling a sum of 8 with two fair six-sided dice?", "profile": "Best Overall"},
+    {"category": "Math", "prompt": "Explain eigenvalues and eigenvectors in linear algebra intuitively.", "profile": "Best Overall"},
+
+    {"category": "Bug fixing", "prompt": "Why does `0.1 + 0.2 === 0.3` evaluate to false in JavaScript and how do I fix comparisons?", "profile": "Coding"},
+    {"category": "Bug fixing", "prompt": "I'm getting a ConcurrentModificationException in Java when iterating over a list. How do I fix it?", "profile": "Coding"},
+    {"category": "Bug fixing", "prompt": "My Python script is hitting maximum recursion depth. How can I refactor this recursive function to be iterative?", "profile": "Coding"},
+    {"category": "Bug fixing", "prompt": "Why is my React useEffect firing infinitely and how do I stop it?", "profile": "Coding"},
+    {"category": "Bug fixing", "prompt": "My Docker container can't resolve DNS but the host can. What's the fix?", "profile": "Coding"},
+    {"category": "Bug fixing", "prompt": "Git says 'detached HEAD state'. What does this mean and how do I get back to a branch?", "profile": "Coding"},
+
+    {"category": "Writing", "prompt": "Write a short 2-paragraph introduction for a blog post about software craftsmanship.", "profile": "Budget"},
+    {"category": "Writing", "prompt": "Draft a professional email to a client declining a project due to bandwidth constraints.", "profile": "Budget"},
+    {"category": "Writing", "prompt": "Write a creative short story opening about a detective who can only see 5 seconds into the future.", "profile": "Budget"},
+    {"category": "Writing", "prompt": "Create an engaging LinkedIn post announcing a new open source project release.", "profile": "Budget"},
+    {"category": "Writing", "prompt": "Write a persuasive paragraph arguing why reading fiction builds empathy.", "profile": "Budget"},
+
+    {"category": "Summarization", "prompt": "Summarize the plot of George Orwell's 1984 in three sentences.", "profile": "Budget"},
+    {"category": "Summarization", "prompt": "Provide a bullet-point summary of the Agile Manifesto.", "profile": "Budget"},
+    {"category": "Summarization", "prompt": "Summarize the key events of the Apollo 11 moon landing.", "profile": "Budget"},
+    {"category": "Summarization", "prompt": "Condense the rules of Chess into a brief guide for absolute beginners.", "profile": "Budget"},
+    {"category": "Summarization", "prompt": "Summarize the main differences between meiosis and mitosis.", "profile": "Budget"}
+]

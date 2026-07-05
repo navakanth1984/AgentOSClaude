@@ -1,0 +1,52 @@
+{
+  "benchmark_metadata": {
+    "benchmark_version": "prompts_v1",
+    "execution_mode": "mixture",
+    "aggregation": "standard",
+    "execution_count": 40,
+    "run_started": "unknown",
+    "run_finished": "2026-07-05T10:00:49.063577Z",
+    "duration_seconds": 0,
+    "git_sha": "a4997c66"
+  },
+  "metrics": {
+    "execution_count": 40,
+    "success_rate_percent": 100.0,
+    "aggregation_failure_rate_percent": 0.0,
+    "average_participating_models": 3.0,
+    "manifest_completeness": {
+      "execution_id": 0,
+      "mode": 0,
+      "models": 0,
+      "latency_ms": 0,
+      "aggregation": 0,
+      "final": 0,
+      "timeline": 0
+    },
+    "mode_distribution": {
+      "mixture": 40
+    },
+    "latency_overall_ms": {
+      "p50": 15991.78,
+      "p95": 26587.82,
+      "max": 77835.03
+    },
+    "latency_by_mode_ms": {
+      "mixture": {
+        "p50": 15991.78,
+        "p95": 26587.82,
+        "max": 77835.03
+      }
+    },
+    "average_consensus_score": 0.7732,
+    "category_consensus_variance": {
+      "Math": 0.87,
+      "Bug fixing": 0.8548,
+      "Coding": 0.878,
+      "Summarization": 0.4552,
+      "Architecture": 0.8742,
+      "Writing": 0.5106,
+      "Research": 0.873
+    }
+  }
+}

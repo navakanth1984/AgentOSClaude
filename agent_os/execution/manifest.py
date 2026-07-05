@@ -22,6 +22,7 @@ class ExecutionManifest:
     mode: str
     models: list[str]
     aggregation: Optional[str] = None
+    prompt_category: Optional[str] = None
     consensus_score: Optional[float] = None
     conflicts: list[str] = field(default_factory=list)
     winner: Optional[str] = None
@@ -48,12 +49,13 @@ class ExecutionManifest:
         return path
 
 
-def new_manifest(mode: str, models: list[str], aggregation: Optional[str] = None) -> ExecutionManifest:
+def new_manifest(mode: str, models: list[str], aggregation: Optional[str] = None, category: Optional[str] = None) -> ExecutionManifest:
     m = ExecutionManifest(
         execution_id=uuid.uuid4().hex[:12],
         mode=mode,
         models=list(models),
         aggregation=aggregation,
+        prompt_category=category,
     )
     m.add_event("execution_started")
     return m
