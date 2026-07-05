@@ -55,8 +55,12 @@ openclaw/
 openclaw_sandbox/
 puli_meka/
 Veritas_AI/
+dead_loop_trailer
 /bin/
 /lib/
+
+# Personal Obsidian vault (not code, not version-controlled)
+obsidian-vault/
 
 # Binaries and Large Assets
 *.exe
