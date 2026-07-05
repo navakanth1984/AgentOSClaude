@@ -1,3 +1,12 @@
+# GEMINI.md — Gemini CLI knowledge-base bridge
+
+Start from the shared KB contract before tool-specific graph commands:
+- Canonical operating brief: `wiki/CLAUDE.md`
+- Shared read/feed protocol: `wiki/knowledge-base-protocol.md`
+- Cross-repo map: `wiki/knowledge-base-map.md`
+- Tool sync inventory: `wiki/ai-tool-sync.md`
+- Tool-neutral root mirror: `AGENTS.md`
+
 ## graphify
 
 This project has a graphify knowledge graph at .graphify/.
