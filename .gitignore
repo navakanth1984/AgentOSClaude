@@ -29,6 +29,10 @@ graphify-out/
 *.zip
 *.db
 
+# Agent OS runtime output (per-run job manifests, exports; not source)
+agent_os/output/*
+!agent_os/output/validation_report_v1.json
+
 # Python
 __pycache__/
 *.py[cod]
@@ -55,8 +59,12 @@ openclaw/
 openclaw_sandbox/
 puli_meka/
 Veritas_AI/
+dead_loop_trailer
 /bin/
 /lib/
+
+# Personal Obsidian vault (not code, not version-controlled)
+obsidian-vault/
 
 # Binaries and Large Assets
 *.exe
