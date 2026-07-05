@@ -35,12 +35,13 @@ PROMPTS = [
     }
 ]
 
-def run_job(prompt, mode, profile, aggregation):
+def run_job(prompt, mode, profile, aggregation, category=None):
     payload = {
         "prompt": prompt,
         "mode": mode,
         "profile": profile,
-        "aggregation": aggregation
+        "aggregation": aggregation,
+        "category": category
     }
     
     headers = {'Content-Type': 'application/json'}
@@ -114,23 +115,54 @@ def run_stage_a():
     for p in PROMPTS:
         # 1. Single execution
         print(f"\n--- Running Single Execution for {p['category']} ---")
-        if run_job(p["prompt"], "single", p["profile"], "fast"):
+        if run_job(p["prompt"], "single", p["profile"], "fast", p["category"]):
             success += 1
         runs += 1
         
         # 2. Mixture Fast execution
         print(f"\n--- Running Mixture Fast Execution for {p['category']} ---")
-        if run_job(p["prompt"], "mixture", p["profile"], "fast"):
+        if run_job(p["prompt"], "mixture", p["profile"], "fast", p["category"]):
             success += 1
         runs += 1
         
         # 3. Mixture Standard execution
         print(f"\n--- Running Mixture Standard Execution for {p['category']} ---")
-        if run_job(p["prompt"], "mixture", p["profile"], "standard"):
+        if run_job(p["prompt"], "mixture", p["profile"], "standard", p["category"]):
             success += 1
         runs += 1
         
     print(f"\nStage A completed: {success}/{runs} runs successful.")
+
+def run_stage_b():
+    print("Starting Stage B: Benchmark Dataset...")
+    
+    # Pre-flight health check
+    try:
+        health_req = urllib.request.Request("http://localhost:8765/health")
+        with urllib.request.urlopen(health_req) as response:
+            health_data = json.loads(response.read().decode())
+            print(f"Connected to server: version={health_data.get('version')} PID={health_data.get('pid')}")
+    except Exception as e:
+        print(f"Warning: /health check failed - {e}")
+
+    prompts_file = Path(__file__).parent.parent / "validation" / "prompts_v1.json"
+    if not prompts_file.exists():
+        print(f"Benchmark prompts not found at {prompts_file}")
+        return
+        
+    with open(prompts_file, "r", encoding="utf-8") as f:
+        prompts = json.load(f)
+        
+    runs = 0
+    success = 0
+    
+    for i, p in enumerate(prompts):
+        print(f"\n--- Benchmark Run {i+1}/{len(prompts)}: {p['category']} ---")
+        if run_job(p["prompt"], "mixture", p["profile"], "standard", p["category"]):
+            success += 1
+        runs += 1
+        
+    print(f"\nStage B completed: {success}/{runs} runs successful.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -140,4 +172,4 @@ if __name__ == "__main__":
     if args.stage == "a":
         run_stage_a()
     elif args.stage == "b":
-        print("Stage B is not yet implemented.")
+        run_stage_b()

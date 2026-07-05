@@ -34,6 +34,10 @@ def main():
     total_consensus = 0
     consensus_count = 0
     
+    # Category variance tracking
+    category_consensus_sums = {}
+    category_consensus_counts = {}
+    
     success_count = 0
     aggregation_failures = 0
     total_models_used = 0
@@ -93,6 +97,11 @@ def main():
         if consensus is not None:
             total_consensus += consensus
             consensus_count += 1
+            
+            # Track by category
+            cat = data.get("prompt_category", "Unknown")
+            category_consensus_sums[cat] = category_consensus_sums.get(cat, 0.0) + consensus
+            category_consensus_counts[cat] = category_consensus_counts.get(cat, 0) + 1
 
     success_rate = (success_count / total_executions) * 100 if total_executions else 0
     agg_failure_rate = (aggregation_failures / total_executions) * 100 if total_executions else 0
@@ -116,6 +125,10 @@ def main():
         "latency_overall_ms": lat_stats(latencies),
         "latency_by_mode_ms": {m: lat_stats(l) for m, l in latency_by_mode.items() if l},
         "average_consensus_score": round(total_consensus / consensus_count, 4) if consensus_count else None,
+        "category_consensus_variance": {
+            cat: round(category_consensus_sums[cat] / category_consensus_counts[cat], 4)
+            for cat in category_consensus_sums
+        }
     }
     
     print("Execution Framework Validation Report v1")
@@ -143,11 +156,15 @@ def main():
         
     if report['average_consensus_score'] is not None:
         print(f"\nAverage Consensus Score: {report['average_consensus_score']}")
+        if report['category_consensus_variance']:
+            print("\nAgreement variance by task category:")
+            for cat, avg_cons in report['category_consensus_variance'].items():
+                print(f"  {cat}: {avg_cons}")
         
     # Save JSON summary
     out_dir = Path(__file__).parent.parent / "output"
     out_dir.mkdir(exist_ok=True)
-    report_file = out_dir / "validation_report.json"
+    report_file = out_dir / "validation_report_v1.json"
     with open(report_file, "w", encoding="utf-8") as rf:
         json.dump(report, rf, indent=2)
         

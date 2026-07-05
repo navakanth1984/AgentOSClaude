@@ -58,6 +58,7 @@ async def _fan_out_one(model: str, system: str, user: str, api_key: str,
 
 class MixtureExecutor:
     async def execute(self, request: ExecutionRequest, status_cb: StatusCallback = None) -> dict:
+        t_start = time.perf_counter()
         if not backend_available():
             return {"error": "No LLM backend available — set OPENROUTER_API_KEY/GEMINI_API_KEY or run local Ollama."}
 
@@ -66,7 +67,7 @@ class MixtureExecutor:
             return {"error": "Mixture mode needs at least 2 models (via 'models' or a 'profile')."}
 
         api_key = request.api_key or os.environ.get("OPENROUTER_API_KEY", "")
-        manifest = new_manifest(mode="mixture", models=models, aggregation=request.aggregation)
+        manifest = new_manifest(mode="mixture", models=models, aggregation=request.aggregation, category=request.category)
 
         if status_cb:
             status_cb("fanout", {"models": models, "status": "starting"})
@@ -81,6 +82,7 @@ class MixtureExecutor:
 
         successful = [r for r in fanout_results if not r["error"] and r["result"]]
         if not successful:
+            manifest.latency_ms = (time.perf_counter() - t_start) * 1000
             manifest.add_event("execution_failed")
             manifest.save()
             return {"error": "All models failed in mixture fan-out.", **manifest.to_dict()}
@@ -89,6 +91,7 @@ class MixtureExecutor:
             manifest.final = successful[0]["result"]
             manifest.winner = successful[0]["model"]
             manifest.consensus_score = 1.0
+            manifest.latency_ms = (time.perf_counter() - t_start) * 1000
             manifest.add_event("execution_finished", note="single_survivor")
             manifest.save()
             if status_cb:
@@ -107,6 +110,7 @@ class MixtureExecutor:
         manifest.winner = judge_model
         manifest.aggregation_trace = agg_result["trace"]
         manifest.verification = agg_result.get("verification")
+        manifest.latency_ms = (time.perf_counter() - t_start) * 1000
         manifest.add_event("execution_finished")
         manifest.save()
 

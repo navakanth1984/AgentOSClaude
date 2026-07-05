@@ -14,6 +14,7 @@ class ExecutionRequest:
     system: str = "You are a helpful, precise assistant."
     max_tokens: int = 800
     api_key: str = ""
+    category: Optional[str] = None
 
 
 # StatusCallback(stage: str, detail: dict) -> None — used to surface streaming-style

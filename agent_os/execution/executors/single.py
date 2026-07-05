@@ -15,16 +15,16 @@ from .base import ExecutionRequest, StatusCallback
 class SingleExecutor:
     async def execute(self, request: ExecutionRequest, status_cb: StatusCallback = None) -> dict:
         model = (request.models or ["anthropic/claude-sonnet-4-5"])[0]
-        manifest = new_manifest(mode="single", models=[model])
+        manifest = new_manifest(mode="single", models=[model], category=request.category)
 
         if status_cb:
             status_cb("running", {"model": model, "status": "pending"})
 
-        t0 = time.time()
+        t_start = time.perf_counter()
         text = await call_openrouter_async(
             model, request.system, request.prompt, request.api_key, request.max_tokens
         )
-        latency_ms = (time.time() - t0) * 1000
+        latency_ms = (time.perf_counter() - t_start) * 1000
 
         manifest.per_model = [{"model": model, "result": text, "latency_ms": latency_ms}]
         manifest.final = text

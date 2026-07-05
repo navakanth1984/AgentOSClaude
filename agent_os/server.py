@@ -1739,6 +1739,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             models = body.get("models") or []
             profile = str(body.get("profile") or "").strip() or None
             aggregation = str(body.get("aggregation") or "standard").strip()
+            category = str(body.get("category") or "").strip() or None
 
             import threading
             import uuid
@@ -1769,6 +1770,7 @@ class AgentOSHandler(BaseHTTPRequestHandler):
                     request = ExecutionRequest(
                         prompt=prompt, mode=mode, models=models,
                         profile=profile, aggregation=aggregation,
+                        category=category
                     )
                     manager = ExecutionManager()
                     result = asyncio.run(manager.execute(request, status_cb=status_cb))
