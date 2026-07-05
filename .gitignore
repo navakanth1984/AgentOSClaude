@@ -161,7 +161,7 @@ corpus_output*/
 .augment/
 .bob/
 .codebuddy/
-.codex/
+.codex/*
 .commandcode/
 .continue/
 .cortex/
@@ -186,4 +186,16 @@ corpus_output*/
 .vibe/
 .windsurf/
 .zencoder/
+
+# Tool local/runtime state & caches
+.antigravitycli/
+.firecrawl/
+.playwright-mcp/
+.temp_skills/
+.graphify/
+.claude/worktrees/
+.claude/skills/
+
+# Allow tracking of specific bridge files in ignored folders
+!.codex/AGENTS.md
 
