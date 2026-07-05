@@ -1165,6 +1165,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   <div class="tab" onclick="switchTab('credits')">💳 GCP Credits</div>
   <div class="tab" onclick="switchTab('okf')">📦 OKF Generator</div>
   <div class="tab" onclick="switchTab('sitebuilder')">🌐 Site Builder</div>
+  <div class="tab" onclick="switchTab('cinematic')">🎬 Cinematic OS</div>
 </div>
 
 <!-- ══ TAB: SWARM ══════════════════════════════════════════════ -->
@@ -1175,36 +1176,92 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       Runs 5 agents in parallel (Overview · Techniques · Examples · Pitfalls · Trends),
       merges their output, and saves a structured note to your Obsidian inbox.
     </p>
-    <div class="row">
-      <div class="field">
-        <label>Research topic</label>
-        <input id="swarm-topic" type="text" placeholder="e.g. context engineering for AI agents" />
-      </div>
-      <div style="width:220px">
-        <label>Model</label>
-        <select id="swarm-model">
-          <option value="google/gemma-4-31b-it:free">gemma-4-31b (free)</option>
-          <option value="moonshotai/kimi-k2.6:free">kimi-k2.6 (free)</option>
-          <option value="nvidia/nemotron-3-super-120b-a12b:free">nemotron-120b (free)</option>
-          <option value="google/gemma-4-26b-a4b-it:free">gemma-4-26b (free)</option>
-          <option value="anthropic/claude-sonnet-4-5">claude-sonnet-4.5</option>
-        </select>
-      </div>
-      <div>
-        <label>&nbsp;</label>
-        <button class="btn" id="swarm-btn" onclick="runSwarm()">▶ Run Swarm</button>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:12px">
-      <label style="display:flex;align-items:center;gap:6px;color:var(--muted);cursor:pointer">
-        <input type="checkbox" id="swarm-nb" style="width:auto" />
-        Also search NotebookLM cache
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;font-size:12px">
+      <strong style="color:var(--muted)">Execution Mode:</strong>
+      <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+        <input type="radio" name="exec-mode" value="swarm" checked onchange="onExecModeChange()" style="width:auto" /> Swarm (current)
+      </label>
+      <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+        <input type="radio" name="exec-mode" value="mixture" onchange="onExecModeChange()" style="width:auto" /> Mixture of Agents
       </label>
     </div>
-    <div id="swarm-status" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
-    <div id="swarm-output" class="output empty">Results will appear here after the swarm runs (~15–30s).</div>
-    <!-- per-agent accordion -->
-    <div id="swarm-agents" style="margin-top:10px"></div>
+
+    <div id="swarm-classic-panel">
+      <div class="row">
+        <div class="field">
+          <label>Research topic</label>
+          <input id="swarm-topic" type="text" placeholder="e.g. context engineering for AI agents" />
+        </div>
+        <div style="width:220px">
+          <label>Model</label>
+          <select id="swarm-model">
+            <option value="google/gemma-4-31b-it:free">gemma-4-31b (free)</option>
+            <option value="moonshotai/kimi-k2.6:free">kimi-k2.6 (free)</option>
+            <option value="nvidia/nemotron-3-super-120b-a12b:free">nemotron-120b (free)</option>
+            <option value="google/gemma-4-26b-a4b-it:free">gemma-4-26b (free)</option>
+            <option value="anthropic/claude-sonnet-4-5">claude-sonnet-4.5</option>
+          </select>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button class="btn" id="swarm-btn" onclick="runSwarm()">▶ Run Swarm</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:12px">
+        <label style="display:flex;align-items:center;gap:6px;color:var(--muted);cursor:pointer">
+          <input type="checkbox" id="swarm-nb" style="width:auto" />
+          Also search NotebookLM cache
+        </label>
+      </div>
+      <div id="swarm-status" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
+      <div id="swarm-output" class="output empty">Results will appear here after the swarm runs (~15–30s).</div>
+      <!-- per-agent accordion -->
+      <div id="swarm-agents" style="margin-top:10px"></div>
+    </div>
+
+    <!-- Mixture of Agents panel -->
+    <div id="mixture-panel" style="display:none">
+      <div class="row">
+        <div class="field">
+          <label>Prompt</label>
+          <input id="mix-prompt" type="text" placeholder="Ask anything — it'll be answered by several models in parallel" />
+        </div>
+        <div style="width:180px">
+          <label>Model profile</label>
+          <select id="mix-profile">
+            <option value="Best Overall">Best Overall</option>
+            <option value="Coding">Coding</option>
+            <option value="Research">Research</option>
+            <option value="Budget">Budget</option>
+            <option value="Local Only">Local Only</option>
+          </select>
+        </div>
+        <div style="width:160px">
+          <label>Aggregation</label>
+          <select id="mix-aggregation">
+            <option value="fast">⚡ Fast</option>
+            <option value="standard" selected>⭐ Standard</option>
+            <option value="verified">🛡 Verified</option>
+          </select>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button class="btn" id="mix-btn" onclick="runMixture()">▶ Run Mixture</button>
+        </div>
+      </div>
+      <div id="mix-status" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
+      <div id="mix-progress" style="font-size:12px;color:var(--muted);margin-bottom:10px"></div>
+
+      <!-- Pane 1: Final answer -->
+      <div id="mix-final-pane" class="output empty">Final answer + confidence will appear here.</div>
+
+      <!-- Pane 2: Model contributions -->
+      <div id="mix-agents" style="margin-top:10px"></div>
+
+      <!-- Pane 3: Reasoning timeline -->
+      <div id="mix-timeline" style="margin-top:10px;font-size:12px;color:var(--muted)"></div>
+    </div>
   </div>
 </div>
 
@@ -1679,127 +1736,167 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
 
 <!-- ══ TAB: CREATIVE / FILMMAKING ════════════════════════════════ -->
 <div id="tab-creative" class="tab-content">
-  <div class="panel">
+  <div class="panel" style="margin-bottom:0">
     <h2>🎬 AI Filmmaking Studio</h2>
     <p style="font-size:12px;color:var(--muted);margin-bottom:14px">
-      Generate screenplays, design atmospheric soundscapes (Biryani Method, Dolby Atmos, VFX Sound Defense), and engineer visual prompts using local (Ollama) or online (Gemini/OpenRouter) models.
-    </p>
-    
-    <div class="row" style="margin-bottom:14px;gap:15px">
-      <div style="width:250px">
-        <label>Creative Mode</label>
-        <select id="creative-mode" onchange="updateCreativeLabels()">
-          <option value="screenplay">Screenplay Writer</option>
-          <option value="audiography">Director of Audiography (Sound Design)</option>
-          <option value="prompt">Visual Prompt Builder</option>
-          <option value="novelist">Novelist Swarm (Draft → Critique → Polish)</option>
-        </select>
-      </div>
-      <div style="width:250px">
-        <label>Model (Local Ollama auto-fallback)</label>
-        <select id="creative-model">
-          <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (Default)</option>
-          <option value="meta-llama/llama-3.1-70b-instruct">Llama 3.1 70B (NIM)</option>
-          <option value="anthropic/claude-sonnet-4.5">Claude 3.5 Sonnet</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="field" style="margin-bottom:14px">
-      <label id="creative-input-label">Enter prompt or scene concept</label>
-      <textarea id="creative-input" rows="8" placeholder="e.g. A tense standoff in a neon-lit alley in downtown Hyderabad..." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:10px;font-family:inherit"></textarea>
-    </div>
-
-    <div class="field" style="margin-bottom:14px">
-      <label>Optional Context (Character details, previous scenes, or visual metronome)</label>
-      <textarea id="creative-context" rows="4" placeholder="e.g. Character Arjun is hoarse and restrained. Color palette is warm vermillion." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:10px;font-family:inherit"></textarea>
-    </div>
-
-    <div class="row" style="align-items:center">
-      <button class="btn" id="creative-btn" onclick="runCreative()">▶ Generate</button>
-      <span id="creative-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
-    </div>
-
-    <div style="margin-top:20px">
-      <div style="display:flex;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap">
-        <h3>Output</h3>
-        <button class="btn btn-outline" id="creative-save-btn" onclick="saveCreativeToVault()" style="margin-left:auto;padding:4px 12px;font-size:11px" disabled>💾 Save to Vault</button>
-        <button class="btn btn-outline" id="creative-export-md" onclick="exportCreative('md')" style="padding:4px 12px;font-size:11px" disabled>📄 MD</button>
-        <button class="btn btn-outline" id="creative-export-html" onclick="exportCreative('html')" style="padding:4px 12px;font-size:11px" disabled>🌐 HTML</button>
-        <button class="btn btn-outline" id="creative-export-docx" onclick="exportCreative('docx')" style="padding:4px 12px;font-size:11px" disabled>📝 DOCX</button>
-        <button class="btn btn-outline" id="creative-export-pdf" onclick="exportCreative('pdf')" style="padding:4px 12px;font-size:11px" disabled>📕 PDF</button>
-      </div>
-      <pre id="creative-output" class="output empty" style="max-height:400px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">Output will appear here.</pre>
-    </div>
-  </div>
-
-  <div class="panel" style="margin-top:20px">
-    <h2>📖 Audiobook Studio (CLI Pipeline)</h2>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">
-      Synthesize large-volume screenplays or novels (120 to 300+ pages) into continuous high-fidelity audiobooks.
+      Generate screenplays, design atmospheric soundscapes (Biryani Method, Dolby Atmos, VFX Sound Defense), engineer visual prompts, draft novels, and synthesize audiobooks — all from a single creative workspace.
     </p>
 
-    <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
-      <div style="flex:1;min-width:300px">
-        <label>Input File or Folder Path</label>
-        <input id="audiobook-input" type="text" placeholder="e.g. C:\Users\navka\navakanth001\sources\creative\DAAVA_Draft2_Screenplay.docx" style="width:100%" />
-      </div>
-      <div style="width:200px">
-        <label>Book Name (Optional)</label>
-        <input id="audiobook-name" type="text" placeholder="e.g. DAAVA_Book" />
-      </div>
+    <!-- ── Internal Sub-Tab Nav ── -->
+    <div id="creative-subtabs" style="display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;flex-wrap:wrap">
+      <button class="btn creative-stab active" id="stab-screenplay"  onclick="switchCreativeSubtab('screenplay')"  style="padding:5px 14px;font-size:12px;width:auto">&#x270D;&#xFE0F; Screenplay</button>
+      <button class="btn creative-stab"        id="stab-audiography" onclick="switchCreativeSubtab('audiography')" style="padding:5px 14px;font-size:12px;width:auto">&#x1F3A7; Audio Design</button>
+      <button class="btn creative-stab"        id="stab-prompt"      onclick="switchCreativeSubtab('prompt')"      style="padding:5px 14px;font-size:12px;width:auto">&#x1F5BC;&#xFE0F; Visual Prompt</button>
+      <button class="btn creative-stab"        id="stab-novelist"    onclick="switchCreativeSubtab('novelist')"    style="padding:5px 14px;font-size:12px;width:auto">&#x1F4DA; Novelist Swarm</button>
+      <button class="btn creative-stab"        id="stab-audiobook"   onclick="switchCreativeSubtab('audiobook')"   style="padding:5px 14px;font-size:12px;width:auto">&#x1F4D6; Audiobook</button>
     </div>
 
-    <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
-      <div style="width:180px">
-        <label>Speech Engine</label>
-        <select id="audiobook-engine" onchange="updateAudiobookVoices()">
-          <option value="kokoro">Kokoro ONNX (Default)</option>
-          <option value="sarvam">Sarvam (Indian Languages)</option>
-          <option value="piper">Piper (Offline TTS)</option>
-        </select>
+    <!-- Creative Generator sub-panel (Screenplay / Audiography / Prompt / Novelist) -->
+    <div id="creative-sub-generator" class="creative-subpanel">
+      <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
+        <div style="width:260px">
+          <label>Creative Mode</label>
+          <select id="creative-mode" onchange="updateCreativeLabels()">
+            <optgroup label="✍ Writing">
+              <option value="screenplay">Screenplay Writer (Long-Form)</option>
+              <option value="novelist">Novelist Swarm — Draft → Critique → Polish</option>
+            </optgroup>
+            <optgroup label="🎬 Prompts">
+              <option value="video_prompts">Video Shot Prompts (Veo / Higgsfield / Runway)</option>
+              <option value="image_prompts">Image Prompts (Midjourney / Flux / Firefly)</option>
+              <option value="audio_design">Audio Design Specification (Dolby Atmos)</option>
+              <option value="audiography">Director of Audiography — Scene Sound Design</option>
+              <option value="prompt">Visual Prompt Builder (single shot)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div style="width:260px">
+          <label>Model</label>
+          <select id="creative-model">
+            <optgroup label="☁ Cloud — Free">
+              <option value="google/gemma-4-31b-it:free">Gemma 4 31B (free)</option>
+              <option value="google/gemma-4-26b-a4b-it:free">Gemma 4 26B MoE (free)</option>
+              <option value="moonshotai/kimi-k2.6:free">Kimi K2.6 (free)</option>
+              <option value="nvidia/nemotron-3-super-120b-a12b:free">Nemotron 120B (free)</option>
+              <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (free)</option>
+            </optgroup>
+            <optgroup label="☁ Cloud — Paid">
+              <option value="google/gemini-2.5-flash" selected>Gemini 2.5 Flash</option>
+              <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
+              <option value="anthropic/claude-haiku-4-5-20251001">Claude Haiku 4.5</option>
+              <option value="anthropic/claude-sonnet-4-5">Claude Sonnet 4.5</option>
+              <option value="deepseek/deepseek-chat">DeepSeek V3</option>
+            </optgroup>
+          </select>
+        </div>
+        <div style="width:160px" id="creative-longform-pages-wrap">
+          <label>Target Pages</label>
+          <select id="creative-target-pages">
+            <option value="5">5 pages (quick)</option>
+            <option value="30" selected>30 pages</option>
+            <option value="60">60 pages</option>
+            <option value="100">100 pages</option>
+            <option value="200">200 pages</option>
+            <option value="300">300 pages</option>
+          </select>
+        </div>
       </div>
-      <div style="width:180px">
-        <label>Voice / Speaker</label>
-        <select id="audiobook-voice">
-          <option value="default">Default Speaker</option>
-        </select>
-      </div>
-      <div style="width:180px">
-        <label>Parser Mode</label>
-        <select id="audiobook-parser">
-          <option value="production">Production (LLM emotional tags)</option>
-          <option value="benchmark">Offline Benchmark (No API Key)</option>
-        </select>
-      </div>
-      <div style="width:120px">
-        <label>Parallel Workers</label>
-        <input id="audiobook-workers" type="number" value="2" min="1" max="8" />
-      </div>
-      <div style="display:flex;align-items:center;padding-top:20px">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none">
-          <input type="checkbox" id="audiobook-mp3" style="width:auto" checked />
-          Export MP3 (Transcode)
-        </label>
-      </div>
-    </div>
 
-    <div class="row" style="align-items:center;margin-bottom:14px">
-      <button class="btn btn-blue" id="audiobook-btn" onclick="generateAudiobook()">⚡ Build Audiobook</button>
-      <span id="audiobook-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
-    </div>
-
-    <div style="margin-top:15px">
-      <div style="display:flex;align-items:center;margin-bottom:8px;gap:6px">
-        <h4>Job Manifest & Log</h4>
-        <button class="btn btn-outline" id="audiobook-refresh-btn" onclick="pollAudiobookStatus(true)" style="margin-left:auto;padding:2px 8px;font-size:10px" disabled>🔄 Refresh Status</button>
+      <div class="field" style="margin-bottom:14px">
+        <label id="creative-input-label">Enter prompt or scene concept</label>
+        <textarea id="creative-input" rows="8" placeholder="e.g. A tense standoff in a neon-lit alley in downtown Hyderabad..." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:10px;font-family:inherit"></textarea>
       </div>
-      <pre id="audiobook-log" class="output empty" style="max-height:220px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">No jobs running.</pre>
-    </div>
+
+      <div class="field" style="margin-bottom:14px">
+        <label>Optional Context (Character details, previous scenes, or visual metronome)</label>
+        <textarea id="creative-context" rows="4" placeholder="e.g. Character Arjun is hoarse and restrained. Color palette is warm vermillion." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:10px;font-family:inherit"></textarea>
+      </div>
+
+      <div class="row" style="align-items:center">
+        <button class="btn" id="creative-btn" onclick="runCreative()">&#x25B6; Generate</button>
+        <span id="creative-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
+      </div>
+
+      <div style="margin-top:20px">
+        <div style="display:flex;align-items:center;margin-bottom:8px;gap:6px;flex-wrap:wrap">
+          <h3>Output</h3>
+          <button class="btn btn-outline" id="creative-save-btn" onclick="saveCreativeToVault()" style="margin-left:auto;padding:4px 12px;font-size:11px" disabled>&#x1F4BE; Save to Vault</button>
+          <button class="btn btn-outline" id="creative-export-md"   onclick="exportCreative('md')"   style="padding:4px 12px;font-size:11px" disabled>&#x1F4C4; MD</button>
+          <button class="btn btn-outline" id="creative-export-html" onclick="exportCreative('html')" style="padding:4px 12px;font-size:11px" disabled>&#x1F310; HTML</button>
+          <button class="btn btn-outline" id="creative-export-docx" onclick="exportCreative('docx')" style="padding:4px 12px;font-size:11px" disabled>&#x1F4DD; DOCX</button>
+          <button class="btn btn-outline" id="creative-export-pdf"  onclick="exportCreative('pdf')"  style="padding:4px 12px;font-size:11px" disabled>&#x1F4D5; PDF</button>
+        </div>
+        <pre id="creative-output" class="output empty" style="max-height:400px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">Output will appear here.</pre>
+      </div>
+    </div><!-- /creative-sub-generator -->
+
+    <!-- Audiobook Studio sub-panel -->
+    <div id="creative-sub-audiobook" class="creative-subpanel" style="display:none">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px">
+        Synthesize large-volume screenplays or novels (120 to 300+ pages) into continuous high-fidelity audiobooks using Kokoro ONNX, Sarvam (Indian languages), or Piper offline TTS.
+      </p>
+
+      <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
+        <div style="flex:1;min-width:300px">
+          <label>Input File or Folder Path</label>
+          <input id="audiobook-input" type="text" placeholder="e.g. C:\Users\navka\navakanth001\sources\creative\DAAVA_Draft2_Screenplay.docx" style="width:100%" />
+        </div>
+        <div style="width:200px">
+          <label>Book Name (Optional)</label>
+          <input id="audiobook-name" type="text" placeholder="e.g. DAAVA_Book" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom:14px;gap:15px;flex-wrap:wrap">
+        <div style="width:190px">
+          <label>Speech Engine</label>
+          <select id="audiobook-engine" onchange="updateAudiobookVoices()">
+            <option value="kokoro">Kokoro ONNX (Default)</option>
+            <option value="sarvam">Sarvam (Indian Languages)</option>
+            <option value="piper">Piper (Offline TTS)</option>
+          </select>
+        </div>
+        <div style="width:190px">
+          <label>Voice / Speaker</label>
+          <select id="audiobook-voice">
+            <option value="default">Default Speaker</option>
+          </select>
+        </div>
+        <div style="width:190px">
+          <label>Parser Mode</label>
+          <select id="audiobook-parser">
+            <option value="production">Production (LLM emotional tags)</option>
+            <option value="benchmark">Offline Benchmark (No API Key)</option>
+          </select>
+        </div>
+        <div style="width:120px">
+          <label>Parallel Workers</label>
+          <input id="audiobook-workers" type="number" value="2" min="1" max="8" />
+        </div>
+        <div style="display:flex;align-items:center;padding-top:20px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none">
+            <input type="checkbox" id="audiobook-mp3" style="width:auto" checked />
+            Export MP3 (Transcode)
+          </label>
+        </div>
+      </div>
+
+      <div class="row" style="align-items:center;margin-bottom:14px">
+        <button class="btn btn-blue" id="audiobook-btn" onclick="generateAudiobook()">&#x26A1; Build Audiobook</button>
+        <span id="audiobook-status" style="margin-left:15px;font-size:12px;color:var(--muted)"></span>
+      </div>
+
+      <div style="margin-top:15px">
+        <div style="display:flex;align-items:center;margin-bottom:8px;gap:6px">
+          <h4>Job Manifest &amp; Log</h4>
+          <button class="btn btn-outline" id="audiobook-refresh-btn" onclick="pollAudiobookStatus(true)" style="margin-left:auto;padding:2px 8px;font-size:10px" disabled>&#x1F504; Refresh Status</button>
+        </div>
+        <pre id="audiobook-log" class="output empty" style="max-height:220px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:12px">No jobs running.</pre>
+      </div>
+    </div><!-- /creative-sub-audiobook -->
+
   </div>
 </div>
-
-
 <!-- ══ TAB: WHATSAPP/HERMES ══════════════════════════════════════ -->
 <div id="tab-whatsapp" class="tab-content">
   <div class="panel">
@@ -2043,6 +2140,192 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
   </div>
 </div>
 
+<!-- ══ TAB: CINEMATIC COMPILER WORKBENCH ════════════════════════ -->
+<div id="tab-cinematic" class="tab-content">
+
+  <!-- ── Parser Model bar (matches Filmmaking tab pattern) ── -->
+  <div class="panel" style="margin-bottom:16px; padding:14px 20px">
+    <div class="row" style="gap:15px; flex-wrap:wrap; align-items:flex-end">
+      <div style="min-width:240px; flex:2">
+        <label>Parser Model <span style="font-size:10px; color:var(--muted)">(Local Ollama · Cloud OpenRouter)</span></label>
+        <select id="cine-model" onchange="onCineModelChange()" style="width:100%">
+          <optgroup label="⚡ Instant / Offline">
+            <option value="mock::mock">Mock Parser (no LLM, instant)</option>
+          </optgroup>
+          <optgroup label="🖥 Local — Ollama">
+            <option value="local:gemma3:27b">Gemma 3 27B (local)</option>
+            <option value="local:gemma3:12b">Gemma 3 12B (local)</option>
+            <option value="local:gemma2:27b">Gemma 2 27B (local)</option>
+            <option value="local:llama3.3:70b">Llama 3.3 70B (local)</option>
+            <option value="local:llama3.1:8b">Llama 3.1 8B (local)</option>
+            <option value="local:mistral:7b">Mistral 7B (local)</option>
+            <option value="local:qwen2.5:32b">Qwen 2.5 32B (local)</option>
+            <option value="local:deepseek-r1:8b">DeepSeek R1 8B (local)</option>
+          </optgroup>
+          <optgroup label="☁ Cloud — OpenRouter">
+            <option value="cloud:google/gemma-4-31b-it:free">Gemma 4 31B (free)</option>
+            <option value="cloud:google/gemma-4-26b-a4b-it:free">Gemma 4 26B MoE (free)</option>
+            <option value="cloud:moonshotai/kimi-k2.6:free">Kimi K2.6 (free)</option>
+            <option value="cloud:nvidia/nemotron-3-super-120b-a12b:free">Nemotron 120B (free)</option>
+            <option value="cloud:google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (free)</option>
+            <option value="cloud:google/gemini-flash-1.5">Gemini Flash 1.5</option>
+            <option value="cloud:google/gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="cloud:anthropic/claude-haiku-4-5-20251001">Claude Haiku 4.5 (fast)</option>
+            <option value="cloud:anthropic/claude-sonnet-4-5">Claude Sonnet 4.5</option>
+            <option value="cloud:deepseek/deepseek-chat">DeepSeek V3</option>
+          </optgroup>
+        </select>
+      </div>
+      <div id="cine-routing-badge" style="font-size:11px; color:var(--muted); padding-bottom:6px; flex:1">Provider: mock · Routing: instant</div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 20px; align-items: start;">
+
+    <!-- ══ Column 1: Stage 1 · Scene Input ══ -->
+    <div class="panel" style="margin-top:0">
+      <h2>🎬 Stage 1: Scene Input</h2>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px">
+        Input natural language prompt or script text to compile into a structured manifest and target prompts.
+      </p>
+
+      <div class="field" style="margin-bottom:12px">
+        <textarea id="cine-input" rows="8" placeholder="INT. SHRINE GATE - DAWN&#10;Rain approaches the gates. High-tension atmosphere. Warm vermillion color palette." style="width:100%;background:rgba(255,255,255,0.05);color:white;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px;font-family:inherit;font-size:12px"></textarea>
+      </div>
+
+      <!-- Stage 4: Backend & Render Settings -->
+      <h3>🧱 Stage 4: Backend &amp; Render Settings</h3>
+      <div class="row" style="gap:10px; margin-bottom:12px">
+        <div style="flex:1">
+          <label style="font-size:11px">Target Backend</label>
+          <select id="cine-backend" style="padding:4px; font-size:11px">
+            <option value="flow_omni">Google Flow Omni</option>
+            <option value="higgsfield">Higgsfield</option>
+            <option value="chatgpt">ChatGPT / Midjourney</option>
+          </select>
+        </div>
+        <div style="width:70px">
+          <label style="font-size:11px">FPS</label>
+          <select id="cine-fps" style="padding:4px; font-size:11px">
+            <option value="24">24 fps</option>
+            <option value="30">30 fps</option>
+            <option value="60">60 fps</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" style="gap:15px; margin-bottom:15px; align-items:center">
+        <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor:pointer">
+          <input type="checkbox" id="cine-multi-shot" checked /> Multi-Shot Sequence
+        </label>
+        <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor:pointer">
+          <input type="checkbox" id="cine-async" /> Async Queued Job
+        </label>
+      </div>
+
+      <div class="row" style="gap:10px; margin-bottom:8px">
+        <button class="btn" id="cine-compile-btn" onclick="triggerCineCompile()" style="flex:1">▶ Compile</button>
+        <button class="btn btn-outline" onclick="triggerCineValidate()" style="flex:1">✔ Validate</button>
+      </div>
+      <div id="cine-status" style="font-size:11px; color:var(--muted); margin-bottom:20px; min-height:16px"></div>
+
+      <!-- Stage 7: Compile Provenance -->
+      <h3>📊 Stage 7: Compile Provenance</h3>
+      <div class="card" style="font-size:11px; padding:10px; background:rgba(0,0,0,0.2)">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+          <span style="color:var(--muted)">Parser Class:</span>
+          <span id="prov-parser" style="font-weight:bold; color:var(--info)">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+          <span style="color:var(--muted)">Model Provider:</span>
+          <span id="prov-provider" style="font-weight:bold; color:var(--text)">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+          <span style="color:var(--muted)">Model ID:</span>
+          <span id="prov-model" style="font-weight:bold; color:var(--text); font-size:10px; word-break:break-all">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+          <span style="color:var(--muted)">Routing Mode:</span>
+          <span id="prov-routing" style="font-weight:bold; color:var(--text)">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+          <span style="color:var(--muted)">Compile Latency:</span>
+          <span id="prov-latency" style="font-weight:bold; color:var(--green)">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between">
+          <span style="color:var(--muted)">Timestamp:</span>
+          <span id="prov-time" style="font-size:9px; color:var(--muted)">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Column 2: Stage 2 · Manifest Inspector + Stage 3 · Diagnostics ══ -->
+    <div class="panel" style="margin-top:0">
+      <h2>🧱 Stage 2: Manifest Inspector</h2>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px">
+        Editable intermediate representation. Populated automatically after Compile. Edit JSON directly and click Re-compile to rebuild targets.
+      </p>
+
+      <div class="field" style="margin-bottom:12px">
+        <textarea id="cine-manifest-editor" rows="14" placeholder="Run Compile (Stage 1) to populate the manifest here…" style="width:100%;background:#0d1117;color:#39c5bb;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px;font-family:monospace;font-size:11px;tab-size:2;resize:vertical"></textarea>
+      </div>
+
+      <div class="row" style="gap:10px; margin-bottom:20px">
+        <button class="btn btn-outline" onclick="compileFromManifestEditor()" style="flex:1">⚙ Re-compile Manifest JSON</button>
+      </div>
+
+      <!-- Stage 3: Validation & Diagnostics -->
+      <h3>⚠ Stage 3: Validation &amp; Diagnostics</h3>
+      <div id="cine-diagnostics-container" style="max-height:220px; overflow-y:auto; font-size:11px; display:flex; flex-direction:column; gap:8px">
+        <div class="card" style="border-left: 3px solid var(--green); padding:8px; background:rgba(0,255,0,0.02)">
+          <div style="font-weight:bold; color:var(--green)">✓ Validation OK</div>
+          <div style="color:var(--muted)">Run Compile or Validate to populate diagnostics.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Column 3: Stage 5 · Target Prompts + Stage 6 · Evaluation ══ -->
+    <div class="panel" style="margin-top:0">
+      <h2>🔌 Stage 5: Target Output Prompts</h2>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px">
+        Compiled prompt targets rendered side-by-side for generation tools.
+      </p>
+
+      <div style="display:flex; gap:6px; margin-bottom:12px">
+        <button class="btn btn-outline" id="btn-target-flow"  onclick="switchTargetOutput('flow_omni')"  style="padding:4px 10px; font-size:11px">Flow Omni</button>
+        <button class="btn btn-outline" id="btn-target-higgs" onclick="switchTargetOutput('higgsfield')" style="padding:4px 10px; font-size:11px">Higgsfield</button>
+        <button class="btn btn-outline" id="btn-target-gpt"   onclick="switchTargetOutput('chatgpt')"    style="padding:4px 10px; font-size:11px">ChatGPT</button>
+      </div>
+
+      <div style="position:relative; margin-bottom:20px">
+        <pre id="cine-output-target" class="output empty" style="max-height:260px; overflow-y:auto; font-size:11px; font-family:monospace; background:#070a0e; border:1px solid rgba(255,255,255,0.05); color:#a5d6ff">Compile a scene to view compiled output targets.</pre>
+      </div>
+
+      <!-- Stage 6: Evaluation Metrics -->
+      <h3>📈 Stage 6: Evaluation &amp; Capabilities</h3>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px">
+        <div class="card" style="padding:10px; text-align:center; background:rgba(255,255,255,0.02)">
+          <div style="font-size:10px; color:var(--muted)">Overall Score</div>
+          <div id="eval-overall" style="font-size:20px; font-weight:bold; color:var(--info)">—</div>
+        </div>
+        <div class="card" style="padding:10px; text-align:center; background:rgba(255,255,255,0.02)">
+          <div style="font-size:10px; color:var(--muted)">Heuristic Rating</div>
+          <div id="eval-heuristic" style="font-size:20px; font-weight:bold; color:var(--green)">—</div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:10px; font-size:11px; background:rgba(0,0,0,0.15)">
+        <div style="font-weight:bold; margin-bottom:8px; color:var(--muted)">Negotiated Capabilities:</div>
+        <div id="cine-caps-negotiated" style="display:flex; flex-wrap:wrap; gap:6px">
+          <span class="badge" style="background:rgba(255,255,255,0.05); color:var(--muted)">No backend negotiated</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <footer>Agent OS · ClawGlove + OpenClaw · Navakanth Reddy Dumpa &nbsp;|&nbsp; Auto-refresh 5s</footer>
 
 <script>
@@ -2254,7 +2537,7 @@ async function apiPost(path, body, timeoutMs=360000) {
 // ── Tabs ───────────────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll(".tab").forEach((t,i) => {
-    const names = ["swarm","notebooks","goal","cloud","search","save","tune","system","simulations","quantum","creative","whatsapp","credits","okf","sitebuilder"];
+    const names = ["swarm","notebooks","goal","cloud","search","save","tune","system","simulations","quantum","creative","whatsapp","credits","okf","sitebuilder","cinematic"];
     t.classList.toggle("active", names[i]===name);
   });
   document.querySelectorAll(".tab-content").forEach(c => {
@@ -2266,6 +2549,7 @@ function switchTab(name) {
   if (name==="whatsapp") loadWhatsAppTab();
   if (name==="credits") loadGCPCredits();
   if (name==="sitebuilder") loadSiteLog();
+  if (name==="cinematic") loadCinematicTab();
 }
 
 // ── Health / status polling ────────────────────────────────────
@@ -2579,6 +2863,86 @@ async function runSwarm() {
 
 function toggleAgent(i) {
   const b = el("agent-body-"+i);
+  if (b) b.classList.toggle("open");
+}
+
+// ── Execution Mode switch (Swarm tab) ────────────────────────────
+function onExecModeChange() {
+  const mode = document.querySelector('input[name="exec-mode"]:checked').value;
+  el("swarm-classic-panel").style.display = (mode === "swarm") ? "" : "none";
+  el("mixture-panel").style.display = (mode === "mixture") ? "" : "none";
+}
+
+// ── Mixture of Agents ─────────────────────────────────────────────
+async function runMixture() {
+  const prompt = el("mix-prompt").value.trim();
+  if (!prompt) { showToast("Enter a prompt first.", "warning"); return; }
+  const profile = el("mix-profile").value;
+  const aggregation = el("mix-aggregation").value;
+
+  const btn = el("mix-btn"); btn.disabled = true;
+  el("mix-final-pane").className = "output running";
+  el("mix-final-pane").textContent = "";
+  el("mix-agents").innerHTML = "";
+  el("mix-timeline").innerHTML = "";
+  el("mix-status").innerHTML = '<span class="spinner"></span> Running mixture of agents…';
+  el("mix-progress").textContent = "";
+
+  try {
+    const start = await apiPost("/execute", { prompt, mode: "mixture", profile, aggregation });
+    if (start.error) { throw new Error(start.error); }
+    const jobId = start.job_id;
+
+    let data;
+    while (true) {
+      await new Promise(r => setTimeout(r, 1500));
+      data = await apiPost("/execute/status", { job_id: jobId });
+      const perModel = data.per_model_status || {};
+      el("mix-progress").textContent = Object.entries(perModel)
+        .map(([m, s]) => `${m} ${s === "done" ? "✓" : s === "error" ? "✗" : "…"}`).join("  ·  ")
+        || `Stage: ${data.stage || "running"}…`;
+      if (data.status !== "running") break;
+    }
+
+    if (data.status === "failed") {
+      el("mix-final-pane").className = "output error";
+      el("mix-final-pane").textContent = "Error: " + (data.error || "unknown error");
+      el("mix-status").textContent = "✗ Failed";
+    } else {
+      const result = data.result || {};
+      el("mix-final-pane").className = "output success";
+      el("mix-final-pane").textContent = result.final || "(no final answer)";
+      el("mix-status").innerHTML =
+        `✓ Done · confidence ${(result.consensus_score ?? 0).toFixed?.(2) ?? result.consensus_score} · ` +
+        `${result.conflicts?.length || 0} conflict(s) · winner: ${result.winner || "—"}`;
+
+      if (result.per_model?.length) {
+        el("mix-agents").innerHTML = result.per_model.map((r, i) => `
+          <div class="agent-result">
+            <div class="agent-header" onclick="toggleMixAgent(${i})">
+              <span class="badge ${r.error ? 'badge-red' : 'badge-green'}">${r.error ? '✗' : '✓'}</span>
+              <strong style="font-size:12px">${esc(r.model)}</strong>
+              <span style="font-size:11px;color:var(--muted);margin-left:auto">click to expand</span>
+            </div>
+            <div class="agent-body" id="mix-agent-body-${i}">${esc(r.result || r.error || "—")}</div>
+          </div>`).join("");
+      }
+
+      if (result.timeline?.length) {
+        el("mix-timeline").innerHTML = "<strong>Reasoning timeline:</strong> " +
+          result.timeline.map(t => esc(t.event)).join(" → ");
+      }
+    }
+  } catch (e) {
+    el("mix-final-pane").className = "output error";
+    el("mix-final-pane").textContent = "Request failed: " + e.message;
+    el("mix-status").textContent = "✗ Error";
+  }
+  btn.disabled = false;
+}
+
+function toggleMixAgent(i) {
+  const b = el("mix-agent-body-" + i);
   if (b) b.classList.toggle("open");
 }
 
@@ -3368,25 +3732,65 @@ function initDashboard() {
   window.pollInterval = setInterval(pollStatus, 5000);
 }
 
-// ── Creative Filmmaking Tab ────────────────────────────────────
+// ── Creative Filmmaking Tab — Sub-tab switcher ────────────────
+function switchCreativeSubtab(mode) {
+  // Map mode → which sub-panel to show
+  const isAudiobook = mode === 'audiobook';
+
+  // Show/hide panels
+  el('creative-sub-generator').style.display = isAudiobook ? 'none' : '';
+  el('creative-sub-audiobook').style.display = isAudiobook ? ''     : 'none';
+
+  // Update active button highlight
+  document.querySelectorAll('.creative-stab').forEach(b => b.classList.remove('active'));
+  const btn = el('stab-' + mode);
+  if (btn) btn.classList.add('active');
+
+  // Keep creative-mode select in sync with sub-tab
+  if (!isAudiobook) {
+    el('creative-mode').value = mode;
+    updateCreativeLabels();
+  }
+}
+
+const _LONGFORM_MODES = new Set(["screenplay","novelist","video_prompts","image_prompts","audio_design"]);
+let _creativeLongformPollInterval = null;
+
 function updateCreativeLabels() {
   const mode = el("creative-mode").value;
   const label = el("creative-input-label");
   const input = el("creative-input");
-  
-  if (mode === "screenplay") {
-    label.textContent = "Enter prompt or scene concept";
-    input.placeholder = "e.g. A tense standoff in a neon-lit alley in downtown Hyderabad...";
-  } else if (mode === "audiography") {
-    label.textContent = "Paste Screenplay Script to Design Sound For";
-    input.placeholder = "Paste script lines here...";
-  } else if (mode === "prompt") {
-    label.textContent = "Enter scene or shot description to build visual prompts";
-    input.placeholder = "e.g. Close-up on Arjun's eyes reflecting fire...";
-  } else if (mode === "novelist") {
-    label.textContent = "Enter Novel Concept or Plot Outline";
-    input.placeholder = "e.g. Arjun discovers a hidden drawer in his grandfather's antique desk, revealing a coded journal from 1947...";
-  }
+  const pagesWrap = el("creative-longform-pages-wrap");
+  const btn = el("creative-btn");
+
+  if (pagesWrap) pagesWrap.style.display = _LONGFORM_MODES.has(mode) ? "" : "none";
+  if (btn) btn.textContent = _LONGFORM_MODES.has(mode) ? "▶ Generate Long-Form" : "▶ Generate";
+
+  const placeholders = {
+    screenplay:    "e.g. A tense standoff in a neon-lit alley in downtown Hyderabad…",
+    novelist:      "e.g. Arjun discovers a hidden drawer in his grandfather's antique desk, revealing a coded journal from 1947…",
+    video_prompts: "e.g. Chase sequence through old Hyderabad markets, rain-soaked streets, golden hour…",
+    image_prompts: "e.g. A lone warrior standing at a vermillion shrine gate at dawn, cinematic lighting…",
+    audio_design:  "e.g. Tense action sequence with crowd ambience, rising drone score, Dolby Atmos…",
+    audiography:   "Paste screenplay script here…",
+    prompt:        "e.g. Close-up on Arjun's eyes reflecting fire…",
+  };
+  const labelTexts = {
+    screenplay:    "Story concept / logline",
+    novelist:      "Novel concept or plot outline",
+    video_prompts: "Scene or sequence description",
+    image_prompts: "Visual concept or scene description",
+    audio_design:  "Film / scene description for full audio spec",
+    audiography:   "Paste screenplay script to design sound for",
+    prompt:        "Scene or shot description",
+  };
+  if (label) label.textContent = labelTexts[mode] || "Enter concept";
+  if (input) input.placeholder = placeholders[mode] || "";
+}
+
+function _enableCreativeExports() {
+  ["creative-save-btn","creative-export-md","creative-export-html","creative-export-docx","creative-export-pdf"]
+    .forEach(id => { const e = el(id); if (e) e.disabled = false; });
 }
 
 async function runCreative() {
@@ -3395,31 +3799,43 @@ async function runCreative() {
   if (!input) { showToast("Enter input text first.", "warning"); return; }
   const context = el("creative-context").value.trim();
   const model = el("creative-model").value;
+  const targetPages = parseInt((el("creative-target-pages") || {value:"30"}).value) || 30;
 
   const btn = el("creative-btn"); btn.disabled = true;
-  const out = el("creative-output"); out.className="output running";
+  const out = el("creative-output"); out.className = "output running";
   out.textContent = "";
   el("creative-status").innerHTML = '<span class="spinner"></span> Working...';
-  el("creative-save-btn").disabled = true;
-  el("creative-export-md").disabled = true;
-  el("creative-export-html").disabled = true;
-  el("creative-export-docx").disabled = true;
-  el("creative-export-pdf").disabled = true;
+  ["creative-save-btn","creative-export-md","creative-export-html","creative-export-docx","creative-export-pdf"]
+    .forEach(id => { const e = el(id); if (e) e.disabled = true; });
 
+  // Long-form modes use chunked generation with polling
+  if (_LONGFORM_MODES.has(mode)) {
+    try {
+      const res = await apiPost("/creative/longform", { mode, prompt: input, context, model, target_pages: targetPages });
+      if (!res.job_id) throw new Error(res.error || "No job_id returned");
+      el("creative-status").innerHTML = `<span class="spinner"></span> Generating… (job ${res.job_id})`;
+      _startCreativeLongformPoll(res.job_id, out, btn);
+    } catch (e) {
+      out.className = "output error";
+      out.textContent = "Error: " + e.message;
+      el("creative-status").textContent = "✗ Failed";
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  // Single-shot modes
   try {
     let endpoint = "";
     let body = {};
-    if (mode === "screenplay") {
-      endpoint = "/creative/screenplay";
-      body = { prompt: input, context, model };
-    } else if (mode === "audiography") {
+    if (mode === "audiography") {
       endpoint = "/creative/audiography";
       body = { scene_script: input, context, model };
     } else if (mode === "prompt") {
       endpoint = "/creative/prompt";
       body = { scene_or_shot: input, context, model };
-    } else if (mode === "novelist") {
-      endpoint = "/creative/novelist";
+    } else {
+      endpoint = "/creative/screenplay";
       body = { prompt: input, context, model };
     }
 
@@ -3446,6 +3862,51 @@ async function runCreative() {
   } finally {
     btn.disabled = false;
   }
+}
+
+function _startCreativeLongformPoll(jobId, out, btn) {
+  if (_creativeLongformPollInterval) clearInterval(_creativeLongformPollInterval);
+  let lastChunkCount = 0;
+
+  _creativeLongformPollInterval = setInterval(async () => {
+    try {
+      const res = await apiFetch(`/creative/longform/status/${jobId}`);
+      const done = res.chunks_done || 0;
+      const total = res.total_chunks || 1;
+      const pct = res.percent || 0;
+
+      el("creative-status").innerHTML =
+        `<span class="spinner"></span> Chunk ${done}/${total} · ${pct}% complete`;
+
+      // Append any new chunks to output live
+      if (res.latest_chunk && done > lastChunkCount) {
+        lastChunkCount = done;
+        out.textContent += (out.textContent ? "\n\n" + "─".repeat(60) + "\n\n" : "") + res.latest_chunk;
+        out.scrollTop = out.scrollHeight;
+      }
+
+      if (res.status === "done") {
+        clearInterval(_creativeLongformPollInterval);
+        _creativeLongformPollInterval = null;
+        out.className = "output success";
+        out.textContent = res.result || out.textContent;
+        out.scrollTop = 0;
+        el("creative-status").textContent = `✓ Done — ${total} chunks generated`;
+        _enableCreativeExports();
+        btn.disabled = false;
+        showToast("Long-form generation complete!", "success");
+      } else if (res.status === "failed") {
+        clearInterval(_creativeLongformPollInterval);
+        _creativeLongformPollInterval = null;
+        out.className = "output error";
+        out.textContent = "Generation failed: " + (res.error || "unknown error");
+        el("creative-status").textContent = "✗ Failed";
+        btn.disabled = false;
+      }
+    } catch (e) {
+      console.error("Long-form poll error:", e);
+    }
+  }, 3000);
 }
 
 async function saveCreativeToVault() {
@@ -3997,6 +4458,312 @@ async function generateOKFBundle() {
   } finally {
     btn.disabled = false;
     btn.textContent = "Generate OKF Bundle";
+  }
+}
+
+// ── Cinematic OS Workbench ─────────────────────────────────────
+
+function parseCineModel() {
+  // Model select value format: "provider:model_id"
+  // e.g. "mock::mock", "local:gemma3:27b", "cloud:google/gemma-4-31b-it:free"
+  const raw = (el("cine-model") || {value: "mock::mock"}).value || "mock::mock";
+  const colonIdx = raw.indexOf(":");
+  const provider = raw.slice(0, colonIdx);          // "mock" | "local" | "cloud"
+  const modelId  = raw.slice(colonIdx + 1);         // everything after first colon
+  const routingMode = provider === "local" ? "local_first"
+                    : provider === "cloud" ? "cloud_only"
+                    : "";
+  return { provider, modelId, routingMode };
+}
+
+function onCineModelChange() {
+  const { provider, modelId, routingMode } = parseCineModel();
+  const badge = el("cine-routing-badge");
+  if (!badge) return;
+  if (provider === "mock") {
+    badge.textContent = "Provider: mock · Routing: instant (no LLM)";
+    badge.style.color = "var(--muted)";
+  } else if (provider === "local") {
+    badge.textContent = `Provider: Ollama (local) · Model: ${modelId} · Routing: ${routingMode}`;
+    badge.style.color = "var(--green)";
+  } else {
+    badge.textContent = `Provider: OpenRouter (cloud) · Model: ${modelId} · Routing: ${routingMode}`;
+    badge.style.color = "var(--accent)";
+  }
+}
+
+let currentCineTargets = {};
+let currentCineJobInterval = null;
+let lastCineManifest = null; // cache last compiled manifest for Validate
+
+async function loadCinematicTab() {
+  onCineModelChange(); // sync routing badge to current model selection
+  try {
+    await apiFetch("/api/v1/cinematic/presets"); // warm the presets cache
+  } catch (e) {
+    console.error("Failed to load cinematic presets:", e);
+  }
+}
+
+async function triggerCineCompile() {
+  const text = el("cine-input").value.trim();
+  const backend = el("cine-backend").value;
+  const fps = parseInt(el("cine-fps").value) || 24;
+  const multiShot = el("cine-multi-shot").checked;
+  const isAsync = el("cine-async").checked;
+  const { provider, modelId, routingMode } = parseCineModel();
+
+  if (!text) {
+    showToast("Please enter a scene description first.", "warning");
+    return;
+  }
+
+  const modelLabel = provider === "mock" ? "mock parser" : modelId;
+  const statusEl = el("cine-status");
+  const compileBtn = el("cine-compile-btn");
+  if (statusEl) statusEl.textContent = isAsync ? `Queuing via ${modelLabel}…` : `Compiling via ${modelLabel}…`;
+  if (compileBtn) compileBtn.disabled = true;
+
+  try {
+    const payload = {
+      text: text,
+      backend: backend,
+      multi_shot: multiShot,
+      frame_rate: fps,
+      async: isAsync,
+      provider: provider,
+      model: modelId,
+      routing_mode: routingMode,
+    };
+
+    const res = await apiPost("/api/v1/cinematic/generate-ir", payload);
+
+    if (isAsync && res.job_id) {
+      if (statusEl) statusEl.textContent = `Job ${res.job_id} queued — polling…`;
+      startCineJobPolling(res.job_id);
+    } else {
+      renderCineCompileResult(res);
+      if (statusEl) statusEl.textContent = "Done ✓";
+      showToast("Compilation complete!", "success");
+    }
+  } catch (e) {
+    if (statusEl) statusEl.textContent = "Error: " + e.message;
+    showToast("Compile error: " + e.message, "error");
+  } finally {
+    if (compileBtn) compileBtn.disabled = false;
+  }
+}
+
+async function triggerCineValidate() {
+  let editorText = el("cine-manifest-editor").value.trim();
+
+  // Fallback: if editor is empty but we have a cached manifest from last compile, use it
+  if ((!editorText || editorText === "{}") && lastCineManifest) {
+    editorText = JSON.stringify(lastCineManifest, null, 2);
+    el("cine-manifest-editor").value = editorText;
+    showToast("Restored manifest from last compile into editor.", "info");
+  }
+
+  if (!editorText || editorText === "{}") {
+    showToast("No manifest JSON to validate. Run a Compile first to generate it.", "warning");
+    return;
+  }
+
+  try {
+    const manifestJson = JSON.parse(editorText);
+    const res = await apiPost("/api/v1/cinematic/validate", { manifest: manifestJson });
+    // ValidationResponse returns { valid, errors: string[], errors_count }
+    // Convert plain error strings into diag objects for the renderer
+    const diagObjs = (res.errors || []).map(msg => ({
+      severity: "error",
+      message: msg,
+      stage: "validation",
+      affected_beats: []
+    }));
+    renderCineDiagnostics(diagObjs);
+    if (res.valid) {
+      showToast("Manifest is fully valid!", "success");
+    } else {
+      showToast("Manifest has validation issues. Check Diagnostics.", "warning");
+    }
+  } catch (e) {
+    showToast("Invalid JSON syntax: " + e.message, "error");
+  }
+}
+
+async function compileFromManifestEditor() {
+  const editorText = el("cine-manifest-editor").value.trim();
+  const backend = el("cine-backend").value;
+  const fps = parseInt(el("cine-fps").value) || 24;
+  const multiShot = el("cine-multi-shot").checked;
+
+  if (!editorText || editorText === "{}") {
+    showToast("No manifest JSON to compile.", "warning");
+    return;
+  }
+
+  try {
+    const manifestJson = JSON.parse(editorText);
+    showToast("Compiling updated manifest directly...", "info");
+    const res = await apiPost("/api/v1/cinematic/compile", {
+      manifest: manifestJson,
+      backend: backend,
+      multi_shot: multiShot,
+      frame_rate: fps
+    });
+
+    renderCineCompileResult(res);
+    showToast("Direct manifest compilation succeeded!", "success");
+  } catch (e) {
+    showToast("Compile error: " + e.message, "error");
+  }
+}
+
+function startCineJobPolling(jobId) {
+  if (currentCineJobInterval) clearInterval(currentCineJobInterval);
+  const statusEl = el("cine-status");
+  const compileBtn = el("cine-compile-btn");
+
+  currentCineJobInterval = setInterval(async () => {
+    try {
+      const res = await apiFetch(`/api/v1/cinematic/job/${jobId}`);
+      if (statusEl) statusEl.textContent = `Job ${res.percent || 0}% — ${res.stage || "running"}`;
+      if (res.status === "done" || res.status === "complete") {
+        clearInterval(currentCineJobInterval);
+        currentCineJobInterval = null;
+        if (compileBtn) compileBtn.disabled = false;
+        if (statusEl) statusEl.textContent = "Done ✓";
+        renderCineCompileResult(res.result);
+        showToast("Async compilation finished!", "success");
+      } else if (res.status === "failed") {
+        clearInterval(currentCineJobInterval);
+        currentCineJobInterval = null;
+        if (compileBtn) compileBtn.disabled = false;
+        if (statusEl) statusEl.textContent = "Failed: " + (res.error || "unknown error");
+        showToast(`Job failed: ${res.error || "Unknown error"}`, "error");
+      }
+    } catch (e) {
+      console.error("Job status fetch failed:", e);
+    }
+  }, 2000);
+}
+
+function renderCineCompileResult(result) {
+  if (!result) return;
+
+  // 1. Load Editor manifest JSON (Stage 2)
+  if (result.manifest) {
+    lastCineManifest = result.manifest;
+    el("cine-manifest-editor").value = JSON.stringify(result.manifest, null, 2);
+  }
+
+  // 2. Diagnostics (Stage 3)
+  renderCineDiagnostics(result.diagnostics || []);
+
+  // 3. Targets (Stage 5) — API returns "outputs" not "targets"
+  currentCineTargets = result.outputs || {};
+  const currentBackend = el("cine-backend").value;
+  switchTargetOutput(currentBackend);
+
+  // 4. Evaluation (Stage 6) — API returns metrics.score not overall_score/heuristic_score
+  if (result.metrics) {
+    const score = result.metrics.score || 0;
+    el("eval-overall").textContent = (score * 100).toFixed(0) + "%";
+    el("eval-heuristic").textContent = (score * 100).toFixed(0) + "%";
+  } else {
+    el("eval-overall").textContent = "—";
+    el("eval-heuristic").textContent = "—";
+  }
+
+  // 5. Provenance (Stage 7) — API returns parser/latency_ms not parser_class/latency_sec
+  if (result.provenance) {
+    el("prov-parser").textContent = result.provenance.parser || "—";
+    el("prov-provider").textContent = result.provenance.provider || "—";
+    el("prov-model").textContent = result.provenance.model || "—";
+    el("prov-routing").textContent = result.provenance.routing_mode || "—";
+    el("prov-latency").textContent = ((result.provenance.latency_ms || 0) / 1000).toFixed(2) + " s";
+    el("prov-time").textContent = result.provenance.timestamp
+      ? new Date(result.provenance.timestamp).toLocaleTimeString()
+      : "—";
+  }
+
+  // 6. Capability negotiation display
+  const capsContainer = el("cine-caps-negotiated");
+  capsContainer.innerHTML = "";
+  
+  if (result.negotiated && result.negotiated.capabilities) {
+    Object.entries(result.negotiated.capabilities).forEach(([capName, isEnabled]) => {
+      const b = document.createElement("span");
+      b.className = "badge " + (isEnabled ? "badge-green" : "badge-red");
+      b.style.margin = "2px";
+      b.textContent = capName + (isEnabled ? " (ok)" : " (off)");
+      capsContainer.appendChild(b);
+    });
+  } else {
+    capsContainer.innerHTML = '<span class="badge" style="background:rgba(255,255,255,0.05); color:var(--muted)">No backend negotiated</span>';
+  }
+}
+
+function renderCineDiagnostics(diagnostics) {
+  const container = el("cine-diagnostics-container");
+  container.innerHTML = "";
+
+  if (!diagnostics || diagnostics.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="border-left: 3px solid var(--green); padding:8px; background:rgba(0,255,0,0.02)">
+        <div style="font-weight:bold; color:var(--green)">✓ Validation OK</div>
+        <div style="color:var(--muted)">Zero compiler errors or warnings. Ready to render.</div>
+      </div>
+    `;
+    return;
+  }
+
+  diagnostics.forEach(diag => {
+    let color = "var(--info)";
+    let border = "3px solid var(--info)";
+    let bg = "rgba(0,240,255,0.02)";
+
+    if (diag.severity === "error" || diag.severity === "fatal") {
+      color = "var(--red)";
+      border = "3px solid var(--red)";
+      bg = "rgba(255,0,0,0.02)";
+    } else if (diag.severity === "warning") {
+      color = "var(--yellow)";
+      border = "3px solid var(--yellow)";
+      bg = "rgba(255,255,0,0.02)";
+    }
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.borderLeft = border;
+    card.style.padding = "8px";
+    card.style.background = bg;
+    card.innerHTML = `
+      <div style="font-weight:bold; color:${color}; text-transform:capitalize">${diag.severity} (${diag.stage})</div>
+      <div style="color:white; margin:2px 0">${diag.message}</div>
+      ${diag.beat_id ? `<div style="font-size:9px; color:var(--muted)">Affected beat: <code>${diag.beat_id}</code></div>` : ""}
+    `;
+    container.appendChild(card);
+  });
+}
+
+function switchTargetOutput(backend) {
+  // Highlight correct tab btn
+  el("btn-target-flow").classList.toggle("active", backend === "flow_omni");
+  el("btn-target-higgs").classList.toggle("active", backend === "higgsfield");
+  el("btn-target-gpt").classList.toggle("active", backend === "chatgpt");
+
+  const promptObj = currentCineTargets[backend];
+  const out = el("cine-output-target");
+  
+  if (promptObj) {
+    out.classList.remove("empty");
+    out.textContent = typeof promptObj === "string" 
+      ? promptObj 
+      : JSON.stringify(promptObj, null, 2);
+  } else {
+    out.classList.add("empty");
+    out.textContent = `No compiled output targets for backend: ${backend}. Click Compile to generate them.`;
   }
 }
 
