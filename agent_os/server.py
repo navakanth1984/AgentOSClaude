@@ -234,6 +234,13 @@ class AgentOSHandler(BaseHTTPRequestHandler):
         params = urllib.parse.parse_qs(parsed.query)
         path = parsed.path
 
+        if path == "/health":
+            self._send(200, {
+                "version": "execution-framework-v1",
+                "pid": os.getpid()
+            })
+            return
+
         # Handle static file downloads/serving for exports and assets
         if path.startswith("/asset_library/") or path.startswith("/output/"):
             if not self._check_auth():

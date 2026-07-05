@@ -98,6 +98,16 @@ def run_job(prompt, mode, profile, aggregation):
 
 def run_stage_a():
     print("Starting Stage A: Smoke Validation...")
+    
+    # Pre-flight health check
+    try:
+        health_req = urllib.request.Request("http://localhost:8765/health")
+        with urllib.request.urlopen(health_req) as response:
+            health_data = json.loads(response.read().decode())
+            print(f"Connected to server: version={health_data.get('version')} PID={health_data.get('pid')}")
+    except Exception as e:
+        print(f"Warning: /health check failed - {e}")
+        
     runs = 0
     success = 0
     
