@@ -27,6 +27,14 @@ MAX_CONCURRENCY = 3
 MAX_RETRIES = 4
 
 
+def estimate_cost(models: list[str], prompt_tokens: int, completion_tokens: int) -> tuple[int, float]:
+    # Cost proxy estimation (chars / 4 = approx tokens)
+    # Cost assumption: $0.002 per 1K tokens (blended average for premium models)
+    total_tokens = prompt_tokens * len(models) + completion_tokens
+    cost_usd = (total_tokens / 1000.0) * 0.002
+    return total_tokens, cost_usd
+
+
 async def _fan_out_one(model: str, system: str, user: str, api_key: str,
                         max_tokens: int, semaphore: asyncio.Semaphore,
                         status_cb: StatusCallback) -> dict:
@@ -63,11 +71,24 @@ class MixtureExecutor:
             return {"error": "No LLM backend available — set OPENROUTER_API_KEY/GEMINI_API_KEY or run local Ollama."}
 
         models = request.models or (resolve_profile(request.profile) if request.profile else [])
+        if request.max_models > 0:
+            models = models[:request.max_models]
+            
         if len(models) < 2:
             return {"error": "Mixture mode needs at least 2 models (via 'models' or a 'profile')."}
 
         api_key = request.api_key or os.environ.get("OPENROUTER_API_KEY", "")
-        manifest = new_manifest(mode="mixture", models=models, aggregation=request.aggregation, category=request.category)
+        manifest = new_manifest(
+            mode=request.mode,
+            requested_mode=request.requested_mode or request.mode, 
+            models=models, 
+            aggregation=request.aggregation, 
+            category=request.category,
+            expected_profile=request.expected_profile,
+            planned_mode=request.planned_mode,
+            executed_mode=request.executed_mode,
+            routing_trace=request.routing_trace
+        )
 
         if status_cb:
             status_cb("fanout", {"models": models, "status": "starting"})
@@ -111,6 +132,17 @@ class MixtureExecutor:
         manifest.aggregation_trace = agg_result["trace"]
         manifest.verification = agg_result.get("verification")
         manifest.latency_ms = (time.perf_counter() - t_start) * 1000
+        
+        prompt_chars = len(request.system) + len(request.prompt)
+        response_chars = sum(len(r.get("result", "")) for r in fanout_results) + len(manifest.final)
+        
+        prompt_tokens_est = prompt_chars // 4
+        completion_tokens_est = response_chars // 4
+        
+        est_tokens, est_cost = estimate_cost(models, prompt_tokens_est, completion_tokens_est)
+        manifest.estimated_tokens = est_tokens
+        manifest.estimated_cost_usd = est_cost
+        
         manifest.add_event("execution_finished")
         manifest.save()
 

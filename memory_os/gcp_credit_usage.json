@@ -1,0 +1,20 @@
+{
+  "genai_voucher": {
+    "code": "494be35b03eb03dff4e91dd6a9c229d7d9be5dd5015a3f5c4c45ee7d70413c5f",
+    "total": 94812.51,
+    "remaining": 94804.47,
+    "expiry": "2027-04-26"
+  },
+  "dialogflow_trial": {
+    "code": "dialogflow_cx_credit_v2-015936-156B27-56F23F",
+    "total": 56730.01,
+    "remaining": 56729.35,
+    "expiry": "2027-05-22"
+  },
+  "config": {
+    "project_id": "nthdim-academy-v2",
+    "billing_account_id": "015936-156B27-56F23F",
+    "use_vertex_ai": true,
+    "credentials_configured": true
+  }
+}
