@@ -18,6 +18,9 @@ The dashboard's Filmmaking tab drives chunked long-form generation and screenpla
 - **`creative_exporter.py`** — renders a parsed screenplay/novel to MD, HTML, DOCX, and PDF. Screenplay dialogue is the industry-standard **centered column** (equal 1.5in L/R indents, text left-aligned) with the **CHARACTER cue centered above** it; the same geometry is applied across HTML, DOCX (`python-docx`), and PDF (Playwright renders from the same HTML, so it inherits the layout).
 - **Console safety:** `server.py` forces UTF-8 `stdout`/`stderr` on the Windows cp1252 console so Unicode glyphs (`→ ─ ✓`) in any `print()` can't raise `UnicodeEncodeError` and crash a generation thread.
 
+## Execution Framework (Mixture-of-Agents)
+- **`agent_os/execution/`** — a pluggable execution framework (`ExecutionManager → Executor → Aggregator`). Ships Single/Swarm/Mixture executors; Debate and Auto are interface-only stubs pending real usage evidence. Mixture-of-Agents fans a prompt out across N models in parallel, then aggregates via Fast/Standard/Verified strategies with an evidence-based confidence score (pairwise textual agreement + optional judge score, never an LLM-invented number). Exposed via `POST /execute` + `/execute/status` and an Execution Mode selector on the Swarm tab. Full handoff/status: [agent-os-execution-next-steps.md](agent-os-execution-next-steps.md).
+
 ## Dev Tooling
 - **`dev_reload.py`** — a zero-dependency auto-reload supervisor. Watches `agent_os/**/*.py` (mtime polling, 0.4s debounce) and restarts `server.py` on save; also relaunches it if it exits/crashes. Run `python dev_reload.py` instead of `python server.py` during development so backend edits take effect without a manual restart.
 

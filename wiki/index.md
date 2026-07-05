@@ -22,6 +22,7 @@
 - [Storage Management](storage-management.md) — C: ↔ E: strategy: delete regeneratable deps (node_modules, venvs, pycache) + mirror heavy folders to E:\navakanth001\ via symlinks.
 - [Generative Production Workflows](production-workflows.md) — Best practices and identified pitfalls for creating generative media.
 - [Agent OS Speech — Next Steps](agent-os-speech-next-steps.md)
+- [Agent OS Execution Framework — Next Steps](agent-os-execution-next-steps.md) — Mixture-of-Agents Phase 1 handoff (PR #29, cold-start for Antigravity).
 - [Validator Research — Next Steps](20260702-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [CRP Next Steps](crp-next-steps.md) — Cold-start handoff for CRP Plan 3/3 after M3-M4 shipped.
 - [NAC Current State](CURRENT.md) — live operating manual: Production Readiness Gate, Stop Line, Definition of Done, Milestone Lifecycle. Start here for NAC status.
