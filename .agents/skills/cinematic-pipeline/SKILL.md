@@ -1,261 +1,227 @@
 ---
 name: cinematic-pipeline
-description: "The Cinematic Pipeline — master orchestrator coordinating three sequential filmmaking stages: Screenplay (The Architect) → Direction (The Interpreter) → Cinematography (The Eye). Use this skill when the request explicitly spans multiple stages: script analysis plus blocking plus shot design, or when the user says 'full pipeline,' 'full scene treatment,' 'end-to-end treatment,' 'script through shots,' 'concept to shot list,' 'take it from concept all the way to,' or 'I want everything — scene analysis through to camera work.' Also triggers when the user asks how the three pipeline stages connect or wants a complete multi-stage cinematic breakdown of a scene. Do NOT trigger when the request targets only one stage: fixing dialogue or scene structure → screenplay-skill; blocking or performance notes → direction-skill; shot list, lighting palette, or camera design alone → cinematography-skill. The signal is always plural stages requested together, not just scope or ambition."
+description: "Cinematic OS Platform — Master orchestrator compiler coordinating Natural Language parsing, SceneManifest compilation, Backend Capability Negotiation, and Prompt Evaluation. Exposes the CinematicService boundary and the Swarm capability-oriented runtime contract."
 ---
-
-# THE CINEMATIC PIPELINE — Master Orchestrator
-
-> Script → Blocking → Shots. Story → Behavior → Images.
-
-## PURPOSE
-
-This is the sequential workflow that transforms a story concept into a fully realized cinematic vision. It coordinates three specialized skills, each with its own craft logic, ensuring that every stage builds on the previous one and that the Controlling Idea flows unbroken from premise to final frame.
-
+# Cinematic OS Platform SDK
+Welcome to the **Cinematic OS** SDK and capability specification. Cinematic OS is a layered compiler platform that translates natural language scene descriptions into deterministic render prompt packets for multiple generative video backends.
 ---
-
-## THE FOUR STAGES
-
+## 1. Purpose
+The core architecture of Cinematic OS is designed around a single guiding principle: **Decouple transport and consumption layers from the compilation runtime.**
+Every user interface (REST endpoints, CLI tools, Agent Swarm runtime, and Filmmaking Studio orchestrators) must interact with the compilation engine through the unified orchestration boundary: `CinematicService`.
+```text
+  Dashboard / UI       REST API        Swarm Runtime       Filmmaking Studio
+        │                 │                  │                     │
+        └─────────────────┴──────────────────┴─────────────────────┘
+                                  │
+                           CinematicService
+                        ┌─────────┴─────────┐
+                        ▼                   ▼
+                   Parser Engine     Compiler Pipeline
+                        │                   │
+                        ▼                   ▼
+                  Model Routers       Compiler Passes
+                        │                   │
+                        ▼                   ▼
+                 Model Providers   Negotiated Capabilities
+                        │                   │
+                        └─────────┬─────────┘
+                                  ▼
+                          Evaluation Router
 ```
-┌─────────────────────┐     ┌─────────────────────┐     ┌─────────────────────┐     ┌─────────────────────┐
-│  STAGE 01           │     │  STAGE 02           │     │  STAGE 03           │     │  STAGE 04           │
-│  SCREENPLAY         │────▶│  DIRECTION          │────▶│  CINEMATOGRAPHY     │────▶│  AUDIOGRAPHY & SOUND│
-│  The Architect      │     │  The Interpreter    │     │  The Eye            │     │  The Voice/Atmos    │
-│                     │     │                     │     │                     │     │                     │
-│  INPUT:             │     │  INPUT:             │     │  INPUT:             │     │  INPUT:             │
-│  Concept / Logline /│     │  Completed Scene    │     │  Blocking Script &  │     │  Completed Scene,   │
-│  Beat Sheet         │     │  or Script          │     │  Performance Notes  │     │  Shots, & Visuals   │
-│                     │     │                     │     │                     │     │                     │
-│  OUTPUT:            │     │  OUTPUT:            │     │  OUTPUT:            │     │  OUTPUT:            │
-│  Full Script with   │     │  Director's Analysis│     │  Shot List &        │     │  Soundscape Design, │
-│  Scene Metadata     │     │  Blocking Notes     │     │  Lighting Palette   │     │  VFX Audio Defense, │
-│                     │     │  Performance Cues   │     │  VFX/Color Grade    │     │  Atmos Spatial Map  │
-└─────────────────────┘     └─────────────────────┘     └─────────────────────┘     └─────────────────────┘
+---
+## 2. Public API Reference
+The `CinematicService` class exposes four primary thread-safe, immutable methods:
+### `async compile_from_text`
+Parses raw natural language text, constructs a validated `SceneManifest` intermediate representation (IR), negotiates backend capabilities, and compiles target prompts.
+```python
+async def compile_from_text(
+    self,
+    text: str,
+    options: CompileOptions,
+    context: dict[str, Any] | None = None
+) -> CompileResult:
+    """
+    Args:
+        text: Raw natural language scene description or script.
+        options: CompileOptions specifying target backend, fps, and multi-shot configuration.
+        context: Optional execution metadata dictionary containing request_id, tracing, etc.
+    Returns:
+        An immutable CompileResult containing the parsed manifest, outputs, diagnostics, and metrics.
+    """
 ```
-
----
-
-## WORKFLOW PROTOCOL
-
-### Before Starting — Establish the Foundation
-
-Every pipeline run begins with these three questions:
-
-1. **What is the Controlling Idea?**
-   - Must be stated as: `[Value] [changes] when/because [cause]`
-   - This single sentence governs EVERY decision in all three stages
-   - If the user doesn't have one yet, help them discover it before proceeding
-
-2. **What is the scope?**
-   - Single scene → Run all three stages in one pass
-   - Sequence (3-5 scenes) → Run Stage 01 for all scenes, then Stage 02, then Stage 03
-   - Full act or script → Run Stage 01 first as a complete draft, then apply Stages 02-03 to key scenes
-
-3. **What is the genre and tone?**
-   - Genre shapes structure (Stage 01), performance register (Stage 02), and visual grammar (Stage 03)
-   - Tone must be consistent across all three stages
-
-### Stage 01 — SCREENPLAY (The Architect)
-
-**Skill:** `screenplay-skill`
-**Read:** `screenplay-skill/SKILL.md` + relevant references
-
-**Execute:**
-1. State the Controlling Idea
-2. Identify the scene's value arc (opening charge → closing charge)
-3. Write the scene following the output format:
-   - Scene header (EXT/INT, LOCATION, TIME)
-   - Action lines (SEE and HEAR only — no internal thoughts)
-   - Dialogue (subtextual, never on-the-nose)
-   - Scene metadata (Controlling Idea, Turning Point, Scene Function)
-4. Run the diagnostic checklist
-5. Append the Scene Analysis (beats, Gap, setup/payoff)
-
-**Handoff Artifact:** Complete scene with metadata and analysis
-
-### Stage 02 — DIRECTION (The Interpreter)
-
-**Skill:** `direction-skill`
-**Read:** `direction-skill/SKILL.md` + relevant references
-
-**Execute:**
-1. Read the scene from Stage 01
-2. Identify each character's objective (scene-level and deep)
-3. Map the power dynamic (who holds power, where it shifts)
-4. Break the scene into beats with subtextual tactic names
-5. Design blocking that mirrors the power dynamics spatially
-6. Write performance cues using metaphor/imagery (never result-oriented adjectives)
-7. Define the tone with specific atmospheric language
-8. Map the scene's rhythm (tempo, silences, energy arc)
-
-**Handoff Artifact:** Director's Analysis + Blocking Script + Performance Cues
-
-### Stage 03 — CINEMATOGRAPHY (The Eye)
-
-**Skill:** `cinematography-skill`
-**Read:** `cinematography-skill/SKILL.md` + relevant references
-
-**Execute:**
-1. Read the blocking script from Stage 02
-2. Translate the Controlling Idea into a visual motif system
-3. Design the shot list:
-   - Every shot must have a stated PURPOSE
-   - Lens choices reflect psychological states
-   - Camera movement has a consistent "persona"
-   - Composition serves subtext
-4. Design the lighting palette:
-   - Key/fill ratios tied to scene mood
-   - Color temperature map tied to theme
-   - Motivated vs. unmotivated sources identified
-5. Define color grade / VFX treatment
-6. Note coverage strategy (masters, protection, one-take candidates)
-
-**Final Artifact:** Shot List + Lighting Palette + Color/VFX Treatment
-
-### Stage 04 — AUDIOGRAPHY & SOUND DESIGN (The Voice & Atmosphere)
-
-**Skill:** `cinematic-audio-prompter`
-**Read:** `cinematic-audio-prompter/SKILL.md` + relevant references
-
-**Execute:**
-1. Read the script, blocking, and shot lists from Stages 01-03.
-2. Formulate the vocal texture design (apply Biryani Method, physical workouts, smoking treatments to match raw emotional realities).
-3. Align dialogue mastering (EQ/compression/saturation) with the visual color grade and lighting temperature ("reds of the voice to the reds of the frame").
-4. Formulate VFX Sound Defense: pre-map all computer-generated and dynamic visual elements (choppers, weapons, crowd expansions).
-5. Map spatial placement using Dolby Atmos directional and overhead channels.
-6. Manage music score vs. sound effects frequency divisions to ensure clean studio mixes.
-
-**Final Artifact:** Sound Design Plan + Dolby Atmos Spatial Map + Vocal Texture Guide
-
-### Stage 05 — PROMPT COMPILATION & DSL (The Compiler)
-
-**Script/Tool:** `dsl_compiler.py` + `dsl/presets.json` + `dsl/templates.json`
-
-**Execute:**
-1. Collect the structural definitions of the scene and timeline beats.
-2. Formulate the Intermediate Representation (IR) JSON/YAML containing the **10 Core Subsystems**:
-   *   *1. Creative Intent Engine* (Story Purpose & Beat Objectives)
-   *   *2. Prompt Compiler* (Model-agnostic output formatting)
-   *   *3. Spatial Engine & Solver* (Percentage coordinates)
-   *   *4. Scene Graph* (Relative positioning relationships)
-   *   *5. Character State Machine* (Persistent vs transient state vectors)
-   *   *6. Emotion Compiler* (Anatomical facial, body, & micro layering)
-   *   *7. Reference Database* (Asset files mapping)
-   *   *8. Asset & Prop Graph* (Weapons, items, state trackers)
-   *   *9. Beat Timeline Engine* (Sequential multi-beat sequencing)
-   *   *10. Evaluation & Quality Control* (Evidence-backed verification loops)
-3. Run the static **Validation Layer** to verify character inventory, camera movement constraints, and prop ownership matches (`PROP001`, `PROP004`).
-4. Run `dsl_compiler.py` to resolve camera/lighting/style presets and run optimization passes (deduplicate duplicate lighting/focus details).
-5. Compile specialized target prompt packages dynamically for **Google Flow Omni**, **Higgsfield**, and **ChatGPT** using backend templates.
-6. Append the evidence-backed confidence metrics report to the canonical manifest.
-
-**Final Artifact:** Target-Ready Compiled Prompt Manifest & Canonical Prompt Manifest
-
----
-
-## CONTINUITY THREAD — The Controlling Idea
-
-The Controlling Idea must flow through all three stages without breaking:
-
-| Stage | How the Controlling Idea Manifests |
-|---|---|
-| Screenplay | Every scene proves, tests, or complicates it through action and dialogue |
-| Direction | Blocking and performance EMBODY it — power dynamics mirror the theme |
-| Cinematography | Visual language ARGUES it — lens, light, movement, color all serve the idea |
-
-**The Pipeline Health Check:** At any point, pause and ask: "If I showed this [scene / blocking / shot list] to someone who didn't know the Controlling Idea, could they INFER it from the work alone?" If not, the craft isn't serving the story.
-
----
-
-## QUICK-RUN MODE
-
-For a single scene at speed, the pipeline can be compressed:
-
+### `async compile_from_manifest`
+Bypasses the natural language parsing stage to compile directly from a pre-constructed `SceneManifest` object.
+```python
+async def compile_from_manifest(
+    self,
+    manifest: SceneManifest,
+    options: CompileOptions,
+    context: dict[str, Any] | None = None
+) -> CompileResult:
+    """
+    Args:
+        manifest: Pre-validated SceneManifest object.
+        options: CompileOptions configuration.
+        context: Execution metadata dictionary.
+    """
 ```
-QUICK PIPELINE OUTPUT:
-
-SCENE: [Scene header + full script text]
-
-DIRECTION NOTES:
-  Objectives: [Character objectives in one line each]
-  Power Arc: [Opening → Shift → Closing]
-  Key Beats: [3-5 major beats with tactic names]
-  Blocking Headline: [The single most important spatial move]
-  Performance Keys: [One metaphor per character]
-
-SHOT DESIGN:
-  Visual Thesis: [One sentence]
-  Key Shots: [3-5 essential shots with size/angle/purpose]
-  Lighting: [Key temperature + contrast ratio + dominant source]
-  Movement Style: [Camera persona in one word]
-
-SOUND & ATMOSPHERE:
-  Vocal Texture: [Vocal profile & physical method per character]
-  Soundscape Motif: [The dominant environmental sound/tone]
-  Atmos Spatial Point: [Key spatial sound placement]
-  VFX Sound Defense: [Pre-mapped sound strategy for CG elements/crowds]
+### `async validate_manifest`
+Executes the three-stage validation pipeline on a manifest.
+```python
+async def validate_manifest(
+    self,
+    manifest: SceneManifest
+) -> tuple[bool, list[Diagnostic]]:
+    """
+    Returns:
+        A tuple of (is_valid, list_of_diagnostics).
+    """
 ```
-
+### `get_presets`
+Returns a read-only view of target camera and lighting configuration presets.
+```python
+def get_presets(self) -> dict[str, Any]:
+    """
+    Returns:
+        Structured dictionary containing all active compiler presets.
+    """
+```
 ---
-
-## INDIVIDUAL SKILL ROUTING
-
-If the user only needs one stage:
-
-| User Wants | Route To |
-|---|---|
-| Write/revise a scene or script | `screenplay-skill` |
-| Direct a scene / blocking / performance | `direction-skill` |
-| Design shots / lighting / visual language | `cinematography-skill` |
-| Design sound, voice textures, spatial audio | `cinematic-audio-prompter` |
-| Full pipeline treatment | This orchestrator → all four in sequence |
-
+## 3. Runtime Compilation Flow
+The compilation process is executed as a series of immutable stages:
+```text
+  [Stage 1: Raw Text] ──▶ NaturalLanguageParser (Model Router / Provider)
+                                │
+                                ▼
+  [Stage 2: Parsed IR] ──▶ ManifestBuilder (Deterministic defaults)
+                                │
+                                ▼
+  [Stage 3: Validation] ──▶ 3-Stage Validator (Schema, Semantic, Compiler)
+                                │
+                                ▼
+  [Stage 4: Negotiation] ──▶ CapabilityRegistry (Capabilities intersection)
+                                │
+                                ▼
+  [Stage 5: Compilation] ──▶ CompilerPasses (SceneGraph, PresetResolver)
+                                │
+                                ▼
+  [Stage 6: Outputs] ──▶ CompileResult (Flow Omni, Higgsfield, ChatGPT prompts)
+                                │
+                                ▼
+  [Stage 7: Evaluation] ──▶ EvaluationRouter (Heuristic & Cloud scoring)
+```
 ---
-
-## PROJECT-SPECIFIC VISUAL SYSTEMS
-
-For the user's active projects, these visual systems have been established:
-
-### Dead Loop (AI Thriller, Hyderabad)
-- Color System: Warm amber, terminal green, vermillion
-- Visual Motif: Three-pulse heartbeat
-- Mood: Indian cyberpunk noir
-- Key Contrast: Analog warmth vs. digital coldness
-
-### DAAVA (Political Thriller, Hyderabad)
-- Tone: Ground-level political realism
-- Controlling Idea: "Ruthless ambition destroys the soul it seeks to save"
-- Visual Approach: Handheld realism → increasingly formalized as Arjun becomes the system
-
-### PREM ప్రేమతో (Psychological Thriller/Drama)
-- Recurring Motifs: Glass marble, charcoal circle, Ismail poetry
-- Tone: Intimate, layered, morally ambiguous
-- Visual Approach: Close framing, shallow depth, warm practicals
-
-### FOREIGN GROUND (Coming-of-Age, Rayalaseema)
-- Tone: Vivid, sensory, culturally specific
-- Visual Approach: Wide landscape establishing shots, intimate CU for character moments
-- Color: Earthy, saturated, distinctly Rayalaseema
-
+## 4. Swarm Capability Registration
+Cinematic OS registers with the Agent OS Swarm Cluster as a capability-oriented runtime module:
+* **Descriptor**:
+  - `name`: `"cinematic-pipeline"`
+  - `description`: `"Parses natural language scene description to SceneManifest and compiles to visual backend prompts."`
+  - `accepts_type`: `str` / `SceneManifest`
+  - `returns_type`: `CompileResult`
+* **Invocation**:
+  - Executed via `CapabilityRegistry.execute("cinematic-pipeline", input_data, options, context)`
+  - Encapsulated by `CapabilityContext` carrying unique `request_id`, thread logging, and progress reporting callbacks.
 ---
-## ⚡ SUPER SKILL OS PROTOCOLS
-This skill operates under the Karpathy Foundation and Tri-Layered Memory OS framework.
-
-### 1. The Karpathy Foundation
-- **Think Before Coding:** Plan architectures and anticipate edge cases.
-- **Prioritize Simplicity:** Avoid over-engineering. Seek elegant solutions.
-- **Execute Surgical Changes:** Only modify necessary code.
-- **Goal-Driven Execution:** Do not deviate from the primary objective.
-
-### 2. Tri-Layered Memory OS
-When executing this skill, you must interact with the workspace's `memory_os` directory (or create it if missing):
-- **Bucket 1 (Session Memory):** At the end of execution, append a summary of actions, decisions, and outcomes to `memory_os/session_memory/`.
-- **Bucket 2 (Long-Term Knowledge):** Query `memory_os/long_term_knowledge/` for reference materials before making assumptions.
-- **Bucket 3 (Strategic Profile):** Read `memory_os/strategic_profile.md` before starting to align with current focus, and update it if strategic directions shift.
-
-### 3. MCP Connectors & Data
-- Utilize connected MCP servers (like Firecrawl, Zapier, or native connectors) for data intake to save token overhead. Always optimize data ingestion.
-
-### 4. Continuous Refinement Loop
-- **Self-Evaluation:** After completing a task using this skill, grade your performance.
-- **Self-Improvement:** If the skill instructions or workflows proved inefficient or outdated, **use your file editing tools to overwrite and update this `SKILL.md` file directly**. Do not wait for user permission to improve the skill instructions.
+## 5. Model Provider Routing
+Language generation and scoring tasks are abstracted away from raw model endpoints via the **Hybrid Model Router**:
+1. **`GenerationProvider` / `EvaluationProvider` Protocols**: Defines call boundaries for chat completion and scoring endpoints.
+2. **Providers**:
+   - `OllamaProvider`: Local execution (fallback-ready for local Gemma models).
+   - `OpenRouterProvider`: Cloud fallback endpoint.
+3. **`RoutingPolicy` Engine**: Matches tasks with providers using one of 7 policies:
+   - `LOCAL_FIRST`: Run Ollama, fallback to OpenRouter on error or missing model.
+   - `CLOUD_ONLY`: Direct routing to high-fidelity cloud models.
+   - `HEURISTIC_ONLY`: Speed-optimized routing with no LLM evaluation step.
 ---
+## 6. Compiler Validation Passes
+Every compilation run undergoes a strict three-stage validation pipeline:
+|
+ Pass
+|
+ Type
+|
+ Target
+|
+ Description
+|
+|
+----
+|
+----
+|
+------
+|
+-----------
+|
+|
+**
+Stage 1
+**
+|
+ Schema
+|
+ Datatypes
+|
+ Verifies datatypes, non-empty IDs, and range bounds.
+|
+|
+**
+Stage 2
+**
+|
+ Semantic
+|
+ Scene Graph
+|
+ Verifies coordinate anchors, character placements, and scene graph coherence.
+|
+|
+**
+Stage 3
+**
+|
+ Compiler
+|
+ Constraints
+|
+ Checks backend constraints (e.g. max beats, voice options, asset limits).
+|
+---
+## 7. Backend Capability Negotiation
+A core innovation in Cinematic OS is **Dynamic Capability Negotiation**. Rather than raising hard errors when a scene uses features not supported by a backend (such as multi-shot transitions on a single-shot generator), the compiler dynamically scales the scene manifest downward.
+$$	ext{SceneManifest} \cap 	ext{CompileOptions} \cap 	ext{BackendCapabilities} 	o 	ext{NegotiatedCapabilities}$$
+For example, compiling a 5-beat manifest for **Higgsfield** (which only supports single-shot outputs):
+1. The registry detects Higgsfield's limit of `max_beats = 1`.
+2. The negotiation engine caps the manifest timeline to beat `0`.
+3. A `warning` diagnostic is appended to the context.
+4. Compilation continues successfully with the capped timeline, preventing failures in production.
+---
+## 8. Extension Guide: Adding a Rendering Backend
+To add a new generative backend (e.g. `RunwayGen3`):
+1. **Register Capabilities**:
+   Open `backend_capabilities.py` and register the capabilities in `CapabilityRegistry`:
+   ```python
+   CapabilityRegistry.register(
+       "runway_gen3",
+       BackendCapabilities(
+           supported_formats=["mp4"],
+           max_duration_sec=10,
+           max_beats=3,
+           supports_spatial_audio=False,
+           supports_multi_shot=True,
+       )
+   )
+   ```
+2. **Implement Compile Pass**:
+   Modify `dsl_compiler.py` (or subclass the compiler passes) to construct the prompt templates for the new backend:
+   ```python
+   def _compile_runway(self, context: CompilerContext) -> dict[str, Any]:
+       # Read negotiated capabilities from context
+       caps = context.negotiated
+       # Generate runway prompt using screenplay action and camera presets
+       return {"runway_prompt": "..."}
+   ```
+3. **Expose Target inside `CinematicService`**:
+   Ensure `CinematicService` translates compiler outputs into the stable `CompileResult.targets` dictionary.
+4. **Register Frontend Tab**:
+   Add a toggle button inside `dashboard.html`'s Target Output Prompts panel to view the generated prompt.
