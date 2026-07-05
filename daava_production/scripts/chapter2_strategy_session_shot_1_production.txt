@@ -1,0 +1,12 @@
+**SHOT TYPE**: Medium Shot, 14mm Ultra-Wide.
+**AESTHETIC**: Industrial Noir. Cyber-Brutalist office with exposed concrete and glass whiteboard. 
+**CHARACTER**: ARJUN VARMA (Arjun from @image1) sitting at a desk. He wears an industrial orange pressurized jumpsuit (#E67E22) and deep blue tactical harness (#2C3E50). High-fidelity weathering on the suit.
+**LIGHTING**: High-contrast Chiaroscuro. Warm golden rim light (#F39C12) from a window behind him. Subtle cyan neon flicker (#00FFFF) from below reflecting on the walls.
+**ACTION**: Arjun grips a weathered notebook on the desk, looking intensely at KIRAN (out of frame).
+**ENVIRONMENT**: Brutalist textures, dust motes in the light shaft, glowing teal markers on glass.
+
+[SURGICAL DNA LOCK]:
+- Character Physique: Athletic build
+- Base Suit Hex: #E67E22
+- Harness Hex: #2C3E50
+- Helmet Hex: #F1C40F
