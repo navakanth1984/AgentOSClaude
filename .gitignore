@@ -102,6 +102,22 @@ obsidian-vault/
 # Agent OS asset library DOM dumps (contain embedded third-party keys)
 agent_os/asset_library/*_dom.html
 
+# Agent OS asset library scratch (exports, test fixtures, downloaded models)
+agent_os/asset_library/*_export_*.html
+agent_os/asset_library/*_export_*.md
+agent_os/asset_library/*_export_*.docx
+agent_os/asset_library/*_export_*.pdf
+agent_os/asset_library/cmd_test*.txt
+agent_os/asset_library/native_test.txt
+agent_os/asset_library/http_cloud_test.txt
+agent_os/asset_library/test_out.txt
+agent_os/asset_library/rewritten_scene.txt
+agent_os/asset_library/daava_script_output_*.txt
+agent_os/asset_library/heisenberg_matrix_mechanics_illustration.txt
+agent_os/asset_library/ai_constraint_kpi_report.txt
+agent_os/asset_library/notebooklm_list_snapshot.html
+agent_os/asset_library/models/
+
 # Agent OS specific ignores
 agent_os/browser_session/
 agent_os/.graphify/
@@ -109,6 +125,9 @@ agent_os/*.log
 agent_os/*_log.json
 agent_os/*_err*.txt
 agent_os/*_out*.txt
+agent_os/headful*.txt
+agent_os/hl_diag.txt
+agent_os/reuse_test.txt
 agent_os/ngrok_url.txt
 agent_os/notebook_cache.json
 agent_os/pqc_keys/
@@ -123,6 +142,11 @@ agent_os/dashboard_debug.txt
 agent_os/dashboard_screenshot.png
 agent_os/neural_3d_screenshot.png
 agent_os/Screenshot *.png
+
+# Repo-root scratch/tool output
+/pyrefly_errors.txt
+/stress_history.json
+/test_cache/
 
 
 # Speech pipeline generated output
