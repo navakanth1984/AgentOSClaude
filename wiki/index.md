@@ -15,6 +15,7 @@
 - [Nth Dimension Academy](nth-dimension-academy.md) — Conversational AI teaching assistant on Google Cloud RAG.
 - [Nth Absolute Cinema](nth-absolute-cinema.md) — AI filmmaking Creative OS; five-graph compiler architecture; lives at `E:\nth-absolute-cinema\`, portable/hardware-adaptive by design.
 - [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
+- [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
 - [Workspace Productivity Upgrades](antigravity-upgrades.md) — Integration of four productivity upgrades (Roast, Verification, Handoff, Goals) into the self-improving KB.
