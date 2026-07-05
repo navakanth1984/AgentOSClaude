@@ -1720,6 +1720,81 @@ class AgentOSHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 self._send(500, {"error": str(e)})
 
+        elif path == "/execute":
+            # Body: {"prompt": "...", "mode": "mixture", "models": [...], "profile": "Best Overall",
+            #        "aggregation": "standard"}
+            prompt = str(body.get("prompt") or "").strip()
+            if not prompt:
+                self._send(400, {"error": "Missing 'prompt' field"})
+                return
+
+            mode = str(body.get("mode") or "mixture").strip()
+            models = body.get("models") or []
+            profile = str(body.get("profile") or "").strip() or None
+            aggregation = str(body.get("aggregation") or "standard").strip()
+
+            import threading
+            import uuid
+            from execution import ExecutionManager, ExecutionRequest
+
+            job_id = uuid.uuid4().hex[:8]
+            status_file = Path(__file__).parent / f"output/execute_{job_id}.json"
+            status_file.parent.mkdir(parents=True, exist_ok=True)
+
+            status_data = {
+                "job_id": job_id,
+                "status": "running",
+                "stage": "starting",
+                "per_model_status": {},
+                "error": None,
+                "result": None,
+            }
+            status_file.write_text(json.dumps(status_data), encoding="utf-8")
+
+            def status_cb(stage, detail):
+                status_data["stage"] = stage
+                if detail.get("model"):
+                    status_data["per_model_status"][detail["model"]] = detail.get("status", stage)
+                status_file.write_text(json.dumps(status_data), encoding="utf-8")
+
+            def bg_execute():
+                try:
+                    request = ExecutionRequest(
+                        prompt=prompt, mode=mode, models=models,
+                        profile=profile, aggregation=aggregation,
+                    )
+                    manager = ExecutionManager()
+                    result = asyncio.run(manager.execute(request, status_cb=status_cb))
+                    status_data["status"] = "failed" if result.get("error") else "completed"
+                    status_data["error"] = result.get("error")
+                    status_data["result"] = result
+                except Exception as ex:
+                    status_data["status"] = "failed"
+                    status_data["error"] = str(ex)
+                status_data["stage"] = "done"
+                status_file.write_text(json.dumps(status_data), encoding="utf-8")
+
+            threading.Thread(target=bg_execute, daemon=True).start()
+            self._send(200, {"job_id": job_id, "status": "running"})
+
+        elif path == "/execute/status":
+            # Body: {"job_id": "..."}
+            job_id = str(body.get("job_id") or "").strip()
+            if not job_id:
+                self._send(400, {"error": "Missing 'job_id' field"})
+                return
+
+            status_file = Path(__file__).parent / f"output/execute_{job_id}.json"
+            if not status_file.exists():
+                self._send(404, {"error": f"Job {job_id} not found"})
+                return
+
+            try:
+                data = json.loads(status_file.read_text(encoding="utf-8"))
+                self._send(200, data)
+            except Exception as e:
+                self._send(500, {"error": str(e)})
+
         elif path == "/swarm":
             # Parallel sub-agent deep research + NotebookLM integration
             # Body: {"topic": "...", "model": "anthropic/claude-sonnet-4.6", "auto_notebooklm": false}

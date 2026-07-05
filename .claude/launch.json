@@ -47,6 +47,31 @@
       "runtimeArgs": ["serve", "tdh-bluff", "--no-clipboard"],
       "autoPort": true,
       "port": 5504
+    },
+    {
+      "name": "agent-os-dashboard",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "agent_os", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5505
+    },
+    {
+      "name": "agent-os-server",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-3", "agent_os/server.py"],
+      "port": 8765
+    },
+    {
+      "name": "nac-director-studio",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-3", "-m", "uvicorn", "dashboard.server:app", "--app-dir", "E:\\nth-absolute-cinema", "--host", "127.0.0.1", "--port", "8421"],
+      "port": 8421
+    },
+    {
+      "name": "nac-director-studio-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "E:\\nth-absolute-cinema\\frontend"],
+      "port": 5173
     }
   ]
 }
