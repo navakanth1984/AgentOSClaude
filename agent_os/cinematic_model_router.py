@@ -344,6 +344,7 @@ class OpenRouterProvider:
                 f"OpenRouter HTTP {e.code}: {body_text[:200]}",
                 self.provider_id,
                 retryable=retryable,
+                status_code=e.code,
             ) from e
         except Exception as e:
             raise ProviderError(f"OpenRouter error: {e}", self.provider_id, retryable=True) from e
@@ -370,16 +371,20 @@ class OpenRouterProvider:
                 return await self._generate_with_model(model, prompt, output_schema, ctx)
             except ProviderError as exc:
                 last_error = exc
-                # Only continue fallback on 404 (model gone) or 5xx
-                is_404 = "HTTP 404" in str(exc)
-                is_5xx = any(f"HTTP {c}" in str(exc) for c in (500, 502, 503, 504))
-                if is_404 or is_5xx:
+                # Continue fallback only on 404 (model gone) or transient 5xx.
+                # Non-recoverable errors (401 Unauthorized, 400 Bad Request, etc.) surface immediately.
+                if exc.status_code == 404 or exc.status_code in (500, 502, 503, 504):
                     logger.debug(
                         "OpenRouter fallback triggered",
-                        extra={"failed_model": model, "reason": str(exc)[:120], "timestamp": time.time()},
+                        extra={
+                            "failed_model": model,
+                            "status_code": exc.status_code,
+                            "reason": str(exc)[:120],
+                            "timestamp": time.time(),
+                        },
                     )
                     continue
-                raise  # surface non-recoverable errors (401, 400, …) immediately
+                raise  # surface non-recoverable errors immediately
 
         raise last_error or ProviderError(
             "All OpenRouter models failed", self.provider_id, retryable=False
