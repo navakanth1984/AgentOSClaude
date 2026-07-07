@@ -22,6 +22,7 @@ from .executors.single import SingleExecutor
 from .executors.swarm import SwarmExecutor
 from .executors.mixture import MixtureExecutor
 from .executors.debate import DebateExecutor
+from .executors.tau_executor import TauExecutor
 from .executors.auto import AutoPlanner
 from .routing import ExecutionPlan, PlanningResult
 import dataclasses
@@ -47,6 +48,7 @@ class ExecutionManager:
             ExecutionMode.SWARM:   SwarmExecutor(),
             ExecutionMode.MIXTURE: MixtureExecutor(),
             ExecutionMode.DEBATE:  DebateExecutor(),
+            ExecutionMode.TAU:     TauExecutor(),
         }
         self._planner = AutoPlanner()
 
