@@ -227,6 +227,149 @@ class OllamaProvider:
 
 
 # ---------------------------------------------------------------------------
+# GeminiProvider — direct calls to Google Gemini API
+# ---------------------------------------------------------------------------
+
+class GeminiProvider:
+    """
+    Calls Google's direct Gemini API via AI Studio.
+    One provider, many models — model is selected per-call via context["model"].
+    """
+
+    provider_id = "gemini_direct"
+
+    def __init__(self, config: GeminiConfig | None = None, default_model: str = ""):
+        self.config = config or GeminiConfig(
+            api_key=os.getenv("GEMINI_API_KEY", ""),
+        )
+        self._default_model = default_model or self.config.model
+        self._last_health: ProviderHealth | None = None
+        self._health_cache_ttl_s: float = 30.0
+
+    @property
+    def _api_key(self) -> str:
+        if not self.config.api_key:
+            raise ProviderError(
+                "GEMINI_API_KEY not set. Provide it in .env or environment.",
+                self.provider_id,
+                retryable=False,
+            )
+        return self.config.api_key
+
+    async def generate(
+        self,
+        prompt: str,
+        output_schema: dict[str, Any] | None = None,
+        context: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Call Gemini API directly using urllib."""
+        import urllib.request
+        import urllib.error
+
+        ctx = context or {}
+        model = ctx.get("model", self._default_model)
+        temperature = ctx.get("temperature", 0.3)
+        max_tokens = ctx.get("max_tokens", 2048)
+        system_prompt = ctx.get("system_prompt", "You are a cinematic scene IR compiler.")
+
+        # API endpoint formatting (Google API structure)
+        # v1beta /models/gemini-2.0-flash:generateContent
+        url = f"{self.config.base_url}/models/{model}:generateContent?key={self._api_key}"
+
+        contents = [{"parts": [{"text": prompt}]}]
+        system_instruction = {"parts": [{"text": system_prompt}]}
+
+        payload: dict[str, Any] = {
+            "contents": contents,
+            "systemInstruction": system_instruction,
+            "generationConfig": {
+                "temperature": temperature,
+                "maxOutputTokens": max_tokens,
+            }
+        }
+
+        # Handle structured outputs
+        if output_schema:
+            payload["generationConfig"]["responseMimeType"] = "application/json"
+            payload["generationConfig"]["responseSchema"] = output_schema
+
+        headers = {
+            "Content-Type": "application/json",
+        }
+
+        try:
+            req_data = json.dumps(payload).encode()
+            req = urllib.request.Request(url, data=req_data, method="POST", headers=headers)
+            with urllib.request.urlopen(req, timeout=self.config.timeout_s) as resp:
+                body = json.loads(resp.read())
+
+            candidates = body.get("candidates", [])
+            if not candidates:
+                raise ProviderError("Gemini returned empty candidates list", self.provider_id, retryable=False)
+
+            raw_content = candidates[0]["content"]["parts"][0]["text"]
+            try:
+                content = json.loads(raw_content) if isinstance(raw_content, str) else raw_content
+            except json.JSONDecodeError:
+                content = raw_content
+
+            usage = body.get("usageMetadata", {})
+            # Map usage keys to match standard outputs
+            standard_usage = {
+                "prompt_tokens": usage.get("promptTokenCount", 0),
+                "completion_tokens": usage.get("candidatesTokenCount", 0),
+            }
+
+            logger.info(
+                "Gemini Direct generation success",
+                extra={
+                    "model": model,
+                    "provider": self.provider_id,
+                    "prompt_tokens": standard_usage["prompt_tokens"],
+                    "completion_tokens": standard_usage["completion_tokens"],
+                    "timestamp": time.time(),
+                },
+            )
+            return {
+                "content": content,
+                "provider": self.provider_id,
+                "model": model,
+                "usage": standard_usage,
+            }
+        except urllib.error.HTTPError as e:
+            body_text = e.read().decode(errors="ignore") if e.fp else ""
+            retryable = e.code in (429, 500, 502, 503, 504)
+            raise ProviderError(
+                f"Gemini Direct HTTP {e.code}: {body_text[:200]}",
+                self.provider_id,
+                retryable=retryable,
+                status_code=e.code,
+            ) from e
+        except Exception as e:
+            raise ProviderError(f"Gemini Direct error: {e}", self.provider_id, retryable=True) from e
+
+    async def health_check(self) -> ProviderHealth:
+        """Cache-aware check. True if API key is populated."""
+        if (
+            self._last_health is not None
+            and time.time() - self._last_health.last_checked < self._health_cache_ttl_s
+        ):
+            return self._last_health
+
+        available = bool(self.config.api_key)
+        health = ProviderHealth(
+            provider_id=self.provider_id,
+            available=available,
+            latency_ms=0.0,
+            cost_per_1k_tokens=0.00015,
+            error_rate=0.0,
+            last_checked=time.time(),
+        )
+        self._last_health = health
+        return health
+
+
+# ---------------------------------------------------------------------------
 # OpenRouterProvider — cloud models via OpenRouter
 # ---------------------------------------------------------------------------
 
@@ -246,6 +389,8 @@ class OpenRouterProvider:
             api_key=os.getenv("OPENROUTER_API_KEY", ""),
         )
         self._default_model = default_model or self.config.generation_model
+        self._last_health: ProviderHealth | None = None
+        self._health_cache_ttl_s: float = 30.0
 
     @property
     def _api_key(self) -> str:
@@ -391,9 +536,15 @@ class OpenRouterProvider:
         )
 
     async def health_check(self) -> ProviderHealth:
-        """Available if API key is set. Skip network round-trip to avoid blocking the async loop."""
+        """Cache-aware health check. True if API key is set."""
+        if (
+            self._last_health is not None
+            and time.time() - self._last_health.last_checked < self._health_cache_ttl_s
+        ):
+            return self._last_health
+
         available = bool(self.config.api_key)
-        return ProviderHealth(
+        health = ProviderHealth(
             provider_id=self.provider_id,
             available=available,
             latency_ms=0.0,
@@ -401,6 +552,8 @@ class OpenRouterProvider:
             error_rate=0.0,
             last_checked=time.time(),
         )
+        self._last_health = health
+        return health
 
 
 # ---------------------------------------------------------------------------
@@ -599,13 +752,24 @@ class HybridGenerationRouter:
     def from_env(cls, policy: RoutingPolicy | None = None) -> "HybridGenerationRouter":
         """
         Create a production router from environment variables.
-        Always includes HeuristicProvider as zero-cost fallback.
-        OllamaProvider is included but will degrade gracefully if not running.
+        Order is configured dynamically via MODEL_PROVIDER_ORDER.
         """
-        providers: list[GenerationProvider] = [
-            OllamaProvider(),
-            OpenRouterProvider(),
-        ]
+        order_str = os.getenv("MODEL_PROVIDER_ORDER", "ollama,gemini,openrouter")
+        provider_names = [p.strip().lower() for p in order_str.split(",") if p.strip()]
+
+        providers: list[GenerationProvider] = []
+        for name in provider_names:
+            if name == "ollama":
+                providers.append(OllamaProvider())
+            elif name == "gemini":
+                providers.append(GeminiProvider())
+            elif name == "openrouter":
+                providers.append(OpenRouterProvider())
+
+        # Zero-cost local fallback option is always present at the end if none match
+        if not providers:
+            providers = [OllamaProvider(), OpenRouterProvider()]
+
         return cls(providers=providers, policy=policy)
 
     @classmethod
@@ -825,6 +989,7 @@ def _self_test() -> None:
     # 6. Protocol satisfaction
     from router_protocol import GenerationProvider, EvaluationProvider
     assert isinstance(OllamaProvider(), GenerationProvider)
+    assert isinstance(GeminiProvider(), GenerationProvider)
     assert isinstance(OpenRouterProvider(), GenerationProvider)
     assert isinstance(CloudEvaluationProvider(), EvaluationProvider)
     assert isinstance(HeuristicEvaluationProvider(), EvaluationProvider)
