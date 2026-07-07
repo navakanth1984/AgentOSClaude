@@ -5,8 +5,8 @@ Delegates to TaskClassifier and RoutingPolicy. Does not execute prompts,
 aggregate responses, or contain provider-specific logic.
 """
 
-from agent_os.execution.executors.base import ExecutionRequest
-from agent_os.execution.routing import (
+from .base import ExecutionRequest
+from ..routing import (
     ExecutionPlan,
     PlanningResult,
     RoutingContext,
