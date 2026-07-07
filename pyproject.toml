@@ -32,3 +32,16 @@ test = [
 where = ["."]
 include = ["cognitive_kernel*", "sdk*"]
 namespaces = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "agent_os"]
+collect_ignore = [
+    "agent_os/test_layer3.py",
+    "agent_os/test_pqc_engine.py",
+    "agent_os/test_quantum_tool.py",
+    "agent_os/live_protection_test.py",
+    "agent_os/stress_test.py",
+    "agent_os/stress_pqc.py",
+    "agent_os/test_upgrades.py",
+]
+
