@@ -42,6 +42,7 @@ jobs:
           --ignore-missing-imports onnxruntime
           --ignore-missing-imports piper
           --ignore-missing-imports piper.config
+          --ignore-missing-imports piper.voice
           --ignore-missing-imports psutil
           --ignore-missing-imports sarvamai
           --ignore-missing-imports docx
