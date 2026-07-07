@@ -1,21 +1,35 @@
 """
-AutoExecutor — stub. Interface only, per plan Phase 3.
+AutoMode — planner interface that generates ExecutionPlans.
 
-`AutoPlanner.plan(request) -> ExecutionPlan` is the intended shape: a task-type
-classifier decides which mode + model team to use, then dispatches to that
-executor. Defining the interface now means no API changes are needed later,
-per the plan's explicit Phase-3 deferral — do not implement the classifier
-body until Phase 1/2 usage data exists to justify it.
+Delegates to TaskClassifier and RoutingPolicy. Does not execute prompts,
+aggregate responses, or contain provider-specific logic.
 """
 
-from .base import ExecutionRequest, StatusCallback
+from .base import ExecutionRequest
+from ..routing import (
+    ExecutionPlan,
+    PlanningResult,
+    RoutingContext,
+    TaskClassifier,
+    DeterministicRoutingPolicy,
+)
 
 
 class AutoPlanner:
-    def plan(self, request: ExecutionRequest):
-        raise NotImplementedError("Auto mode's task classifier is not implemented yet (Phase 3).")
+    """Pure planner that determines the execution strategy based on policy."""
+    
+    def __init__(self, classifier=None, policy=None):
+        self.classifier = classifier or TaskClassifier()
+        self.policy = policy or DeterministicRoutingPolicy()
 
+    def plan(self, request: ExecutionRequest) -> PlanningResult:
+        category = self.classifier.classify(request)
+        context = RoutingContext(
+            request=request, 
+            category=category, 
+            classifier_version=getattr(self.classifier, "VERSION", "unknown"),
+            capabilities=frozenset()
+        )
+        plan = self.policy.route(context)
+        return PlanningResult(plan=plan)
 
-class AutoExecutor:
-    async def execute(self, request: ExecutionRequest, status_cb: StatusCallback = None) -> dict:
-        raise NotImplementedError("Auto execution mode is not implemented yet (Phase 3).")

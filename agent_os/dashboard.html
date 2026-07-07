@@ -1185,6 +1185,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
         <input type="radio" name="exec-mode" value="mixture" onchange="onExecModeChange()" style="width:auto" /> Mixture of Agents
       </label>
+      <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+        <input type="radio" name="exec-mode" value="debate" onchange="onExecModeChange()" style="width:auto" /> Multi-Model Debate
+      </label>
     </div>
 
     <div id="swarm-classic-panel">
@@ -1244,6 +1247,10 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
             <option value="standard" selected>⭐ Standard</option>
             <option value="verified">🛡 Verified</option>
           </select>
+        </div>
+        <div id="debate-rounds-container" style="display:none;width:100px">
+          <label>Rounds</label>
+          <input id="mix-rounds" type="number" min="1" max="5" value="2" style="width:100%" />
         </div>
         <div>
           <label>&nbsp;</label>
@@ -2162,13 +2169,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;paddi
             <option value="local:qwen2.5:32b">Qwen 2.5 32B (local)</option>
             <option value="local:deepseek-r1:8b">DeepSeek R1 8B (local)</option>
           </optgroup>
+          <optgroup label="☁ Cloud — Direct APIs">
+            <option value="gemini_direct:gemini-2.0-flash">Gemini 2.0 Flash (Direct)</option>
+          </optgroup>
           <optgroup label="☁ Cloud — OpenRouter">
             <option value="cloud:google/gemma-4-31b-it:free">Gemma 4 31B (free)</option>
             <option value="cloud:google/gemma-4-26b-a4b-it:free">Gemma 4 26B MoE (free)</option>
             <option value="cloud:moonshotai/kimi-k2.6:free">Kimi K2.6 (free)</option>
             <option value="cloud:nvidia/nemotron-3-super-120b-a12b:free">Nemotron 120B (free)</option>
             <option value="cloud:google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (free)</option>
-            <option value="cloud:google/gemini-flash-1.5">Gemini Flash 1.5</option>
+            <option value="cloud:~google/gemini-flash-latest" selected>Gemini Flash (Latest — auto)</option>
             <option value="cloud:google/gemini-2.5-flash">Gemini 2.5 Flash</option>
             <option value="cloud:anthropic/claude-haiku-4-5-20251001">Claude Haiku 4.5 (fast)</option>
             <option value="cloud:anthropic/claude-sonnet-4-5">Claude Sonnet 4.5</option>
@@ -2870,7 +2880,9 @@ function toggleAgent(i) {
 function onExecModeChange() {
   const mode = document.querySelector('input[name="exec-mode"]:checked').value;
   el("swarm-classic-panel").style.display = (mode === "swarm") ? "" : "none";
-  el("mixture-panel").style.display = (mode === "mixture") ? "" : "none";
+  el("mixture-panel").style.display = (mode !== "swarm") ? "" : "none";
+  el("debate-rounds-container").style.display = (mode === "debate") ? "" : "none";
+  el("mix-btn").textContent = (mode === "debate") ? "▶ Run Debate" : "▶ Run Mixture";
 }
 
 // ── Mixture of Agents ─────────────────────────────────────────────
@@ -2879,17 +2891,23 @@ async function runMixture() {
   if (!prompt) { showToast("Enter a prompt first.", "warning"); return; }
   const profile = el("mix-profile").value;
   const aggregation = el("mix-aggregation").value;
+  const mode = document.querySelector('input[name="exec-mode"]:checked').value;
 
   const btn = el("mix-btn"); btn.disabled = true;
   el("mix-final-pane").className = "output running";
   el("mix-final-pane").textContent = "";
   el("mix-agents").innerHTML = "";
   el("mix-timeline").innerHTML = "";
-  el("mix-status").innerHTML = '<span class="spinner"></span> Running mixture of agents…';
+  el("mix-status").innerHTML = `<span class="spinner"></span> Running ${mode === "debate" ? "debate" : "mixture of agents"}…`;
   el("mix-progress").textContent = "";
 
   try {
-    const start = await apiPost("/execute", { prompt, mode: "mixture", profile, aggregation });
+    let payload = { prompt, mode, profile, aggregation };
+    if (mode === "debate") {
+      const rounds = parseInt(el("mix-rounds").value) || 2;
+      payload.routing_trace = { metadata: { rounds: rounds } };
+    }
+    const start = await apiPost("/execute", payload);
     if (start.error) { throw new Error(start.error); }
     const jobId = start.job_id;
 

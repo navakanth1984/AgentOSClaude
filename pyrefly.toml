@@ -23,4 +23,4 @@ search-path = [
     "crp",
     "E:\\nth-absolute-cinema",
 ]
-python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+python-interpreter-path = "C:\\Users\\navka\\navakanth001\\.venv\\Scripts\\python.exe"

@@ -124,13 +124,27 @@ Requirements:
                 temperature=0.2
             )
         except Exception as e:
-            # Check if it's HTTPError 402 (Payment Required) or 404 (Not Found) or 429 (Too Many Requests)
             is_retryable_failure = False
-            if isinstance(e, urllib.error.HTTPError) and e.code in (402, 404, 429):
-                is_retryable_failure = True
+            retry_after_val = 0.0
+            if isinstance(e, urllib.error.HTTPError):
+                is_retryable_failure = e.code in (429, 500, 502, 503, 504)
+                retry_after_header = e.headers.get("Retry-After")
+                if retry_after_header:
+                    try:
+                        retry_after_val = float(retry_after_header)
+                    except ValueError:
+                        pass
             
-            if is_retryable_failure and active_model != "openrouter/free":
-                err_code = e.code if isinstance(e, urllib.error.HTTPError) else "Unknown"
+            # If it's a transient failure, back off before the next attempt loop
+            if is_retryable_failure:
+                import time
+                import random
+                sleep_dur = min(retry_after_val if retry_after_val > 0 else (2 ** attempt + random.uniform(0, 0.5)), 30.0)
+                log(f"Transient error ({e}). Sleeping for {sleep_dur:.2f}s before next attempt...")
+                time.sleep(sleep_dur)
+
+            if isinstance(e, urllib.error.HTTPError) and e.code in (402, 404, 429) and active_model != "openrouter/free":
+                err_code = e.code
                 log(f"Model '{active_model}' failed with HTTP {err_code}. Falling back to 'openrouter/free'...")
                 active_model = "openrouter/free"
                 try:
