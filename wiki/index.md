@@ -13,16 +13,26 @@
 - [Agentic Loops Architecture](agentic-loops-architecture.md) — Umbrella: self-updating agents, memory loops, RAG.
 - [Cognitive Runtime Platform (CRP)](cognitive-runtime-platform.md) — Measurement-first adaptive runtime with telemetry, replay, and representation selection.
 - [Nth Dimension Academy](nth-dimension-academy.md) — Conversational AI teaching assistant on Google Cloud RAG.
+- [MVCT MRP](mvct-mrp.md) — Minimum Research Product: event-sourced BKT tutor testing H1 (persistent state vs. stateless chatbot, 14-day Boolean Logic retention).
+  - ├── [M0 Infrastructure](mvct-mrp-core-m0-next-steps.md) — Azure deployment, BKT oracle, live DB migration. ✅
+  - ├── M1 Event Ingestion — Ingestion API, event sourcing, Serializable transactions. ✅
+  - ├── [M2 Robust Experience Platform](mvct-mrp-sprint3-next-steps.md) — API robustness, idempotency, React feed UI. ✅
+  - ├── [M3 Event-Driven Cognitive Infrastructure](mvct-mrp-core-sprint4.md) — Non-blocking EventBus, recommendation pipeline, pluggable cards, telemetry. ✅
+  - ├── [M4 Runtime Hardening](mvct-mrp-core-sprint5-next-steps.md) — EventBus ++/-- fix, CardRenderer ErrorBoundary, /telemetry/dlq + dashboard. ✅
+  - ├── [M5 H1 Experiment Harness](mvct-mrp-core-h1-next-steps.md) — Outcome logger, arm assignment, stopping rules. ✅
+  - └── [M6 Pilot Study](mvct-mrp-core-h1-next-steps.md) — Enrolling participants under frozen protocol. 🔜 **Next**
 - [Nth Absolute Cinema](nth-absolute-cinema.md) — AI filmmaking Creative OS; five-graph compiler architecture; lives at `E:\nth-absolute-cinema\`, portable/hardware-adaptive by design.
 - [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
+- [Production Stack Strategy](production-stack-strategy.md) — Technical co-founder brief: credit allocation (₹1.5L+ Google AI), tool roles (Claude=engineer, Gemini=product), FastAPI+Flutter+Postgres production architecture, and 30-day product focus.
 - [Workspace Productivity Upgrades](antigravity-upgrades.md) — Integration of four productivity upgrades (Roast, Verification, Handoff, Goals) into the self-improving KB.
 - [Code Development Lifecycle](development-lifecycle.md) — Standard branch→verify→commit→push→PR→merge flow + deprecate-before-delete rule for code.
 - [Storage Management](storage-management.md) — C: ↔ E: strategy: delete regeneratable deps (node_modules, venvs, pycache) + mirror heavy folders to E:\navakanth001\ via symlinks.
 - [Generative Production Workflows](production-workflows.md) — Best practices and identified pitfalls for creating generative media.
 - [Agent OS Speech — Next Steps](agent-os-speech-next-steps.md)
+- [Usage Efficiency — Next Steps](usage-efficiency-next-steps.md) — Roadmap for minimizing token context drift under the ULCOP v2.1 standard.
 - [Agent OS Execution Framework — Next Steps](agent-os-execution-next-steps.md) — Mixture-of-Agents Phase 1 handoff (PR #29, cold-start for Antigravity).
 - [Validator Research — Next Steps](20260702-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [CRP Next Steps](crp-next-steps.md) — Cold-start handoff for CRP Plan 3/3 after M3-M4 shipped.
