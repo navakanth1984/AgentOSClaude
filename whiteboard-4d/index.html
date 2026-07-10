@@ -465,8 +465,117 @@ input[type=color]:hover{border-color:#5af;}
   transition:border-color .15s,color .15s,opacity .4s;
   font-family:inherit;opacity:0;pointer-events:none;
 }
-#cine-skip.show{opacity:1;pointer-events:all;}
 #cine-skip:hover{border-color:rgba(255,255,255,.45);color:#fff;}
+
+/* ════════ 3D NAVIGATION COMPASS (PiP) ════════ */
+#pip-pane {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 180px;
+  height: 220px;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  background: rgba(0, 6, 26, 0.85);
+  border: 1px solid rgba(80, 160, 255, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(80, 160, 255, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  transition: opacity 0.25s, transform 0.25s;
+}
+#pip-pane.show {
+  display: flex;
+}
+.pip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: rgba(0, 12, 40, 0.95);
+  border-bottom: 1px solid rgba(80, 160, 255, 0.15);
+  font-size: 9px;
+  font-weight: 700;
+  color: #7df;
+  letter-spacing: 0.8px;
+  user-select: none;
+}
+.pip-close {
+  background: none;
+  border: none;
+  color: #58a;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.pip-close:hover {
+  color: #f55;
+}
+.pip-canvas-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+canvas#pip-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.pip-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(120, 180, 255, 0.45);
+  font-size: 16px;
+  font-weight: 300;
+  pointer-events: none;
+  user-select: none;
+}
+.pip-controls {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px;
+  background: rgba(0, 4, 18, 0.9);
+  border-top: 1px solid rgba(80, 160, 255, 0.12);
+  gap: 3px;
+}
+.pip-btn {
+  flex: 1;
+  padding: 3px 0;
+  background: rgba(20, 45, 120, 0.3);
+  border: 1px solid rgba(80, 160, 255, 0.15);
+  border-radius: 4px;
+  color: #8ab;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+.pip-btn:hover {
+  background: rgba(40, 80, 200, 0.4);
+  color: #fff;
+  border-color: rgba(80, 160, 255, 0.4);
+}
+.pip-btn.active {
+  background: rgba(0, 100, 255, 0.4);
+  color: #fff;
+  border-color: #5af;
+  box-shadow: 0 0 8px rgba(80, 160, 255, 0.3);
+}
+
+@media(max-width:819px) {
+  #pip-pane {
+    bottom: 72px;
+    right: 8px;
+  }
+}
 </style>
 </head>
 <body>
@@ -555,8 +664,23 @@ input[type=color]:hover{border-color:#5af;}
   <button class="ubtn" id="btn-clear">🗑 Clear all</button>
   <button class="ubtn" id="btn-export">💾 Save Session</button>
   <button class="ubtn" id="btn-import">📂 Load Session</button>
+  <button class="ubtn" id="btn-compass">🧭 3D Compass</button>
   <input type="file" id="import-input" accept=".json" style="display:none">
 </div>
+
+<!-- ════════ 3D NAVIGATION COMPASS ════════ -->
+<div id="pip-pane">
+  <div class="pip-header">
+    <span>🧭 3D COMPASS</span>
+    <button class="pip-close" id="pip-close-btn">&times;</button>
+  </div>
+  <div class="pip-canvas-container">
+    <canvas id="pip-canvas"></canvas>
+    <div class="pip-crosshair">+</div>
+  </div>
+  <div class="pip-controls" id="pip-view-controls"></div>
+</div>
+
 
 <!-- ════════ SESSION MODAL ════════ -->
 <div id="session-modal">
@@ -846,6 +970,7 @@ function register(root, type, label, color){
   if (fourDOn) toast(`4D orbit: ${curOrbitPattern} · r=${curOrbitRadius}`);
   updateHUD();
   updateUndoRedoBtns();
+  if(window.compassViewport) window.compassViewport.markDirty();
   return o;
 }
 
@@ -868,6 +993,7 @@ function undoLast(){
   if(moveTarget===o) moveTarget=null;
   redoStack.push(o);
   updateHUD(); updateUndoRedoBtns();
+  if(window.compassViewport) window.compassViewport.markDirty();
   toast('Undone');
 }
 
@@ -881,6 +1007,7 @@ function redoLast(){
   if(o.video) o.video.play().catch(()=>{});
   if(o.sound){ try{ o.sound.play(); }catch(e){} }
   updateHUD(); updateUndoRedoBtns();
+  if(window.compassViewport) window.compassViewport.markDirty();
   toast('Redone');
 }
 
@@ -1969,6 +2096,7 @@ function removeObj(o){
   const ui=undoStack.indexOf(o); if(ui>-1) undoStack.splice(ui,1);
   for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); if(links[k].particle){ scene.remove(links[k].particle); links[k].particle.geometry.dispose(); links[k].particle.material.dispose(); } links.splice(k,1); } }
   updateHUD();
+  if(window.compassViewport) window.compassViewport.markDirty();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2623,6 +2751,7 @@ function animate(){
   // pulse selection ring
   if(_selectionRing){ _selectionRing._phase = (_selectionRing._phase||0)+0.06; _selectionRing.material.opacity = 0.5+0.45*Math.sin(_selectionRing._phase); _selectionRing.rotation.y = t*0.8; }
   renderer.render(scene,camera);
+  if(window.compassViewport) window.compassViewport.render();
 }
 
 // ── Brand wall decal ────────────────────────────────────────
@@ -2855,7 +2984,183 @@ const _origSetMode = setMode;
 // patch setMode to also hide size HUD
 (()=>{ const orig=setMode; window.setMode = (m)=>{ orig(m); if(m!=='move') hideSizeHUD(); }; setMode=window.setMode; })();
 
+// ── Compass Viewport (PiP 3D Navigation) ───────────────────
+class CompassViewport {
+  constructor(scene, controls) {
+    this.scene = scene;
+    this.controls = controls;
+    
+    this.pane = document.getElementById('pip-pane');
+    this.canvas = document.getElementById('pip-canvas');
+    this.controlsContainer = document.getElementById('pip-view-controls');
+    this.closeBtn = document.getElementById('pip-close-btn');
+    this.toggleBtn = document.getElementById('btn-compass');
+    
+    this.active = false;
+    this.currentView = 'top';
+    this.dirty = true;
+    
+    // Explicitly lock main camera to layer 0
+    this.controls.object.layers.set(0);
+    
+    // Orthographic Camera supporting both layer 0 (scene) & layer 1 (helpers)
+    this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 5000);
+    this.camera.layers.enable(0);
+    this.camera.layers.enable(1);
+    
+    // Create Renderer
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      alpha: true
+    });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setSize(this.canvas.clientWidth || 180, this.canvas.clientHeight || 180);
+    
+    // Coordinate axis helper on layer 1 (invisible in main perspective view)
+    this.axesHelper = new THREE.AxesHelper(15);
+    this.axesHelper.layers.set(1);
+    this.scene.add(this.axesHelper);
+    
+    // View Presets Configuration
+    this.presets = {
+      top: { id: 'top', label: 'Top', up: [0, 0, -1], offset: [0, 1, 0] },
+      side: { id: 'side', label: 'Side', up: [0, 1, 0], offset: [1, 0, 0] },
+      front: { id: 'front', label: 'Front', up: [0, 1, 0], offset: [0, 0, 1] }
+    };
+    
+    this.lastCamPosition = new THREE.Vector3();
+    this.lastTarget = new THREE.Vector3();
+    
+    this.initUI();
+    this.setupResizeObserver();
+  }
+  
+  initUI() {
+    this.controlsContainer.innerHTML = '';
+    Object.values(this.presets).forEach(preset => {
+      const btn = document.createElement('button');
+      btn.className = `pip-btn${preset.id === this.currentView ? ' active' : ''}`;
+      btn.textContent = preset.label;
+      btn.dataset.view = preset.id;
+      btn.addEventListener('click', () => this.setView(preset.id));
+      this.controlsContainer.appendChild(btn);
+    });
+    
+    this.closeBtn.addEventListener('click', () => this.hide());
+    this.toggleBtn.addEventListener('click', () => {
+      if (this.active) this.hide();
+      else this.show();
+    });
+  }
+  
+  setupResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.active) {
+        this.resize();
+      }
+    });
+    this.resizeObserver.observe(this.pane);
+  }
+  
+  show() {
+    this.active = true;
+    this.pane.classList.add('show');
+    this.toggleBtn.style.background = 'rgba(20, 70, 200, 0.4)';
+    this.toggleBtn.style.color = '#7df';
+    this.resize();
+    this.dirty = true;
+  }
+  
+  hide() {
+    this.active = false;
+    this.pane.classList.remove('show');
+    this.toggleBtn.style.background = '';
+    this.toggleBtn.style.color = '';
+  }
+  
+  setView(viewId) {
+    if (!this.presets[viewId]) return;
+    this.currentView = viewId;
+    
+    const buttons = this.controlsContainer.querySelectorAll('.pip-btn');
+    buttons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.view === viewId);
+    });
+    
+    this.dirty = true;
+  }
+  
+  resize() {
+    const w = this.canvas.clientWidth || 180;
+    const h = this.canvas.clientHeight || 180;
+    this.renderer.setSize(w, h, false);
+    this.dirty = true;
+  }
+  
+  markDirty() {
+    this.dirty = true;
+  }
+  
+  update() {
+    if (!this.active) return;
+    
+    const preset = this.presets[this.currentView];
+    const target = this.controls.target;
+    
+    const rawDist = this.controls.getDistance();
+    const distance = Math.max(10, Math.min(rawDist, 800));
+    
+    const offset = new THREE.Vector3(...preset.offset).multiplyScalar(distance);
+    this.camera.position.copy(target).add(offset);
+    this.camera.up.set(...preset.up);
+    this.camera.lookAt(target);
+    
+    this.axesHelper.position.copy(target);
+    
+    const aspect = (this.canvas.clientWidth || 180) / (this.canvas.clientHeight || 180);
+    const frustumSize = distance * 0.75;
+    
+    this.camera.left = -frustumSize * aspect;
+    this.camera.right = frustumSize * aspect;
+    this.camera.top = frustumSize;
+    this.camera.bottom = -frustumSize;
+    this.camera.updateProjectionMatrix();
+  }
+  
+  render() {
+    if (!this.active) return;
+    
+    const target = this.controls.target;
+    const mainCamPos = this.controls.object.position;
+    
+    const stateChanged = !this.lastCamPosition.equals(mainCamPos) || !this.lastTarget.equals(target);
+    const isDynamic = fourDOn || moveTarget !== null || drawing;
+    
+    if (this.dirty || stateChanged || isDynamic) {
+      this.update();
+      this.renderer.render(this.scene, this.camera);
+      
+      this.lastCamPosition.copy(mainCamPos);
+      this.lastTarget.copy(target);
+      this.dirty = false;
+    }
+  }
+  
+  dispose() {
+    this.hide();
+    this.resizeObserver.disconnect();
+    this.scene.remove(this.axesHelper);
+    this.renderer.dispose();
+  }
+}
+
 // ── Boot ───────────────────────────────────────────────────
+try {
+  window.compassViewport = new CompassViewport(scene, controls);
+} catch(e) {
+  console.warn("CompassViewport initialization skipped (e.g. headless/test environment)", e);
+}
 setMode('nav'); updateHUD();
 startCinematic();
 animate();
