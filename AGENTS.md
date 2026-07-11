@@ -95,9 +95,75 @@ When wrapping a feature, milestone, or hand-off to another agent (e.g. Antigravi
 
 This is part of the self-improving loop — the handoff is how work survives across sessions and across agents.
 
-### Session End Routine (Mandatory)
+## Sub-Agent & Workspace Management Guidance
 
-At the conclusion of *every* session, you must execute the following to durably record the session state and usage metrics:
-1. Run `python memory_os/scripts/validate_usage_efficiency.py` (if available) to capture model economics and routing efficiency.
-2. Run `python agent_os/session_end.py` to capture the final session context to the Obsidian vault and persist the memory.
-3. Update `wiki/log.md` with a summary of the session's actions, merged PRs, and any dangling WIP.
+> Full lifecycle (work tree → dev → verify → PR → staging → production → KB handoff) is codified in **[wiki/agentic-dev-lifecycle.md](wiki/agentic-dev-lifecycle.md)**. All agents must follow it end-to-end.
+
+Whenever you are delegating a task to a sub-agent, creating a new work tree, or discussing workspace environments:
+1. **Highlight Actions:** Explicitly notify the user when a dedicated Git work tree is being created, used, or cleaned up (e.g., *"Creating an isolated Git work tree for the research sub-agent..."*).
+2. **Feature Reminders:** Remind the user of available workspace features (such as manual sidebar toggles, conversation grouping, background scheduling, or the "new work tree" conversation option) where appropriate so they do not need to memorize them.
+3. **Work Tree Integration:** After a sub-agent work tree is closed, the agent MUST immediately open a PR from the work tree branch into `master` and notify the user. The task is NOT done until the PR is open. Never leave branches dangling without a PR.
+
+### Session End Routine (Mandatory — every session, planned or abrupt)
+
+At the conclusion of *every* session — whether planned or after an abrupt disconnect — execute this checklist in order:
+
+#### Step 1 — Lifecycle Sync Check
+Confirm `wiki/agentic-dev-lifecycle.md` and `.antigravity.md` are in sync:
+- Did any new rules get added to the lifecycle doc this session?
+- If yes: mirror the actionable items into `.antigravity.md` so `agy` CLI picks them up.
+- This takes 60 seconds. Do not skip it.
+
+#### Step 2 — Context & Branch State
+- Note any open branches, in-flight PRs, or dangling work trees.
+- If a branch has no PR yet: open one now before closing (`gh pr create --base master --draft`).
+- If context token usage is ≥ 250K: write the handoff now — do not wait until next session.
+
+#### Step 3 — KB Close-Out
+1. Update `wiki/log.md` — dated summary of session actions, merged PRs, open WIP.
+2. Update the relevant `wiki/<topic>.md` page.
+3. Write any new patterns, bug classes, or model mismatches to `memory_os/long_term_knowledge/lessons_learned.md`.
+4. Refresh `.remember/remember.md` with the cold-start buffer.
+
+#### Step 4 — Session Scripts
+```powershell
+py -3 memory_os/scripts/validate_usage_efficiency.py   # model economics + routing efficiency
+py -3 agent_os/session_end.py                          # persist context to Obsidian vault
+```
+
+#### Step 5 — Handoff File (always write, even if session ended cleanly)
+Write to `memory_os/session_memory/session_<YYYYMMDD>.md`:
+```markdown
+## Current Status
+[Done / In-flight — include branch name + PR # if applicable]
+
+## Key Files
+- [path] — [one-line purpose]
+
+## Locked Decisions (do not revisit)
+- [decision] — [why locked]
+
+## Next Steps (P0/P1/P2)
+- P0: [must-do-next — blocking]
+- P1: [high value]
+- P2: [nice to have]
+
+## Abrupt Disconnect Flag
+[Yes / No — if Yes, note what was mid-flight]
+```
+
+---
+
+### Abrupt Disconnect / Cold-Start Reconnect Protocol
+
+If a session was cut off unexpectedly (network drop, app crash, token limit hit, user closed session), the **next agent to open this workspace** must:
+
+1. **Read `.remember/remember.md`** — the cross-session buffer. This is the fastest cold-start signal.
+2. **Read the latest `memory_os/session_memory/session_<YYYYMMDD>.md`** — find the most recent handoff file.
+3. **Check for dangling branches:** `git branch -a | grep -v master` — if any exist without a PR, open one now.
+4. **Check for open PRs:** `gh pr list --state open` — surface them to the user.
+5. **Read `wiki/log.md` last 10 lines** — confirms what was last completed.
+6. **Run the Lifecycle Sync Check** (Step 1 above) — confirm `.antigravity.md` is up to date.
+7. **Announce to the user:** *"Reconnected after disconnect. Last session: [summary from handoff]. Open PRs: [N]. Dangling branches: [N]. Ready to resume from: [P0 next step]."*
+
+> **This protocol fires automatically** — no user prompt needed. The agent runs it at session start whenever it detects a prior handoff file from the same calendar day or finds an `Abrupt Disconnect Flag: Yes` in the latest session memory.

@@ -24,10 +24,13 @@
 - [Nth Absolute Cinema](nth-absolute-cinema.md) — AI filmmaking Creative OS; five-graph compiler architecture; lives at `E:\nth-absolute-cinema\`, portable/hardware-adaptive by design.
 - [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
+- [BLEUUBOARD](bleuboard.md) — 4D creative whiteboard (3D strokes, extruded text, images, live video, 4th-dimension animation). Deployed at bleuboard.vercel.app. Single-file Vercel static deployment.
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
 - [Production Stack Strategy](production-stack-strategy.md) — Technical co-founder brief: credit allocation (₹1.5L+ Google AI), tool roles (Claude=engineer, Gemini=product), FastAPI+Flutter+Postgres production architecture, and 30-day product focus.
 - [Workspace Productivity Upgrades](antigravity-upgrades.md) — Integration of four productivity upgrades (Roast, Verification, Handoff, Goals) into the self-improving KB.
+- [Google Anti-Gravity](google-antigravity.md) — Rebuilt five-piece architecture and sub-agent engine powered by Gemini 3.5 Flash.
+- [Agentic Development Lifecycle](agentic-dev-lifecycle.md) — **Full 8-stage lifecycle: work tree → develop → verify → PR → staging → production → KB handoff.** Every agent must follow this end-to-end.
 - [Code Development Lifecycle](development-lifecycle.md) — Standard branch→verify→commit→push→PR→merge flow + deprecate-before-delete rule for code.
 - [Storage Management](storage-management.md) — C: ↔ E: strategy: delete regeneratable deps (node_modules, venvs, pycache) + mirror heavy folders to E:\navakanth001\ via symlinks.
 - [Generative Production Workflows](production-workflows.md) — Best practices and identified pitfalls for creating generative media.
