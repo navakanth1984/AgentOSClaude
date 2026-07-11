@@ -23,14 +23,16 @@
 - [Cognitive Runtime Platform (CRP)](cognitive-runtime-platform.md) — Measurement-first adaptive runtime with telemetry, replay, and representation selection.
 - [Nth Dimension Academy](nth-dimension-academy.md) — Conversational AI teaching assistant on Google Cloud RAG.
 - [MVCT MRP](mvct-mrp.md) — Minimum Research Product: event-sourced BKT tutor testing H1 (persistent state vs. stateless chatbot, 14-day Boolean Logic retention).
+  - ├── [Implementation Charter](mvct-mrp-core-implementation-charter.md) — Operational targets for shipping, telemetry, and product evolution.
+  - ├── [Release Readiness Report](mvct-mrp-core-readiness-report.md) — Grounded codebase audit: documented vs implemented, CI, debt, and capabilities.
   - ├── [M0 Infrastructure](mvct-mrp-core-m0-next-steps.md) — Azure deployment, BKT oracle, live DB migration. ✅
   - ├── M1 Event Ingestion — Ingestion API, event sourcing, Serializable transactions. ✅
   - ├── [M2 Robust Experience Platform](mvct-mrp-sprint3-next-steps.md) — API robustness, idempotency, React feed UI. ✅
   - ├── [M3 Event-Driven Cognitive Infrastructure](mvct-mrp-core-sprint4.md) — Non-blocking EventBus, recommendation pipeline, pluggable cards, telemetry. ✅
   - ├── [M4 Runtime Hardening](mvct-mrp-core-sprint5-next-steps.md) — EventBus ++/-- fix, CardRenderer ErrorBoundary, /telemetry/dlq + dashboard. ✅
   - ├── [M5 H1 Experiment Harness](mvct-mrp-core-h1-next-steps.md) — Outcome logger, arm assignment, stopping rules. ✅
-  - ├── [M6 Controlled Pilot](mvct-mrp-core-h1-next-steps.md) — Limited enrollment, continuous validation, integrity monitoring. 🔜 **Active**
-  - ├── [M7 Product Excellence](mvct-mrp-core-h1-next-steps.md) — UX redesign, motion, streaks, PWA support, telemetry. ⏳ Planned
+  - ├── [M6 Controlled Pilot + Engineering Intelligence E0/E1](mvct-mrp-core-governance-platform-next-steps.md) — Constitution, canonical context, ADRs-007-010, EngineeringEvents (E0), nightly Watch Runner (E1). ✅
+  - ├── [M7 Experience Intelligence](mvct-mrp-core-governance-platform-next-steps.md) — UX redesign, motion, streaks, PWA support, telemetry-driven UX. 🔜 **Active**
   - ├── [M8 Auto Engineering](mvct-mrp-core-h1-next-steps.md) — Agentic CI/CD, auto-QA, performance/security agents. ⏳ Planned
   - ├── [M9 Platform SDK & API](mvct-mrp-core-h1-next-steps.md) — TypeScript SDK, public API, webhooks, multi-tenant. ⏳ Planned
   - └── [M10 Multi-Platform](mvct-mrp-core-h1-next-steps.md) — React Native, iOS, Android, offline-first sync. ⏳ Planned
