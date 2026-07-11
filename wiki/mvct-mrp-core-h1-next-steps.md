@@ -22,16 +22,19 @@
 
 ## Milestone Roadmap
 
-| Milestone | Description | Status |
+| Milestone | Description / Focus | Status |
 |---|---|---|
-| M0 Infrastructure | Azure deployment, BKT oracle, live DB migration | ✅ |
-| M1 Event Ingestion | Ingestion API, event sourcing, Serializable transactions | ✅ |
-| M2 Robust Experience Platform | API robustness, idempotency, React feed UI | ✅ |
-| M3 Event-Driven Cognitive Infrastructure | Non-blocking EventBus, recommendation pipeline | ✅ |
-| M4 Runtime Hardening | EventBus audit, CardRenderer safety, Telemetry | ✅ |
-| **M5 H1 Experiment Harness** | Outcome logger, arm assignment, stopping rules | ✅ Infrastructure Complete |
-| **M6 Pilot Study** | Enrolling participants under frozen protocol | ⏳ Ready once protocol is finalized |
-| M7 Statistical Analysis | Retention analysis, hypothesis evaluation | Future |
+| M0 Infrastructure | Azure deployment, BKT oracle, live DB migration | ✅ Complete |
+| M1 Event Ingestion | Ingestion API, event sourcing, Serializable transactions | ✅ Complete |
+| M2 Robust Experience | API robustness, idempotency, React feed UI | ✅ Complete |
+| M3 Event Infrastructure | Non-blocking EventBus, recommendation pipeline | ✅ Complete |
+| M4 Runtime Hardening | EventBus audit, CardRenderer safety, Telemetry | ✅ Complete |
+| M5 Experiment Harness | Outcome logger, arm assignment, stopping rules | ✅ Complete |
+| **M6 Controlled Pilot** | Limited enrollment, continuous validation, integrity monitoring | 🔜 Active |
+| **M7 Product Excellence** | UX redesign, motion, streaks, PWA support, telemetry | ⏳ Planned |
+| **M8 Auto Engineering** | Agentic CI/CD, auto-QA, performance/security agents | ⏳ Planned |
+| **M9 Platform SDK & API** | TypeScript SDK, public API, webhooks, multi-tenant | ⏳ Planned |
+| **M10 Multi-Platform** | React Native, iOS, Android, offline-first sync | ⏳ Planned |
 
 ---
 

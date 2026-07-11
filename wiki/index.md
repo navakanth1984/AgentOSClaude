@@ -29,7 +29,11 @@
   - ├── [M3 Event-Driven Cognitive Infrastructure](mvct-mrp-core-sprint4.md) — Non-blocking EventBus, recommendation pipeline, pluggable cards, telemetry. ✅
   - ├── [M4 Runtime Hardening](mvct-mrp-core-sprint5-next-steps.md) — EventBus ++/-- fix, CardRenderer ErrorBoundary, /telemetry/dlq + dashboard. ✅
   - ├── [M5 H1 Experiment Harness](mvct-mrp-core-h1-next-steps.md) — Outcome logger, arm assignment, stopping rules. ✅
-  - └── [M6 Pilot Study](mvct-mrp-core-h1-next-steps.md) — Enrolling participants under frozen protocol. 🔜 **Next**
+  - ├── [M6 Controlled Pilot](mvct-mrp-core-h1-next-steps.md) — Limited enrollment, continuous validation, integrity monitoring. 🔜 **Active**
+  - ├── [M7 Product Excellence](mvct-mrp-core-h1-next-steps.md) — UX redesign, motion, streaks, PWA support, telemetry. ⏳ Planned
+  - ├── [M8 Auto Engineering](mvct-mrp-core-h1-next-steps.md) — Agentic CI/CD, auto-QA, performance/security agents. ⏳ Planned
+  - ├── [M9 Platform SDK & API](mvct-mrp-core-h1-next-steps.md) — TypeScript SDK, public API, webhooks, multi-tenant. ⏳ Planned
+  - └── [M10 Multi-Platform](mvct-mrp-core-h1-next-steps.md) — React Native, iOS, Android, offline-first sync. ⏳ Planned
 - [Nth Absolute Cinema](nth-absolute-cinema.md) — AI filmmaking Creative OS; five-graph compiler architecture; lives at `E:\nth-absolute-cinema\`, portable/hardware-adaptive by design.
 - [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
