@@ -1,45 +1,82 @@
-# MVCT MRP Core: Implementation Charter
+# MVCT MRP Core: Autonomous Execution Mandate (Execution Mode)
 
-> **Active Implementation Charter (Execution Mode).** Adopted 2026-07-11. Specifies operational constraints and targets for shipping, measuring, and evolving the product.
-
----
-
-# 1. Objective & Mission
-
-Build MVCT into a production-ready, adaptive learning platform for children and lifelong learners. Success is measured by working software, measurable telemetry, automated validation, user engagement, and learning outcomes.
-
-## Operating Principles
-- **Architecture is frozen:** Implementation is fluid.
-- **Evidence overrides assumptions:** Telemetry overrides opinions.
-- **Behavior overrides surveys:** Every improvement must be measurable.
-- **Action over documentation:** Never expand architecture when implementation is the bottleneck.
+> **Active Operational Charter.** Adopted 2026-07-11.
+> Specifies the execution mandates, standing objectives, autonomous loops, validation guidelines, and product ownership criteria for shipping, measuring, and evolving the product.
 
 ---
 
-# 2. Parallel Implementation Streams
+# 1. Primary Mission
 
-### Stream A: Engineering Intelligence
-- **Focus:** `EngineeringEvent` pipelines, `EngineeringProjector` (E2), Confidence Engine, Watch Runner validation reports, and automated PR generation structures.
+Continuously evolve MVCT into a production-grade adaptive learning platform that:
+- Delights children and lifelong learners.
+- Continuously improves from telemetry.
+- Validates every change automatically.
+- Scales from localhost to Azure Production.
+- Becomes increasingly autonomous through evidence.
 
-### Stream B: Product Intelligence
-- **Focus:** Passive `InteractionEvent` collection (clicks, scroll depth, hesitation, dwell time, abandonment, viewports, and performance metrics) without third-party analytics trackers. Journey Graphs and Component Fitness projections.
-
-### Stream C: Learning Intelligence
-- **Focus:** BKT calculations, cohort isolation, paced spaced-retrieval scheduling, and simulation tests without violating the frozen research protocol.
-
-### Stream D: Platform
-- **Focus:** Provisioning Azure Dev, Staging, and Production environments (Azure Front Door, App Service / Container Apps, Azure PostgreSQL, Redis, Application Insights, Key Vault, Blob Storage, Power BI).
-
-### Stream E: Experience Engineering
-- **Focus:** Redesigning Web, PWA, React Native, Android, and iOS client experiences under strict Playwright, Visual Regression, Accessibility, Performance, and Synthetic Learner stress-testing verification.
+**Philosophical Invariant:**
+> **Every intelligence layer must produce measurable value, not merely insight.**
+> Every projector must ultimately emit: `Observation` → `Projection` → `Finding` → `Recommendation` → `Simulation` → `Evidence` → `Action`.
 
 ---
 
-# 3. Performance Targets
+# 2. Standing Objectives
 
-- **Page Load:** < 2 seconds
-- **Interaction Latency:** < 100 milliseconds
-- **API p95:** < 250 milliseconds
-- **Crash-free Session Rate:** > 99.9%
-- **Accessibility:** WCAG AA Compliant
-- **Capabilities:** Mobile-first, responsive, offline-capable.
+### Product
+- **Focus:** Evolve onboarding, learning feeds, engagement, accessibility, purpose-driven animations, responsiveness, and multi-platform client SDK readiness (Web, PWA, React Native, Android, iOS).
+- **Metric:** Optimize via passive behavioral telemetry instead of explicit user surveys.
+
+### Engineering
+- **Focus:** Maximize code quality, CI/CD reliability, performance metrics, dependency security, replay determinism, and developer experience.
+- **Rule:** Every merged change must increase measurable engineering quality.
+
+### Research
+- **Focus:** Enforce protocol integrity, cohort isolation, replay determinism, and statistical validity.
+- **Rule:** Scientific integrity is never traded for UX or engineering gains.
+
+### Platform
+- **Focus:** Provision and scale Azure infrastructure, automate deployments, expand observability, configure SDK boundaries, and build Power BI operational dashboards.
+- **Environments:** Localhost, Azure Dev, Deploy Preview, Staging, and Production.
+
+### Product Intelligence
+- **Focus:** Capture passive clicks, scroll depth, hesitation, dwell time, abandonment, retries, navigation paths, and viewport profiles.
+- **Outputs:** Automatically generate Journey Graphs, Component Fitness indices, UX Findings, and evidence-backed experience recommendations.
+
+### Engineering Intelligence
+- **Focus:** Capture CI failures, build latency, flaky tests, code churn, bugs, and performance regressions.
+- **Outputs:** Automatically generate Engineering Findings, confidence scores, simulations, and draft implementation proposals.
+
+---
+
+# 3. Autonomous Improvement Loop
+
+This loop runs continuously:
+```
+Observe → Measure → Detect → Explain → Hypothesize → Simulate → Validate → Implement → Test → Deploy Preview → Observe Again
+```
+Each iteration must produce measurable evidence.
+
+---
+
+# 4. Continuous Validation Platform
+
+Every implementation automatically executes:
+- Preflight checklist verification.
+- ADR and Context constraint checks.
+- TypeScript compiler and API contract tests.
+- Unit, Integration, and Playwright E2E suites.
+- Visual regression, WCAG accessibility, and load performance checks.
+- Security secrets scans and dependency audits.
+- Synthetic learner matrix runs (Chaos, delay, replay, profile tests).
+- Application Insights smoke tests.
+
+A change is not complete until all applicable validations pass.
+
+---
+
+# 5. Product Evolution & Observability
+
+- Do not ask "what should we build next?" Instead, continuously capture where users struggle, what slows learning, and what increases cognitive load.
+- Expose operational KPIs through Power BI and Application Insights.
+- Prioritize opportunities using the following hierarchy:
+  `Scientific Integrity` → `User Impact` → `Engineering Risk` → `Platform Stability` → `Implementation Cost` → `Token Cost`.
