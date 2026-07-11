@@ -1,4 +1,13 @@
 # Knowledge Map Index
+
+> [!NOTE]
+> **ARCHIVED KNOWLEDGE BASE (READ-ONLY)**
+> This wiki is a read-only historical archive. Canonical living documentation has migrated to the root folders:
+> * **[`research/`](file:///c:/Users/navka/navakanth001/mvct-mrp-core/research/README.md)** (Experimental protocols, datasets, analysis)
+> * **[`product/`](file:///c:/Users/navka/navakanth001/mvct-mrp-core/product/README.md)** (Roadmap, capabilities, user backlog)
+> * **[`platform/`](file:///c:/Users/navka/navakanth001/mvct-mrp-core/platform/README.md)** (API versioning, SDK, integrations)
+> * **[`docs/`](file:///c:/Users/navka/navakanth001/mvct-mrp-core/docs/README.md)** (ADRs, technical architecture blueprints)
+
 > Front door of the self-improving knowledge base. One synthesized page per topic; sources live in `sources/`. See [CLAUDE.md](CLAUDE.md) for how this folder operates.
 
 ## Creative Portfolio
