@@ -54,6 +54,7 @@
 - [Agent OS Execution Framework — Next Steps](agent-os-execution-next-steps.md) — Mixture-of-Agents Phase 1 handoff (PR #29, cold-start for Antigravity).
 - [Validator Research — Next Steps](20260702-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [CRP Next Steps](crp-next-steps.md) — Cold-start handoff for CRP Plan 3/3 after M3-M4 shipped.
+- [MVCT Core Consolidation — Next Steps](mvct-mrp-core-consolidation-next-steps.md) — Cold-start merge consolidation handoff for Claude Code.
 - [NAC Current State](CURRENT.md) — live operating manual: Production Readiness Gate, Stop Line, Definition of Done, Milestone Lifecycle. Start here for NAC status.
 - [NAC Roadmap](ROADMAP.md) — what comes after the Gate passes (UX Pass 2 → Restore Manager → Character Department → ...).
 - [NAC Decisions](DECISIONS.md) — architecture decision log (Departments replace Compilers, Genome composition, local-first, etc.).
