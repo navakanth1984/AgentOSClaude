@@ -12,7 +12,7 @@ No redesigns. No roadmap debates. No milestone renaming. Current phase is **Plat
 ### Repository
 *   **Branch**: `master` (clean)
 *   **SDK implementation**: `COMPLETE`
-*   **SDK PR**: **PR #35 (OPEN)** — Awaiting review and merge.
+*   **SDK PR**: **PR #35 (MERGED)** — Merged and verified on 2026-07-13.
 
 ### Azure Dev
 *   **Deployment Pipeline**: Deploy Azure Dev (Run 29207266443) is `GREEN`.
@@ -24,7 +24,7 @@ No redesigns. No roadmap debates. No milestone renaming. Current phase is **Plat
 
 ## Completed Platform Work (Azure)
 *   Completed Azure App Service, Azure PostgreSQL, firewall configuration, automated deployment, automated Prisma migration, automated database seed, health gate, Application Insights, and deployment optimization.
-*   Merged PR #32 (Application Insights) and PR #33 (Deployment optimization).
+*   Merged PR #32 (Application Insights), PR #33 (Deployment optimization), and PR #35 (SDK integration).
 *   Deployment pipeline now automatically builds, deploys, migrates, seeds, and performs health verification.
 
 ---
@@ -39,30 +39,11 @@ No redesigns. No roadmap debates. No milestone renaming. Current phase is **Plat
 
 ## Immediate Priorities & Roadmap
 
-### P0 (Current) — Review & Merge PR #35
-Review SDK implementation. Validate:
-*   package boundaries
-*   workspace references
-*   path mappings
-*   exports
-*   build isolation
-*   independent SDK build
-*   frontend compiles exclusively through SDK
-*   CI green
+### P0 — Review & Merge PR #35 (COMPLETE)
+*   **Status**: COMPLETE. Merged on 2026-07-13.
+*   **Validation**: Independent SDK compile-check (`PASS`), Web client production build (`PASS`), eslint rules check (`PASS`), unit/replay tests (`PASS`), local browser ESM interop and rendering verified.
 
-If review passes:
-```text
-Merge PR #35
-     ↓
-Verify deployment
-     ↓
-Verify smoke tests
-     ↓
-Tag SDK Foundation complete
-```
-*No additional feature work before PR #35 lands.*
-
-### P1 — Power BI Integration
+### P1 (Current) — Power BI Integration
 Transform telemetry into operational dashboards.
 *   **Deliverables** (`src/intelligence/powerbi/`): `dashboardExporter.ts`, `datasetBuilder.ts`, `schema.ts`, `mapping.ts`.
 *   Create export pipelines and generate datasets for Engineering, Product, Learning, and Deployment dashboards using Engineering, Interaction, and Learning telemetry alongside Azure Monitor metrics and Application Insights.
