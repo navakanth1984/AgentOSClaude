@@ -1,388 +1,76 @@
-# HANDOFF_ANTIGRAVITY_2026-07-13
+# HANDOFF_ANTIGRAVITY_2026-07-13 (Final)
 
-## Project
+## Execution State
 
-**MVCT MRP Core**
+```text
+Repository
+    master (clean)
 
-## Execution Mode
+SDK implementation
+    COMPLETE
 
-**Architecture, Governance, ADRs, and Platform decisions are FROZEN.**
+SDK PR
+    PR #35
+    OPEN
+    Awaiting review and merge
 
-No redesigns.
-
-No roadmap debates.
-
-No milestone renaming.
-
-Current phase is **Platform Development**.
-
-Infrastructure stabilization is complete.
-
----
-
-# Current Verified State
-
-## Repository
-
-```
-master
-```
-
-Working tree
-
-```
-Clean
-```
-
-Open PRs
-
-```
-None
-```
-
----
-
-## Azure Dev
-
-Deployment Pipeline
-
-```
-Deploy Azure Dev
-Run 29207266443
-GREEN
-```
-
-Live Endpoint
-
-```
-https://app-mvct-dev-api.azurewebsites.net
-```
-
-Health
-
-```
-Healthy
-
-Database reachable
-Migration complete
-Seed complete
-Projection healthy
-Event dictionary healthy
-```
-
-Only remaining warning
-
-```
-checksums.schema.valid = false
-```
-
-This is informational only.
-
-Do **not** treat as an infrastructure issue.
-
----
-
-# Completed Platform Work
-
-## Azure
-
-Completed
-
-* Azure App Service
-* Azure PostgreSQL
-* Firewall configuration
-* Automated deployment
-* Automated Prisma migration
-* Automated database seed
-* Health gate
-* Application Insights
-* Deployment optimization
-
-Merged
-
-```
-PR #32
-Application Insights
-```
-
-```
-PR #33
-Deployment optimization
-```
-
-Deployment pipeline now automatically
-
-* builds
-* deploys
-* migrates
-* seeds
-* performs health verification
-
----
-
-# SDK Foundation
-
-Workspace package created
-
-```
-packages/sdk
-```
-
-Current structure
-
-```
-packages/sdk/
-
-client.ts
-types.ts
-session.ts
-learning.ts
-telemetry.ts
-health.ts
-index.ts
-README.md
-package.json
-tsconfig.json
-```
-
----
-
-# SDK Capabilities
-
-## MvctHttpClient
-
-Implemented
-
-* configurable base URL
-* timeout
-* retry
-* exponential backoff
-* typed errors
-
----
-
-## TelemetryClient
-
-Implemented
-
-```
-trackInteraction()
-
-trackDesignEvent()
-
-flush()
-
-retryFailed()
-
-offline queue
-```
-
-Persistence
-
-* Browser → localStorage
-
-* Node → in-memory fallback
-
----
-
-# Frontend Migration
-
-Direct fetch() calls removed.
-
-Current consumers
-
-* SessionContext
-* Feed
-* ChallengeCard
-* FeedbackOverlay
-* ComicCard
-* ExplanationCard
-* VideoCard
-* TelemetryDashboard
-* interactionClient
-* designEventClient
-
-Current architecture
-
-```
-Frontend
-
-↓
-
-@mvct/sdk
-
-↓
-
-API
-```
-
-No component should introduce new direct endpoint fetches.
-
----
-
-# Verification
-
-SDK
-
-```
-PASS
-```
-
-Web Production Build
-
-```
-PASS
-
-74 modules
-
-373 ms
-```
-
-Azure Deployment
-
-```
-PASS
-```
-
-Health Endpoint
-
-```
-PASS
-```
-
-Smoke Tests
-
-```
-PASS
-```
+Azure Dev
+    GREEN
+    Deploy Azure Dev
+    Run 29207266443
 
 Application Insights
+    VERIFIED
 
-```
-Verified
+Infrastructure
+    COMPLETE
+
+Current Focus
+    Platform Development
 ```
 
 ---
 
-# Known Issues
+## Immediate Priority
 
-## 1
+### P0 (Current)
 
-```
-checksums.schema.valid = false
-```
+Review **PR #35**.
 
-Cause
-
-Schema hash drift after later Prisma migrations.
-
-Separate cleanup PR.
-
----
-
-## 2
-
-Azure integration tests
-
-Require Azure PostgreSQL connectivity.
-
-Not caused by SDK.
-
-No SDK changes required.
-
----
-
-# Locked Decisions
-
-Do not revisit.
-
-Architecture
-
-```
-Frozen
-```
-
-Governance
-
-```
-Frozen
-```
-
-ADR ownership
-
-```
-Frozen
-```
-
-Azure deployment architecture
-
-```
-Keep
-```
-
-Application Insights
-
-```
-Keep
-```
-
-SDK
-
-```
-Workspace package only
-```
-
-No npm publishing.
-
-Deferred
-
-* Authentication
-* React Native
-* Mobile SDK
-* Offline database
-* Runtime plugins
-
----
-
-# Immediate Execution
-
-## P0
-
-Review SDK implementation.
-
-Validate
+Validation checklist:
 
 * package boundaries
-* exports
-* dependency graph
 * workspace references
 * path mappings
+* exports
 * build isolation
+* independent SDK build
+* frontend compiles exclusively through SDK
+* CI green
 
-If clean
+If review passes:
 
-Open one focused SDK PR.
+```text
+Merge PR #35
+
+↓
+
+Verify deployment
+
+↓
+
+Verify smoke tests
+
+↓
+
+Tag SDK Foundation complete
+```
+
+No additional feature work before PR #35 lands.
 
 ---
 
-## P1
-
-Expand SDK
-
-Add
-
-* authentication abstraction
-* request middleware
-* response middleware
-* API version negotiation
-* event batching
-* plugin registration
-
-without breaking the existing API.
-
----
-
-## P2
+### P1
 
 Power BI Integration
 
@@ -393,91 +81,130 @@ Consume
 * Learning telemetry
 * Azure metrics
 
-Produce operational dashboards.
+Produce
+
+* Operational Dashboard
+* Engineering Dashboard
+* Product Dashboard
 
 ---
 
-## P3
+### P2
 
 Product Intelligence
 
 Build
 
-```
+```text
 InteractionEvents
-        ↓
+
+↓
+
 Journey Graph
-        ↓
+
+↓
+
 Component Fitness
-        ↓
+
+↓
+
 Recommendation Engine
-        ↓
+
+↓
+
 Living Backlog
 ```
 
-Leverage the existing telemetry infrastructure.
-
 ---
 
-## P4
+### P3
+
+Checksum cleanup
 
 Resolve
 
-```
-checksums.schema.valid
+```text
+checksums.schema.valid = false
 ```
 
-Implement canonical schema hashing.
+using canonical schema hashing.
 
 Separate PR.
 
 ---
 
-# Definition of Done
+## Frozen Decisions
 
-SDK is complete when
+Do not reopen
 
-* zero duplicated HTTP logic remains
-* SDK builds independently
-* CI passes
-* public API documented
-* browser support verified
-* Node support verified
-* telemetry flows exclusively through the SDK
-* frontend consumes only SDK APIs
+* Architecture
+* Governance
+* ADRs
+* Deployment model
+* SDK packaging
+* Azure topology
 
 ---
 
-# Execution Rules
+## Current Baseline
 
-Continue strict ADLC workflow
+Infrastructure is considered **complete**.
 
+The SDK is now the **mandatory client integration boundary**.
+
+No new frontend feature should call REST endpoints directly.
+
+Required architecture:
+
+```text
+Frontend
+
+↓
+
+@mvct/sdk
+
+↓
+
+API
+
+↓
+
+Runtime
+
+↓
+
+Telemetry
+
+↓
+
+Azure
 ```
-Feature Branch
-        ↓
-Small PR
-        ↓
-CI
-        ↓
-Review
+
+---
+
+## Definition of Done
+
+SDK Foundation is complete when
+
+* PR #35 merged
+* CI green
+* deployment green
+* frontend contains zero direct fetch() calls
+* SDK builds independently
+* browser and Node supported
+* telemetry exclusively flows through SDK
+* public API documented
+
+---
+
+### Resume Order
+
+```text
+PR #35 Review
         ↓
 Merge
         ↓
-Automatic Azure Deploy
-```
-
-One capability per PR.
-
-Do not batch unrelated work.
-
----
-
-# Resume Order
-
-```
-SDK Validation
-        ↓
-SDK PR
+Deploy Verification
         ↓
 Power BI
         ↓
@@ -488,11 +215,4 @@ Component Fitness
 Checksum Cleanup
 ```
 
----
-
-## Notes for Antigravity
-
-* Infrastructure work is complete. Shift engineering effort toward reusable platform capabilities.
-* Treat `@mvct/sdk` as the canonical client integration layer. No new feature should bypass it.
-* Maintain small, reviewable PRs with independent verification.
-* Do not reopen architecture, governance, roadmap, or ADR discussions. The current implementation is the baseline for all future work.
+This version removes the contradictory "Open PRs: None" statement and makes the next action unambiguous: **finish PR #35 before starting new platform work**. That keeps Antigravity aligned with the repository's actual state and reduces the chance of parallel work diverging from an unmerged SDK foundation.
