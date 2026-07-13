@@ -1,43 +1,130 @@
-# MVCT MRP Core Consolidation — Next Steps Handoff (2026-07-12)
+# MVCT MRP Core Consolidation — Next Steps Handoff (Updated 2026-07-13, Evening)
 
-This document provides a cold-start handoff for the next agent (e.g., Claude Code) resuming development on `mvct-mrp-core`.
+This document provides a cold-start handoff for the next agent (e.g., Claude Code, Antigravity) resuming development on `mvct-mrp-core`.
 
 ---
 
-## Current Status
-* **Master State**: Clean, synced, and **100% green** with all 19 tests passing (`preflight`, `lint`, `build`, `test:telemetry`, `test:design-event`, unit, integration, performance, simulation, and research).
-* **Consolidation**: All 8 divergent PRs (PR #10, #15, #11, #12, #16, #7, #17, #8) have been successfully merged.
-* **Branches**: Zero open feature branches or PRs remain in `mvct-mrp-core`.
-* **Deployment Hook**: Verified remote connection to Azure DB in local tests. Staging deploy pending user manual validation.
+## Current Status (updated 2026-07-13, evening, after Application Insights fix + deploy verification)
+
+* **Master State**: Clean, synced, all tests green. PRs #21–#34 merged (P0 Application Insights import-order fix just landed).
+* **Branches**: Zero open feature branches or PRs remain.
+* **P0 Azure Dev deploy**: ✅ **VERIFIED GREEN** — Deploy pipeline (.github/workflows/deploy-dev.yml) fully automated and tested end-to-end. Real Azure resources in subscription "Visual Studio Enterprise Subscription" (`a1ce2694-4e38-4509-8bbc-64016f00d8f0`), resource group **`rg-mvct-dev-centralus`** (region `centralus`). Pipeline fires automatically after CI succeeds on `master`.
+
+### Latest: Application Insights Request Telemetry Fix (2026-07-13)
+
+**Issue**: Application Insights `requests` table stayed empty despite app logging init success and `/health` consistently returning 200. Manual telemetry (trackEvent/trackMetric) worked; only HTTP auto-collection silently failed.
+
+**Root Cause**: The `applicationinsights` SDK monkey-patches Node's `http` module at telemetryProvider import time. But `src/index.ts` imported `telemetryProvider` *after* `express`, which already pulled in `http` — the patch never attached.
+
+**Resolution (PR #34, merged to master)**:
+- Moved `telemetryProvider` import to line 3 (after `dotenv/config`, before `express`).
+- Ensures SDK patches `http` before Express pulls it in.
+- Verified: `npx tsc --noEmit` clean, pyrefly hook passed, CI green (run 29239018824).
+- Deploy Azure Dev auto-triggered and succeeded (run 29239318255, 11m27s).
+- **Post-deploy verification**: `az monitor app-insights query requests` now returns live rows (GET /health, 200, success=True). Telemetry flowing end-to-end in production. ✅
+
+### Earlier Deploy Fixes (PRs #21–#33, from prior sessions)
+
+1. **Kudu extraction gateway timeout (PR #33)** — Optimized `.github/workflows/deploy-dev.yml` to prune docs/markdown/types/media from `node_modules` before zipping; extended deploy timeout to 10m. Reduced package size by ~145MB.
+2. **Database migration automation (PR #30)** — Moved prisma + dotenv to dependencies, added `prisma/deploy-migrate.sh` + `.github/scripts/run-remote-migration.sh` for idempotent Kudu-based migrations. /health now returns database/migration/seed/projection/eventDictionary checks.
+3. **Express server bootstrapping (PR #32)** — Installed `applicationinsights` npm package, wired telemetryProvider into startup sequence (order fixed in PR #34).
+4. **Azure infrastructure hygiene (PRs #21–#29)** — Fixed region quota exhaustion, RBAC role gaps, Redis Classic retirement, deployment slots on Basic tier, AZURE_CREDENTIALS key naming, environment secrets visibility.
+
+---
+
+## Immediate Next Steps (Prioritized)
+
+### P0 ✅ — Application Insights Request Telemetry Verified (COMPLETE, 2026-07-13)
+
+**Status**: DONE. Live query: `az monitor app-insights query requests` returns real request data. Telemetry flowing end-to-end.
+
+**Verification**:
+- `/health` endpoint returning 200 consistently
+- Application Insights `requests` table populated with live data (GET /health, success=True)
+- No gaps between request generation and telemetry arrival
+
+**Reference**: PR #34 (merged), Deploy run 29239318255 (green, 11m27s).
+
+---
+
+### P1 🔜 — Native SDK Transition (@mvct/sdk, M8 Milestone)
+
+**Status**: NOT STARTED. Ready to begin.
+
+**Scope**: Transition from hand-coded BKT logic to `@mvct/sdk` native implementation. This is the next milestone per the roadmap.
+
+**Action items**:
+1. Review M8 specification in `docs/` (if available) or `wiki/mvct-mrp.md`.
+2. Audit current BKT implementation in `src/intelligence/` for SDK-compatible interfaces.
+3. Begin extraction: create sdk/ folder or reference external @mvct/sdk module.
+4. Smoke test SDK integration via `/attempt` → `/feedback` roundtrip.
+
+---
+
+### P2 — Power BI Integration (NOT STARTED)
+
+**Status**: Deferred. User planned for post-Application-Insights verification.
+
+**Scope**: Wire Power BI datasource to Application Insights `requests`/`customEvents` tables.
+
+---
+
+### P3 — Schema Checksum Follow-Up PR (NOT STARTED, SEPARATE PR)
+
+**Status**: Known non-blocking issue. Can be deferred until after P1 completes.
+
+**Issue**: `/health` endpoint returns `checksums.schema.valid: false`. Root cause: hardcoded M0-frozen SHA256 hash of `prisma/schema.prisma` no longer matches because of two later migrations (add_assignment_metadata, add_ios_models).
+
+**Decision needed**: Should health check:
+- Regenerate expected checksum dynamically?
+- Version checksum by milestone?
+- Compare against migration history instead?
+- Expose schema drift differently (e.g., as warning, not failure)?
+
+**Notes**:
+- This is safe to leave open; `/health` doesn't gate deployments (it's post-deploy verification only).
+- Prioritize P1 SDK transition; return to checksum design after M8 solidifies.
+
+---
+
+### P4 — Evidence Pack Regeneration (NOT STARTED)
+
+Update evidence pack with this incident's before/after health endpoint output, migration logs, telemetry verification, etc.
+
+---
+
+## User-Set Autonomous Priorities (Standing)
+
+**P0**: ✅ Application Insights request telemetry verification — **COMPLETE 2026-07-13**.  
+**P1**: 🔜 Begin M8 SDK (`@mvct/sdk`) transition — **ACTIVE NEXT**.  
+**P2**: Begin Power BI integration — deferred until after P1.  
+**P3**: Begin Infrastructure Intelligence (II-0) as new 7th layer — future milestone.
+
+---
+
+## Known Follow-Up Work (Not Yet Started)
+
+* **`SelfEvolvingApp-RG`** (different subscription, centralindia) — User confirmed intent to migrate Postgres data into mvct-mrp-core's database eventually. **Azure Postgres cannot move across subscriptions/resource groups**, so requires fresh provision + `pg_dump`/`pg_restore`. Not started.
+* Two empty, orphaned resource groups: `rg-mvct-dev` (eastus) and `rg-mvct-dev-eus2` (eastus2). Harmless cleanup task.
+* **Roadmap conflict unresolved**: Cold-start handoff said M8 = SDK Transition / M10 = Product Intelligence. But `product/roadmap.md` v2.0 (2026-07-11) says M8 = Autonomous Engineering & QA, M9 = Platform & SDK, M10 = Multi-Platform Release. **Confirm with user which plan is authoritative before M8 work starts** — but proceed with current handoff (M8 = SDK) unless explicitly overridden.
 
 ---
 
 ## Key File Map
 
-* **Express Server Entrypoint**: [src/index.ts](file:///c:/Users/navka/navakanth001/mvct-mrp-core/src/index.ts) — Decoupled server listener wrapping via `if (require.main === module)` to prevent test suite hangs.
-* **IOS Runtime Tests**: [tests/integration/ios_runtime.test.ts](file:///c:/Users/navka/navakanth001/mvct-mrp-core/tests/integration/ios_runtime.test.ts) — Live database-backed projection flow and gap recovery checks.
-* **Performance Load Benchmarks**: [tests/performance/load_profile.test.ts](file:///c:/Users/navka/navakanth001/mvct-mrp-core/tests/performance/load_profile.test.ts) — Measures 1000 sequential reads against concepts table to enforce `< 40ms` latency and `< 30MB` memory delta.
-* **Backlog Telemetry Projector**: [automation/src/engineeringProjector.ts](file:///c:/Users/navka/navakanth001/mvct-mrp-core/automation/src/engineeringProjector.ts) — Replays engineering event logs to compute repository fitness scores (`0.5` clean base, `0.3` with open findings).
+* **Express Server Entrypoint**: [src/index.ts](file:///c:/Users/navka/navakanth001/mvct-mrp-core/src/index.ts) — Telemetry import moved to line 3 (import order is load-bearing).
+* **Application Insights Entry Point**: [src/intelligence/telemetry/telemetryProvider.ts](file:///c:/Users/navka/navakanth001/mvct-mrp-core/src/intelligence/telemetry/telemetryProvider.ts) — Auto-instrumentation (unchanged; fix was import order only).
+* **Migration + Seed Runner**: [prisma/deploy-migrate.sh](file:///c:/Users/navka/navakanth001/mvct-mrp-core/prisma/deploy-migrate.sh) — Idempotent, reconstructs DATABASE_URL from env vars, runs migrations + seed.
+* **Kudu API Wrapper**: [.github/scripts/run-remote-migration.sh](file:///c:/Users/navka/navakanth001/mvct-mrp-core/.github/scripts/run-remote-migration.sh) — Invokes deploy-migrate.sh via Kudu command API.
+* **Deploy Pipeline**: [.github/workflows/deploy-dev.yml](file:///c:/Users/navka/navakanth001/mvct-mrp-core/.github/workflows/deploy-dev.yml) — Fully automated, wired for migration step + health gate + telemetry checks.
+* **Health Endpoint**: [src/index.ts /health](file:///c:/Users/navka/navakanth001/mvct-mrp-core/src/index.ts) — Returns database/migration/seed/projection/eventDictionary health checks (checksum.schema.valid issue known, non-blocking).
 
 ---
 
-## Prioritized Next Steps
+## Session Memory & Handoff
 
-### P0 — Staging Deploy & Production Release Verification
-* **Objective**: Confirm that the consolidated `master` branch builds and deploys cleanly to the Azure environment.
-* **Tasks**:
-  1. Trigger/verify the deployment pipeline to Azure staging slot.
-  2. Run UAT checks and verify the live telemetry health page `/health` (ensuring correct database checksum comparisons, BKT engine verification, and schema version mappings).
-  3. Propose promotion to production and execute the mandatory 15-minute monitoring window.
-* **Acceptance Criteria**:
-  * `/health` returns status `200 OK` with `status: "healthy"` and database latency `< 50ms`.
-  * Visual regression tests check out clean with no UI shifts.
-
-### P1 — Progress to Milestone M8 (Platform Native SDK Transition)
-* **Objective**: Scaffold and transition the Express backend endpoints into a reusable TypeScript SDK (`@mvct/sdk`) mapping the candidate retrieval, BKT engine update, and telemetry event append layers.
-* **Acceptance Criteria**:
-  * All public endpoints mapped 1:1 in the SDK.
-  * Reusable client-side telemetry modules wrapped with offline caching fallbacks.
-
-### P2 — Expand Product Intelligence analytics in Milestone M10
-* **Objective**: Build auto-event aggregators processing the `product_analytics.jsonl` log format to detect user friction and session dropouts automatically.
+* **Session file (this session)**: C:\Users\navka\navakanth001\memory_os\session_memory\session_20260713_end.md
+* **Wiki log**: Updated wiki/log.md with PR #34 + deploy verification entry (2026-07-13, top).
+* **Wiki page**: This file (mvct-mrp-core-consolidation-next-steps.md), updated P0 → COMPLETE, reordered to P1 SDK Transition next.
+* **Model used**: Claude Haiku 4.5 (Tier 2, appropriate for focused debugging + verification).
+* **Handoff to**: Antigravity (or next Claude Code session) — P1 (Native SDK Transition) is ready to start. See HANDOFF_ANTIGRAVITY_2026-07-13.md for full context.

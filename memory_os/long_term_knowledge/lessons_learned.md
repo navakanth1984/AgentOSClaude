@@ -566,3 +566,14 @@ Replaced the generic wizard emoji with a minimized circular Sage avatar on the T
 *   **Actionable Takeaways:**
     *   Ensure any module that spins up servers, file watchers, or persistent sockets wraps those side-effects in direct-execution checks (`require.main === module`) or provides clean shutdown hooks.
     *   Run test suites periodically after merge consolidations to confirm no hidden locks, network-related timeouts, or pool leaks exist.
+
+---
+
+### 2026-07-13 — JSON Log Corruption Recovery & Validation
+*   **Key Concept:** Handling parsing failures in local JSON session and metric logs due to formatting corruption (trailing commas, unclosed structures).
+*   **Outcome/Lessons:** 
+    *   **JSON Log Resilience**: JSON-based session and usage tracking logs can experience structure corruption if an agent's session ends abruptly or writes incomplete state. When validation or session end scripts read these files, a single parsing exception can block the entire session completion pipeline.
+    *   **Programmatic Repair Utility**: Writing a temporary python script to surgically replace the corrupted segment allows recovery without blowing away historical usage stats or corrupting adjacent session records.
+*   **Actionable Takeaways:**
+    *   Enhance JSON write utilities in session scripts to always use atomic writes (`tempfile` + rename/overwrite) and validate structure before flushing to disk.
+    *   Create automatic JSON format validation checks in session start/end hooks.

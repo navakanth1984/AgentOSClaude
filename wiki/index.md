@@ -45,6 +45,8 @@
 - [Production Stack Strategy](production-stack-strategy.md) — Technical co-founder brief: credit allocation (₹1.5L+ Google AI), tool roles (Claude=engineer, Gemini=product), FastAPI+Flutter+Postgres production architecture, and 30-day product focus.
 - [Workspace Productivity Upgrades](antigravity-upgrades.md) — Integration of four productivity upgrades (Roast, Verification, Handoff, Goals) into the self-improving KB.
 - [Google Anti-Gravity](google-antigravity.md) — Rebuilt five-piece architecture and sub-agent engine powered by Gemini 3.5 Flash.
+- [Document Zero: The One-Page Thesis](document_zero_one_page_thesis.md) — Interactor core thesis.
+- [Interactor Journeys & Defensibility](creator_and_explorer_journeys.md) — Creator integrations, explorer distribution loop, and platform defensibility.
 - [Agentic Development Lifecycle](agentic-dev-lifecycle.md) — **Full 8-stage lifecycle: work tree → develop → verify → PR → staging → production → KB handoff.** Every agent must follow this end-to-end.
 - [Code Development Lifecycle](development-lifecycle.md) — Standard branch→verify→commit→push→PR→merge flow + deprecate-before-delete rule for code.
 - [Storage Management](storage-management.md) — C: ↔ E: strategy: delete regeneratable deps (node_modules, venvs, pycache) + mirror heavy folders to E:\navakanth001\ via symlinks.
@@ -54,7 +56,7 @@
 - [Agent OS Execution Framework — Next Steps](agent-os-execution-next-steps.md) — Mixture-of-Agents Phase 1 handoff (PR #29, cold-start for Antigravity).
 - [Validator Research — Next Steps](20260702-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [CRP Next Steps](crp-next-steps.md) — Cold-start handoff for CRP Plan 3/3 after M3-M4 shipped.
-- [MVCT Core Consolidation — Next Steps](mvct-mrp-core-consolidation-next-steps.md) — Cold-start merge consolidation handoff for Claude Code.
+- [MVCT Core Consolidation — Next Steps](mvct-mrp-core-consolidation-next-steps.md) — Cold-start handoff: merge consolidation done, Azure Dev (P0) provisioning in progress (rg-mvct-dev-centralus), roadmap conflict unresolved.
 - [NAC Current State](CURRENT.md) — live operating manual: Production Readiness Gate, Stop Line, Definition of Done, Milestone Lifecycle. Start here for NAC status.
 - [NAC Roadmap](ROADMAP.md) — what comes after the Gate passes (UX Pass 2 → Restore Manager → Character Department → ...).
 - [NAC Decisions](DECISIONS.md) — architecture decision log (Departments replace Compilers, Genome composition, local-first, etc.).
