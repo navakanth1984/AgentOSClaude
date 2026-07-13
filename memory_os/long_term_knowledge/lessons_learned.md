@@ -2,6 +2,20 @@
 *This file accumulates high-level lessons learned across sessions. Cold storage archives raw logs, while this remains active context.*
 
 
+### 2026-07-13 — MVCT MRP Core: Native SDK Transition & Telemetry Import Order
+*   **Key Concept:** Built `@mvct/sdk` package for MVCT consumers and resolved load-bearing module import order requirements.
+*   **Outcome/Lessons:**
+    *   Standardized client-side telemetry and API communications by wrapping `/health`, `/session`, `/attempt`, `/feedback`, `/interaction`, and `/design-event` in a reusable, typed client package.
+    *   Telemetry requires load-bearing import ordering: monkey-patching libraries like `applicationinsights` must be imported and initialized before importing `express` or any other library that initializes Node's `http` module, or the patch won't attach.
+    *   When configuring local packages in monorepos without npm workspaces, relative `file:` syntax in `package.json` allows dependencies to link correctly.
+    *   In environments with strict TypeScript options like `verbatimModuleSyntax` and differing `lib` sets, use type-only imports (`import type { ... }` or `import { type ... }`) and target environments using `globalThis` instead of specific browser/Node variables to prevent compiler errors.
+*   **Actionable Takeaways:**
+    *   Always verify import orders when using auto-instrumentation SDKs.
+    *   Use type-only imports for interfaces/types to ensure compatibility with `verbatimModuleSyntax`.
+    *   Abstract environment specific objects (e.g. `window.localStorage`) behind `globalThis` to make packages environment-agnostic.
+
+---
+
 ### 2026-06-21 — DP-750 & DP-800 Curriculum Integrations & Stress Testing
 *   **Key Concept:** Integrated DP-750 and DP-800 courses into the main platform including fixes for navigation links, 3D Canvas updates, and performance validations. Also ran Graphify extraction on Bleuuboard.
 *   **Outcome/Lessons:** 

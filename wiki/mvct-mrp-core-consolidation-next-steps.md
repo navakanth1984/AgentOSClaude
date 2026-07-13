@@ -47,17 +47,14 @@ This document provides a cold-start handoff for the next agent (e.g., Claude Cod
 
 ---
 
-### P1 🔜 — Native SDK Transition (@mvct/sdk, M8 Milestone)
+### P1 ✅ — Native SDK Transition (@mvct/sdk) (COMPLETE, 2026-07-13)
 
-**Status**: NOT STARTED. Ready to begin.
+**Status**: COMPLETE. PR #35 open on origin/feat/sdk-foundation.
 
-**Scope**: Transition from hand-coded BKT logic to `@mvct/sdk` native implementation. This is the next milestone per the roadmap.
-
-**Action items**:
-1. Review M8 specification in `docs/` (if available) or `wiki/mvct-mrp.md`.
-2. Audit current BKT implementation in `src/intelligence/` for SDK-compatible interfaces.
-3. Begin extraction: create sdk/ folder or reference external @mvct/sdk module.
-4. Smoke test SDK integration via `/attempt` → `/feedback` roundtrip.
+**Verification**:
+- SDK builds successfully and passes unit tests.
+- React web app builds successfully for production.
+- Direct endpoint fetch operations completely replaced by SDK calls.
 
 ---
 
@@ -96,8 +93,8 @@ Update evidence pack with this incident's before/after health endpoint output, m
 ## User-Set Autonomous Priorities (Standing)
 
 **P0**: ✅ Application Insights request telemetry verification — **COMPLETE 2026-07-13**.  
-**P1**: 🔜 Begin M8 SDK (`@mvct/sdk`) transition — **ACTIVE NEXT**.  
-**P2**: Begin Power BI integration — deferred until after P1.  
+**P1**: ✅ Native SDK (@mvct/sdk) transition — **COMPLETE 2026-07-13** (PR #35).  
+**P2**: 🔜 Begin Power BI integration — **ACTIVE NEXT**.  
 **P3**: Begin Infrastructure Intelligence (II-0) as new 7th layer — future milestone.
 
 ---
