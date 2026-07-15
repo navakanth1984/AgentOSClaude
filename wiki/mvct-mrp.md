@@ -99,6 +99,9 @@ Passes all three locked eval assertions (moderate first-correct increase, conver
 ## Relationship to mvct-v1
 `mvct-v1` (the Microscope) was the v1 capability-detection gate — a separate, older design. The MRP (`mvct-mrp-core`) is the new event-sourced research architecture, built to test H1 scientifically. The two coexist in the monorepo.
 
+## Future Research & Feature Proposals
+- **[DMP-GMS Concept Specification](file:///C:/Users/navka/.gemini/antigravity/brain/e8b0e72e-ddc1-4fbf-8052-e42023288504/concept_specification_dmp_gms.md):** Dynamic Misconception Projections & Generative Micro-Scaffolding. Designed by the Innovation Lab (2026-07-15) to track micro-telemetry (hesitation, wrong paths) and serve real-time visual learning feedback.
+
 ## Governance Rule
 > **No architectural change without evidence.**
 > 1. Observe → 2. Analyze → 3. Change. Never the reverse.

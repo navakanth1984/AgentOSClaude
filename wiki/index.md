@@ -21,6 +21,7 @@
 - [Agent OS Speech Pipeline](agent-os-speech-pipeline.md) — Artifact-driven DAG executor for semantic-to-audio TTS (Kokoro ONNX backend).
 - [Agentic Loops Architecture](agentic-loops-architecture.md) — Umbrella: self-updating agents, memory loops, RAG.
 - [Cognitive Runtime Platform (CRP)](cognitive-runtime-platform.md) — Measurement-first adaptive runtime with telemetry, replay, and representation selection.
+- [Open Cognitive Operating System (OCOS)](ocos.md) — Unified cross-project governance index and standard adapters.
 - [Nth Dimension Academy](nth-dimension-academy.md) — Conversational AI teaching assistant on Google Cloud RAG.
 - [MVCT MRP](mvct-mrp.md) — Minimum Research Product: event-sourced BKT tutor testing H1 (persistent state vs. stateless chatbot, 14-day Boolean Logic retention).
   - ├── [Implementation Charter](mvct-mrp-core-implementation-charter.md) — Operational targets for shipping, telemetry, and product evolution.

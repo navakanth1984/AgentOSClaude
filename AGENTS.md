@@ -95,14 +95,57 @@ When wrapping a feature, milestone, or hand-off to another agent (e.g. Antigravi
 
 This is part of the self-improving loop — the handoff is how work survives across sessions and across agents.
 
-## Sub-Agent & Workspace Management Guidance
+## Antigravity v2.1 Operating & Execution Mandate
 
-> Full lifecycle (work tree → dev → verify → PR → staging → production → KB handoff) is codified in **[wiki/agentic-dev-lifecycle.md](wiki/agentic-dev-lifecycle.md)**. All agents must follow it end-to-end.
+This project constitution SHALL ADOPT and align with the **Antigravity v2.1 Operating & Execution Mandate** defined in [.antigravity.md](file:///.antigravity.md).
 
-Whenever you are delegating a task to a sub-agent, creating a new work tree, or discussing workspace environments:
-1. **Highlight Actions:** Explicitly notify the user when a dedicated Git work tree is being created, used, or cleaned up (e.g., *"Creating an isolated Git work tree for the research sub-agent..."*).
-2. **Feature Reminders:** Remind the user of available workspace features (such as manual sidebar toggles, conversation grouping, background scheduling, or the "new work tree" conversation option) where appropriate so they do not need to memorize them.
-3. **Work Tree Integration:** After a sub-agent work tree is closed, the agent MUST immediately open a PR from the work tree branch into `master` and notify the user. The task is NOT done until the PR is open. Never leave branches dangling without a PR.
+### Mode: Product Execution (Status: ACTIVE)
+Governance and architecture documents are **frozen**. Do not spend cycles expanding governance unless a production blocker or cross-project architectural discovery requires it. The primary objective is shipping a production-grade product.
+
+### Definition of Done (DoD)
+A task or milestone is considered **Done** only when:
+*   ✓ **Green CI**: All pipeline checks, types, and build scripts pass successfully.
+*   ✓ **E2E Validation**: All Playwright E2E tests are 100% green on Chromium/Firefox/Webkit.
+*   ✓ **Accessibility Compliance**: Passes core AX rules (contrast, aria-labels, role mapping).
+*   ✓ **Performance Limits**: Satisfies target response, interaction, and rendering speeds.
+*   ✓ **Zero Open P0/P1 Defects**: No unresolved blockages or visual/behavioral regressions.
+*   ✓ **Staged/Deployed**: Successfully built and deployed to the production staging workspace.
+
+### Core Optimization Equation
+$$Engineering\ ROI = \frac{User\ Value \times Knowledge\ Reuse}{Token\ Cost \times Execution\ Time}$$
+
+### Invariant Rules
+1.  **Never reload knowledge that already has an authority**: Instead of reloading multiple raw documents, reference their canonical owners.
+2.  **Read minimum viable context**: Ask *Can this be solved from the graph?* before grepping or scanning.
+3.  **Context Budget**: Target context boundaries: Bug fix (`5k–15k`), Small feature (`10k–25k`), Medium feature (`20k–40k`), Architecture (`40k–80k`). Soft warning at `30k`, hard stop at `40k`.
+4.  **Progressive Loading**: Traverse step-by-step: $\text{Index} \rightarrow \text{Graph} \rightarrow \text{Header} \rightarrow \text{Relevant section} \rightarrow \text{Exact lines} \rightarrow \text{Whole file (only if required)}$.
+5.  **One Authority Rule**: Every concept has exactly one owner (`ADR-010` for Evidence Hierarchy, `ADR-012` for Learning Loop, `OCOS` for principles, `operating_system.md` for runtime, `status.md` for current state, `.remember/remember.md` for memory).
+6.  **Documentation Compression**: Keep outputs short; explain only what's unique.
+7.  **Architecture Freeze & Governance Freeze**: Governance changes quarterly/milestone only. OCOS, ADR-012, and CHARTER are frozen unless forced by architectural contradiction or human request.
+8.  **Product First Gate**: Confirm if task ships user-visible improvements, unblocks shipping, or reduces engineering cost before starting governance or planning.
+9.  **Stop Rule**: If work doesn't improve the product, reduce cost, or discover a new architectural primitive, stop and delegate implementation to Claude Code/Codex.
+10. **Sprint Budgets**: Target Product Implementation ($\ge 80\%$), Testing & Validation ($\approx 10\%$), Planning ($\le 5\%$), Governance ($\le 5\%$).
+
+### Success Metric: Knowledge Reuse Ratio (KRR)
+$$\boxed{KRR = \frac{\text{Referenced Canonical Knowledge}}{\text{Newly Generated Governance Text}} \ge 0.90}$$
+
+### KRR History Tracking
+| Milestone | KRR |
+|---|---:|
+| Before OCOS | 0.28 (estimated) |
+| After OCOS | 0.84 (projected) |
+| Target | $\ge 0.90$ |
+
+---
+
+### Graphify as a Context Optimizer
+The graph is a context-reduction tool. Before loading files, Antigravity MUST:
+1. Query graph to identify target files and affected modules.
+2. Load only the minimum context slice needed (affected files and direct headers/dependencies).
+3. Execute the planning or routing work.
+4. Update the graph (`graphify update`) only if files or structure changed.
+
+---
 
 ### Session End Routine (Mandatory — every session, planned or abrupt)
 
@@ -112,7 +155,6 @@ At the conclusion of *every* session — whether planned or after an abrupt disc
 Confirm `wiki/agentic-dev-lifecycle.md` and `.antigravity.md` are in sync:
 - Did any new rules get added to the lifecycle doc this session?
 - If yes: mirror the actionable items into `.antigravity.md` so `agy` CLI picks them up.
-- This takes 60 seconds. Do not skip it.
 
 #### Step 2 — Context & Branch State
 - Note any open branches, in-flight PRs, or dangling work trees.
@@ -131,14 +173,13 @@ py -3 memory_os/scripts/validate_usage_efficiency.py   # model economics + routi
 py -3 agent_os/session_end.py                          # persist context to Obsidian vault
 ```
 
-#### Step 5 — Handoff File (always write, even if session ended cleanly)
-Write to `memory_os/session_memory/session_<YYYYMMDD>.md`:
+#### Step 5 — Handoff File (always write to memory_os/session_memory/session_<YYYYMMDD>.md)
 ```markdown
 ## Current Status
-[Done / In-flight — include branch name + PR # if applicable]
+[Done / In-flight — include branch name + PR #]
 
 ## Key Files
-- [path] — [one-line purpose]
+- [path] — [purpose]
 
 ## Locked Decisions (do not revisit)
 - [decision] — [why locked]
@@ -148,8 +189,35 @@ Write to `memory_os/session_memory/session_<YYYYMMDD>.md`:
 - P1: [high value]
 - P2: [nice to have]
 
-## Abrupt Disconnect Flag
-[Yes / No — if Yes, note what was mid-flight]
+## Session Metrics & Efficiency
+- User-visible improvements:
+- Metric improved:
+- Telemetry added:
+- Tests passed & CI status:
+- Duplicated reasoning eliminated:
+- Documents referenced instead of reloaded:
+- Estimated context saved this session:
+- KRR achieved:
+- Abrupt Disconnect Flag: [Yes/No]
+
+### Token & Resource Telemetry
+| Metric | Value |
+|---|---:|
+| Documents loaded | |
+| Documents edited | |
+| Graph queries | |
+| Full repository scans | |
+| Estimated context reused | |
+| New canonical knowledge created | |
+| Duplicate knowledge eliminated | |
+| Estimated governance overhead | |
+
+### Orchestration Exit Criteria
+- What product work was unblocked?
+- What implementation work was delegated?
+- What duplicated reasoning was removed?
+- What evidence was collected?
+- What should Claude Code build next?
 ```
 
 ---

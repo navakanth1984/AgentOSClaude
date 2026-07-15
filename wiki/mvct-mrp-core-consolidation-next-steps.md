@@ -2,6 +2,10 @@
 
 This document provides a cold-start handoff for the next agent (e.g., Claude Code, Antigravity) resuming development on `mvct-mrp-core`.
 
+> **Superseded for current work (2026-07-15):** the project pivoted to the Interactor Creator/Explorer product (see `mvct-mrp-core-platform-contract.md` and the session log below). The infra history in this doc is still accurate background, but for current status and next steps use `mvct-mrp-core/HANDOFF_ANTIGRAVITY_2026-07-15_INTERACTOR_DEV_LIVE.md` in the repo.
+>
+> **2026-07-15 update:** the dev-deploy chain (Postgres creds, Prisma migration, CORS, Static Web App frontend deploy) is now fully live and verified — a real user can complete the whole Creator→Publish→Explorer→Feedback→Insights loop on the public Dev URL against real Azure Postgres. See the handoff doc for exact URLs, what was fixed, and what's next (naming-before-publish, SWA deploy automation, mobile/tablet UX pass).
+
 ---
 
 ## Current Status (updated 2026-07-13, evening, after Application Insights fix + deploy verification)
