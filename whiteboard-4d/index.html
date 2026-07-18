@@ -3039,7 +3039,13 @@ document.getElementById('pick-floor').addEventListener('input', e=>{ floor.mater
 document.getElementById('btn-scene').addEventListener('click', ()=>document.getElementById('scene-panel').classList.toggle('show'));
 
 // ── Toolbar ────────────────────────────────────────────────
-document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click', ()=>setMode(b.dataset.mode)));
+document.querySelectorAll('.tb[data-mode]').forEach(b=>b.addEventListener('click', ()=>{
+  if(mode===b.dataset.mode){
+    setMode('nav');
+  } else {
+    setMode(b.dataset.mode);
+  }
+}));
 document.getElementById('btn-undo').addEventListener('click', ()=>undoLast());
 document.getElementById('btn-redo').addEventListener('click', ()=>redoLast());
 document.getElementById('btn-4d').addEventListener('click', e=>{
