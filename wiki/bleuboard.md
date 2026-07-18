@@ -145,7 +145,7 @@ SAS has two layers:
 
 | Phase | Scope | Status |
 | :--- | :--- | :--- |
-| **1** | Spatial orientation — intent-based dragging, conversational card, modifier overrides, memory hooks | **Live in prod** (2026-07-18) |
+| **1** | Spatial orientation — intent-based dragging, conversational card, modifier overrides, memory hooks | **Built locally, rolled back in prod** (2026-07-18) |
 | **2** | Touch override surface, adaptive layout, telemetry sink | Next |
 | **3** | Relative placement ("2 blocks left of Cube A") + named anchors (Commander, Spawn Point, Camera Home) | Designed, not built |
 | **4** | Local frames — move/rotate groups preserving internal relationships | Designed, not built |
