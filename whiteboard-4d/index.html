@@ -69,12 +69,51 @@ input[type=color]:hover{border-color:#5af;}
 }
 
 /* ════════ UTILITY BUTTONS ════════ */
-#utils{position:fixed;top:58px;right:10px;z-index:200;display:flex;flex-direction:column;gap:5px;}
+#utils{position:fixed;top:58px;right:10px;z-index:200;display:flex;flex-direction:column;gap:5px;
+  opacity:0;transform:translateX(14px);pointer-events:none;transition:opacity .2s,transform .2s;}
+#utils.revealed{opacity:1;transform:translateX(0);pointer-events:auto;}
+#utils-tab{position:fixed;top:58px;right:0;z-index:201;padding:8px 6px 8px 9px;
+  background:rgba(4,12,44,.9);border:1px solid rgba(80,160,255,.25);border-right:none;
+  border-radius:8px 0 0 8px;color:#8ab;font-size:14px;cursor:pointer;
+  backdrop-filter:blur(10px);transition:color .15s,background .15s;touch-action:manipulation;}
+#utils-tab:hover{background:rgba(20,60,180,.55);color:#cdf;}
+#utils.revealed ~ #utils-tab, #utils-tab.hidden{opacity:0;pointer-events:none;}
 .ubtn{padding:6px 12px;border:1px solid rgba(80,160,255,.2);background:rgba(4,12,44,.9);color:#668;
   border-radius:6px;cursor:pointer;font-size:11px;white-space:nowrap;touch-action:manipulation;
   transition:background .1s,color .1s;backdrop-filter:blur(10px);}
 .ubtn:hover{background:rgba(20,60,180,.55);color:#99d;}
-@media(max-width:819px){#utils{top:auto;bottom:72px;right:8px;}}
+@media(max-width:819px){#utils{top:auto;bottom:72px;right:8px;}#utils-tab{top:auto;bottom:72px;}}
+
+/* ════════ RELATIVE CURSOR HUD ════════ */
+#coord-hud{position:fixed;left:10px;bottom:10px;z-index:200;pointer-events:none;
+  font-family:'Cascadia Code','Consolas',monospace;font-size:11px;line-height:1.55;
+  color:#9fc0ff;background:rgba(0,6,26,.78);border:1px solid rgba(80,160,255,.2);
+  border-radius:8px;padding:6px 10px;backdrop-filter:blur(10px);display:none;white-space:pre;}
+#coord-hud.show{display:block;}
+#coord-hud .ch-dim{color:#4a6a9a;}
+#coord-hud .ch-snap{color:#7dffc8;}
+
+/* ════════ SAS CARD — spatial awareness, conversational ════════ */
+#sas-card{position:fixed;left:50%;bottom:16px;transform:translate(-50%,8px);z-index:210;
+  pointer-events:none;min-width:170px;max-width:250px;padding:10px 14px;
+  font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;line-height:1.5;color:#dbe6ff;
+  background:rgba(8,14,32,.62);border:1px solid rgba(130,170,255,.16);border-radius:14px;
+  backdrop-filter:blur(14px);box-shadow:0 6px 24px rgba(0,0,0,.35);
+  opacity:0;transition:opacity .22s ease,transform .22s ease;}
+#sas-card.show{opacity:1;transform:translate(-50%,0);}
+#sas-card .sas-intent{font-size:13px;font-weight:600;color:#fff;letter-spacing:.2px;}
+#sas-card .sas-intent.flip{animation:sasFlip .28s ease;}
+@keyframes sasFlip{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+#sas-card .sas-dim{color:#7c93c4;font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;margin-top:7px;}
+#sas-card .sas-ref{color:#9fd0ff;font-weight:600;}
+#sas-card .sas-off{color:#cfe0ff;font-family:'Cascadia Code','Consolas',monospace;font-size:11.5px;}
+#sas-card .sas-snap{color:#7dffc8;}
+#sas-card .sas-badge{display:inline-block;margin-top:7px;padding:2px 8px;border-radius:8px;
+  font-size:10px;font-weight:600;letter-spacing:.5px;background:rgba(255,196,90,.16);
+  color:#ffd58a;border:1px solid rgba(255,196,90,.3);}
+#sas-card .sas-badge.mem{background:rgba(125,255,200,.12);color:#8affd0;border-color:rgba(125,255,200,.3);}
+#sas-card.snap-pulse{animation:sasPulse .3s ease;}
+@keyframes sasPulse{0%{transform:translate(-50%,0) scale(1);}45%{transform:translate(-50%,0) scale(1.035);}100%{transform:translate(-50%,0) scale(1);}}
 
 /* draw button icon updates with brush */
 #draw-icon{font-size:20px;line-height:1;}
@@ -465,8 +504,123 @@ input[type=color]:hover{border-color:#5af;}
   transition:border-color .15s,color .15s,opacity .4s;
   font-family:inherit;opacity:0;pointer-events:none;
 }
-#cine-skip.show{opacity:1;pointer-events:all;}
 #cine-skip:hover{border-color:rgba(255,255,255,.45);color:#fff;}
+
+/* ════════ 3D NAVIGATION COMPASS (PiP) ════════ */
+#pip-pane {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 180px;
+  height: 235px;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  background: rgba(0, 6, 26, 0.85);
+  border: 1px solid rgba(80, 160, 255, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(80, 160, 255, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  transition: opacity 0.25s, transform 0.25s;
+}
+#pip-pane.show {
+  display: flex;
+}
+.pip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: rgba(0, 12, 40, 0.95);
+  border-bottom: 1px solid rgba(80, 160, 255, 0.15);
+  font-size: 9px;
+  font-weight: 700;
+  color: #7df;
+  letter-spacing: 0.8px;
+  user-select: none;
+  cursor: grab;
+  touch-action: none;
+}
+.pip-header:active {
+  cursor: grabbing;
+}
+.pip-close {
+  background: none;
+  border: none;
+  color: #58a;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.pip-close:hover {
+  color: #f55;
+}
+.pip-canvas-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+canvas#pip-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.pip-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(120, 180, 255, 0.45);
+  font-size: 16px;
+  font-weight: 300;
+  pointer-events: none;
+  user-select: none;
+}
+.pip-controls {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px;
+  background: rgba(0, 4, 18, 0.9);
+  border-top: 1px solid rgba(80, 160, 255, 0.12);
+  gap: 3px;
+}
+.pip-btn {
+  flex: 1;
+  padding: 5px 0;
+  background: rgba(20, 45, 120, 0.65);
+  border: 1px solid rgba(80, 160, 255, 0.35);
+  border-radius: 4px;
+  color: #c5d8ff;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+.pip-btn:hover {
+  background: rgba(40, 80, 200, 0.85);
+  color: #fff;
+  border-color: rgba(80, 160, 255, 0.65);
+}
+.pip-btn.active {
+  background: rgba(0, 100, 255, 0.4);
+  color: #fff;
+  border-color: #5af;
+  box-shadow: 0 0 8px rgba(80, 160, 255, 0.3);
+}
+
+@media(max-width:819px) {
+  #pip-pane {
+    bottom: 72px;
+    right: 8px;
+  }
+}
 </style>
 </head>
 <body>
@@ -483,8 +637,7 @@ input[type=color]:hover{border-color:#5af;}
 
 <!-- ════════ TOOL BAR ════════ -->
 <div id="bottombar">
-  <button class="tb active" data-mode="nav"    title="Orbit / zoom / pan">🎮<span class="tb-label">Nav</span></button>
-  <button class="tb"        data-mode="move"   title="Grab & move objects in 3D — drag to reposition, wheel to push/pull depth">✋<span class="tb-label">Move</span></button>
+  <button class="tb active" data-mode="nav"    title="Smart navigate — drag empty space to orbit, drag an object to move it, wheel on grabbed object to push/pull depth">🎮<span class="tb-label">Nav</span></button>
   <button class="tb"        data-mode="draw"   title="Draw freehand 3D strokes"><span id="draw-icon">🖊️</span><span class="tb-label">Draw</span></button>
   <button class="tb"        data-mode="text"   title="Place extruded 3D text">🅣<span class="tb-label">3D Text</span></button>
   <button class="tb"        data-mode="image"  title="Place an image">🖼<span class="tb-label">Image</span></button>
@@ -555,8 +708,26 @@ input[type=color]:hover{border-color:#5af;}
   <button class="ubtn" id="btn-clear">🗑 Clear all</button>
   <button class="ubtn" id="btn-export">💾 Save Session</button>
   <button class="ubtn" id="btn-import">📂 Load Session</button>
+  <button class="ubtn" id="btn-compass">🧭 3D Compass</button>
   <input type="file" id="import-input" accept=".json" style="display:none">
 </div>
+<button id="utils-tab" title="Utilities">🧰</button>
+<div id="coord-hud"></div>
+<div id="sas-card"></div>
+
+<!-- ════════ 3D NAVIGATION COMPASS ════════ -->
+<div id="pip-pane">
+  <div class="pip-header">
+    <span>🧭 3D COMPASS</span>
+    <button class="pip-close" id="pip-close-btn">&times;</button>
+  </div>
+  <div class="pip-canvas-container">
+    <canvas id="pip-canvas"></canvas>
+    <div class="pip-crosshair">+</div>
+  </div>
+  <div class="pip-controls" id="pip-view-controls"></div>
+</div>
+
 
 <!-- ════════ SESSION MODAL ════════ -->
 <div id="session-modal">
@@ -846,6 +1017,7 @@ function register(root, type, label, color){
   if (fourDOn) toast(`4D orbit: ${curOrbitPattern} · r=${curOrbitRadius}`);
   updateHUD();
   updateUndoRedoBtns();
+  if(window.compassViewport) window.compassViewport.markDirty();
   return o;
 }
 
@@ -868,6 +1040,7 @@ function undoLast(){
   if(moveTarget===o) moveTarget=null;
   redoStack.push(o);
   updateHUD(); updateUndoRedoBtns();
+  if(window.compassViewport) window.compassViewport.markDirty();
   toast('Undone');
 }
 
@@ -881,6 +1054,7 @@ function redoLast(){
   if(o.video) o.video.play().catch(()=>{});
   if(o.sound){ try{ o.sound.play(); }catch(e){} }
   updateHUD(); updateUndoRedoBtns();
+  if(window.compassViewport) window.compassViewport.markDirty();
   toast('Redone');
 }
 
@@ -1168,6 +1342,50 @@ function hideSuggest(){
     const y=Math.max(8, Math.min(e.clientY-oy, innerHeight-H-8));
     el.style.left=x+'px'; el.style.top=y+'px';
     suggestPinned=true; suggestPinnedX=x; suggestPinnedY=y;
+  });
+  handle.addEventListener('pointerup', ()=>{ dragging=false; });
+})();
+
+// ── Utils panel reveal (hover on desktop, tap toggle on touch) ──
+(function(){
+  const panel=document.getElementById('utils');
+  const tab=document.getElementById('utils-tab');
+  let hideTimer=null;
+  const show=()=>{ clearTimeout(hideTimer); panel.classList.add('revealed'); tab.classList.add('hidden'); };
+  const hideSoon=()=>{ clearTimeout(hideTimer); hideTimer=setTimeout(()=>{ panel.classList.remove('revealed'); tab.classList.remove('hidden'); },500); };
+  tab.addEventListener('pointerenter', e=>{ if(e.pointerType!=='touch') show(); });
+  tab.addEventListener('click', ()=>{ panel.classList.contains('revealed')?hideSoon():show(); });
+  panel.addEventListener('pointerenter', ()=>show());
+  panel.addEventListener('pointerleave', e=>{ if(e.pointerType!=='touch') hideSoon(); });
+  // touch: tap anywhere outside the panel to dismiss
+  document.addEventListener('pointerdown', e=>{
+    if(panel.classList.contains('revealed') && !panel.contains(e.target) && e.target!==tab){
+      panel.classList.remove('revealed'); tab.classList.remove('hidden'); clearTimeout(hideTimer);
+    }
+  });
+})();
+
+// ── Compass pane drag (header = handle) ─────────────────────
+(function(){
+  const el = document.getElementById('pip-pane');
+  const handle = el.querySelector('.pip-header');
+  let dragging=false, ox=0, oy=0;
+  handle.addEventListener('pointerdown', e=>{
+    if(e.target.closest('.pip-close')) return; // close button stays clickable
+    dragging=true; handle.setPointerCapture(e.pointerId);
+    const r=el.getBoundingClientRect();
+    ox=e.clientX-r.left; oy=e.clientY-r.top;
+    // switch from bottom/right anchoring to left/top so drag math is direct
+    el.style.left=r.left+'px'; el.style.top=r.top+'px';
+    el.style.right='auto'; el.style.bottom='auto';
+    e.preventDefault();
+  });
+  handle.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const W=el.offsetWidth, H=el.offsetHeight;
+    const x=Math.max(8, Math.min(e.clientX-ox, innerWidth-W-8));
+    const y=Math.max(8, Math.min(e.clientY-oy, innerHeight-H-8));
+    el.style.left=x+'px'; el.style.top=y+'px';
   });
   handle.addEventListener('pointerup', ()=>{ dragging=false; });
 })();
@@ -1704,6 +1922,7 @@ function addIconNode(ico, lbl, surf, drawFn){
 // ── 3D animated model library (CC0/threejs examples) ───────
 const GLB = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r146/examples/models/gltf/';
 const MODELS = {
+  autorikshaw:{ icon:'🛺', label:'Autorikshaw', url:'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/Car.glb', size:4.2 },
   flamingo:{ icon:'🦩', label:'Flamingo', url:GLB+'Flamingo.glb', size:4.5 },
   parrot:  { icon:'🦜', label:'Parrot',   url:GLB+'Parrot.glb',   size:3.2 },
   stork:   { icon:'🐦', label:'Stork',    url:GLB+'Stork.glb',    size:3.8 },
@@ -1969,6 +2188,7 @@ function removeObj(o){
   const ui=undoStack.indexOf(o); if(ui>-1) undoStack.splice(ui,1);
   for(let k=links.length-1;k>=0;k--){ if(links[k].a===o.id||links[k].b===o.id){ scene.remove(links[k].line); links[k].line.material.dispose(); links[k].geo.dispose(); if(links[k].particle){ scene.remove(links[k].particle); links[k].particle.geometry.dispose(); links[k].particle.material.dispose(); } links.splice(k,1); } }
   updateHUD();
+  if(window.compassViewport) window.compassViewport.markDirty();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1981,7 +2201,123 @@ let pendingPos=null; // surface point awaiting text/image/video
 let curShape='sphere', curSticker='🦋', curModel='flamingo';
 // Move tool
 let moveTarget=null; const movePlane=new THREE.Plane(); const moveOffset=new THREE.Vector3();
+
+// ── Relative Cursor HUD + snap grid (Capability Candidate: SpatialHUD) ──
+const coordHud=document.getElementById('coord-hud');
+const hudDragStart=new THREE.Vector3();
+const snapGrid=new THREE.GridHelper(20,20,0x2a64c8,0x123064);
+snapGrid.visible=false; snapGrid.material.transparent=true; snapGrid.material.opacity=0.55;
+scene.add(snapGrid);
+const SNAP_STEP=1, SNAP_EPS=0.1;
+function fmtN(v){ return (v>=0?' ':'')+v.toFixed(2); }
+function bearingArrow(dx,dy,dz){
+  if(Math.abs(dy)>Math.max(Math.abs(dx),Math.abs(dz))) return dy>0?'▲':'▼';
+  const oct=Math.round(Math.atan2(-dz,dx)/(Math.PI/4))&7;
+  return ['→','↗','↑','↖','←','↙','↓','↘'][oct];
+}
+function snapMark(v){ return Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS?'⌗':' '; }
+function updateCoordHud(cx,cy){
+  // Debug view only (F9) — production awareness lives in the SAS card
+  if(!sasDebug||mode!=='nav'){ coordHud.classList.remove('show'); if(mode==='nav'&&moveTarget){ const p=moveTarget.root.position; snapGrid.position.set(Math.round(p.x), p.y-0.02, Math.round(p.z)); } return; }
+  let p=null, dragging=false;
+  if(moveTarget){ p=moveTarget.root.position; dragging=true; }
+  else { const h=getHit(cx,cy); if(h) p=h.point; }
+  if(!p){ coordHud.classList.remove('show'); return; }
+  let txt=`<span class="ch-dim">xyz</span> ${fmtN(p.x)} ${fmtN(p.y)} ${fmtN(p.z)} <span class="ch-snap">${snapMark(p.x)}${snapMark(p.y)}${snapMark(p.z)}</span>`;
+  const ref=dragging?hudDragStart:(selectedObj?selectedObj.root.position:null);
+  if(ref){
+    const dx=p.x-ref.x, dy=p.y-ref.y, dz=p.z-ref.z;
+    const d=Math.hypot(dx,dy,dz);
+    txt+=`\n<span class="ch-dim"> Δ </span> ${fmtN(dx)} ${fmtN(dy)} ${fmtN(dz)}\n<span class="ch-dim"> d </span> ${d.toFixed(2)}u ${bearingArrow(dx,dy,dz)}${dragging?' <span class="ch-dim">from grab</span>':''}`;
+  }
+  coordHud.innerHTML=txt; coordHud.classList.add('show');
+  if(dragging){ snapGrid.position.set(Math.round(p.x), p.y-0.02, Math.round(p.z)); }
+}
 function rayPlane(plane, cx, cy){ setMouse(cx,cy); ray.setFromCamera(m2,camera); const p=new THREE.Vector3(); return ray.ray.intersectPlane(plane,p)?p:null; }
+
+// ═══════════════════════════════════════════════════════════
+//  SAS — Spatial Awareness System (Phase 1)
+//  SASCore: decides HOW a drag is interpreted (the intent engine).
+//  SASCard: explains that interpretation to the user (never the engine).
+//  Contract: interpretation object {intent, frame, override, remembered}
+//  shared by InteractionDispatcher (drag plane), SASCard (UI), telemetry.
+// ═══════════════════════════════════════════════════════════
+let sasDebug=false; // F9 — reveals the raw coordinate HUD for debugging
+const SASCore=(()=>{
+  const GROUNDED=new Set(['block','shape','model','icon']); // rest on the floor by default
+  const memory=new Map();   // objectId → frame, seeded by manual overrides (no adaptive learning yet)
+  const modifiers={shift:false,ctrl:false};
+  const log=[];             // telemetry hook: one entry per resolved drag
+  function interpret(o){
+    if(modifiers.shift) return {intent:'Following Screen', frame:'screen', override:true,  remembered:false};
+    if(modifiers.ctrl)  return {intent:'Moving on Floor',  frame:'ground', override:true,  remembered:false};
+    if(memory.has(o.id)){
+      const f=memory.get(o.id);
+      return {intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:true};
+    }
+    const f=GROUNDED.has(o.type)?'ground':'screen';
+    return {intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:false};
+  }
+  function remember(o,frame){ if(memory.get(o.id)===frame) return false; memory.set(o.id,frame); return true; }
+  function record(evt){ log.push({t:Date.now(),...evt}); if(log.length>500) log.shift(); }
+  return {interpret,remember,record,modifiers,log};
+})();
+const SASCard=(()=>{
+  const el=document.getElementById('sas-card');
+  let lastIntent='';
+  const AXIS_WORDS=[['x','right','left'],['y','above','below'],['z','front','behind']];
+  function offsetRows(p,ref){
+    const d={x:p.x-ref.x,y:p.y-ref.y,z:p.z-ref.z}; const rows=[];
+    for(const[ax,pos,neg] of AXIS_WORDS){
+      const v=d[ax]; if(Math.abs(v)<0.05) continue;
+      rows.push(`<span class="sas-off">${Math.abs(v).toFixed(1)} ${v>0?pos:neg}</span>`);
+    }
+    return rows.length?rows.join(' · '):'<span class="sas-off">right here</span>';
+  }
+  function nearestRef(o){
+    let best=null,bd=1e9;
+    for(const q of objects){ if(q===o) continue;
+      const d=q.root.position.distanceTo(o.root.position); if(d<bd){bd=d;best=q;} }
+    return (best&&bd<14)?best:null;
+  }
+  function render(interp,o){
+    const ref=nearestRef(o);
+    let html=`<div class="sas-intent${interp.intent!==lastIntent?' flip':''}">${interp.intent}</div>`;
+    if(ref){
+      html+=`<div class="sas-dim">Near</div><div><span class="sas-ref">${ref.label}</span></div>`;
+      html+=`<div>${offsetRows(o.root.position,ref.root.position)}</div>`;
+    }
+    const p=o.root.position;
+    if([p.x,p.z].some(v=>Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS))
+      html+=`<div class="sas-snap">⌗ on the 1 u grid</div>`;
+    if(interp.override)  html+=`<div class="sas-badge">Manual Override</div>`;
+    if(interp.remembered)html+=`<div class="sas-badge mem">Remembered</div>`;
+    el.innerHTML=html; el.classList.add('show'); lastIntent=interp.intent;
+  }
+  function hover(o){ // progressive disclosure: rest state shows only the name
+    el.innerHTML=`<div class="sas-intent${'Hover'!==lastIntent?' flip':''}"><span class="sas-ref">${o.label}</span></div>`;
+    el.classList.add('show'); lastIntent='Hover';
+  }
+  function depth(){ // wheel push/pull announcement
+    el.innerHTML=`<div class="sas-intent flip">Moving Closer / Farther</div><div class="sas-dim">Scroll to adjust depth</div>`;
+    el.classList.add('show'); lastIntent='Depth';
+  }
+  function note(msg){ // transparent learning: say what was remembered
+    el.innerHTML=`<div class="sas-intent flip">Remembered</div><div>${msg}</div>`;
+    el.classList.add('show'); lastIntent='Note';
+    clearTimeout(el._t); el._t=setTimeout(hide,2200);
+  }
+  function pulse(){ el.classList.remove('snap-pulse'); void el.offsetWidth; el.classList.add('snap-pulse'); }
+  function hide(){ el.classList.remove('show'); lastIntent=''; }
+  return {render,hover,depth,note,pulse,hide};
+})();
+function setMovePlaneFor(frame,pos){
+  if(frame==='ground'){ movePlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0), pos); }
+  else { const n=new THREE.Vector3(); camera.getWorldDirection(n); movePlane.setFromNormalAndCoplanarPoint(n,pos); }
+}
+let curInterp=null;
+window.addEventListener('keydown',e=>{ if(e.key==='Shift')SASCore.modifiers.shift=true; if(e.key==='Control')SASCore.modifiers.ctrl=true; });
+window.addEventListener('keyup',  e=>{ if(e.key==='Shift')SASCore.modifiers.shift=false; if(e.key==='Control')SASCore.modifiers.ctrl=false; });
 
 const PRESETS=['#00ccff','#ff4466','#44ff88','#ffcc00','#ff8800','#cc66ff','#ffffff','#ff6644','#00ffcc'];
 const TIPS={ nav:'🎮 Drag orbit · scroll zoom · two-finger pan · tap video/audio to toggle · Ctrl+Z undo · Ctrl+D duplicate',
@@ -2011,8 +2347,8 @@ function setMode(m){
   document.getElementById('text-overlay').style.display='none';
   document.getElementById('conn-banner').style.display=(m==='connect')?'block':'none';
   if(m!=='connect') connectFirst=null;
-  if(m!=='move') moveTarget=null;
-  canvas.style.cursor={ nav:'grab', move:'move', draw:'crosshair', text:'text', image:'cell', video:'cell', audio:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', icon:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
+  if(m!=='nav'){ moveTarget=null; snapGrid.visible=false; coordHud.classList.remove('show'); curInterp=null; SASCard.hide(); }
+  canvas.style.cursor={ nav:'grab', draw:'crosshair', text:'text', image:'cell', video:'cell', audio:'cell', block:'crosshair', shape:'crosshair', sticker:'crosshair', model:'crosshair', icon:'crosshair', connect:'pointer', erase:'no-drop' }[m]||'default';
   // hide draw suggestions when switching away from draw
   if(m!=='draw') hideSuggest();
   // show/hide brush picker + body class (used for CSS zone lifting)
@@ -2091,13 +2427,18 @@ function buildPalette(kind){
 let mdPt=null, mdT=0;
 function onDown(cx,cy){
   mdPt={x:cx,y:cy}; mdT=Date.now();
-  if(mode==='move'){
+  if(mode==='nav'){
+    // Smart nav: object under pointer → grab-drag it; empty space → OrbitControls
     const o=objAt(cx,cy);
     if(o){
+      controls.enabled=false;
       moveTarget=o;
-      const n=new THREE.Vector3();
-      camera.getWorldDirection(n);
-      movePlane.setFromNormalAndCoplanarPoint(n, o.root.position);
+      hudDragStart.copy(o.root.position);
+      snapGrid.visible=true;
+      curInterp=SASCore.interpret(o);
+      SASCore.record({evt:'drag-start',type:o.type,frame:curInterp.frame,override:curInterp.override,remembered:curInterp.remembered});
+      setMovePlaneFor(curInterp.frame, o.root.position);
+      SASCard.render(curInterp,o);
       const p=rayPlane(movePlane,cx,cy);
       moveOffset.copy(o.root.position).sub(p||o.root.position);
       selectObj(o, cx, cy);
@@ -2117,15 +2458,32 @@ function onMove(cx,cy){
   if(mode==='block'){ const p=hitToPos(getHit(cx,cy)); if(p){ ghost.position.set(p.x,p.y,p.z); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
   else if(mode==='shape'||mode==='sticker'||mode==='model'||mode==='icon'||mode==='audio'){ const s=hitToSurface(cx,cy); if(s){ ghost.position.copy(s.point).addScaledVector(s.normal,0.6); ghost.material.color.set(ink); ghost.visible=true; } else ghost.visible=false; }
   else ghost.visible=false;
-  if(mode==='move' && moveTarget){
+  if(mode==='nav' && moveTarget){
+    // Mid-drag override: re-resolve intent if modifiers changed the frame
+    const interp=SASCore.interpret(moveTarget);
+    if(curInterp && interp.frame!==curInterp.frame){
+      setMovePlaneFor(interp.frame, moveTarget.root.position);
+      const rp=rayPlane(movePlane,cx,cy);
+      if(rp) moveOffset.copy(moveTarget.root.position).sub(rp);
+      SASCore.record({evt:'frame-switch',type:moveTarget.type,from:curInterp.frame,to:interp.frame,override:interp.override});
+    }
+    curInterp=interp;
     const p=rayPlane(movePlane,cx,cy);
     if(p){
       const np=p.clone().add(moveOffset);
+      const wasSnapped=[np.x,np.z].some(v=>Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS);
+      const prevSnapped=[moveTarget.root.position.x,moveTarget.root.position.z].some(v=>Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS);
       moveTarget.root.position.copy(np);
       moveTarget.basePos.copy(np);
+      if(wasSnapped&&!prevSnapped) SASCard.pulse(); // magnetic tick when entering the grid
     }
+    SASCard.render(curInterp,moveTarget);
+  } else if(mode==='nav'){
+    const ho=objAt(cx,cy);
+    if(ho) SASCard.hover(ho); else SASCard.hide();
   }
   if(mode==='draw' && drawing) addStrokePoint(cx,cy);
+  updateCoordHud(cx,cy);
 
   const tip=document.getElementById('tip');
   if(['block','shape','sticker','model','erase'].includes(mode)){ const h=getHit(cx,cy);
@@ -2135,7 +2493,18 @@ function onMove(cx,cy){
 }
 function onUp(cx,cy){
   if(mode==='draw'){ endStroke(); return; }
-  if(mode==='move'){ moveTarget=null; /* keep HUD visible after release so user can resize */ return; }
+  if(mode==='nav' && moveTarget){
+    // Memory hook: an override held through release becomes this object's preference
+    if(curInterp&&curInterp.override&&SASCore.remember(moveTarget,curInterp.frame)){
+      SASCard.note(`<span class="sas-ref">${moveTarget.label}</span> now ${curInterp.frame==='ground'?'stays on the floor':'follows the screen'}.`);
+      SASCore.record({evt:'remember',type:moveTarget.type,frame:curInterp.frame});
+    } else SASCard.hide();
+    SASCore.record({evt:'drag-end',type:moveTarget.type,frame:curInterp?curInterp.frame:'?'});
+    curInterp=null;
+    moveTarget=null; controls.enabled=true; snapGrid.visible=false; /* keep HUD visible after release so user can resize */
+    const dragged = Math.hypot(cx-(mdPt?.x||0), cy-(mdPt?.y||0));
+    if(Date.now()-mdT>320 || dragged>14) return; // real drag — done; a tap falls through to bounce/play
+  }
   const moved = Math.hypot(cx-(mdPt?.x||0), cy-(mdPt?.y||0));
   if(Date.now()-mdT>320 || moved>14) return; // treat as drag, ignore
   if(mode==='audio'){ const s=hitToSurface(cx,cy); if(s){ pendingPos=s; document.getElementById('audio-input').click(); } return; }
@@ -2164,7 +2533,7 @@ canvas.addEventListener('pointerdown', e => {
     activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (activePointers.size === 1) {
       onDown(e.clientX, e.clientY);
-    } else if (activePointers.size === 2 && mode === 'move' && selectedObj) {
+    } else if (activePointers.size === 2 && mode === 'nav' && moveTarget && selectedObj) {
       const pts = Array.from(activePointers.values());
       initialPinchDistance = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
       initialPinchScale = selectedObj.userScale || 1;
@@ -2172,12 +2541,17 @@ canvas.addEventListener('pointerdown', e => {
   }
 });
 
+// hover (no button held) still drives the coordinate HUD
+canvas.addEventListener('pointermove', e => {
+  if (!activePointers.has(e.pointerId) && e.pointerType !== 'touch') updateCoordHud(e.clientX, e.clientY);
+});
+
 canvas.addEventListener('pointermove', e => {
   if (activePointers.has(e.pointerId)) {
     activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (activePointers.size === 1) {
       onMove(e.clientX, e.clientY);
-    } else if (activePointers.size === 2 && mode === 'move' && selectedObj && initialPinchDistance) {
+    } else if (activePointers.size === 2 && mode === 'nav' && selectedObj && initialPinchDistance) {
       const pts = Array.from(activePointers.values());
       const currentDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
       if (initialPinchDistance > 10) {
@@ -2264,7 +2638,7 @@ document.getElementById('model-input').addEventListener('change', e=>{ const f=e
 
 // Move-tool depth: wheel pushes/pulls the grabbed object along the view axis
 canvas.addEventListener('wheel', e=>{
-  if(mode==='move' && moveTarget){
+  if(mode==='nav' && moveTarget){
     e.preventDefault();
     if(e.shiftKey){
       // Shift+scroll = resize the grabbed object
@@ -2276,7 +2650,10 @@ canvas.addEventListener('wheel', e=>{
       const n=new THREE.Vector3(); camera.getWorldDirection(n);
       moveTarget.root.position.addScaledVector(n, e.deltaY>0?-0.7:0.7);
       moveTarget.basePos.copy(moveTarget.root.position);
-      movePlane.setFromNormalAndCoplanarPoint(n, moveTarget.root.position);
+      // Re-anchor the plane through the new position, honoring the active SAS frame
+      setMovePlaneFor(curInterp?curInterp.frame:'screen', moveTarget.root.position);
+      SASCard.depth();
+      SASCore.record({evt:'depth',type:moveTarget.type});
     }
   }
 }, { passive:false });
@@ -2533,6 +2910,7 @@ window.addEventListener('keydown', e=>{
   if(e.key==='-'||e.key==='_'){ e.preventDefault(); resizeTarget(0.87); return; }
   const km={ n:'nav', g:'move', d:'draw', t:'text', i:'image', v:'video', a:'audio', b:'block', s:'shape', k:'sticker', o:'icon', m:'model', c:'connect', e:'erase' };
   if(km[e.key]) setMode(km[e.key]);
+  if(e.key==='F9'){ sasDebug=!sasDebug; toast(sasDebug?'SAS debug: coordinates on':'SAS debug: off'); return; }
   if(e.key==='r') flyTo(HOME_POS,HOME_TGT);
   if(e.key==='f'){ document.getElementById('btn-4d').click(); }
   if(e.key==='Escape'){ setMode('nav'); document.getElementById('guide-overlay').style.display='none'; }
@@ -2540,7 +2918,7 @@ window.addEventListener('keydown', e=>{
 });
 
 function resizeTarget(factor){
-  const o = (mode==='move' && moveTarget) ? moveTarget : undoStack[undoStack.length-1];
+  const o = (mode==='nav' && moveTarget) ? moveTarget : undoStack[undoStack.length-1];
   if(!o){ toast('Nothing to resize'); return; }
   o.userScale = Math.max(0.05, Math.min(30, (o.userScale||1)*factor));
   toast(`"${o.label}" → ${(o.userScale*100).toFixed(0)}%`);
@@ -2584,6 +2962,7 @@ function animate(){
     if(o.fourD && o !== moveTarget){
       const sp = o.orbitSpeed||0.38, r = o.orbitRadius||2.5, ph = o.wPhase;
       const ang = t*sp + ph;
+      let prevX = o.root.position.x, prevZ = o.root.position.z;
       switch(o.orbitPattern||'circle'){
         case 'circle':
           o.root.position.x = o.basePos.x + r*Math.cos(ang);
@@ -2613,6 +2992,14 @@ function animate(){
           scale *= 1+off*0.12;
         }
       }
+      // Rickshaw alignment: face forward along direction of orbit motion
+      if (o.label === 'Autorikshaw' || o.label === '🛺 Autorikshaw') {
+        const dx = o.root.position.x - prevX;
+        const dz = o.root.position.z - prevZ;
+        if (Math.abs(dx) > 0.001 || Math.abs(dz) > 0.001) {
+          o.root.rotation.y = Math.atan2(dx, dz) + Math.PI; // Face direction of travel
+        }
+      }
       // pulse the splat aura
       if(o.splatPts){ o.splatPts.material.opacity = 0.18+0.12*Math.sin(t*1.4+ph); o.splatPts.rotation.y = t*0.12; }
     }
@@ -2623,6 +3010,7 @@ function animate(){
   // pulse selection ring
   if(_selectionRing){ _selectionRing._phase = (_selectionRing._phase||0)+0.06; _selectionRing.material.opacity = 0.5+0.45*Math.sin(_selectionRing._phase); _selectionRing.rotation.y = t*0.8; }
   renderer.render(scene,camera);
+  if(window.compassViewport) window.compassViewport.render();
 }
 
 // ── Brand wall decal ────────────────────────────────────────
@@ -2855,7 +3243,183 @@ const _origSetMode = setMode;
 // patch setMode to also hide size HUD
 (()=>{ const orig=setMode; window.setMode = (m)=>{ orig(m); if(m!=='move') hideSizeHUD(); }; setMode=window.setMode; })();
 
+// ── Compass Viewport (PiP 3D Navigation) ───────────────────
+class CompassViewport {
+  constructor(scene, controls) {
+    this.scene = scene;
+    this.controls = controls;
+    
+    this.pane = document.getElementById('pip-pane');
+    this.canvas = document.getElementById('pip-canvas');
+    this.controlsContainer = document.getElementById('pip-view-controls');
+    this.closeBtn = document.getElementById('pip-close-btn');
+    this.toggleBtn = document.getElementById('btn-compass');
+    
+    this.active = false;
+    this.currentView = 'top';
+    this.dirty = true;
+    
+    // Explicitly lock main camera to layer 0
+    this.controls.object.layers.set(0);
+    
+    // Orthographic Camera supporting both layer 0 (scene) & layer 1 (helpers)
+    this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 5000);
+    this.camera.layers.enable(0);
+    this.camera.layers.enable(1);
+    
+    // Create Renderer
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      alpha: true
+    });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setSize(this.canvas.clientWidth || 180, this.canvas.clientHeight || 180);
+    
+    // Coordinate axis helper on layer 1 (invisible in main perspective view)
+    this.axesHelper = new THREE.AxesHelper(15);
+    this.axesHelper.layers.set(1);
+    this.scene.add(this.axesHelper);
+    
+    // View Presets Configuration
+    this.presets = {
+      top: { id: 'top', label: 'Top', up: [0, 0, -1], offset: [0, 1, 0] },
+      side: { id: 'side', label: 'Side', up: [0, 1, 0], offset: [1, 0, 0] },
+      front: { id: 'front', label: 'Front', up: [0, 1, 0], offset: [0, 0, 1] }
+    };
+    
+    this.lastCamPosition = new THREE.Vector3();
+    this.lastTarget = new THREE.Vector3();
+    
+    this.initUI();
+    this.setupResizeObserver();
+  }
+  
+  initUI() {
+    this.controlsContainer.innerHTML = '';
+    Object.values(this.presets).forEach(preset => {
+      const btn = document.createElement('button');
+      btn.className = `pip-btn${preset.id === this.currentView ? ' active' : ''}`;
+      btn.textContent = preset.label;
+      btn.dataset.view = preset.id;
+      btn.addEventListener('click', () => this.setView(preset.id));
+      this.controlsContainer.appendChild(btn);
+    });
+    
+    this.closeBtn.addEventListener('click', () => this.hide());
+    this.toggleBtn.addEventListener('click', () => {
+      if (this.active) this.hide();
+      else this.show();
+    });
+  }
+  
+  setupResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.active) {
+        this.resize();
+      }
+    });
+    this.resizeObserver.observe(this.pane);
+  }
+  
+  show() {
+    this.active = true;
+    this.pane.classList.add('show');
+    this.toggleBtn.style.background = 'rgba(20, 70, 200, 0.4)';
+    this.toggleBtn.style.color = '#7df';
+    this.resize();
+    this.dirty = true;
+  }
+  
+  hide() {
+    this.active = false;
+    this.pane.classList.remove('show');
+    this.toggleBtn.style.background = '';
+    this.toggleBtn.style.color = '';
+  }
+  
+  setView(viewId) {
+    if (!this.presets[viewId]) return;
+    this.currentView = viewId;
+    
+    const buttons = this.controlsContainer.querySelectorAll('.pip-btn');
+    buttons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.view === viewId);
+    });
+    
+    this.dirty = true;
+  }
+  
+  resize() {
+    const w = this.canvas.clientWidth || 180;
+    const h = this.canvas.clientHeight || 180;
+    this.renderer.setSize(w, h, false);
+    this.dirty = true;
+  }
+  
+  markDirty() {
+    this.dirty = true;
+  }
+  
+  update() {
+    if (!this.active) return;
+    
+    const preset = this.presets[this.currentView];
+    const target = this.controls.target;
+    
+    const rawDist = this.controls.getDistance();
+    const distance = Math.max(10, Math.min(rawDist, 800));
+    
+    const offset = new THREE.Vector3(...preset.offset).multiplyScalar(distance);
+    this.camera.position.copy(target).add(offset);
+    this.camera.up.set(...preset.up);
+    this.camera.lookAt(target);
+    
+    this.axesHelper.position.copy(target);
+    
+    const aspect = (this.canvas.clientWidth || 180) / (this.canvas.clientHeight || 180);
+    const frustumSize = distance * 0.75;
+    
+    this.camera.left = -frustumSize * aspect;
+    this.camera.right = frustumSize * aspect;
+    this.camera.top = frustumSize;
+    this.camera.bottom = -frustumSize;
+    this.camera.updateProjectionMatrix();
+  }
+  
+  render() {
+    if (!this.active) return;
+    
+    const target = this.controls.target;
+    const mainCamPos = this.controls.object.position;
+    
+    const stateChanged = !this.lastCamPosition.equals(mainCamPos) || !this.lastTarget.equals(target);
+    const isDynamic = fourDOn || moveTarget !== null || drawing;
+    
+    if (this.dirty || stateChanged || isDynamic) {
+      this.update();
+      this.renderer.render(this.scene, this.camera);
+      
+      this.lastCamPosition.copy(mainCamPos);
+      this.lastTarget.copy(target);
+      this.dirty = false;
+    }
+  }
+  
+  dispose() {
+    this.hide();
+    this.resizeObserver.disconnect();
+    this.scene.remove(this.axesHelper);
+    this.renderer.dispose();
+  }
+}
+
 // ── Boot ───────────────────────────────────────────────────
+try {
+  window.compassViewport = new CompassViewport(scene, controls);
+} catch(e) {
+  console.warn("CompassViewport initialization skipped (e.g. headless/test environment)", e);
+}
 setMode('nav'); updateHUD();
 startCinematic();
 animate();

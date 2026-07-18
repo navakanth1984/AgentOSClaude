@@ -1,6 +1,7 @@
 """SingleExecutor — one model, one call. Thin wrapper so ExecutionManager can
 treat "single model" as just another execution mode instead of a special case."""
 
+import os
 import sys
 import time
 from pathlib import Path
@@ -15,7 +16,16 @@ from .base import ExecutionRequest, StatusCallback
 class SingleExecutor:
     async def execute(self, request: ExecutionRequest, status_cb: StatusCallback = None) -> dict:
         model = (request.models or ["anthropic/claude-sonnet-4-5"])[0]
-        manifest = new_manifest(mode="single", models=[model], category=request.category)
+        api_key = request.api_key or os.environ.get("OPENROUTER_API_KEY", "")
+        manifest = new_manifest(
+            mode=request.mode,
+            requested_mode=request.requested_mode or request.mode, 
+            models=[model], 
+            category=request.category,
+            planned_mode=request.planned_mode,
+            executed_mode=request.executed_mode,
+            routing_trace=request.routing_trace
+        )
 
         if status_cb:
             status_cb("running", {"model": model, "status": "pending"})

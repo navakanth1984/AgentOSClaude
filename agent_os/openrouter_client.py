@@ -18,6 +18,8 @@ Usage:
 import json
 import os
 import asyncio
+import time
+import random
 import urllib.request
 import urllib.error
 from typing import Optional
@@ -225,8 +227,26 @@ def call_openrouter(
     except urllib.error.HTTPError as he:
         print(f"[WARNING] OpenRouter failed with code {he.code} ({he.reason}) for model '{model}'.")
         
+        # Determine backoff duration based on retry-after header or a default jittered delay
+        retry_after = he.headers.get("Retry-After")
+        backoff_sec = 0.0
+        if retry_after:
+            try:
+                backoff_sec = float(retry_after)
+                print(f"[INFO] Honoring Retry-After header: sleeping for {backoff_sec}s...")
+            except ValueError:
+                pass
+        
+        # Only sleep if the failure is retryable/transient (429, 5xx)
+        is_transient = he.code in (429, 500, 502, 503, 504)
+        
         # Fallback 1: Native Gemini
         if gemini_key:
+            if is_transient:
+                sleep_time = min(backoff_sec if backoff_sec > 0 else (2.0 + random.uniform(0, 0.5)), 30.0)
+                print(f"[INFO] Scaled fallback backoff: sleeping for {sleep_time:.2f}s before Fallback 1...")
+                time.sleep(sleep_time)
+            
             print("[INFO] Fallback 1: Attempting native Gemini API (gemini-2.5-flash)...")
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={gemini_key}"
             payload_gemini = json.dumps({
@@ -241,9 +261,21 @@ def call_openrouter(
                     return data["candidates"][0]["content"]["parts"][0]["text"].strip()
             except Exception as native_err:
                 print(f"[ERROR] Native Gemini fallback also failed: {native_err}")
+                if isinstance(native_err, urllib.error.HTTPError):
+                    retry_after_hdr = native_err.headers.get("Retry-After")
+                    if retry_after_hdr:
+                        try:
+                            backoff_sec = float(retry_after_hdr)
+                        except ValueError:
+                            pass
         
         # Fallback 2: OpenRouter Free Model
         if api_key and model != "openrouter/free":
+            if is_transient:
+                sleep_time = min(backoff_sec if backoff_sec > 0 else (4.0 + random.uniform(0, 0.5)), 30.0)
+                print(f"[INFO] Scaled fallback backoff: sleeping for {sleep_time:.2f}s before Fallback 2...")
+                time.sleep(sleep_time)
+            
             fallback_model = "openrouter/free"
             print(f"[INFO] Fallback 2: Attempting OpenRouter free model '{fallback_model}'...")
             payload_free = json.dumps({
@@ -271,15 +303,27 @@ def call_openrouter(
                     return data["choices"][0]["message"]["content"].strip()
             except Exception as free_err:
                 print(f"[ERROR] OpenRouter free fallback also failed: {free_err}")
-
+                if isinstance(free_err, urllib.error.HTTPError):
+                    retry_after_hdr = free_err.headers.get("Retry-After")
+                    if retry_after_hdr:
+                        try:
+                            backoff_sec = float(retry_after_hdr)
+                        except ValueError:
+                            pass
+        
         # Fallback 3: local Ollama (offline) — last resort when all cloud paths fail.
         if _ollama_reachable():
+            if is_transient:
+                sleep_time = min(backoff_sec if backoff_sec > 0 else (8.0 + random.uniform(0, 0.5)), 30.0)
+                print(f"[INFO] Scaled fallback backoff: sleeping for {sleep_time:.2f}s before Fallback 3 (local Ollama)...")
+                time.sleep(sleep_time)
+                
             print("[INFO] Fallback 3: routing to local Ollama (offline mode)...")
             try:
                 return _call_ollama(system, user, max_tokens, temperature)
             except Exception as ollama_err:
                 print(f"[ERROR] Ollama fallback also failed: {ollama_err}")
-
+        
         # If everything fails, raise the original error
         raise he
 

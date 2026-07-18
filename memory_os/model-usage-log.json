@@ -1482,19 +1482,1079 @@
       },
       "estimated_cost_usd": 0.0,
       "routing_corrections": []
+    },
+    {
+      "date": "2026-07-07",
+      "session_id": "909a2c98-b826-4f3b-934d-cadd18dcec1f",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for usage-efficiency skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session metrics, and generated usage_efficiency_analysis.md report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.01,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-08",
+      "session_id": "80c10fca-0923-44a6-90fe-a907c4589dcd",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-08",
+      "session_id": "7c6570d1-ca6b-4baa-ae9b-27b9d4b036ee",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to check routing efficiency and OpenRouter balance."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-08",
+      "session_id": "c33f8915-175a-45d4-8cb7-3c594c99557b",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Evaluate Skill Usage Efficiency",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py and evaluate_usage_efficiency.py to run model economics validation and generated usage_efficiency_analysis.md report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-08",
+      "session_id": "1d163926-245e-43ce-b3da-e8168d64c55b",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran evaluate_usage_efficiency.py to generate snapshot and validate_usage_efficiency.py to log session economics."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-08",
+      "session_id": "36652185-b1ce-4fcb-b092-8ab762b49b9c",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "2eaf1fae-3c2e-4539-9b46-d218c92a2db3",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "fea57884-e279-4f8e-a8b7-303feeb549f4",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, evaluate_usage_efficiency.py to compute drift score, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "ed269a2a-c25b-454d-aa20-b3d8fc344594",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, evaluate_usage_efficiency.py to compute drift score, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "dd0ec0cb-8a83-45ad-81fb-be72b5e9d467",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, evaluate_usage_efficiency.py to compute drift score, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "63f2eb44-4854-4e4d-8113-74068809fdbc",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, evaluate_usage_efficiency.py to compute drift score, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "99fc6e2f-2137-4556-b258-cecd522c845b",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, generate_analysis.py to update report, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "8d14dae6-4bdc-471d-beb2-d4231000f238",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, evaluate_usage_efficiency.py to compute drift score, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "b1428cc2-e454-430b-ab16-82e9692ae732",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "30f75994-4caa-4108-961b-06e2ce080d27",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "5a54d6ff-8745-4d2c-9224-4abaa5ed7c51",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "9a14bf18-333e-4122-9fa1-228e39c930ab",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "bdf60e0e-5766-4425-902f-ca5984ceb71f",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "a7e4e553-d61c-4002-b7da-19e9d96df0e4",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-09",
+      "session_id": "1523d23a-c7d2-4010-9f11-b4ab89db5a14",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "b36c0c4f-8dec-4714-b15a-1bffa6843152",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "3135c375-83c7-4ba4-a28e-0ccce3b93cd2",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "55fa0414-f088-48b2-bf71-8251f6a8126e",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "12316c62-eb7d-4565-9800-e43df9a3e338",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "42b05e33-803a-4ba5-b32c-d5a436e2d846",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and scratch/generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 3000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "c0d105c5-8235-4b68-98c2-8fd2a40345c1",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 42000,
+        "output": 3500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "e73dcdb4-e04f-43e3-b5ee-ff3071bb34a7",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, and generate_analysis.py to update report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 45000,
+        "output": 3500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "60e0101e-28a2-4b7f-b508-a619335ba16e",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics and verified routing efficiency."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 30000,
+        "output": 2000
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "6a9268e0-99bf-44ff-b214-8115255c9904",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py to log session metrics, generated usage efficiency analysis report, and updated session log."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-10",
+      "session_id": "be7a128d-0e51-4a34-881a-66ddee6b6265",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, evaluate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "0c573019-cfc0-4a0a-b039-fc1622faa075",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "4f88677d-b76a-4a67-9a86-0a54e4e97787",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 35000,
+        "output": 2500
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "2cc98bdb-94a8-4a1f-afe3-7070aa5740a3",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, evaluate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "c84c6b20-d4fb-464f-92dc-f8fb0b945549",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "f05d990b-73f3-4ecf-84f8-0ad4ceb2720e",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "1397b2b7-1e83-4ea3-b6b2-0b6c52dad32d",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "session_id": "3f309534-f67a-418f-b038-dc3ffaef28ea",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Optimize Skill Usage Efficiency",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": [],
+      "date": "2026-07-11"
+    },
+    {
+      "session_id": "9e19d7db-7897-4cd2-9af3-4ccffb091254",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Skill Usage Efficiency Analysis",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": [],
+      "date": "2026-07-11"
+    },
+    {
+      "session_id": "1ebeb923-1e95-4341-80d8-efceb24bba2a",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": [],
+      "date": "2026-07-11"
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "2513d5cd-b727-4017-9021-cef0889dcb5b",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, evaluate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "436e60a5-5548-4fe4-944e-0c789d514a97",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "047dbc86-f63f-4094-bb68-d3e1677b1cf6",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "0b61393c-89e4-4910-80f9-25a3914c232c",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "6801d07b-8ec6-4a84-a207-a528cfb73d92",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "171024fe-4662-48f2-a331-e3a4bc34137a",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, evaluate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-11",
+      "session_id": "68d350ad-6059-4ebe-b889-03c8aa18388e",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-12",
+      "session_id": "73172273-3d17-40d1-b03f-3f45ee4d6c2f",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session metrics, and verified the report."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-12",
+      "session_id": "1d34059f-ce7c-4caf-8143-33b3bbac2259",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-12",
+      "session_id": "dbc064ce-7191-436f-95c7-458b33248d06",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and verified usage efficiency logs."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-13",
+      "session_id": "c9f5af06-cb44-44ef-9220-85a8e7275cd9",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and updated session memory."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-12",
+      "session_id": "2026-07-12-azure-dev-p0-incident-fix",
+      "model_used": "Claude Sonnet 5 (Medium)",
+      "tier": 3,
+      "tasks_completed": [
+        {
+          "description": "MVCT MRP Core P0 Azure Dev deployment incident fix (5-root-cause cascade + PR #30 migration automation)",
+          "complexity": "Complex/Infrastructure",
+          "correct_tier": true,
+          "notes": "Infrastructure debugging: (1) App Service was stopped - fixed via az webapp start; (2) Postgres firewall completely empty despite publicNetworkAccess enabled - fixed: added AllowAzureServices rule; (3) Database never migrated, prisma/dotenv were devDependencies stripped by npm prune --production - fixed: moved to dependencies + added prisma/deploy-migrate.sh + .github/scripts/run-remote-migration.sh + workflow integration; (4) Manual interim migration via Kudu SSH (3 migrations: init_h1, add_assignment_metadata, add_ios_models + seed). Result: /health now 200 OK, all checks green (database/migration/seed/projection/eventDictionary ok). Smoke test /session POST 201 OK, confirmed real DB write with BKT/experiment-arm assignment. PR #30 merged with deploy-migrate.sh (idempotent, reconstructs DATABASE_URL from App Service env vars), run-remote-migration.sh (Kudu API wrapper), .gitattributes LF guard, deploy-dev.yml migration step wired before health gate (fail-fast blocks promotion). Process correction mid-session: caught direct master push, switched to branch\u2192PR\u2192merge discipline (PRs #21-#30 all followed). Deploy still in-flight, unverified end-to-end green - first real test of new pipeline migration logic."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 40000,
+        "output": 8000
+      },
+      "estimated_cost_usd": 0.12,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-13",
+      "session_id": "fc4967de-2571-4f8d-a71b-57f339d132c8",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, logged session details, and verified usage efficiency logs."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
+    },
+    {
+      "date": "2026-07-13",
+      "session_id": "a9cb3e54-83b9-4f87-9cf5-0b4d8b610959",
+      "model_used": "Gemini 3.1 Pro (Low)",
+      "tier": 4,
+      "tasks_completed": [
+        {
+          "description": "Run Usage efficiency for this skill",
+          "complexity": "Simple",
+          "correct_tier": true,
+          "notes": "Ran validate_usage_efficiency.py, evaluate_usage_efficiency.py, logged session details, and generated usage_efficiency_analysis.md."
+        }
+      ],
+      "estimated_tokens": {
+        "input": 38000,
+        "output": 2800
+      },
+      "estimated_cost_usd": 0.0,
+      "routing_corrections": []
     }
   ],
   "summary": {
-    "total_sessions": 70,
+    "total_sessions": 123,
     "tier_distribution": {
       "tier_1": 0,
-      "tier_2": 63,
-      "tier_3": 0,
-      "tier_4": 6,
+      "tier_2": 64,
+      "tier_3": 1,
+      "tier_4": 57,
       "tier_5": 1
     },
-    "total_estimated_cost_usd": 3.74,
+    "total_estimated_cost_usd": 3.88,
     "correct_routing_rate": 1.0,
-    "last_updated": "2026-07-04"
+    "last_updated": "2026-07-13"
   }
 }

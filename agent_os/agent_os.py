@@ -55,6 +55,7 @@ COMMANDS = {
     "cloud":      "Cloud Agent: self-correcting task execution in background",
     "creative":   "Creative: screenplay | audiography | prompt | novelist | studio (AI filmmaking tools)",
     "sql":        "Translate natural language questions into executable SQL queries against jobs.db",
+    "delegate":   "Hermes-style Lead Agent delegation: delegate <task> [--model <model_id>]",
     "session":    "Save the current session summary to Obsidian",
     "audiobook":  "Generate an audiobook from a text file: audiobook <file> [--voice] [--engine] [--output] [--resume] [--parallel] [--cache]",
     "quit":       "Exit Agent OS",
@@ -480,6 +481,33 @@ def cmd_sql(args: list[str]):
         print(f"  [ERROR] Failed to run SQL translator: {e}")
 
 
+def cmd_delegate(args: list[str]):
+    """Hermes-style plain English delegation in background."""
+    if not args:
+        print("  Usage: delegate \"<task description>\" [--model <model_id>]")
+        return
+        
+    model = "google/gemini-2.5-flash"
+    task_words = []
+    i = 0
+    while i < len(args):
+        if args[i] == "--model" and i + 1 < len(args):
+            model = args[i+1]
+            i += 2
+        else:
+            task_words.append(args[i])
+            i += 1
+            
+    task_desc = " ".join(task_words)
+    if (task_desc.startswith('"') and task_desc.endswith('"')) or (task_desc.startswith("'") and task_desc.endswith("'")):
+        task_desc = task_desc[1:-1]
+        
+    from hermes_delegator import run_delegation_background
+    log(f"Delegation task started: '{task_desc}'")
+    run_delegation_background(task_desc, model)
+    print(f"  [Hermes] Started delegation task in background: '{task_desc}'")
+
+
 def cmd_audiobook(args: list[str]):
     """Audiobook generation — delegates to the V1.1 speech pipeline."""
     import argparse
@@ -579,6 +607,8 @@ def run():
             cmd_creative(args)
         elif cmd == "sql":
             cmd_sql(args)
+        elif cmd == "delegate":
+            cmd_delegate(args)
         elif cmd == "audiobook":
             cmd_audiobook(args)
         else:
@@ -616,6 +646,8 @@ if __name__ == "__main__":
             cmd_creative(args)
         elif cmd == "sql":
             cmd_sql(args)
+        elif cmd == "delegate":
+            cmd_delegate(args)
         elif cmd == "audiobook":
             cmd_audiobook(args)
         else:
