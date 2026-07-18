@@ -935,7 +935,34 @@ controls.minDistance = 0.5; controls.maxDistance = 2000;
 controls.target.copy(HOME_TGT);
 
 // ── Lights ─────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0x1a2a55, 2.8));
+const ambient = new THREE.AmbientLight(0x1a2a55, 2.8);
+scene.add(ambient);
+
+// Floating dust particles system (Ambient Presence)
+const dustCount = 180;
+const dustGeo = new THREE.BufferGeometry();
+const dustPositions = new Float32Array(dustCount * 3);
+const dustVelocities = [];
+for (let i = 0; i < dustCount; i++) {
+  dustPositions[i*3] = (Math.random() - 0.5) * 60;
+  dustPositions[i*3+1] = Math.random() * 20;
+  dustPositions[i*3+2] = (Math.random() - 0.5) * 60;
+  dustVelocities.push({
+    x: (Math.random() - 0.5) * 0.15,
+    y: 0.08 + Math.random() * 0.1,
+    z: (Math.random() - 0.5) * 0.15
+  });
+}
+dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+const dustMat = new THREE.PointsMaterial({
+  color: 0x44ffaa,
+  size: 0.14,
+  transparent: true,
+  opacity: 0.28,
+  blending: THREE.AdditiveBlending
+});
+const dustParticles = new THREE.Points(dustGeo, dustMat);
+scene.add(dustParticles);
 const sun = new THREE.DirectionalLight(0xffffff, 2.0);
 sun.position.set(15, 30, 10); sun.castShadow = true;
 sun.target.position.copy(HOME_TGT); scene.add(sun.target);
@@ -963,7 +990,7 @@ const floorGeo = new THREE.PlaneGeometry(120,120); floorGeo.rotateX(-Math.PI/2);
 const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({ color:0x08182e, roughness:.95, transparent:true, opacity:.7 }));
 floor.receiveShadow = true; floor.name = 'floor'; scene.add(floor); placeTargets.push(floor);
 
-const grid = new THREE.GridHelper(120,120, 0x0d2044, 0x060f20);
+let grid = new THREE.GridHelper(120,120, 0x0d2044, 0x060f20);
 grid.material.transparent = true; grid.material.opacity = .5; scene.add(grid);
 
 const wallGeo = new THREE.PlaneGeometry(44,22);
@@ -2353,28 +2380,38 @@ const SASCore=(()=>{
 const SASCard=(()=>{
   const el=document.getElementById('sas-card');
   let lastIntent='';
-  const AXIS_WORDS=[['x','right','left'],['y','above','below'],['z','front','behind']];
-  function offsetRows(p,ref){
-    const d={x:p.x-ref.x,y:p.y-ref.y,z:p.z-ref.z}; const rows=[];
-    for(const[ax,pos,neg] of AXIS_WORDS){
-      const v=d[ax]; if(Math.abs(v)<0.05) continue;
-      rows.push(`<span class="sas-off">${Math.abs(v).toFixed(1)} ${v>0?pos:neg}</span>`);
+  function semanticRelationship(p, ref, label){
+    const dx = p.x - ref.x;
+    const dy = p.y - ref.y;
+    const dz = p.z - ref.z;
+    const dist = p.distanceTo(ref);
+    if (dist < 0.8) return `<span class="sas-ref">Right next to ${label}</span>`;
+    
+    let rel = '';
+    if (Math.abs(dy) > 1.5) {
+      rel = `${Math.abs(dy).toFixed(1)}m ${dy > 0 ? 'Above' : 'Below'} ${label}`;
+    } else if (Math.abs(dx) > Math.abs(dz)) {
+      rel = `${Math.abs(dx).toFixed(1)}m ${dx > 0 ? 'Right of' : 'Left of'} ${label}`;
+    } else {
+      rel = `${Math.abs(dz).toFixed(1)}m ${dz > 0 ? 'In front of' : 'Behind'} ${label}`;
     }
-    return rows.length?rows.join(' · '):'<span class="sas-off">right here</span>';
+    return `<span class="sas-ref">${rel}</span>`;
   }
   function nearestRef(o){
     let best=null,bd=1e9;
-    for(const q of objects){ if(q===o) continue;
+    for(const q of objects){ if(q===o) continue; // skip self
       const d=q.root.position.distanceTo(o.root.position); if(d<bd){bd=d;best=q;} }
-    return (best&&bd<14)?best:null;
+    return (best&&bd<16)?best:null;
   }
   function render(interp,o){
-    const ref=nearestRef(o);
+    let ref=nearestRef(o);
     let html=`<div class="sas-intent${interp.intent!==lastIntent?' flip':''}">${interp.intent}</div>`;
-    if(ref){
-      html+=`<div class="sas-dim">Near</div><div><span class="sas-ref">${ref.label}</span></div>`;
-      html+=`<div>${offsetRows(o.root.position,ref.root.position)}</div>`;
-    }
+    
+    let refLabel = ref ? ref.label : 'Workspace Center';
+    let refPos = ref ? ref.root.position : new THREE.Vector3(0, 0.5, 0);
+    
+    html+=`<div class="sas-dim">Relation</div><div>${semanticRelationship(o.root.position, refPos, refLabel)}</div>`;
+    
     const p=o.root.position;
     if([p.x,p.z].some(v=>Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS))
       html+=`<div class="sas-snap">⌗ on the 1 u grid</div>`;
@@ -2447,6 +2484,96 @@ function setMode(m){
   if(m==='shape'||m==='sticker'||m==='model'||m==='icon'){ buildPalette(m); pal.classList.add('show'); }
   else pal.classList.remove('show');
   showModeTip(m); updateHUD();
+  updateGridStyle();
+}
+function updateGridStyle(){
+  scene.remove(grid);
+  if (grid.geometry) grid.geometry.dispose();
+  if (grid.material) grid.material.dispose();
+  
+  if (mode === 'draw') {
+    const dotCount = 41 * 41;
+    const dotGeo = new THREE.BufferGeometry();
+    const dotPositions = new Float32Array(dotCount * 3);
+    let index = 0;
+    for (let x = -20; x <= 20; x++) {
+      for (let z = -20; z <= 20; z++) {
+        dotPositions[index*3] = x * 1.5;
+        dotPositions[index*3+1] = -0.01;
+        dotPositions[index*3+2] = z * 1.5;
+        index++;
+      }
+    }
+    dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+    const dotMat = new THREE.PointsMaterial({ color: 0x123064, size: 0.16 });
+    grid = new THREE.Points(dotGeo, dotMat);
+    scene.add(grid);
+  } else if (fourDOn) {
+    grid = new THREE.GridHelper(120, 120, 0x550d44, 0x200615);
+    grid.material.transparent = true; grid.material.opacity = .5;
+    scene.add(grid);
+  } else {
+    grid = new THREE.GridHelper(120, 120, 0x0d2044, 0x060f20);
+    grid.material.transparent = true; grid.material.opacity = .5;
+    scene.add(grid);
+  }
+}
+let snapGhostMesh = null;
+let snapPreviewLine = null;
+function updateSnapPreview(pos, frame) {
+  if (!pos || !moveTarget) {
+    if (snapGhostMesh) { scene.remove(snapGhostMesh); snapGhostMesh = null; }
+    if (snapPreviewLine) { scene.remove(snapPreviewLine); snapPreviewLine = null; }
+    return;
+  }
+  if (frame !== 'ground') {
+    if (snapGhostMesh) snapGhostMesh.visible = false;
+    if (snapPreviewLine) snapPreviewLine.visible = false;
+    return;
+  }
+  const snapX = Math.round(pos.x);
+  const snapY = pos.y;
+  const snapZ = Math.round(pos.z);
+  
+  if (!snapGhostMesh) {
+    const geo = new THREE.BoxGeometry(1.05, 1.05, 1.05);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x00ffcc,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.35
+    });
+    snapGhostMesh = new THREE.Mesh(geo, mat);
+    scene.add(snapGhostMesh);
+  }
+  snapGhostMesh.position.set(snapX, snapY, snapZ);
+  snapGhostMesh.visible = true;
+
+  if (!snapPreviewLine) {
+    const points = [pos.clone(), new THREE.Vector3(snapX, snapY, snapZ)];
+    const geo = new THREE.BufferGeometry().setFromPoints(points);
+    const mat = new THREE.LineDashedMaterial({
+      color: 0x00ffcc,
+      dashSize: 0.25,
+      gapSize: 0.15,
+      transparent: true,
+      opacity: 0.55
+    });
+    snapPreviewLine = new THREE.Line(geo, mat);
+    snapPreviewLine.computeLineDistances();
+    scene.add(snapPreviewLine);
+  } else {
+    const positions = snapPreviewLine.geometry.attributes.position.array;
+    positions[0] = pos.x;
+    positions[1] = pos.y;
+    positions[2] = pos.z;
+    positions[3] = snapX;
+    positions[4] = snapY;
+    positions[5] = snapZ;
+    snapPreviewLine.geometry.attributes.position.needsUpdate = true;
+    snapPreviewLine.computeLineDistances();
+    snapPreviewLine.visible = true;
+  }
 }
 
 // ── Palette builder ────────────────────────────────────────
@@ -2564,6 +2691,7 @@ function onMove(cx,cy){
       moveTarget.root.position.copy(np);
       moveTarget.basePos.copy(np);
       if(wasSnapped&&!prevSnapped) SASCard.pulse(); // magnetic tick when entering the grid
+      updateSnapPreview(moveTarget.root.position, curInterp.frame);
       SASCore.record({
         evt: 'drag-update',
         id: moveTarget.id,
@@ -2590,6 +2718,7 @@ function onMove(cx,cy){
 function onUp(cx,cy){
   if(mode==='draw'){ endStroke(); return; }
   if(mode==='nav' && moveTarget){
+    updateSnapPreview(null, null);
     // Memory hook: an override held through release becomes this object's preference
     if(curInterp&&curInterp.override&&SASCore.remember(moveTarget,curInterp.frame)){
       SASCard.note(`<span class="sas-ref">${moveTarget.label}</span> now ${curInterp.frame==='ground'?'stays on the floor':'follows the screen'}.`);
@@ -2776,6 +2905,7 @@ document.getElementById('btn-4d').addEventListener('click', e=>{
   e.currentTarget.classList.toggle('on',fourDOn);
   document.getElementById('orbit-panel').classList.toggle('show', fourDOn);
   toast(fourDOn?`4D ON — orbit: ${curOrbitPattern} · r=${curOrbitRadius}`:'4D mode off');
+  updateGridStyle();
 });
 
 // Orbit pattern buttons
@@ -3050,6 +3180,21 @@ function animate(){
   tickLinks(dt);
   updateLive();
   fill.intensity=1.1+Math.sin(t*.85)*.3; fill.position.x=Math.sin(t*.28)*12; fill.position.z=Math.cos(t*.28)*12;
+  ambient.intensity = 2.4 + Math.sin(t * 0.5) * 0.4;
+
+  // Animate dust particles
+  const posArr = dustGeo.attributes.position.array;
+  for (let i = 0; i < dustCount; i++) {
+    posArr[i*3+1] += dustVelocities[i].y * dt;
+    posArr[i*3] += dustVelocities[i].x * dt;
+    posArr[i*3+2] += dustVelocities[i].z * dt;
+    if (posArr[i*3+1] > 20) {
+      posArr[i*3+1] = 0;
+      posArr[i*3] = (Math.random() - 0.5) * 60;
+      posArr[i*3+2] = (Math.random() - 0.5) * 60;
+    }
+  }
+  dustGeo.attributes.position.needsUpdate = true;
   // billboard + spin + 4D drift + bounce
   objects.forEach(o=>{
     if(o.root.userData.billboardY){ const dx=camera.position.x-o.root.position.x, dz=camera.position.z-o.root.position.z; o.root.rotation.y=Math.atan2(dx,dz); }
