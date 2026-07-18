@@ -164,10 +164,11 @@ def deploy_prod() -> tuple[bool, str]:
     # leave bleuboard.vercel.app serving the OLD build while reporting success.
     # Always force the alias onto this deployment. (Incident: 2026-07-18.)
     p_code, p_out, p_err = run([VERCEL_CMD, "promote", url, "--yes"], timeout=90)
-    if p_code == 0:
+    p_combined = p_out + p_err
+    if p_code == 0 or "already the current production" in p_combined or "already active" in p_combined:
         log(f"Production alias promoted -> https://{PROD_ALIAS}")
     else:
-        log(f"WARNING: promote failed, prod alias may be stale: {(p_out + p_err)[:200]}")
+        log(f"WARNING: promote failed, prod alias may be stale: {p_combined[:200]}")
         return False, f"deployed {url} but promote failed"
     return True, url
 
