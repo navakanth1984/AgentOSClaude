@@ -1950,7 +1950,7 @@ function addIconNode(ico, lbl, surf, drawFn){
 // ── 3D animated model library (CC0/threejs examples) ───────
 const GLB = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r146/examples/models/gltf/';
 const MODELS = {
-  autorikshaw:{ icon:'🛺', label:'Autorikshaw', url:'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/Car.glb', size:4.2 },
+  autorikshaw:{ icon:'🛺', label:'Autorikshaw', url:GLB+'ferrari.glb', size:4.2 },
   flamingo:{ icon:'🦩', label:'Flamingo', url:GLB+'Flamingo.glb', size:4.5 },
   parrot:  { icon:'🦜', label:'Parrot',   url:GLB+'Parrot.glb',   size:3.2 },
   stork:   { icon:'🐦', label:'Stork',    url:GLB+'Stork.glb',    size:3.8 },
@@ -2327,26 +2327,26 @@ const SASCore=(()=>{
       };
     }
     
-    // Weighted scoring model
+    // Weighted scoring model — defaults to screen plane for intuitive vertical/perspective dragging
     const isGrounded = GROUNDED.has(o.type);
     let groundScore = 0;
     let screenScore = 0;
     const activeReasons = [];
 
     if (isGrounded) {
-      groundScore += 40;
+      groundScore += 10;
       activeReasons.push('grounded_object');
     } else {
       screenScore += 40;
       activeReasons.push('floating_object');
     }
 
-    if (pitch >= 0.8) {
-      groundScore += 25;
+    if (pitch >= 0.75) {
+      groundScore += 60;
       activeReasons.push('camera_topdown');
-    } else if (pitch < 0.3) {
-      screenScore += 30;
-      activeReasons.push('camera_horizon');
+    } else {
+      screenScore += 50;
+      activeReasons.push('camera_perspective');
     }
 
     const selectedFrame = groundScore >= screenScore ? 'ground' : 'screen';
@@ -2436,6 +2436,51 @@ const SASCard=(()=>{
   function hide(){ el.classList.remove('show'); lastIntent=''; }
   return {render,hover,depth,note,pulse,hide};
 })();
+function getLegoSnapPosition(pos, targetObj) {
+  if (!targetObj || !targetObj.root) return null;
+  let bestPos = null;
+  let minDistance = 2.5; // snap distance threshold
+
+  const boxTarget = new THREE.Box3().setFromObject(targetObj.root);
+  const sizeTarget = new THREE.Vector3();
+  boxTarget.getSize(sizeTarget);
+  if (sizeTarget.lengthSq() < 0.01) {
+    sizeTarget.set(1, 1, 1);
+  }
+  
+  for (const other of objects) {
+    if (other.id === targetObj.id) continue;
+    if (!other.root) continue;
+    
+    const boxOther = new THREE.Box3().setFromObject(other.root);
+    const sizeOther = new THREE.Vector3();
+    boxOther.getSize(sizeOther);
+    if (sizeOther.lengthSq() < 0.01) {
+      sizeOther.set(1, 1, 1);
+    }
+    const centerOther = new THREE.Vector3();
+    boxOther.getCenter(centerOther);
+    
+    const candidates = [
+      { pos: new THREE.Vector3(centerOther.x, boxOther.max.y + sizeTarget.y/2, centerOther.z), label: 'Top' },
+      { pos: new THREE.Vector3(centerOther.x, boxOther.min.y - sizeTarget.y/2, centerOther.z), label: 'Bottom' },
+      { pos: new THREE.Vector3(boxOther.max.x + sizeTarget.x/2, centerOther.y, centerOther.z), label: 'Right' },
+      { pos: new THREE.Vector3(boxOther.min.x - sizeTarget.x/2, centerOther.y, centerOther.z), label: 'Left' },
+      { pos: new THREE.Vector3(centerOther.x, centerOther.y, boxOther.max.z + sizeTarget.z/2), label: 'Front' },
+      { pos: new THREE.Vector3(centerOther.x, centerOther.y, boxOther.min.z - sizeTarget.z/2), label: 'Back' }
+    ];
+    
+    for (const c of candidates) {
+      const dist = pos.distanceTo(c.pos);
+      if (dist < minDistance) {
+        minDistance = dist;
+        bestPos = c.pos.clone();
+      }
+    }
+  }
+  return bestPos;
+}
+
 function setMovePlaneFor(frame,pos){
   if(frame==='ground'){ movePlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0), pos); }
   else { const n=new THREE.Vector3(); camera.getWorldDirection(n); movePlane.setFromNormalAndCoplanarPoint(n,pos); }
@@ -2520,28 +2565,30 @@ function updateGridStyle(){
 }
 let snapGhostMesh = null;
 let snapPreviewLine = null;
-function updateSnapPreview(pos, frame) {
+function updateSnapPreview(pos, frame, snappedPos) {
   if (!pos || !moveTarget) {
     if (snapGhostMesh) { scene.remove(snapGhostMesh); snapGhostMesh = null; }
     if (snapPreviewLine) { scene.remove(snapPreviewLine); snapPreviewLine = null; }
     return;
   }
-  if (frame !== 'ground') {
-    if (snapGhostMesh) snapGhostMesh.visible = false;
-    if (snapPreviewLine) snapPreviewLine.visible = false;
-    return;
-  }
-  const snapX = Math.round(pos.x);
-  const snapY = pos.y;
-  const snapZ = Math.round(pos.z);
+  const targetPos = snappedPos || pos;
+  const snapX = targetPos.x;
+  const snapY = targetPos.y;
+  const snapZ = targetPos.z;
   
   if (!snapGhostMesh) {
-    const geo = new THREE.BoxGeometry(1.05, 1.05, 1.05);
+    const boxTarget = new THREE.Box3().setFromObject(moveTarget.root);
+    const sizeTarget = new THREE.Vector3();
+    boxTarget.getSize(sizeTarget);
+    if (sizeTarget.lengthSq() < 0.01) sizeTarget.set(1.05, 1.05, 1.05);
+    else sizeTarget.multiplyScalar(1.05);
+    
+    const geo = new THREE.BoxGeometry(sizeTarget.x, sizeTarget.y, sizeTarget.z);
     const mat = new THREE.MeshBasicMaterial({
       color: 0x00ffcc,
       wireframe: true,
       transparent: true,
-      opacity: 0.35
+      opacity: 0.45
     });
     snapGhostMesh = new THREE.Mesh(geo, mat);
     scene.add(snapGhostMesh);
@@ -2688,15 +2735,20 @@ function onMove(cx,cy){
       const np=p.clone().add(moveOffset);
       const wasSnapped=[np.x,np.z].some(v=>Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS);
       const prevSnapped=[moveTarget.root.position.x,moveTarget.root.position.z].some(v=>Math.abs(v-Math.round(v/SNAP_STEP)*SNAP_STEP)<SNAP_EPS);
-      moveTarget.root.position.copy(np);
-      moveTarget.basePos.copy(np);
-      if(wasSnapped&&!prevSnapped) SASCard.pulse(); // magnetic tick when entering the grid
-      updateSnapPreview(moveTarget.root.position, curInterp.frame);
+      
+      // Apply Lego Snapping to bond flush with other objects if nearby
+      const legoPos = getLegoSnapPosition(np, moveTarget);
+      const finalPos = legoPos || np;
+      moveTarget.root.position.copy(finalPos);
+      moveTarget.basePos.copy(finalPos);
+      
+      if((wasSnapped || legoPos) && !prevSnapped) SASCard.pulse();
+      updateSnapPreview(np, curInterp.frame, legoPos);
       SASCore.record({
         evt: 'drag-update',
         id: moveTarget.id,
         cursor: {x: cx, y: cy},
-        pos: {x: np.x, y: np.y, z: np.z},
+        pos: {x: finalPos.x, y: finalPos.y, z: finalPos.z},
         frame: curInterp.frame,
         decision: curInterp.decisionData
       });
