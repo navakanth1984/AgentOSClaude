@@ -119,3 +119,20 @@ Capabilities need at least Levels 1 and 2 to become platform assets.
 - Finish the 3 open Bleuuboard P0s (draggable compass pane, utils hover-reveal, Nav+Move merge) **inside Bleuuboard**, written extraction-friendly: pointer/drag/gesture logic in plain modules with no Bleuuboard globals, so they become first candidates for `@ikos/interaction-runtime`.
 - First real extraction happens when Interactor needs one of these capabilities — not before.
 - `packages/` workspace before any npm publishing.
+
+## Sprint 6 North Star Architecture Update (Spatial Presence & Azure Integration)
+
+As of Sprint 6, the IKOS roadmap pivots from micro-interaction algorithms (with SAS version 1.0 frozen) to **Spatial Presence** and **Workspace Intelligence**, integrating standard enterprise cloud services and open-source frameworks:
+
+*   **Visual Rendering**: Keep existing Three.js rendering layer for 3D presence.
+*   **Infinite Canvas & Collaboration**: Focus on standard open-source options:
+    *   **tldraw** for infinite canvas capabilities.
+    *   **React Flow (XYFlow)** for node graph editors.
+    *   **ELK.js** for automatic layout arranging.
+    *   **Yjs** for collaborative multiplayer CRDT sync.
+*   **Azure AI Foundry & Enterprise Layer**:
+    *   **Foundry Agent Service** to manage and run specialist agents (Planner, Builder, Simulation, Guide).
+    *   **Azure AI Search** for vector/semantic workspace memory and spatial search.
+    *   **Azure Speech + Voice Live** for voice-driven whiteboard editing.
+    *   **Azure Vision** for indexing sketches and images into graph relationships.
+
