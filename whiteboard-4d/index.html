@@ -938,6 +938,7 @@ controls.target.copy(HOME_TGT);
 scene.add(new THREE.AmbientLight(0x1a2a55, 2.8));
 const sun = new THREE.DirectionalLight(0xffffff, 2.0);
 sun.position.set(15, 30, 10); sun.castShadow = true;
+sun.target.position.copy(HOME_TGT); scene.add(sun.target);
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.camera.far = 200;
 sun.shadow.camera.left = sun.shadow.camera.bottom = -45;
@@ -1076,7 +1077,7 @@ function addText3D(text, pos, hex){
   const col = new THREE.Color(hex);
   const mat = new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.18), roughness:0.35, metalness:0.25 });
   const mesh = new THREE.Mesh(geo, mat);
-  mesh.castShadow = true;
+  mesh.castShadow = mesh.receiveShadow = true;
   const root = new THREE.Group(); root.position.copy(pos); root.add(mesh);
   root.userData.billboardY = true; // face camera horizontally
   register(root, 'text', text, hex);
@@ -1126,7 +1127,7 @@ function addTextRing(text, pos, hex, ringR){
     const ch_d=geo.boundingBox.max.z-geo.boundingBox.min.z;
     geo.translate(-cw/2,-ch_h/2,-ch_d/2); // center on all axes
     const mat=new THREE.MeshStandardMaterial({color:col,emissive:col.clone().multiplyScalar(0.22),roughness:0.32,metalness:0.2});
-    const mesh=new THREE.Mesh(geo,mat); mesh.castShadow=true;
+    const mesh=new THREE.Mesh(geo,mat); mesh.castShadow=mesh.receiveShadow=true;
     const angle=i*step;
     mesh.position.set(Math.cos(angle)*radius, 0, Math.sin(angle)*radius);
     mesh.rotation.y=-angle+Math.PI/2; // face outward from ring
@@ -1184,7 +1185,7 @@ function endStroke(){
     roughness:b.roughness, opacity:b.opacity, transparent:b.transparent,
     depthWrite: !b.transparent,
   });
-  const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = true;
+  const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = mesh.receiveShadow = true;
   const root = new THREE.Group(); root.add(mesh);
   register(root, 'stroke', 'Stroke', ink);
   // show suggestion box — anchor to a safe corner, not on top of stroke
@@ -1288,7 +1289,7 @@ function recognizeAndReplace(){
   if(!result){ toast('Shape unclear — try a cleaner stroke'); return; }
   const pos = last.root.position.clone().add(result.pos);
   undoLast();
-  result.mesh.castShadow = true;
+  result.mesh.castShadow = result.mesh.receiveShadow = true;
   const root = new THREE.Group(); root.position.copy(result.pos.lengthSq() > 0.01 ? result.pos : last.root.position);
   root.add(result.mesh);
   register(root, 'shape', result.label, ink);
@@ -1545,7 +1546,7 @@ function addShape(key, surf, hex){
   const mat = def.d3
     ? new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.12), roughness:0.4, metalness:0.2 })
     : new THREE.MeshStandardMaterial({ color:col, emissive:col.clone().multiplyScalar(0.25), roughness:0.5, side:THREE.DoubleSide });
-  const mesh = new THREE.Mesh(def.make(), mat); mesh.castShadow = true;
+  const mesh = new THREE.Mesh(def.make(), mat); mesh.castShadow = mesh.receiveShadow = true;
   const root = new THREE.Group();
   root.position.copy(surf.point).addScaledVector(surf.normal, def.d3 ? 1.0 : 0.05);
   root.add(mesh);
@@ -1941,7 +1942,7 @@ function placeObject3D(obj3d, animations, surf, label, targetSize){
   box = new THREE.Box3().setFromObject(obj3d);
   const c = box.getCenter(new THREE.Vector3());
   obj3d.position.x -= c.x; obj3d.position.z -= c.z; obj3d.position.y -= box.min.y; // feet on ground
-  obj3d.traverse(n => { if(n.isMesh){ n.castShadow = true; if(n.material){ if(Array.isArray(n.material)) n.material.forEach(m=>m.side=THREE.DoubleSide); else n.material.side = THREE.DoubleSide; } } });
+  obj3d.traverse(n => { if(n.isMesh){ n.castShadow = n.receiveShadow = true; if(n.material){ if(Array.isArray(n.material)) n.material.forEach(m=>m.side=THREE.DoubleSide); else n.material.side = THREE.DoubleSide; } } });
   const root = new THREE.Group();
   root.position.copy(surf.point).addScaledVector(surf.normal, 0.05);
   root.add(obj3d);
