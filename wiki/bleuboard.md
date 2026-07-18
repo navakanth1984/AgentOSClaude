@@ -110,3 +110,88 @@ A GitHub UX feature proposal was drafted for a **picture-in-picture navigation v
 | **P3.8** | Layer-aware editing | Proposed |
 
 **Vision:** The workspace evolves from a 3D whiteboard into a creative environment that combines the accessibility of a whiteboard with the spatial precision of professional 3D tools, while remaining approachable for first-time users.
+
+---
+
+## Spatial Awareness System (SAS)
+
+**Supersedes the earlier "P3 Spatial Reference System" framing (2026-07-18).**
+The professional-workspace items above remain valid, but the *primary* P3 problem was
+re-diagnosed as **orientation, not placement**: in a 2D editor the screen is the reference
+frame, while in perspective 3D "mouse up" often means "farther away". Everything else
+(relative placement, named references, local frames, formations) gets easier once
+orientation is solved.
+
+SAS has two layers:
+
+| Layer | Question it answers | Contents |
+| :--- | :--- | :--- |
+| **Awareness** | "What am I looking at?" | Relative position, orientation, direction, cursor & camera context |
+| **Reference** | "How do I describe it?" | Named anchors, relative offsets, local frames, formations |
+
+> References without awareness are just numbers. Awareness is what makes references intuitive.
+
+### Design invariants
+
+1. **The HUD never explains the engine — it explains the user's intention.** No "plane",
+   no "axis", no raw coordinates in production UI. (Numeric readout survives as F9 debug.)
+2. **SAS never changes interpretation silently.** Every frame switch, override, and
+   remembered preference is announced on the card.
+3. **SAS is not another manipulation mode — it is the interaction decision engine.**
+   The renderer answers *where is the object?*, interaction answers *what plane is active?*,
+   SAS answers *what is the user trying to do?*
+
+### Phases
+
+| Phase | Scope | Status |
+| :--- | :--- | :--- |
+| **1** | Spatial orientation — intent-based dragging, conversational card, modifier overrides, memory hooks | **Live in prod** (2026-07-18) |
+| **2** | Touch override surface, adaptive layout, telemetry sink | Next |
+| **3** | Relative placement ("2 blocks left of Cube A") + named anchors (Commander, Spawn Point, Camera Home) | Designed, not built |
+| **4** | Local frames — move/rotate groups preserving internal relationships | Designed, not built |
+| **5** | Formation tools — grid, circle, line, army formation, classroom seating, planetary orbits | Designed, not built |
+
+### Phase 1 — as shipped
+
+- **SASCore** — per-drag intent resolution: grounded types (block/shape/model/icon) → floor
+  plane; floating types (text/image/video/sticker) → screen plane. `Shift` forces screen,
+  `Ctrl` forces floor, both mid-drag with the move plane re-anchored live. Per-object
+  override memory with dedup. Telemetry ring buffer.
+- **SASCard** — "Moving on Floor" / "Following Screen", nearest reference with axis-word
+  offsets ("1.4 right · 1.0 behind"), grid indicator, Manual Override / Remembered badges,
+  hover discloses object name only, snap pulse, animated intent transitions.
+- **Interpretation contract** `{intent, frame, override, remembered}` — shared by the drag
+  pipeline, the card, and telemetry. Registered as IKOS Capability Candidate #5.
+
+### Known open issue
+
+**Vertical drag reads as front/back for grounded objects.** Inherent to the ground-plane
+default rather than a defect. A contact-blob-shadow fix was implemented and **reverted** —
+grounding the shadow treated the symptom and made the mapping feel worse. Cheapest next
+experiment: flip the grounded default to screen-plane in `SASCore.interpret` (~2 lines),
+making `Ctrl` the opt-in for floor movement.
+
+### Success metric
+
+Users stop thinking in X/Y/Z and start saying *"put it beside the commander"*, *"move it
+closer"*, *"keep it on the floor"*. When users describe actions in natural language rather
+than geometry, SAS has succeeded.
+
+---
+
+## Deployment (ADLC)
+
+`python adlc_pipeline.py [stage | promote | deploy | status | verify | rollback]`
+
+Two-stage verification, added after the 2026-07-18 stale-alias incident:
+
+1. `smoke_test()` — static checks on the **local** `index.html`, before upload.
+2. `verify_live()` — fetches `https://bleuboard.vercel.app` **after** deploy and confirms it
+   actually serves this build (markers + size ratio, with CDN retries).
+
+**Why both:** a `vercel rollback` pins the production alias, so a later `vercel --prod` can
+report success while users keep seeing the old build. `deploy_prod()` therefore always runs
+`vercel promote`, and `deploy` fails if live verification fails. `rollback [url]` defaults to
+the previous production deployment.
+
+**Standing rule: never deploy without explicit approval.**

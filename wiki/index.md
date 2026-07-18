@@ -34,13 +34,16 @@
   - ├── [M5 H1 Experiment Harness](mvct-mrp-core-h1-next-steps.md) — Outcome logger, arm assignment, stopping rules. ✅
   - ├── [M6 Controlled Pilot + Engineering Intelligence E0/E1](mvct-mrp-core-governance-platform-next-steps.md) — Constitution, canonical context, ADRs-007-010, EngineeringEvents (E0), nightly Watch Runner (E1). ✅
   - ├── [M7 Experience Intelligence](mvct-mrp-core-governance-platform-next-steps.md) — UX redesign, motion, streaks, PWA support, telemetry-driven UX. 🔜 **Active**
+  - ├── [AGENT_BOOT — Engineering Operating Manual](mvct-agent-boot.md) — Canonical cold-start doc for all agents: Product North Star, Engineering Flywheel, Orchestrator model, Browser-First development, Whiteboard 4D subsystem, capability registry. (2026-07-15, commits 5001757–6e40528)
   - ├── [M8 Auto Engineering](mvct-mrp-core-h1-next-steps.md) — Agentic CI/CD, auto-QA, performance/security agents. ⏳ Planned
   - ├── [M9 Platform SDK & API](mvct-mrp-core-h1-next-steps.md) — TypeScript SDK, public API, webhooks, multi-tenant. ⏳ Planned
   - └── [M10 Multi-Platform](mvct-mrp-core-h1-next-steps.md) — React Native, iOS, Android, offline-first sync. ⏳ Planned
 - [Nth Absolute Cinema](nth-absolute-cinema.md) — AI filmmaking Creative OS; five-graph compiler architecture; lives at `E:\nth-absolute-cinema\`, portable/hardware-adaptive by design.
 - [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
-- [BLEUUBOARD](bleuboard.md) — 4D creative whiteboard (3D strokes, extruded text, images, live video, 4th-dimension animation). Deployed at bleuboard.vercel.app. Single-file Vercel static deployment.
+- [BLEUUBOARD](bleuboard.md) — 4D creative whiteboard (3D strokes, extruded text, images, live video, 4th-dimension animation). Deployed at bleuboard.vercel.app. Single-file Vercel static deployment. Includes the **Spatial Awareness System (SAS)** — intent-based dragging where the HUD explains the user's intention, never the engine (Phase 1 live 2026-07-18) — and the ADLC deploy/verify/rollback contract.
+- [IKOS Platform Strategy](ikos-platform-strategy.md) — "Applications are experiments, platform packages are products." Innovation Gate (Works · Wanted · Reusable · Measured · Stable) and the 2-consumer extraction threshold.
+- [IKOS Capability Candidate Registry](ikos-capability-candidates.md) — Capabilities proven in one app awaiting a second consumer before extraction to `packages/` (5 registered: InteractionDispatcher, DraggablePanel, HoverRevealPanel, SpatialHUD, SAS).
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
 - [Production Stack Strategy](production-stack-strategy.md) — Technical co-founder brief: credit allocation (₹1.5L+ Google AI), tool roles (Claude=engineer, Gemini=product), FastAPI+Flutter+Postgres production architecture, and 30-day product focus.
@@ -55,6 +58,7 @@
 - [Agent OS Speech — Next Steps](agent-os-speech-next-steps.md)
 - [Usage Efficiency — Next Steps](usage-efficiency-next-steps.md) — Roadmap for minimizing token context drift under the ULCOP v2.1 standard.
 - [Agent OS Execution Framework — Next Steps](agent-os-execution-next-steps.md) — Mixture-of-Agents Phase 1 handoff (PR #29, cold-start for Antigravity).
+- [Assessment-OS Next Steps](assessment-os-next-steps.md) — Mobile validation and production readiness roadmap for multiplatform delivery.
 - [Validator Research — Next Steps](20260702-next-steps.md) — Cold-start handoff (P0–P7) for the next agent continuing the speech pipeline.
 - [CRP Next Steps](crp-next-steps.md) — Cold-start handoff for CRP Plan 3/3 after M3-M4 shipped.
 - [MVCT Core Consolidation — Next Steps](mvct-mrp-core-consolidation-next-steps.md) — Cold-start handoff: merge consolidation done, Azure Dev (P0) provisioning in progress (rg-mvct-dev-centralus), roadmap conflict unresolved.
