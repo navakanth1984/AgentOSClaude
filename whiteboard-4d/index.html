@@ -2259,25 +2259,82 @@ const SASCore=(()=>{
   const modifiers={shift:false,ctrl:false};
   const log=[];             // telemetry hook: one entry per resolved drag
   function interpret(o){
-    if(modifiers.shift) return {intent:'Following Screen', frame:'screen', override:true,  remembered:false};
-    if(modifiers.ctrl)  return {intent:'Moving on Floor',  frame:'ground', override:true,  remembered:false};
+    const dir = new THREE.Vector3();
+    if (typeof camera !== 'undefined') camera.getWorldDirection(dir);
+    const pitch = Math.abs(dir.y);
+    const camDist = typeof camera !== 'undefined' && typeof controls !== 'undefined' ? camera.position.distanceTo(controls.target) : 0;
+    
+    // Manual modifier overrides override the scoring system directly
+    if(modifiers.shift) {
+      return {
+        intent:'Following Screen', frame:'screen', override:true, remembered:false,
+        decisionData: {
+          event: 'drag-decision', cameraPitch: pitch, cameraDistance: camDist,
+          groundScore: 0, screenScore: 100, selectedFrame: 'screen', confidence: 1.0,
+          override: true, userCorrected: true, correctionType: 'shift_override',
+          reasons: ['shift_modifier_held']
+        }
+      };
+    }
+    if(modifiers.ctrl) {
+      return {
+        intent:'Moving on Floor', frame:'ground', override:true, remembered:false,
+        decisionData: {
+          event: 'drag-decision', cameraPitch: pitch, cameraDistance: camDist,
+          groundScore: 100, screenScore: 0, selectedFrame: 'ground', confidence: 1.0,
+          override: true, userCorrected: true, correctionType: 'ctrl_override',
+          reasons: ['ctrl_modifier_held']
+        }
+      };
+    }
     if(memory.has(o.id)){
       const f=memory.get(o.id);
-      return {intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:true};
+      return {
+        intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:true,
+        decisionData: {
+          event: 'drag-decision', cameraPitch: pitch, cameraDistance: camDist,
+          groundScore: f==='ground'?80:0, screenScore: f==='screen'?80:0, selectedFrame: f, confidence: 0.8,
+          override: false, userCorrected: false, remembered: true,
+          reasons: ['object_memory_retrieval']
+        }
+      };
     }
     
-    // Variant C: Adaptive Intent Logic based on camera angle
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
-    const pitch = Math.abs(dir.y); // 0 = horizontal eye-level, 1 = vertical top-down
-    
-    let f = GROUNDED.has(o.type) ? 'ground' : 'screen';
-    if (pitch < 0.28) {
-      // Horizontal camera view - switch to screen-plane dragging to avoid math explosions
-      f = 'screen';
+    // Weighted scoring model
+    const isGrounded = GROUNDED.has(o.type);
+    let groundScore = 0;
+    let screenScore = 0;
+    const activeReasons = [];
+
+    if (isGrounded) {
+      groundScore += 40;
+      activeReasons.push('grounded_object');
+    } else {
+      screenScore += 40;
+      activeReasons.push('floating_object');
     }
-    
-    return {intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:false};
+
+    if (pitch >= 0.8) {
+      groundScore += 25;
+      activeReasons.push('camera_topdown');
+    } else if (pitch < 0.3) {
+      screenScore += 30;
+      activeReasons.push('camera_horizon');
+    }
+
+    const selectedFrame = groundScore >= screenScore ? 'ground' : 'screen';
+    const confidence = Math.abs(groundScore - screenScore) / Math.max(1, groundScore, screenScore);
+
+    return {
+      intent: selectedFrame === 'ground' ? 'Moving on Floor' : 'Following Screen',
+      frame: selectedFrame, override: false, remembered: false,
+      decisionData: {
+        event: 'drag-decision', cameraPitch: pitch, cameraDistance: camDist,
+        groundScore, screenScore, selectedFrame, confidence,
+        override: false, userCorrected: false,
+        reasons: activeReasons
+      }
+    };
   }
   function remember(o,frame){ if(memory.get(o.id)===frame) return false; memory.set(o.id,frame); return true; }
   function record(evt){
@@ -2512,7 +2569,8 @@ function onMove(cx,cy){
         id: moveTarget.id,
         cursor: {x: cx, y: cy},
         pos: {x: np.x, y: np.y, z: np.z},
-        frame: curInterp.frame
+        frame: curInterp.frame,
+        decision: curInterp.decisionData
       });
     }
     SASCard.render(curInterp,moveTarget);
