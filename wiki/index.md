@@ -43,6 +43,7 @@
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
 - [BLEUUBOARD](bleuboard.md) — 4D creative whiteboard (3D strokes, extruded text, images, live video, 4th-dimension animation). Deployed at bleuboard.vercel.app. Single-file Vercel static deployment. Includes the **Spatial Awareness System (SAS)** — intent-based dragging where the HUD explains the user's intention, never the engine (Phase 1 live 2026-07-18) — and the ADLC deploy/verify/rollback contract.
 - [IKOS Platform Strategy](ikos-platform-strategy.md) — "Applications are experiments, platform packages are products." Innovation Gate (Works · Wanted · Reusable · Measured · Stable) and the 2-consumer extraction threshold.
+- [Workspace OS — Sprint 7 Plan](ikos-sprint-7-workspace-os.md) — Plan for the Spatial Operating System infrastructure, Layered Workspace Architecture, Capability Bus, and IKOS Plugin API.
 - [IKOS Capability Candidate Registry](ikos-capability-candidates.md) — Capabilities proven in one app awaiting a second consumer before extraction to `packages/` (5 registered: InteractionDispatcher, DraggablePanel, HoverRevealPanel, SpatialHUD, SAS).
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
