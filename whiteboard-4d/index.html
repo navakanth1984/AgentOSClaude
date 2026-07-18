@@ -2265,11 +2265,32 @@ const SASCore=(()=>{
       const f=memory.get(o.id);
       return {intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:true};
     }
-    const f=GROUNDED.has(o.type)?'ground':'screen';
+    
+    // Variant C: Adaptive Intent Logic based on camera angle
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
+    const pitch = Math.abs(dir.y); // 0 = horizontal eye-level, 1 = vertical top-down
+    
+    let f = GROUNDED.has(o.type) ? 'ground' : 'screen';
+    if (pitch < 0.28) {
+      // Horizontal camera view - switch to screen-plane dragging to avoid math explosions
+      f = 'screen';
+    }
+    
     return {intent:f==='ground'?'Moving on Floor':'Following Screen', frame:f, override:false, remembered:false};
   }
   function remember(o,frame){ if(memory.get(o.id)===frame) return false; memory.set(o.id,frame); return true; }
-  function record(evt){ log.push({t:Date.now(),...evt}); if(log.length>500) log.shift(); }
+  function record(evt){
+    const camDir = new THREE.Vector3();
+    if (typeof camera !== 'undefined') camera.getWorldDirection(camDir);
+    log.push({
+      t:Date.now(),
+      camPos: typeof camera !== 'undefined' ? {x:camera.position.x, y:camera.position.y, z:camera.position.z} : null,
+      camDir: {x:camDir.x, y:camDir.y, z:camDir.z},
+      ...evt
+    });
+    if(log.length>1000) log.shift();
+  }
   return {interpret,remember,record,modifiers,log};
 })();
 const SASCard=(()=>{
@@ -2486,6 +2507,13 @@ function onMove(cx,cy){
       moveTarget.root.position.copy(np);
       moveTarget.basePos.copy(np);
       if(wasSnapped&&!prevSnapped) SASCard.pulse(); // magnetic tick when entering the grid
+      SASCore.record({
+        evt: 'drag-update',
+        id: moveTarget.id,
+        cursor: {x: cx, y: cy},
+        pos: {x: np.x, y: np.y, z: np.z},
+        frame: curInterp.frame
+      });
     }
     SASCard.render(curInterp,moveTarget);
   } else if(mode==='nav'){
