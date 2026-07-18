@@ -1991,11 +1991,81 @@ function placeObject3D(obj3d, animations, surf, label, targetSize){
   root.add(collMesh); placeTargets.push(collMesh); o.collider = collMesh;
   return o;
 }
+function createProceduralAutorikshaw(surf, label, targetSize) {
+  const group = new THREE.Group();
+  
+  // 1. Lower body (Green block)
+  const bodyGeo = new THREE.BoxGeometry(2, 0.8, 1.2);
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x008833, roughness: 0.5 });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  body.position.y = 0.5;
+  body.castShadow = true; body.receiveShadow = true;
+  group.add(body);
+  
+  // 2. Upper body (Yellow roof)
+  const roofGeo = new THREE.BoxGeometry(1.4, 0.8, 1.1);
+  const roofMat = new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.5 });
+  const roof = new THREE.Mesh(roofGeo, roofMat);
+  roof.position.set(-0.2, 1.2, 0);
+  roof.castShadow = true; roof.receiveShadow = true;
+  group.add(roof);
+
+  // 3. Cabin pillars (black thin boxes)
+  const pillarMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
+  const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.8, 0.1), pillarMat);
+  p1.position.set(0.6, 1.1, 0.5);
+  group.add(p1);
+  const p2 = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.8, 0.1), pillarMat);
+  p2.position.set(0.6, 1.1, -0.5);
+  group.add(p2);
+  
+  // 4. Wheels (3-wheeler rickshaw)
+  const wheelGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.25, 12);
+  const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
+  
+  // Front wheel
+  const frontWheel = new THREE.Mesh(wheelGeo, wheelMat);
+  frontWheel.rotation.x = Math.PI / 2;
+  frontWheel.position.set(0.7, 0.2, 0);
+  frontWheel.castShadow = true;
+  group.add(frontWheel);
+  
+  // Rear left wheel
+  const rlWheel = new THREE.Mesh(wheelGeo, wheelMat);
+  rlWheel.rotation.x = Math.PI / 2;
+  rlWheel.position.set(-0.6, 0.2, 0.55);
+  rlWheel.castShadow = true;
+  group.add(rlWheel);
+  
+  // Rear right wheel
+  const rrWheel = new THREE.Mesh(wheelGeo, wheelMat);
+  rrWheel.rotation.x = Math.PI / 2;
+  rrWheel.position.set(-0.6, 0.2, -0.55);
+  rrWheel.castShadow = true;
+  group.add(rrWheel);
+
+  // 5. Headlight
+  const lightGeo = new THREE.SphereGeometry(0.15, 8, 8);
+  const lightMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffd700 });
+  const light = new THREE.Mesh(lightGeo, lightMat);
+  light.position.set(1.0, 0.5, 0);
+  group.add(light);
+  
+  placeObject3D(group, [], surf, label, targetSize);
+}
+
 function addModel(key, surf){
   const def = MODELS[key]; if(!def) return;
   toast(`Loading ${def.label}…`);
   gltfLoader.load(def.url, gltf => { placeObject3D(gltf.scene, gltf.animations, surf, def.label, def.size); toast(`${def.label} landed — it's alive!`); },
-    undefined, () => toast(`${def.label} failed to load (check connection)`));
+    undefined, () => {
+      if (key === 'autorikshaw') {
+        createProceduralAutorikshaw(surf, def.label, def.size);
+        toast(`${def.label} constructed procedurally!`);
+      } else {
+        toast(`${def.label} failed to load (check connection)`);
+      }
+    });
 }
 // 3D model upload (all common formats: GLB, GLTF, OBJ)
 function loadModelFile(file){
