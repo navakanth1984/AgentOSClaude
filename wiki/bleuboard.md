@@ -33,11 +33,92 @@ Single `index.html` (~158 KB) served as a static Vercel deployment via `@vercel/
 
 ## Maintenance Log
 
+### 2026-08-16 / 2026-08-17 — BleuuBoard v2: Modular ES Architecture, 6-DOF Gamer POV, In-World Avatars, 3D Lecture Boards & Mobile Thumb UX
+- **Modular ES Architecture (`v2/`):** Forked monolithic `index.html` into structured ES module domains (`core/`, `draw/`, `objects/`, `graph/`, `nav/`, `ui/`, `session/`) with zero bundle step.
+- **6-DOF Multi-Directional Flight Navigation (`nav/gamer_nav.js`):**
+  - Gamer POV flight (WASD, Space/E ascend, C/Q descend, diagonal multi-axis movement with banking roll).
+  - Manual canvas drag/orbit, middle-click/Shift pan, wheel dolly, and on-screen 3D spatial D-Pad.
+  - Perspective Switcher: 1st Person (FPS), 3rd Person Follow (TPS), Studio Orbit with live telemetry HUD.
+- **In-World Articulated Multi-Gender Avatars (`nav/character.js`, `ui/avatar_picker.js`):**
+  - Articulated procedural 3D human anatomy across all genders (Female, Male, Non-Binary) with cyberpunk visor and stylus pen.
+  - Procedural inverse-kinematics writing/placement animations and dual execution engine (Direct Canvas Action vs In-World Avatar Action).
+- **Interactive 3D Lecture Mini-Boards & Zero Z-Fighting Glassboards (`objects/board.js`):**
+  - 4 Board Presets: Classroom Whiteboard, Academic Chalkboard, Cyber Glass Drafting Board, Interactive Smartboard.
+  - Direct surface ink calligraphy attached to local board coordinate space (`board.strokeGroup`).
+  - Eliminated Z-fighting flickering on glassboards by replacing co-planar solid frame boxes with 4 perimeter rails and 4 corner clamp brackets.
+- **3D Glowing Square & Rectangular Architecture / Tech Chips (`objects/stickers.js`):**
+  - Official brand & cloud/AI architecture nodes (Databricks, AWS, PyTorch, OpenAI, etc.) rendered as 3D obsidian glass slabs with emissive neon perimeter glow, 4 corner brackets, and LED indicators.
+- **Universal Object Selection, Deselection & Object Action Dock (`nav/transform.js`, `main.js`):**
+  - Added `isGizmoHit` raycast protection to prevent premature deselection during 3D gizmo drag operations.
+  - Seamless object-to-object selection switching and background click deselection.
+  - Floating Object Action Dock with 1-tap Move (`G`), Rotate (`R`), Scale (`S`), Delete, and Deselect.
+- **Responsive Dual-Thumb Mobile Ergonomics (`styles/main.css`, `index.html`):**
+  - Left Thumb Zone: Floating FPS/TPS/Orbit perspective pill.
+  - Right Thumb Zone: Floating 3D Flight D-Pad.
+  - Bottom Center: Studio creation tools dock with `Nav` always visible at front left.
+  - Verified across Desktop ($1280\times800$) and Mobile ($390\times844$) with 0 console errors and 48–50 FPS WebGL performance.
+
 ### 2026-07-10 — Vercel Deployment Protection Fix
 - **Issue:** Public users hitting a Vercel login wall instead of the app.
 - **Root cause:** Vercel Authentication (Deployment Protection) was inadvertently enabled on the production deployment.
 - **Fix:** Disabled via Vercel Dashboard → Settings → Deployment Protection.
 - **Validation:** Fetched `bleuboard.vercel.app` and confirmed full HTML returned with no auth redirect.
+
+### 2026-08-14 — 3D & 4D Gaussian Splatting Integration & SPLATBOARD 4D Post-Mortem (Dual Architecture)
+- **Baseline BleuuBoard (`whiteboard-4d/` on Port 3000):** Rolled back to pristine commit `9b715e` (clean working tree, production Vercel configuration untouched).
+- **Dedicated Splatboard 4D (`projects/splat-whiteboard-4d/` on Port 3001, v1.0.0-alpha.1):** Isolated Vite 5 + Three.js testbed created for standalone 3D/4D Gaussian Splat shader development and volumetric preset generation (`🏺 Ancient Relic`, `🛸 Cyber Drone`, `🏛️ Roman Pavilion`, `🌀 Quantum Singularity 4D`, `🌴 Volumetric Flora`, `🤖 Holographic Avatar`).
+- **Post-Mortem & Root Causes:**
+  - *CDP Emulation Leakage*: Mobile emulation left persistent `DeviceMetricsOverride (390x844)` in the shared user browser session, causing full desktop windows to display narrow mobile containers with letterboxing. Fixed by enforcing viewport override teardowns (`emulate(viewport: "")`).
+  - *Whiteboard Canvas Omission*: Initial 3001 scaffolding focused on the point shader while dropping the 3D board backplane, text cards, and drawing layers. Future integrations must preserve the complete canvas foundation.
+  - *Walk Mode Pointer Lock*: Requires proper mouse-look pointer lock listeners rather than disabling OrbitControls without a look-controller replacement.
+
+### 2026-07-30/31 — Visual overhaul, handwriting assist, spatial-bridge (local)
+
+**Visual overhaul (Avatar/JARVIS style, not "Minecraft"):** Three.js postprocessing added —
+`UnrealBloomPass` + `OutlinePass` (rim-glow selection, tuned twice down from an initial harsh
+flare to strength 0.42/radius 0.75/threshold 0.72 after "light is harsh" feedback), real fat-line
+edge overlays via three.js's own `Line2`/`LineSegments2` (a third-party `three.meshline` was
+live-tested first and found fundamentally broken — its UMD IIFE assumes non-strict `this`, so it
+silently no-ops via plain `<script>` tag; not patched, replaced with the maintained addon).
+Fresnel hologram `ShaderMaterial` for drawn shapes, twice-fixed (flat-face fresnel is
+uniform-per-face, not rim-only — fixed by pairing near-transparent face material with the
+`Line2` edge overlay carrying the glow). GSAP replaced hand-rolled rAF tweening for camera flights
+and the cinematic intro timeline.
+
+**Handwriting assistance:** Cursive rendering via `opentype.js` + Google "Caveat" variable font,
+flattening bezier outlines into the existing `CatmullRomCurve3`+`TubeGeometry` pipeline (genuine
+handwriting-style 3D strokes, not typed text). Live drawing recognition via **Tesseract.js**
+(real pretrained LSTM OCR model, chosen explicitly over a DTW/template-matching hack per
+instruction) — draws feed an OCR canvas projection, recognized text offered via a "✒️ Read: ..."
+button that swaps the stroke for cursive 3D text. Predictive word completion using the
+`google-10000-english` frequency list. Custom cursor now shows a writing-hand emoji + tool badge
+instead of `+`. Known limitation: Tesseract is trained on printed text — demonstrated 86%
+confidence but wrong on a cursive glyph vs. 96%/correct on printed text.
+
+**Bugfix:** `server.cjs` checked `req.url === '/'` before stripping the query string, so any
+cache-busted reload (`/?v=2`) hit `EISDIR`→500. Fixed by stripping the query string first.
+
+**OpenMontage integration — scoped, partially built locally:** Full OpenMontage↔bleuuboard video
+pipeline needs backend infra (render worker, job queue, storage) that doesn't exist yet — not
+started. As a first real slice, adapted OpenMontage's local ffmpeg-based scene-detection/audio-probe
+approach into a new **`whiteboard-4d/spatial-bridge/server.js`** (Node, port 3100, local-only):
+accepts an uploaded recording, runs `ffmpeg` scene-cut detection + `ffprobe`, returns a "moments"
+manifest. Wired into the existing MediaRecorder "Presentation" recording flow via a
+"🌉 Send to Spatial Bridge" checkbox → moment chips that seek an inline preview video. **Verified
+against a real ffmpeg-generated test clip** (exact scene-cut timestamp detected) and a CORS bug
+was found and fixed (`x-file-ext` custom header wasn't in `Access-Control-Allow-Headers`, so the
+preflight silently blocked every real upload). **Not verified against a live in-app recording** —
+the Browser-pane test harness reports `document.hidden=true` even when fronted, which stalls the
+`requestAnimationFrame`-driven render loop `canvas.captureStream()` depends on, producing 0-byte
+captures; this is a tooling limitation of the automated test harness, not a code defect. Needs a
+### 2026-08-14 — 3D & 4D Gaussian Splatting Studio & First-Person Walk Mode
+- **Core Splat Integration:** Integrated WebGL-native 3D Gaussian Splatting (`3DGS`) and 4D dynamic time-evolving Gaussian Splatting (`4DGS`) directly into `whiteboard-4d/index.html` with zero external build dependencies.
+- **Splat Studio Palette (`data-mode="splat"`):** Added preset library (Ancient Relic, Cyber Drone, Roman Pavilion, Quantum Singularity, Volumetric Flora, Holographic Avatar) plus ingestion support for `.spz`, `.splat`, `.ply`, `.sog`, and `.ksplat` files.
+- **Shader Pipeline:** Custom Three.js `ShaderMaterial` with 2D elliptical Gaussian falloff ($\alpha = \exp(-3.5 d^2)$), distance-clamped sizing ($2\text{px} - 320\text{px}$), 4D temporal keyframe blending ($\text{uInterpolation}$), and holographic rim-glow.
+- **First-Person Walk Mode (`🚶 Walk Mode`):** Added collision-aware WASD first-person camera traversal and jump physics over splat point cloud geometry.
+- **SAS Surface Attachment & Links:** Scanned splats register bounding colliders into `placeTargets`, allowing freehand strokes, cursive annotations, blocks, and animated flow links to attach directly to volumetric scans.
+- **Session Serialization:** Round-trip persistence of splats, transformations, and 4D orbital parameters via `serializeSession()` and `loadSessionData()`.
+- **Chrome DevTools Verification:** Audited via Chrome DevTools MCP on Desktop (1920x1080) and Mobile (iPhone 14, 390x844) with 0 console errors.
 
 ## Open Feature Proposals
 
