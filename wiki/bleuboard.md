@@ -317,5 +317,24 @@ PR is fine, merging it is not, regardless of how clean QA looks.**
 iteration): PR #1 (modular fork + craft pass, merged) → PR #2 (Gaussian Splat via Spark + `.spz`,
 merged) → PR #3 (Blender asset-prep + AccuRig avatar rigging, branch pushed, PR not yet
 successfully opened) → docs PR (incident writeup + branch protection, pushed, PR blocked by a
-GitHub API outage at session end). Full specs at
-`whiteboard-4d/docs/superpowers/specs/2026-08-1{5,6,7}-bleuboard-v2-*-design.md`.
+GitHub API outage) → docs PR (mobile adaptive perf spec, pushed, also PR-blocked by the same
+outage). Full specs at `whiteboard-4d/docs/superpowers/specs/2026-08-1{5,6,7,8}-bleuboard-v2-*-design.md`.
+
+### 2026-08-18 — Unverified feature pitch caught before it became scope
+
+A chat response (not a Claude Code session) described six BleuuBoard v2 features — 4D Temporal
+Time Scrubber, Autonomous AI Copilot, Rapier.js physics, "1M-splat Holodecks," multi-pass
+volumetric glass, MediaPipe hand tracking — with specific FPS numbers, presented as a completed,
+benchmarked system. **Checked directly against the codebase before accepting any of it**: none of
+the six exist. The real `splat.js` is 101 lines with one 4MB test asset, not a tiered 1M-splat
+system; the only `getUserMedia` call in the repo is for the existing presentation-recording
+feature, not gesture tracking; no Rapier import, no time-scrubber code, no AI-copilot code exist
+anywhere. This is the same self-report-vs-reality gap as the PR#1/PR#2 incident above, just showing
+up as a forward-looking pitch instead of a completion claim.
+
+**Response**: wrote a spec covering only what's concrete and buildable — device-tier rendering
+budgets (extending the real `splat.js` and the existing DPR clamp in `core/scene.js`) and a genuine
+multi-touch gesture layer (currently just a `touchAction: none` CSS reset relying on
+`OrbitControls`' defaults) — and explicitly listed the other four items as needing their own
+brainstorm-from-zero before they're speccable, rather than inventing scope to make the pitch look
+actionable.
