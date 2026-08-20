@@ -33,6 +33,20 @@ Single `index.html` (~158 KB) served as a static Vercel deployment via `@vercel/
 
 ## Maintenance Log
 
+### 2026-08-20 — Google Cloud GenAI (Gemini 2.5 Flash), Secret Manager & Accessibility Integration (PR #3 & PR #7)
+- **Google Cloud Run Backend (`spatial-bridge/`):** Deployed `bleuboard-spatial-bridge` to Cloud Run (`https://bleuboard-spatial-bridge-526005048954.us-central1.run.app`, revision `00008-pmt`).
+- **Google Secret Manager (`nthdim-academy-v2`):** Stored all credentials (`bleuboard-gemini-api-key`, `bleuboard-openrouter-api-key`, `bleuboard-sarvam-api-key`, `bleuboard-elevenlabs-api-key`) in Secret Manager; mounted securely via `--set-secrets` at container startup.
+- **Gemini 2.5 Flash Spatial Intelligence (`v2/src/agent/vertex_search.js`, `copilot.js`, `interpret.js`):**
+  - Online natural language spatial grounding translating user prompts to Three.js commands (`create`, `move`, `rotate`, `scale`, `navigate`, `holodeck`, etc.) with high confidence ($0.95+$).
+  - Upgraded voice pipeline with `FileReader` base64 streaming for large audio blobs without call-stack overflow.
+  - Dual-path execution: Gemini Live Audio primary $\rightarrow$ browser Web Speech API offline fallback.
+- **Universal CORS:** Enabled on Express backend to allow local dev (`127.0.0.1:3000`), preview deployments, and staging (`bleuboard-dev.vercel.app`).
+- **Accessibility & ARIA (PR #7 from Jules):**
+  - Added `role="switch"`, `aria-pressed="false"`, and `aria-label` to 4D timeline toggle `#btn-4d`.
+  - Dynamic `aria-pressed` synchronization in `v2/src/temporal/history4d.js`.
+  - Focus ring styling (`:focus-visible`) across all interactive UI controls in `v2/styles/main.css`.
+- **Staging Verification:** Deployed via `adlc_pipeline.py stage` to `https://bleuboard-dev.vercel.app/v2/`. Verified live with 0 console errors and end-to-end Gemini spatial command execution.
+
 ### 2026-08-16 / 2026-08-17 — BleuuBoard v2: Modular ES Architecture, 6-DOF Gamer POV, In-World Avatars, 3D Lecture Boards & Mobile Thumb UX
 - **Modular ES Architecture (`v2/`):** Forked monolithic `index.html` into structured ES module domains (`core/`, `draw/`, `objects/`, `graph/`, `nav/`, `ui/`, `session/`) with zero bundle step.
 - **6-DOF Multi-Directional Flight Navigation (`nav/gamer_nav.js`):**
