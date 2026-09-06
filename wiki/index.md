@@ -18,7 +18,7 @@
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
 - [NotebookLM Bridge](notebooklm-bridge.md) — Direct-API integration with NotebookLM (no browser automation).
 - [Karpathy Mandates](karpathy-mandates.md) — Four execution principles governing all AI work here.
-- [OSS Audit — 2026-09-06](oss-audit-2026-09-06.md) — 17-repo leverage evaluation: 1 adopt (hindsight), 3 license/platform-blocked, archify-vs-graphify migration rejected.
+- [OSS Audit — 2026-09-06](oss-audit-2026-09-06.md) — 17-repo leverage evaluation (two passes: survey + deep research). Top finding is an unscanned skill-supply-chain gap across the 168-skill mesh; 1 adopt (hindsight, source-read clean), 3 license/platform-blocked, open-seo downgraded to do-not-deploy on paid-API grounds, archify-vs-graphify migration rejected.
 - [Workspace Productivity Upgrades](antigravity-upgrades.md) — Integration of four productivity upgrades (Roast, Verification, Handoff, Goals) into the self-improving KB.
 - [Code Development Lifecycle](development-lifecycle.md) — Standard branch→verify→commit→push→PR→merge flow + deprecate-before-delete rule for code.
 - [Storage Management](storage-management.md) — C: ↔ E: strategy: delete regeneratable deps (node_modules, venvs, pycache) + mirror heavy folders to E:\navakanth001\ via symlinks.
