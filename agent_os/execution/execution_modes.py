@@ -9,3 +9,4 @@ class ExecutionMode(str, Enum):
     MIXTURE = "mixture"     # parallel fan-out across N models + aggregation (MoA)
     DEBATE = "debate"        # stub — not implemented this pass (see Phase 2)
     AUTO = "auto"             # stub — not implemented this pass (see Phase 3)
+    TAU = "tau"               # Tau agent harness execution mode (tau-ai)

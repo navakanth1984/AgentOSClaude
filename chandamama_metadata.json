@@ -1,0 +1,345 @@
+{
+  "consistency_anchors": {
+    "characters": {
+      "Hanuman": {
+        "visual_key": "muscular humanoid vanara (monkey warrior), golden metallic helmet with a pointed top, golden armlets, bright orange-brown skin texture, curly shoulder-length dark hair, wearing a red and yellow silk loincloth (dhoti) with a golden waistband. Tail behaves dynamically as his partner.",
+        "physicality": "Exudes massive physical weight and explosive power. Ground steps are heavy and deep. Works in tandem with his Tail as a close buddy, sharing glances and silent team coordination."
+      },
+      "The_Tail_Vaalagaathram": {
+        "visual_key": "Hanuman's long, expressive, sentient monkey tail. Features a shiny silver ring piercing near the middle with a small bronze bell hanging from it. The tip of the tail is thick and furry (like a paint brush). Expression lives in the fur tip: angry = fur clinches tightly; happy/excited = fur spreads wide and fluffy; sad/defeated = fur slumps flat and limp.",
+        "physicality": "Independently expressive and sentient, behaving like the Magic Carpet from Aladdin. It uncoils, sweeps, points, and wraps around items to support Hanuman. Makes rustling, sweeping, and soft squeaking noises. Ring bell tinkles softly during movements."
+      },
+      "Lord_Rama": {
+        "visual_key": "royal blue-skinned prince, tall and slender, hair bound in an elegant jatamakuta topknot, wearing a yellow silk dhoti, carrying a massive wooden bow (Kodanda) and a golden arrow quiver.",
+        "physicality": "Symmetrical, regal, and calm. Moves with frictionless grace, completely grounded by gravity."
+      },
+      "Lakshmana": {
+        "visual_key": "fair golden-complexioned prince, green tunic, yellow dhoti, hair in a jatamakuta topknot, holding a long bow.",
+        "physicality": "Coiled, protective, and defensive. Stances are wider and alert."
+      },
+      "Sita": {
+        "visual_key": "graceful woman with dark cascading hair, tearful brown eyes, wearing a simple pale yellow saree with modest golden borders, no jewelry.",
+        "physicality": "Slumped, exhausted posture, leaning heavily on pillars to show severe physical and emotional grief."
+      },
+      "Ravana": {
+        "visual_key": "ten-headed demon king, massive crown, heavy dark plate armor, seated on a throne carved of white bone.",
+        "physicality": "Immovable, arrogant, gesturing with slow, cruel authority."
+      },
+      "Indrajit": {
+        "visual_key": "dark-skinned demon prince, spiked golden crown, mustache, bronze chest plate with spiral engravings, crimson dhoti, curved scimitar sword.",
+        "physicality": "Arrogant and flying/hovering dynamically in clouds."
+      },
+      "Kumbhakarna": {
+        "visual_key": "colossal, dark-skinned giant demon with wild hair, wearing heavy grey-and-red plate armor, wielding a massive golden mace (Gada).",
+        "physicality": "Tectonic weight. Each step shakes the frame. Swings with crushing downward force."
+      },
+      "Vibhishana": {
+        "visual_key": "demonic prince with a noble mustache, wearing a deep green armor tunic, gold armlets, and a golden quiver.",
+        "physicality": "Stands tall, placing comforting hands on allies, embodying a bridge between Lanka and Rama."
+      },
+      "Sugriva": {
+        "visual_key": "monkey king, golden fur, yellow tunic, gold crown, weeping with visible tears.",
+        "physicality": "Emotional, expressive, slumped shoulders in grief."
+      },
+      "Jambavan": {
+        "visual_key": "wise giant bear-king, thick dark blue-grey fur, golden crown and necklace with a circular pendant, red waist sash.",
+        "physicality": "Massive bulk, slow deliberate gestures, pointing with a heavy paw."
+      }
+    },
+    "locations": {
+      "Lanka_Fortress": "massive walls of pink-rose granite blocks, circular bastions, overlooking a choppy blue-grey sea.",
+      "Ashoka_Vatika": "dense grove of dark green banyan and Ashoka trees, carved stone pillars, lit by cool moonlight.",
+      "Himalayas": "towering snow-capped jagged peaks, deep pine forests below, mountainsides shimmering with glowing neon-green circles of Sanjeevani herbs."
+    }
+  },
+  "screenshots": [
+    {
+      "filename": "Screenshot 2026-06-26 150014.png",
+      "scene_title": "Veera Hanuman Intro - The Meeting",
+      "artist": "Sankar",
+      "characters": ["Hanuman", "The_Tail_Vaalagaathram", "Lord_Rama", "Lakshmana", "Sugriva"],
+      "physics_gravity": "Hanuman leans forward at a 30-degree angle, hands pressed in greeting. His tail uncoils behind him on the ground, the furry tip spread wide in happiness, resting lightly in the dust. The small bell on its ring pierce lies still on the sand.",
+      "visual_prompt_refined": "1990s vintage Indian comic book illustration by Sankar. Close profile of Hanuman (golden helmet, orange-brown skin) in the left foreground, leaning forward with hands folded in anjali mudra. His sentient tail uncoils behind him on the ground, its furry tip spread fluffy in happiness, featuring a silver ring pierce with a tiny bell. Across on a rocky slope sit blue-skinned Lord Rama and fair-skinned Lakshmana. Warm pastel tones, soft watercolor washes, ink outlines, aged paper texture.",
+      "video_prompt_refined": "Opening scene. Hanuman bows respectfully to Lord Rama and Lakshmana seated on a rocky slope under a pale blue sky. His sentient tail uncoils behind him on the ground, the furry tip spreading fluffy in happiness as the small bell tinkles softly. Camera: slow 50mm lens push-in on Hanuman's face, keeping the background in soft focus. Light: soft morning light, 3200K warm glow. Style: 1990s Chandamama animated style. Cut on the downbeat.",
+      "audio_treatment": {
+        "sonic_thesis": "Reverent silence broken by wind, deep strings, and a soft metallic tinkle.",
+        "vocals": "Rama: Crisp, dry, resonant voice with a warm, welcoming register.",
+        "foley": "Soft rustle of silk garments, Hanuman's tail sweeping the grass with a dry rustling noise, a tiny high-pitched bell tinkle.",
+        "ambience": "Gentle mountain wind rustling leaves, distant bird calls.",
+        "atmos": "Rama's voice placed center-right; Hanuman's breathing in the front-left; bell tinkle in front-left."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150031.png",
+      "scene_title": "Flight of the Captives",
+      "artist": "Sankar",
+      "characters": ["Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Hanuman leaps downwards diagonally. The sentient tail is coiled tightly behind him, its furry tip clinched hard in determination, resisting wind drag. The four dark demon figures under his arms hang limply, gravity pulling their limbs down.",
+      "visual_prompt_refined": "Retro Indian mythological comic art by Sankar. Hanuman flying dynamically downwards through a dusty blue sky, holding multiple limp, dark-skinned demons securely under his muscular arms. His sentient tail coils tightly behind him, its furry tip clinched tightly in anger. Below, a golden palace spire dome passes by. High-contrast ink outlines, desaturated tones, vintage paper print.",
+      "video_prompt_refined": "Verse 1 scene. Hanuman flies dynamically downwards through a hazy sky, carrying dark-skinned captive demons under his arms. His sentient tail coils behind him, fur tip clinched in determination, its small bell ringing rapidly in the wind. Camera: dynamic 35mm wide-angle tracking shot following Hanuman's downward trajectory. Light: warm, hazy afternoon sun. Style: vintage Chandamama animation. Cut on the drum beat.",
+      "audio_treatment": {
+        "sonic_thesis": "Roaring wind of flight, carpet-like squeaking, and rapid bell tinkling.",
+        "vocals": "Demons: Low, gravelly, breathless groans of captive struggle.",
+        "foley": "Loud wind rushing past ears, heavy cloth snapping, rapid tinkle-tinkle of the small tail bell, carpet-like rustling.",
+        "ambience": "High-altitude whistling wind.",
+        "atmos": "Wind noise mapped across surrounds; rapid bell tinkle panning from center to rear-left."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150052.png",
+      "scene_title": "Viewing the Bridge to Lanka",
+      "artist": "Vankar",
+      "characters": ["Lord_Rama", "Lakshmana", "Hanuman", "The_Tail_Vaalagaathram", "Vanara_Army"],
+      "physics_gravity": "The leaders stand firmly on a hard stone ledge. Hanuman's sentient tail stands upright beside him, curving like a question mark, its furry tip slightly ruffled in curiosity, pointing toward Lanka across the sea. The floating stones below displace water under the marching Vanaras.",
+      "visual_prompt_refined": "1990s vintage Indian comic panel by Vankar. Blue-skinned Lord Rama with his bow, Lakshmana, and Hanuman stand on a yellow sandy cliff. Hanuman's sentient tail stands upright beside him, its furry tip ruffled in curiosity and pointing towards Lanka across a blue-grey sea. Vanara soldiers walk across a bridge of floating stones. Fine ink lines, nostalgia pastel washes.",
+      "video_prompt_refined": "Verse 1 continuation. Lord Rama, Lakshmana, and Hanuman look out at the sea from a high sandy ridge. Hanuman's tail curves upright, pointing its fluffy tip toward the pink walls of Lanka. Camera: wide 24mm lens panning from the leaders to the fortress wall. Light: harsh daylight, flat shadows. Style: classic Vankar animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Ocean waves crashing against rock, with a soft alert squeak from the tail.",
+        "vocals": "None. Restrained breathing of the three leaders.",
+        "foley": "Rhythmic wet splashes of footsteps on floating stones, dry sand crunching, soft paper-like rustle and tiny squeak from the tail, single bell tinkle.",
+        "ambience": "Deep ocean swell, surf crashing against Lanka's granite walls, distant chatter of a march.",
+        "atmos": "Sea wash filling the surrounds; tail's squeak positioned center-left."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150111.png",
+      "scene_title": "Chariot Sabotage",
+      "artist": "Sankar",
+      "characters": ["Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Hanuman balances on the backs of two running black horses. His sentient tail whips forward like an angry lash, wrapping around the golden frame of the chariot, its furry tip clinched into a tight ball of rage, pulling the chariot back with muscular force.",
+      "visual_prompt_refined": "Retro Indian comic book cover style by Sankar, 1990s. Hanuman stands dynamically on the backs of two galloping black horses, while his sentient tail loops around a golden chariot, its furry tip clinched tightly in rage. A dark demon driver struggles. Stone columns shatter behind. Bold action lines, ink drawing, vintage print texture.",
+      "video_prompt_refined": "Chorus scene. Hanuman leaps onto the backs of galloping black horses pulling a chariot. His tail whips around the chariot frame, its fur clinched, bell ringing wildly. Camera: fast lateral tracking shot using a 35mm lens. Light: low contrast, dusty red glow. Style: Chandamama action animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Clattering hooves, shattering stone, and an angry bell-clank.",
+        "vocals": "Hanuman: Powerful, resonant battle roar.",
+        "foley": "Galloping horse hooves on stone, heavy wood creaking, loud metal bell clanging rapidly, carpet-like sweeping swishes.",
+        "ambience": "Dusty battlefield wind, distant screams of war.",
+        "atmos": "Horses panning left-to-right; clanging bell in the center channel."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150133.png",
+      "scene_title": "Defeat of the Princes (Nagapasha)",
+      "artist": "Sankar",
+      "characters": ["Lord_Rama", "Lakshmana", "Hanuman", "The_Tail_Vaalagaathram", "Jambavan", "Vanara_Army"],
+      "physics_gravity": "Rama and Lakshmana lie flat on the sandy ground, bound by heavy snakes. Hanuman stands beside them, looking down; his sentient tail lies slumped and flat on the dirt, its fur tip completely limp and desaturated, the small bell silent in the sand, representing deep sorrow.",
+      "visual_prompt_refined": "Retro Indian comic panel by Sankar. Blue-skinned Lord Rama and Lakshmana lie bound by green serpents on a sandy battlefield. Beside them, Hanuman stands with his sentient tail slumped flat and limp in the dirt, the bell silent. A circle of sad monkey warriors and Jambavan stand in sorrow. Desaturated vintage colors, ink outlines, old paper texture.",
+      "video_prompt_refined": "Verse 2 scene. Bird's-eye view of Rama and Lakshmana lying bound by snake ropes. Beside them, Hanuman stands as his tail lies flat and limp on the sand, fur completely drooped. Camera: slow vertical crane-up (zoom out) using a 50mm lens. Light: overcast, gloomy grey light, 6500K. Style: nostalgic Chandamama comic drama.",
+      "audio_treatment": {
+        "sonic_thesis": "A somber, low-frequency mourning atmosphere with a silent bell.",
+        "vocals": "Vanaras: Quiet whimpering, low murmurs of despair.",
+        "foley": "Slither of snake coils, rattle of scales on armor, soft limp rustle of the tail.",
+        "ambience": "Desolate desert wind whistling through spears.",
+        "atmos": "Whistling wind mapped across surrounds; tail's flat rustle positioned front-center."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150153.png",
+      "scene_title": "Vibhishana Comforts Sugriva",
+      "artist": "Sankar",
+      "characters": ["Vibhishana", "Sugriva", "Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Sugriva's shoulders are slumped in grief. In the background, Hanuman's tail uncoils and gently brushes against Sugriva's arm in a comforting touch, its furry tip spread soft and fluffy, a single soft ring of the bell breaking the gloom.",
+      "visual_prompt_refined": "1990s vintage Chandamama illustration by Sankar. Vibhishana placing a comforting hand on the shoulder of a weeping Sugriva. In the background, Hanuman's sentient tail gently wraps its soft, fluffy fur tip around Sugriva's wrist in sympathy, its tiny bell visible. Soft watercolor washes, hand-drawn paper look, pink sky.",
+      "video_prompt_refined": "Bridge scene. Vibhishana comforts a weeping Sugriva on the battlefield. Hanuman's tail uncoils to pat Sugriva's arm in sympathy. Camera: medium close-up, slow 85mm lens zoom on Sugriva's face. Light: soft sunset golden hour, 2700K. Style: retro Indian comic animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Intimate dialogue framed by quiet weeping and a single tail bell tinkle.",
+        "vocals": "Sugriva: Sobbing, choked vocal delivery. Vibhishana: Warm, steady, comforting baritone voice.",
+        "foley": "Soft fabric touch of hand on shoulder, soft fur brush of the tail, a single tiny bell chime.",
+        "ambience": "Evening wind chimes (distant), soft mountain breeze.",
+        "atmos": "Vibhishana's voice centered; soft tail brush and bell chime positioned slightly to the left."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150250.png",
+      "scene_title": "Cover: April 1992 - Battle Leap",
+      "artist": "Sankar",
+      "characters": ["Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Hanuman leaps mid-air. His tail uncoils like a massive striking whip above him, its furry tip clinched tightly into a hard fist, providing balance and kinetic force to his swing. The bell on its ring pierce is tilted sideways from the velocity.",
+      "visual_prompt_refined": "Fully painted Telugu Chandamama magazine cover art, April 1992, by Sankar. Muscular Hanuman leaps mid-air holding a heavy golden mace, while his sentient tail whips overhead, its furry tip clinched tightly like a fist. Attacks a giant dark demon below. Golden spires in background. Rich oil painting style, saturated historical colors, retro fantasy cover.",
+      "video_prompt_refined": "Chorus scene. Hanuman leaps dynamically through the air. His tail sweeps overhead with its fur clinched, helping him execute a mid-air turn. Camera: extreme slow-motion action tracking shot with a 35mm lens. Light: intense orange and red firelight glow. Style: retro painted oil-animation cover style.",
+      "audio_treatment": {
+        "sonic_thesis": "A grand, operatic battle climax with whooshing tail sounds.",
+        "vocals": "Hanuman: Echoing, reverberant war cry.",
+        "foley": "Massive woosh of the swinging mace, rapid sweep-whoosh of the tail, loud metal bell clanging.",
+        "ambience": "Roaring fires, clashing armies, heavy drums.",
+        "atmos": "Hanuman's leap panning from front-left to center-right; tail whoosh mapped overhead."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150350.png",
+      "scene_title": "Sita's Grief in Ashoka Vatika",
+      "artist": "Sankar",
+      "characters": ["Sita", "Trijata", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Sita stands weeping, leaning against a pillar. In the dream bubble at the bottom right, Hanuman's tail is bound alongside him, its fur tip clinched in pain, showing their shared trial.",
+      "visual_prompt_refined": "Vintage Indian comic art by Sankar. A weeping Sita in a yellow saree leans against a palace pillar in Ashoka Vatika under banyan trees. Behind her, demoness guards watch. A dream bubble at the bottom right shows Hanuman and his tail bound together in captivity. Classic comic panel, paper texture.",
+      "video_prompt_refined": "Verse 2 scene. Sita stands in deep grief. A dream bubble appears showing Hanuman bound with his tail tightly tied, the bell silent. Camera: slow 50mm pan from Sita's tearful face to the dream bubble. Light: cool moonlight, high contrast shadows. Style: Chandamama animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Isolating silence with echoing teardrops.",
+        "vocals": "Sita: Soft, choked weeping.",
+        "foley": "Carved stone scraping, heavy rustle of silk saree.",
+        "ambience": "Echoing night crickets, rustling leaves in Ashoka Vatika.",
+        "atmos": "Sita's weeping centered; crickets mapped to surrounds."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150407.png",
+      "scene_title": "Rama Grieving over Lakshmana",
+      "artist": "Sankar",
+      "characters": ["Lord_Rama", "Lakshmana", "Hanuman", "The_Tail_Vaalagaathram", "Sugriva"],
+      "physics_gravity": "Rama sits on the dirt ground. Hanuman sits beside him; his tail lies coiled near Lakshmana's feet, its furry tip clinching in worry and anxiety, the bell resting silent on the ground.",
+      "visual_prompt_refined": "Retro Indian comic illustration by Sankar. Lord Rama sits grieving on a sandy battlefield, gesturing toward Lakshmana who lies wounded on a bed of arrows. Hanuman sits beside him, his tail coiled near Lakshmana's feet, its furry tip clinched in worry. Sugriva stands in sorrow. Soft watercolor washes, hand-drawn paper look, 1990s style.",
+      "video_prompt_refined": "Verse 2 continuation. Rama sits beside an unconscious Lakshmana on the battlefield. Hanuman's tail coils anxiously at Lakshmana's feet, fur clinched. Camera: slow 85mm tracking shot at eye level. Light: dim evening light, warm amber tint, 3000K. Style: retro Chandamama style animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Grief-stricken dialogue over a quiet wind.",
+        "vocals": "Rama: Trembling, emotional voice with raspy undertones.",
+        "foley": "Rustle of dry leaves on the dirt, shifting chainmail armor, soft nervous rustle of the tail.",
+        "ambience": "Distant sound of army campfires, low wind across the plain.",
+        "atmos": "Rama's dialogue positioned front-center; tail's rustle in front-right."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150502.png",
+      "scene_title": "Cover: August 1992 - Flight for Sanjeevani",
+      "artist": "Sankar",
+      "characters": ["Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Hanuman flies in a horizontal glide pose. His sentient tail uncoils gracefully behind him like a trailing banner, its furry tip spread wide and fluffy, catching the wind. The small bell chimes softly in the mountain air.",
+      "visual_prompt_refined": "Vintage Telugu Chandamama magazine cover art, August 1992, by Sankar. Hanuman flies over the Himalayan mountains filled with glowing green Sanjeevani herbs. His sentient tail streams behind him, its furry tip spread wide and fluffy, featuring its silver ring pierce and bell. Snowy peaks in background. Painted retro style, warm paper tone.",
+      "video_prompt_refined": "Chorus scene. Hanuman flies gracefully through the air over the Himalayas. His tail streams behind, fur tip spread fluffy, catching the wind as the bell chimes. Camera: wide 24mm lens smooth aerial orbit. Light: cool twilight sky with warm, glowing green highlights. Style: 1990s painted cover animation style.",
+      "audio_treatment": {
+        "sonic_thesis": "An ethereal, soaring orchestral soundscape with melodic bell chimes.",
+        "vocals": "Hanuman: Deep, focused breathing in flight.",
+        "foley": "Wind whipping through hair, high-frequency magical hum of herbs, melodic soft bell chiming.",
+        "ambience": "High-altitude cold wind, mountain echo.",
+        "atmos": "Soaring strings mapped wide; tail bell chiming in height channels."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150633.png",
+      "scene_title": "The Giant on the Battlefield",
+      "artist": "Vankar",
+      "characters": ["Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "A giant demon stands in back-profile on the right. Hanuman stands on a high cliff on the left; his tail stands rigid and upright, its furry tip clinched tight in anger, looking towards the giant like a radar dish.",
+      "visual_prompt_refined": "1990s Indian comic book panel by Vankar. A giant demon in red and grey armor stands in back-profile, looking at a battlefield. In the distance, Hanuman stands on a cliff with his tail standing rigid and upright, its furry tip clinched tight in anger. Ink lines, flat colors, retro comic look.",
+      "video_prompt_refined": "Verse 2 scene. A giant demon stands in back-profile looking over the battlefield. Hanuman's tail stands rigid like a warning beacon, fur clinched. Camera: wide 24mm shot showing scale difference. Light: pale overcast sky, 5600K. Style: heritage Vankar style animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Desolate battlefield silence with a low sub-bass hum.",
+        "vocals": "Demon: Deep, heavy breathing.",
+        "foley": "Wind rustling the giant demon's red skirt, a single warning bell tinkle from the tail.",
+        "ambience": "Howling canyon wind, low rumbling drone.",
+        "atmos": "Low hum in LFE channel; warning bell tinkle positioned left-surround."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150647.png",
+      "scene_title": "Rama vs. Kumbhakarna",
+      "artist": "Vankar",
+      "characters": ["Lord_Rama", "Kumbhakarna", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Rama draws his bow. The giant demon raises his mace. Hanuman's tail sweeps in from the side to deflect incoming arrows or debris, its fur clinched, moving with high kinetic velocity.",
+      "visual_prompt_refined": "Retro Indian comic illustration by Vankar. Blue-skinned Rama shoots arrows at a massive dark-skinned giant demon Kumbhakarna who raises a heavy golden mace. Hanuman's tail sweeps in the background to deflect flying debris, its fur clinched. Comic panel style, dramatic high-contrast ink drawing, vintage color print.",
+      "video_prompt_refined": "Chorus scene. Rama fires a stream of arrows at a giant dark-skinned demon. Hanuman's tail sweeps across the frame to block debris, fur clinched. Camera: Dutch tilt low angle using a 35mm lens. Light: intense red battle glow. Style: classic Vankar animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Aggressive, high-tempo battle clash.",
+        "vocals": "Rama: Sharp, focused battle shout.",
+        "foley": "Sharp twang of bowstring, whistling arrows, tail sweeping debris, loud bell ring.",
+        "ambience": "Roar of clashing armies, crackling fire.",
+        "atmos": "Arrows flying front-to-back; tail sweeps panning across the front stage."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150700.png",
+      "scene_title": "Demon Guards in the Corridor",
+      "artist": "Vankar",
+      "characters": [],
+      "physics_gravity": "Four demon warriors walk down a stone staircase. In the distance, the soft, faint echo of a tinkle-tinkle from a tail bell is heard, indicating Hanuman's secret presence.",
+      "visual_prompt_refined": "Retro Indian mythological comic panel by Vankar. Four demon soldiers in golden armor and blue and pink skirts walk down a palace corridor. Fine ink line drawing, pastel colors, vintage paper look, pink pillars.",
+      "video_prompt_refined": "Verse 1 scene. Four demon guards in matching golden armor walk down a staircase inside a palace corridor. Camera: 50mm lens tracking shot moving down with them. Light: warm interior palace light, high shadows. Style: nostalgic Vankar comic style animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Stately, rhythmic marching footsteps echoing in stone, with a distant tail bell hint.",
+        "vocals": "Guards: Occasional deep, muttered dialogue.",
+        "foley": "Echoing thud of leather sandals, metallic clinking of armor, a very distant, faint bell tinkle.",
+        "ambience": "Palace corridor reverb.",
+        "atmos": "Footsteps panning down; faint bell tinkle in the far rear-right."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150710.png",
+      "scene_title": "Descent of the Spiked Crown Demon",
+      "artist": "Vankar",
+      "characters": ["Lord_Rama", "Lakshmana", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "A giant demon descends. Hanuman's tail uncoils protectively in front of Rama and Lakshmana, standing upright like a shield, its fur clinched tight in defense, the small bell ringing warning chimes.",
+      "visual_prompt_refined": "1990s classic Indian comic drawing by Vankar. A giant demon descends from the sky surrounded by clouds. Below, Rama and Lakshmana look up, while Hanuman's tail stands protectively in front of them, its fur tip clinched in defense, bell visible. Ink outlines, watercolor washes, retro fantasy style.",
+      "video_prompt_refined": "Pre-Chorus scene. A giant demon descends from the sky through clouds. Below, Rama and Lakshmana prepare, as Hanuman's tail rises like a shield in front of them, fur clinched, bell ringing. Camera: 35mm lens tilting up. Light: dramatic ray of light. Style: retro Vankar animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Ominous storm of sound and warning bell alarms.",
+        "vocals": "Demon: Echoing, booming laugh.",
+        "foley": "Swirling wind, rustle of clouds, rapid warning chiming of the tail bell.",
+        "ambience": "Rumbling thunder, storm wind.",
+        "atmos": "Demon's laugh descending from height channels; warning bell in center."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150725.png",
+      "scene_title": "Lakshmana's Shot",
+      "artist": "Vankar",
+      "characters": ["Lakshmana", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Lakshmana fires an arrow. Hanuman's tail lies near his feet, wrapping around his ankle to stabilize his balance on the ground against the recoil of the bow draw, its fur clinched, absorbing the weight.",
+      "visual_prompt_refined": "Retro Indian comic illustration by Vankar. Close-up profile of a giant demon's face on the right as Lakshmana in the distance fires an arrow. Hanuman's tail wraps around Lakshmana's ankle to stabilize him, its fur clinched. Dynamic action lines, paper print, warm tones.",
+      "video_prompt_refined": "Chorus scene. An arrow flies from Lakshmana's bow toward the eye of a giant demon in the foreground. Hanuman's tail stabilizes Lakshmana's ankle. Camera: focus rack from Lakshmana to the flying arrow using a 135mm telephoto lens. Light: bright sun rays. Style: classic Vankar animation.",
+      "audio_treatment": {
+        "sonic_thesis": "A high-velocity projectile impact with bone-dry stability.",
+        "vocals": "Lakshmana: Grunt of release.",
+        "foley": "Twang of bowstring, arrow whistle, flesh impact, soft grunt of weight absorption from the tail.",
+        "ambience": "Battle noise.",
+        "atmos": "Arrow whistle panning rapidly; tail grunt in front-left."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150737.png",
+      "scene_title": "Nikumbhila Yagna - Indrajit's Fire",
+      "artist": "Vankar",
+      "characters": ["Indrajit", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Indrajit performs the yagna. In the threat inset, Hanuman's tail is shown wrapped protectively around Hanuman's shoulders, its fur tip ruffled, watchfully guarding him.",
+      "visual_prompt_refined": "Retro Indian comic panel by Vankar. Indrajit performing a fire ritual under a large banyan tree. Large red and orange flames rise. Demon guards watch. A circular vignette shows Hanuman and his tail wrapped around his shoulders as a watch guard. Nostalgic printing texture, ink outlines, warm colors.",
+      "video_prompt_refined": "Verse 2 scene. Indrajit sits performing a yagna sacrifice under a banyan tree as tall orange flames swirl. Camera: slow 50mm lens push-in past the guards. Light: flickering firelight, 2200K. Style: heritage Vankar style animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Flickering fire crackle and rhythmic chanting.",
+        "vocals": "Indrajit: Deep, rhythmic chanting.",
+        "foley": "Loud crackling of wood, crackle of hot embers.",
+        "ambience": "Deep forest hum.",
+        "atmos": "Chanting centered; crackling fire mapped to front stage."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150752.png",
+      "scene_title": "Indrajit's Victory Flight (The Burning Buddy)",
+      "artist": "Vankar",
+      "characters": ["Indrajit", "Lord_Rama", "Lakshmana", "Hanuman", "The_Tail_Vaalagaathram"],
+      "physics_gravity": "Indrajit hovers in the air, laughing. In the bottom left, Hanuman's tail is set on fire by demon soldiers. The tail's fur is clinched in intense pain, thrashing against its bonds. Hanuman looks back in absolute rage, his face contorted in anger because his buddy is being burned.",
+      "visual_prompt_refined": "Vintage Indian comic page illustration by Vankar. Indrajit flies triumphantly in the clouds. Below, Hanuman's tail is set on fire by soldiers, its fur clinched in intense pain and thrashing. Hanuman looks back in absolute fury at his burning tail buddy. Hand-drawn ink outlines, soft color washes, nostalgic comic style.",
+      "video_prompt_refined": "Chorus scene. Indrajit flies through the clouds. Below, Hanuman's tail is set on fire, thrashing in pain, its bell clanging wildly. Hanuman turns in a surge of rage. Camera: 50mm lens tracking shot. Light: soft diffuse sky light with high-contrast red flames. Style: retro Vankar style animation.",
+      "audio_treatment": {
+        "sonic_thesis": "Screaming flames and a frantic clanging bell.",
+        "vocals": "Hanuman: Furious, ground-shaking roar of anger. Indrajit: Arrogant laughter.",
+        "foley": "Wind rushing, crackle of fire igniting cloth, frantic clanging of the tail bell, carpet-like thrashes.",
+        "ambience": "Desolate battle plain wind.",
+        "atmos": "Frantic bell clanging panning wildly across surrounds; Hanuman's roar centered."
+      }
+    },
+    {
+      "filename": "Screenshot 2026-06-26 150806.png",
+      "scene_title": "Jambavan's Counsel",
+      "artist": "Vankar",
+      "characters": ["Jambavan", "Hanuman", "The_Tail_Vaalagaathram", "Vanara_Army"],
+      "physics_gravity": "Jambavan counsels Hanuman. Hanuman stands with hands clasped. His tail uncoils and sits beside Jambavan on the ground, its furry tip spread fluffy in agreement, the bell tinkling softly as if saying 'I agree', which Hanuman nods to.",
+      "visual_prompt_refined": "Heritage Indian comic book illustration by Vankar, 1990s. Jambavan the bear king in a golden crown points his finger as he counsels Hanuman on a grassy field. Hanuman's tail sits coiled beside Jambavan, its furry tip spread fluffy in agreement, the bell visible. Monkey army listens. Retro print look, warm colors, ink outlines.",
+      "video_prompt_refined": "Outro scene. Jambavan counsels a concerned Hanuman on the battlefield. Hanuman's tail uncoils, its fur spreading in agreement as the bell tinkles. Camera: medium 50mm lens pan. Light: soft evening golden hour light, 2700K. Style: retro Vankar style animation.",
+      "audio_treatment": {
+        "sonic_thesis": "A quiet, wise counsel over a fading breeze and an agreeing bell ring.",
+        "vocals": "Jambavan: Deep, rumbling, gravelly voice. Hanuman: Soft, reverent response.",
+        "foley": "Soft rustle of fur, leather sandal on grass, a soft sweep and agreeing tinkle from the tail bell.",
+        "ambience": "Fading evening breeze.",
+        "atmos": "Jambavan's voice centered; tail bell agreeing tinkle in front-left."
+      }
+    }
+  ]
+}

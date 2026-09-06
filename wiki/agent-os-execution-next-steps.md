@@ -77,3 +77,29 @@ Also not done, not forgotten:
 1. Review/merge PR #29 (or request changes).
 2. Once merged, decide whether to continue with Phase 2 (Debate executor body, capability-router wiring) or let the Mixture mode get real usage first before expanding — the user's own stated preference this session was evidence-based evolution over speculative expansion, so lean toward "use it, then decide" unless directed otherwise.
 3. Do not add Planner/ExecutionGraph/EventBus/Policies/Provider Registry/caching without one of the triggers in the table above actually firing — that restraint was the explicit, hard-won outcome of this session's design discussion.
+## HANDOFF TO ANTIGRAVITY / CLAUDE (2026-07-05, Phase 2.1 Complete, Proceed to Phase 2.2 Debate)
+
+**Branch:** eat/agent-os-execution-framework on C:\Users\navka\navakanth001 (this repo), base master.
+
+### What shipped (Phase 2.1 - Routing & Auto Mode)
+-  gent_os/execution/executors/auto.py: Implemented AutoPlanner, returning a frozen PlanningResult.
+-  gent_os/execution/routing.py: Extracted pure DeterministicRoutingPolicy and TaskClassifier (with heuristic-based categorization and normalizations). Introduced RoutingContext which contains original ExecutionRequest, category, and classifier_version.
+-  gent_os/execution/__init__.py: Cleaned up ExecutionManager to route AUTO logic through the pure RoutingPolicy logic before executor dispatch. Includes runtime tracing of outing_time_us.
+-  gent_os/docs/governance/ADR-004-auto-mode-policy-layer.md: Solidified the determinism and immutability invariants (matched_rules tuple, perfect determinism).
+- Extensive unit tests covering purity (masking file I/O, network, socket), determinism (100 run hash checking), unknown fallbacks, and task matching.
+
+## HANDOFF TO ANTIGRAVITY / CLAUDE (2026-07-07, Phase 2.3 Tau Integration Complete)
+
+**Branch:** `feat/openrouter-model-fix` on `C:\Users\navka\navakanth001` (this repo), base `master`.
+
+### What shipped (Phase 2.3 - Tau Integration & Backoff)
+- **`agent_os/execution/executors/tau_executor.py`:** Created a specialized `TauExecutor` wrapping `tau_agent.AgentHarness` to execute task prompts via `tau-ai`'s asynchronous state machine loop.
+- **`agent_os/execution/execution_modes.py`:** Added `ExecutionMode.TAU` enum (`"tau"`).
+- **`agent_os/execution/__init__.py`:** Registered `TauExecutor` in the pluggable `ExecutionManager`.
+- **`agent_os/openrouter_client.py` & `agent_os/cloud_agent_runner.py`:** Integrated exponential, jittered backoffs honoring `Retry-After` headers for all transient 429/5xx errors to prevent API quota exhaustion.
+- **Tests:** All **26/26 unit tests passed successfully** (`pytest tests/ -v`).
+
+### Immediate next steps
+1. **Live Prompt Testing:** Trigger real execution requests using `ExecutionMode.TAU` to verify the `AgentHarness` loop behavior with live tool calls.
+2. **Provider Failures:** Validate the fallback behavior when the OpenRouter/Gemini keys are completely disabled or rate-limited.
+3. **Obsidian Persistence:** Ensure that when runs finish, their execution traces populate the Obsidian vault as structured documents.

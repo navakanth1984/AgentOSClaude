@@ -4,6 +4,10 @@
 
 ---
 
+## Shared Knowledge Base Contract
+
+This repo's canonical shared instructions are `wiki/CLAUDE.md`, `wiki/knowledge-base-protocol.md`, `wiki/knowledge-base-map.md`, and `AGENTS.md`. Claude Code, Antigravity, Gemini, Codex, and other agents must use the same graph-first + wiki-first read/feed loop. Tool-specific sync details live in `wiki/ai-tool-sync.md`.
+
 ## Who I Am
 
 - **Name:** Navakanth Reddy Dumpa
@@ -156,7 +160,7 @@ Load the four Agent OS layers in order — they build on each other:
 
 ---
 
-*Last updated: 2026-06-15*
+*Last updated: 2026-07-02*
 
 ## graphify
 

@@ -4,6 +4,10 @@
 ## Overview
 Agent OS is a comprehensive framework for running autonomous AI agents. It appears to provide a core engine for defining workflows, managing agent memory, and parsing natural language. It includes a command-line interface (`cli.py`), a web server (`server.py`), and extensive testing suites. The system is designed to connect to and orchestrate various internal and external tools and services.
 
+## URLs
+- **Online (Production):** [https://nthdimensionacademy.com/AgentOSClaude/index.html](https://nthdimensionacademy.com/AgentOSClaude/index.html)
+- **Local (Development):** [http://localhost:8765/dashboard.html](http://localhost:8765/dashboard.html) (or `http://localhost:3000` depending on frontend proxy setup)
+
 ## Key Subsystems
 - **Core Engine:** A central workflow system (`workflow.py`, `agent_os.py`) that manages the lifecycle of agent tasks.
 - **Speech & Audio:** A major subsystem for text-to-speech and audio processing, including an audiobook generation pipeline. See [Agent OS Speech Pipeline](agent-os-speech-pipeline.md) for details.
@@ -18,8 +22,10 @@ The dashboard's Filmmaking tab drives chunked long-form generation and screenpla
 - **`creative_exporter.py`** — renders a parsed screenplay/novel to MD, HTML, DOCX, and PDF. Screenplay dialogue is the industry-standard **centered column** (equal 1.5in L/R indents, text left-aligned) with the **CHARACTER cue centered above** it; the same geometry is applied across HTML, DOCX (`python-docx`), and PDF (Playwright renders from the same HTML, so it inherits the layout).
 - **Console safety:** `server.py` forces UTF-8 `stdout`/`stderr` on the Windows cp1252 console so Unicode glyphs (`→ ─ ✓`) in any `print()` can't raise `UnicodeEncodeError` and crash a generation thread.
 
-## Execution Framework (Mixture-of-Agents)
-- **`agent_os/execution/`** — a pluggable execution framework (`ExecutionManager → Executor → Aggregator`). Ships Single/Swarm/Mixture executors; Debate and Auto are interface-only stubs pending real usage evidence. Mixture-of-Agents fans a prompt out across N models in parallel, then aggregates via Fast/Standard/Verified strategies with an evidence-based confidence score (pairwise textual agreement + optional judge score, never an LLM-invented number). Exposed via `POST /execute` + `/execute/status` and an Execution Mode selector on the Swarm tab. Full handoff/status: [agent-os-execution-next-steps.md](agent-os-execution-next-steps.md).
+## Execution Framework (Mixture-of-Agents & Tau Agent Harness)
+- **`agent_os/execution/`** — a pluggable execution framework (`ExecutionManager → Executor → Aggregator`). Ships Single/Swarm/Mixture/Tau executors; Debate and Auto are interface-only stubs pending real usage evidence. Mixture-of-Agents fans a prompt out across N models in parallel, then aggregates via Fast/Standard/Verified strategies.
+- **Tau Integration:** The `TauExecutor` leverages the `tau-ai` agent harness (`AgentHarness` and `AgentHarnessConfig`). It parses input model names to route to Anthropic or OpenAI-compatible providers, executes asynchronous agent loops using typed events (`MessageDeltaEvent`, `MessageEndEvent`), and writes intermediate steps and final answers to the manifest registry.
+- **Next Steps:** See [agent-os-execution-next-steps.md](agent-os-execution-next-steps.md) for MoA Phase 1 and Tau integration handoffs.
 
 ## Dev Tooling
 - **`dev_reload.py`** — a zero-dependency auto-reload supervisor. Watches `agent_os/**/*.py` (mtime polling, 0.4s debounce) and restarts `server.py` on save; also relaunches it if it exits/crashes. Run `python dev_reload.py` instead of `python server.py` during development so backend edits take effect without a manual restart.
