@@ -1,3 +1,90 @@
+## 2026-09-14: Udyogswarg Official Job Verifier Layer, Anti-Ghost Job Detection, and ToS-Compliant Client-Side Ingestion
+
+Completed implementation, verification, and knowledge preservation for Udyogswarg (JobHeaven) in `G:\navakanth001\ai-job-search-app`:
+1. **Authentic Profile & Zero Hallucination Mandate**:
+   - Cleaned base resume (`G:\navakanth001\Fabric_Architect_CGI_Navakanth_Reddy_Dumpa_2026.docx`) by systematically purging 8 unverified items (all pre-sales bullets, bid proposals, SOW tags, 2005 Magus customer service, 2007 Sitel MIS).
+   - Generated authentic, strictly-aligned resumes in both DOCX and PDF formats across three primary targets: Microsoft Fabric Architect, Enterprise Data Architect, and Lead Data Engineer.
+2. **Issue #331 & LinkedIn Ghost Jobs Diagnostic Provenance**:
+   - Documented and cross-referenced the architectural diagnostic credited by Mads Lorentzen in `MadsLorentzen/ai-job-search#331` (commit `3d29644` / PR #383) diagnosing LinkedIn redirect ghost jobs.
+3. **Legal Assessment & ToS-Compliance Invariants**:
+   - Proved that automated server-side scraping of walled gardens (LinkedIn, Naukri, Monster) directly breaches platform terms of service (Section 8.2 of LinkedIn User Agreement; *hiQ v. LinkedIn* state breach-of-contract judgment).
+   - Implemented a 100% client-side **Device-Local Importer** (`frontend/src/components/ImportModal.tsx` + `frontend/src/domain/connectors.ts`) that parses pasted job listings within the browser runtime with zero automated server requests to third-party portals.
+   - Configured `CareerPageAdapter` via Apify's website content crawler strictly for direct public employer career portals (`careers.<company>.com`).
+4. **Official Job Verifier & Ghost Job Elimination Engine**:
+   - `backend/job_aggregator/verifier.py`: 4-tier provenance scoring (`official_ats`, `official_career_page`, `unverified_aggregator`, `unverified_external`).
+   - `check_url_liveness`: Asynchronous HTTP validation detecting 404/410/5xx status codes, bait redirects away from specific job slugs to generic error/landing pages (`/jobs/search`, `/error`), and body dead phrases (`"this job is no longer available"`, `"position has been filled"`).
+   - `verify_active_jobs` & `POST /api/jobs/verify`: Concurrent sweep engine with semaphore concurrency control marking dead roles as `status = 'expired'`.
+5. **Safe Database Test Isolation & Harness Governance**:
+   - Modified `backend/job_aggregator/store.py` and `backend/tests/conftest.py` to route SQLite operations to `jobs_test.db` whenever running in test mode (`is_test_env`), safeguarding the live local database (`jobs.db`, 2,434 jobs) from table truncation.
+   - 10 of 10 unit tests in `backend/tests/test_verifier.py` passed (`10 passed in 24.32s`). Frontend TypeScript build (`tsc -b && vite build`) passed with 0 errors.
+6. **Skillify & GBrain Synchronization**:
+   - Synchronized canonical skill `C:\Users\navka\.claude\skills\job-search\SKILL.md` (instantly reflected across NTFS junctions in `.gemini` and `.agents`).
+   - Updated `wiki/udyogswarg_gbrain.md` and walkthrough report.
+
+## 2026-09-14: ShoonyaAI import and verification continuation
+
+Preserved exact numeric JSON literals across file and REST import, blocked cross-origin custom credentials, aligned upload limits/errors, and repaired the audit's pagination and overload oracles. Added a development bearer-token tenant adapter and proved two organizations cannot access each other's datasets, runs, or exports; tenant mode disables the global PostgreSQL URL fallback. Node 24 in-process verification passed 18 unit/API/tenant tests, 18 synthetic connector probes, and 4 targeted mutations. Updated [readiness review](../shoonyaai/docs/WHOLE_PRODUCT_READINESS_REVIEW.md) and [ShoonyaAI overview](shoonyaai.md). Refreshed the code graph; Swift grammar and semantic labels remain incomplete. The new source still requires a successful production build and browser/native verification.
+
+## 2026-09-14: Sarvam Indic AI Showcase, 2-Host NotebookLM Podcasts, LiveKit WebRTC Voice Agent, and Retro-Graphic Novel Engine
+Engineered, verified, and packaged an end-to-end multi-model Indic intelligence pipeline combining Sarvam AI, Google Gemini 2.5 Flash, and open-source audio/WebRTC tools:
+1. **Sarvam AI Credit Ledger & Financial Guardrails**:
+   - Starting balance: 700.00 credits (₹700.00); total spent across entire benchmark: **15.74 credits**; remaining balance: **684.26 credits** (>97.7% preserved).
+   - Document AI Parse: 10 pages @ ₹0.50 = ₹5.00; Audio TTS Bulbul v3 HD: ~14.5K chars synthesized = ₹4.35; Translation Mayura v1: 2 pairs = ₹1.00; Chat Reasoning Sarvam-105B: 800 tokens = ₹0.02; Google Gemini 2.5 Flash & Native TTS: covered under Google cloud credits.
+2. **Chandamama August 1947 Digitization (Sarvam Vision `Parse`)**:
+   - Rendered 10 pages at 300 DPI (`pypdfium2` 2.0x scale) from `G:\navakanth001\OCR Extract Files\Chandamama 1947 08 www.RipsTracker.com.pdf` in 1 batch job (`01a099b8-872e-71e6-a8bb-e85351adb492`). Extracted editorial credits (*సంచాలనః చక్రపాణి*), Page 8 story (*నా ఆత్మకథ - చందమామ*), M.P. Sastry poetry, and multimodal artwork descriptions.
+3. **Dual-Episode 2-Host NotebookLM Telugu Podcasts**:
+   - **Episode 01 (Classical & Formal)**: `chandamama_telugu_podcast_ep01_master.mp3` (2.68 MB, 6 turns).
+   - **Episode 02 (Hip, Trendy & Casual Youth Edition)**: `chandamama_telugu_podcast_ep02_trendy_master.mp3` (3.92 MB, 163.4s duration, 192 kbps HD stereo). Features modern youth banter (*"వైబ్ వేరే లెవల్"*, *"క్రేజీ ట్విస్ట్"*, *"లైఫ్ హ్యాక్"*) while preserving 100% exact historic quotes from Chandamama Page 8 (*"అమ్మా అమ్మా! చందమామ పట్టి అల్లరివాడే..."*), M.P. Sastry's poem (*"తెల్లన్ని నావెల్గు తీగల్ల తోడ..."*), and 7th Class FA2 Dhammapadam (*"మనస్సు సర్వ ధర్మములకు పూర్వగామి..."*).
+   - **Sarvam Bulbul v3 API Harness**: Diagnosed 500-character single-string payload limit; implemented multi-part chunk array synthesis and FFmpeg cadence stitching (300ms natural pauses).
+4. **Real-Time LiveKit WebRTC Conversational Pipeline (`tools/livekit_agent/`)**:
+   - `token_generator.py`: Pure-Python HMAC-SHA256 JWT access token generator without heavy third-party SDKs; generates direct browser test links (`https://meet.livekit.io/custom?liveKitUrl=...`).
+   - `telugu_voice_agent.py`: Sub-second conversational loop (Sarvam Saaras ASR → Gemini 2.5 Flash LLM → Sarvam Bulbul 48 kHz TTS). Verified turnaround: `livekit_agent_sample_turn.wav` (158 KB).
+5. **Retro-Graphic Novel & Comic Book Engine (`_codex_outputs/sarvam_showcase/graphic_novel/`)**:
+   - **7 Full Chapters**: August 1947 Independence & Red Fort speech, Madras streets & printing press genesis, 1947 cinema mania (ANR *Palnati Yuddham*), Moon autobiography comic, Dhammapadam life-hack, November 1947 First Free Diwali & Sivakasi crackers, and September 1947 Vikram-Betal genesis.
+   - **1947 Ephemera & Trivia Vaults**: Historical compendiums on Afghan Snow (endorsed by Mahatma Gandhi) vs Cuticura vs Mysore Sandal, real Chandamama 1947 ads (*Star of India Pencils* by V. Perumal Chetty & Sons, *Uma Gold Covering* Machilipatnam, *India Ceramics*), 1947 cinema (*Palnati Yuddham*, *Yogi Vemana*, *Jugnu*, *Shehnai*, *Neel Kamal*), and Nehru's historic August 16 Red Fort address before 500,000 citizens.
+   - **Interactive Web Comic Reader (`index.html`, 77.4 KB)**: Halftone newsprint styling, speech bubbles, comic sound effect badges (*ధడాల్!*, *ఝుమ్మని!*), integrated Sarvam audio, and pop-out trivia modals. Verified on local HTTP server (port 8088, status 200 OK).
+   - **Print-Ready Collector's PDF**: `chandamama_1947_graphic_novel_collector_edition.pdf` (1.72 MB, 6 full 300 DPI plates).
+   - **Master Storybook DOCX**: `chandamama_1947_graphic_novel.docx` (5.36 MB, Nirmala UI typography, 4 embedded color illustrations).
+   - **Evidence Rule**: All file paths, audio sample rates, durations, and byte sizes confirmed on disk. Background HTTP daemon terminated cleanly.
+
+## 2026-09-13: ShoonyaAI data workspace
+Implemented real source snapshots, verified analytical execution, Excel provenance, responsive Three.js results, and Capacitor mobile projects in `G:\navakanth001\shoonyaai`. Added regression and API tests, targeted mutation checks, browser QA artifacts, and an explicit record of remaining autonomy/native validation gaps. See [ShoonyaAI](shoonyaai.md) and its implementation report. Refreshed the code graph; Swift grammar remains unavailable.
+
+## 2026-09-12: Tri-Modal Document Ingestion Engine & Codex / ChatGPT MCP Integration
+Built, tested, and integrated a local, zero-limit document ingestion and OCR system across three operational modalities:
+1. **Core Local Engine & Storage (`tools/doc_ingest/`)**:
+   - `storage.py`: SQLite database (`doc_index.db`) with FTS5 virtual tables for sub-millisecond Telugu/English search.
+   - `engine.py`: Hybrid OCR (Tesseract Best PSM4 + automatic EasyOCR fallback on sparse/difficult pages) with OpenCV morphological table/diagram segmentation.
+   - Batch ingested all 21 Class 7 Telugu FA2 pages (28,346 chars, 48 visual objects extracted, Page 03 sparse failure automatically rescued).
+2. **Modality 1: Independent Standalone (Zero AI)**: Built `run_batch.bat` and `watcher.py` to process unlimited files from `G:\navakanth001\inbox\` without internet, LLM tokens, or active chat sessions.
+3. **Modality 2: With Other AI Tools (Universal MCP Server)**:
+   - Built `mcp_server.py` exposing `search_documents`, `get_page`, `list_diagrams_and_tables`, `list_documents`, and `trigger_ingestion`.
+   - **Codex & ChatGPT Desktop Registered**: Added `telugu-docs` to `~/.codex/config.toml`. Ran a live `codex exec` verification session; Codex natively discovered and inventoried all 5 tools under `mcp__telugu_docs`.
+4. **Modality 3: With Antigravity**: Direct querying from Agent OS and curriculum answer-key skills without prompt bloat.
+
+## 2026-09-12: Telugu OCR & Object Detection Benchmark, Cultural KB Validation Engine Integration
+Benchmarked OCR permutations on Class 7 Telugu FA2 exam pages and integrated authoritative cultural knowledge bases:
+1. **Empirical OCR & Object Benchmark**:
+   - Evaluated Tesseract (PSM 4, PSM 6), EasyOCR (`te+en`), and OpenCV morphological line/grid segmentation across representative textbook pages.
+   - **Sparse Page 3 Recovered**: Solved the sparse audit failure on Page 03 (Tesseract missed 70% of words, dropping Telugu purity to 63.4%); EasyOCR captured 62 boxes at **95.4% Telugu character purity**, fully recovering the missing glossary and antonyms.
+   - **Grammar Recall**: EasyOCR captured Questions 8–11 on Page 04 (762 chars) where Tesseract clipped top questions (552 chars).
+   - **Object / Table Detection**: Morphological CV successfully detected the Page 04 fill-in-the-blanks table matrix (`[0, 1505, 1067, 1856]`) and isolated non-text diagram regions on Pages 01 and 02.
+2. **Global Telugu Sahitya & Cultural KB Survey**:
+   - Indexed foremost research institutions: IIIT Hyderabad (LTRC NLP tools/IndoWordNet), AI4Bharat (IndicCorp/IndicTrans2), Potti Sreeramulu Telugu University, University of Hyderabad (CALTS), CIIL Mysuru.
+   - Indexed digital lexicons & literature repositories: University of Chicago DDSA (CP Brown 1903 & Gwynn 1991 APIs), Andhra Bharati (20+ dictionaries), Telugu Wikisource (10,000+ classical texts), and Telugu Wikipedia.
+   - Surveyed foreign academic research: Univ. of Wisconsin-Madison (Prof. Narayana Rao & David Shulman classical translations), UC Berkeley, Emory University, SOAS London.
+3. **Live Validation Engine**: Built `_codex_outputs\telugu_fa2\telugu_kb_validator.py` integrating Wikisource stanzas, Wikipedia author profiles, and Chicago DDSA bilingual lookups. Verified biographical facts for Gajjela Mallareddy and Seshendra Sharma.
+4. **Knowledge Base Documentation**: Created [telugu-sahitya-cultural-knowledge-base.md](telugu-sahitya-cultural-knowledge-base.md) and linked it in [index.md](index.md).
+
+## 2026-09-12: Class 7 Telugu FA2 OCR Audit, Answer-Key Rebuild, Skillify/GBrain Sync
+Saved the Telugu FA2 session into the durable KB and skill layer:
+1. **Google Drive / Local Source Resolution**: Located Google Drive folder `7th class/Telugu/FA2` (`13DQLDhnV01jlkwtUFq8ZXZCgaJ4qyBC_`) and worked from the local mirror `G:\navakanth001\7th Class\Telugu\FA2` containing 21 JPG textbook photos.
+2. **Telugu OCR Root Causes Found**: Corrected EXIF orientation handling and diagnosed Tesseract TSV failure when using local `--tessdata-dir` without the `configs/tsv` file; fixed scripts to use `-c tessedit_create_tsv=1`.
+3. **Line-Level OCR Audit Pipeline**: Built `ocr_line_extract.py` and `ocr_audit.py`; verified 21 pages, 482 detected lines, median chosen-line confidence 81.08, 60 low-confidence/short lines flagged, sparse pages 3/12/13 flagged.
+4. **Answer-Key Artifacts Rebuilt**: Generated final package at `G:\navakanth001\_codex_outputs\telugu_fa2\`: DOCX 85,994 bytes / 968 paragraphs / 4 tables; PDF 641,003 bytes / 31 pages / 78,695 extractable characters; visual PDF preview rendered Telugu correctly. Corrected lesson title to `కొత్త సావాసగోడు` after inspecting source image `20260911_142912.jpg`.
+5. **Governance & Human Gate**: Upload to Google Drive was not performed; connector upload was blocked as external data egress without explicit approval. Documented the workflow as Harness + Loop + Graph with a human gate before upload/publish.
+6. **KB/Skillify**: Added [Class 7 Telugu FA2 OCR Answer Key](telugu-fa2-ocr-answer-key.md), updated [Curriculum Answer Key Wizard](curriculum_answer_key_wizard_gbrain.md), [Book/Magazine OCR Pipeline](book-ocr-pipeline.md), and the canonical `curriculum-answer-key-wizard` skill with the Telugu OCR audit addendum.
+
 ## 2026-09-12: High-Leverage Skills Ingestion, Circular Junction Healing, Universal Dual-Drive Sync, and MCP Context Mode
 End-to-end integration and verification of external skill suites, cross-volume link healing, and architecture telemetry:
 1. **Canonical Skill Expansion & Healing**: Onboarded high-leverage skill suites (`ponytail`, `archify`, `humanizer`, `i-have-adhd`, `mattpocock/skills`, `humanlayer/skills`, `timharris707/skills`). Diagnosed and eliminated 26 circular mutual junction references in `C:\Users\navka\.claude\skills` (restoring from backups and `G:\` workspace). Canonical root now hosts **253 pure physical skills** with zero internal symlinks.
@@ -684,3 +771,9 @@ Session close-out and knowledge crystallization for the Curriculum Answer Key Wi
 - **2026-09-01**: Executed usage-efficiency skill evaluation & economics validation for session `af665373-3afc-42bf-8da8-304077769e11` (Routing: 100.0%, Drift: 38.0, Cost: $0.00/$2.00, Balance: $19.7908).
 - **2026-09-01**: Executed usage-efficiency skill evaluation & economics validation for session `f2b7d6f9-d0f4-4163-b733-bc98d8cf3064`. Ran `validate_usage_efficiency.py` (Cost: $0.00/$2.00, Routing: 100.0%, Balance: $19.7908), `evaluate_usage_efficiency.py` (Snapshot: `snapshot_20260901_190643.json`), and `benchmark_ulcop.py` (Token savings: 79.69% / 127,500 tokens). Updated `memory_os/model-usage-log.json`, created session handoff, and verified ULCOP v2.1 compliance.
 - **2026-09-09**: Executed usage-efficiency skill evaluation & ULCOP v2.1 economics validation for session `c99fbff3-22e-4474-8742-9915b794983d`. Ran `validate_usage_efficiency.py` (Cost: $0.00/$2.00, Routing: 100.0%, Balance: $19.7908), `evaluate_usage_efficiency.py` (Snapshot: `snapshot_20260909_010605.json`, Drift: 23.0 - Minor Review Required / Safe), `benchmark_ulcop.py` (Token savings: 79.69% / 127,500 tokens), and `session_telemetry.py`. Updated `memory_os/model-usage-log.json` (485 total sessions), created session handoff `session_20260909_usage_efficiency_c99fbff3_end.md`, and verified ULCOP v2.1 compliance.
+- **2026-09-12**: Built `tools/doc_ingest` tri-modal local document ingestion package (standalone CLI/batch/watcher, SQLite FTS5, MCP stdio, REST facade, OCR exports under `G:\navakanth001\doc_ingest`) and wired the curriculum-answer-key wizard to check the local index before re-OCR. Ran focused compile/storage/MCP/CLI/REST smoke checks plus a one-page Telugu OCR/PDF export smoke. Refreshed scoped graph with `graphify update tools/doc_ingest --all --no-description --no-label` (92 nodes, 176 edges, 12 communities).
+- **2026-09-13**: Ran a Chandamama Telugu OCR/lipi pilot over 3 PDFs from `G:\navakanth001\OCR Extract Files` (12 pages each; 36 pages total) using local Tesseract `tel+eng`. Produced DOCX/JSON/Markdown reviewer artifacts under `G:\navakanth001\_codex_outputs\chandamama_lipi_sample_20260913`, including Telugu Unicode lipi counts, top Telugu tokens, page confidence, low-confidence flags, and extracted text. Added `tools/doc_ingest/chandamama_lipi_report.py` plus rebuild-from-JSON formatting support; refreshed scoped graphify for `tools/doc_ingest` (110 nodes, 211 edges, 13 communities).
+- **2026-09-13**: Enhanced the Chandamama pilot with Sarvam Document AI (`doc_ai.digitise`, `te-IN`, `md`, printed) using the documented 10-page limit workaround: rendered pages were grouped into six flat ZIP chunks of at most 10 images each, submitted as live Sarvam jobs, and merged back into the DOCX/JSON report with Sarvam language-ID validation. Sarvam text was selected for 25/36 pages, Telugu-block characters increased from 10,339 to 14,320, Telugu tokens from 1,595 to 2,159, and low-confidence pages dropped from 17 to 6. Added `tools/doc_ingest/sarvam_chandamama_enhance.py`; refreshed scoped graphify for `tools/doc_ingest` (129 nodes, 252 edges, 14 communities).
+
+- **2026-09-14**: ShoonyaAI release-candidate verification completed after a successful Vite/esbuild production build and Capacitor sync. Lint, 18 unit/API/tenant tests, 4/4 mutation checks, 18 synthetic connector probes, and `git diff --check` passed. Fresh browser and physical-device QA remain separate gates; production identity, vault, durable jobs, and recovery controls remain open.
+- **2026-09-14**: ShoonyaAI production-hardening loop added security headers/origin checks, non-sensitive health output, fail-closed readiness, PostgreSQL control-object persistence, RS256 OIDC/JWKS verification with organization claims, opaque connector secret references, a Vercel function/static configuration, production rejection of simulated AI output, and lazy 2D chart loading. Lint, 22 tests, mutation checks, connector probes, and diff hygiene passed. Local Playwright launch and Vercel deployment were blocked by the host approval/runtime boundary; no deployment is claimed.
