@@ -1,4 +1,55 @@
-## 2026-09-14: Udyogswarg Official Job Verifier Layer, Anti-Ghost Job Detection, and ToS-Compliant Client-Side Ingestion
+## 2026-09-15: Udyogswarg App Integration: Job Pre-Validation Gate, Autonomous Career Monitor, and Skill Obsolescence Engine
+
+Architected, implemented, and verified enterprise career monitoring and market skill intelligence capabilities inside `ai-job-search-app`:
+1. **ToS Compliance & Account Safety Architecture**:
+   - Analyzed legal and ToS invariants regarding user logins across LinkedIn, Naukri, Monster, and Workday.
+   - Ruled out server-side credential storage and proxy scraping (severe ToS violation with high account suspension risk under LinkedIn §8.2(m)).
+   - Implemented a 100% compliant hybrid architecture: Direct employer ATS monitoring (Workable, Greenhouse, Lever, Workday public endpoints) + local alert ingestion and device-local client importer.
+2. **Strict Pre-Validation Gate & Deep-Link Resolution**:
+   - `backend/job_aggregator/verifier.py`: Added `resolve_direct_deep_link()` and `is_generic_url()` to detect bare portal URLs (e.g. `linkedin.com/jobs/`) and transform them into deep keyword parameter searches or direct employer ATS URLs.
+   - Updated `_job_to_api_dict` in `api.py` and added `🔍 Deep Search Link` badge to `frontend/src/components/JobCard.tsx`.
+3. **Market Skill Demand & Obsolescence Navigator**:
+   - `backend/job_aggregator/skill_intelligence.py`: Defined the Technology Evolution Ontology (Peak Demand, Stable Core, Deprecated/At-Risk).
+   - Real-time empirical frequency analysis across 2,400+ active roles.
+   - Actionable migration roadmaps with certification pathways (e.g., SSIS $\rightarrow$ Fabric Data Factory/Dataflows Gen2 with DP-700/DP-600; Synapse Dedicated Pools $\rightarrow$ Fabric Warehouse/Delta Lake).
+   - Created `frontend/src/screens/MarketIntelligenceScreen.tsx` with interactive viability scorecards and migration cards.
+4. **Autonomous Career Monitor & Alerts Hub**:
+   - `backend/job_aggregator/career_monitor.py`: Automated daily/weekly background sweeps matching candidate skills against active jobs and filtering dead listings.
+   - Added `monitored_job_alerts` and `monitor_configs` tables in `store.py` with full CRUD methods.
+   - Mounted REST endpoints: `GET /api/skills/market-intelligence`, `GET /api/skills/market-frequencies`, `GET /api/monitor/alerts`, `POST /api/monitor/trigger`, `GET /api/monitor/config`, `POST /api/monitor/config`, `PATCH /api/monitor/alerts/{id}/status`.
+   - Created `frontend/src/components/MonitorAlertsModal.tsx`, wired into `TopNav.tsx` (`🔔 Career Monitor`) and `App.tsx` (`/skills`).
+5. **Verification & Hardening**:
+   - 14 backend unit tests passing in `test_verifier.py`, `test_skill_intelligence.py`, `test_career_monitor.py` (`14 passed in 19.60s`).
+   - Frontend TypeScript and Vite production bundle passed (`tsc -b && vite build`) with 0 errors.
+
+## 2026-09-15: Workflow-to-Skill Migration (/migrate-workflows) & Google Cloud Gemini 2.5 Deprecation Remediation
+
+Completed autonomous migration of legacy workflows to modern skills and comprehensive remediation of the Google Cloud Gemini 2.5 deprecation notice across projects:
+1. **Workflow-to-Skill Migration (`/migrate-workflows`)**:
+   - Discovered 3 legacy workflow files in `.agents/workflows/`: `design-extract.md`, `pyrefly_validation.md`, and `graphify.md`.
+   - `graphify`: Confirmed target skill already existed in `.agents/skills/graphify/SKILL.md` (and global); safely archived `.agents/workflows/graphify.md` to `graphify.md.bak`.
+   - `design-extract`: Created modern skill `SKILL.md` with standard frontmatter and ground-truth blueprint extraction guidelines; safely archived `.agents/workflows/design-extract.md` to `design-extract.md.bak`.
+   - `pyrefly-validation`: Created modern skill `SKILL.md` with standard frontmatter, CDLC Phase 2 type-safety validation, and scalar scoring; safely archived `.agents/workflows/pyrefly_validation.md` to `pyrefly_validation.md.bak`.
+2. **Skillify Publication & NTFS Junctions (Pillar 1 Governance)**:
+   - Established canonical copies for newly created skills at `C:\Users\navka\.claude\skills\design-extract` and `C:\Users\navka\.claude\skills\pyrefly-validation`.
+   - Published via NTFS directory junctions pointing back to canonical copies across all harness roots:
+     * `C:\Users\navka\.gemini\config\skills\`
+     * `C:\Users\navka\.agents\skills\`
+     * `g:\navakanth001\.agents\skills\`
+   - Verified with zero-drift link invariant (`Get-Item | Select-Object LinkType, Target`).
+3. **Google Cloud Gemini 2.5 Deprecation Audit & Transition**:
+   - Audited the GCP deprecation notice (warnings Oct 20, 2026; hard shutoff Jan 28, 2027) affecting `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`, and `gemini-2.5-flash-image`.
+   - Verified affected project `gen-lang-client-0523982499` (Project #140444598703) using `gcloud projects list` and `gcloud services list`, confirming active Agent Platform, Dialogflow, and Discovery Engine APIs bound to `agent-studio-master`.
+   - Repointed active codebase endpoints and runtime configurations to supported **Gemini 3 models** (`gemini-3.5-flash`, `gemini-3.5-pro`, `gemini-3.1-flash-image`):
+     * `ai-job-search-app/backend/job_aggregator/resume_rewriter.py`: Upgraded default fallback from `gemini-2.5-flash` to `gemini-3.5-flash` (compiled via `py_compile`).
+     * `whiteboard-4d/spatial-bridge/cloud_server.js`: Upgraded spatial bridge Cloud Run model from `gemini-2.5-flash` to `process.env.GEMINI_MODEL || 'gemini-3.5-flash'` (validated via `node -c`).
+     * `shoonyaai/.env.example`: Updated `GEMINI_MODEL` to `gemini-3.5-flash`.
+     * `agent-studio-master`: Upgraded `python_agent_runtime.py`, `SKILL.md`, and `wiki/agent_studio_gbrain.md` to `gemini-3.5-flash` and `gemini-3.5-pro`.
+     * Operational skills updated: `model-router/SKILL.md` (`gemini -m gemini-3.5-flash`), `gemini-token-optimization/SKILL.md`, `developing-with-bigquery` (`remote-models.md` and `BQML.md`), `semantic-operator-pipelines/SKILL.md`, and `multimodal-llm/rules/` (`audio-speech-to-text.md`, `audio-text-to-speech.md`, `vision-image-analysis.md`).
+4. **Verification Evidence**:
+   - `scratch/verify.py` executed: 14/14 target files verified for Gemini 3 model presence; all 3 target skills verified on disk; all 3 legacy workflows verified archived as `.md.bak`. Exit code 0, all checks passed.
+
+## 2026-09-15: Udyogswarg Official Job Verifier Layer, Anti-Ghost Job Detection, and Targeted Career Application Generation
 
 Completed implementation, verification, and knowledge preservation for Udyogswarg (JobHeaven) in `G:\navakanth001\ai-job-search-app`:
 1. **Authentic Profile & Zero Hallucination Mandate**:
@@ -20,6 +71,14 @@ Completed implementation, verification, and knowledge preservation for Udyogswar
 6. **Skillify & GBrain Synchronization**:
    - Synchronized canonical skill `C:\Users\navka\.claude\skills\job-search\SKILL.md` (instantly reflected across NTFS junctions in `.gemini` and `.agents`).
    - Updated `wiki/udyogswarg_gbrain.md` and walkthrough report.
+7. **Targeted Job Application Generation (LinkedIn, Naukri, Monster / Adzuna)**:
+   - Scanned active job postings across LinkedIn, Naukri, and internal verified store (`backend/jobs.db`, 2,434 roles).
+   - Identified live target openings: Microsoft Fabric Architect @ Tiger Analytics / EY (LinkedIn), Azure Data Architect @ Accenture / NTT DATA (Naukri), and Lead Data Engineer @ Inspire Brands (Adzuna / jobs.db).
+   - Generated authentic, tailored production resumes in both DOCX and PDF formats (100% free of pre-sales, unverified skills, or speculative dates):
+     * `Navakanth_Reddy_Dumpa_Microsoft_Fabric_Architect_TigerAnalytics_LinkedIn.docx` & `.pdf`
+     * `Navakanth_Reddy_Dumpa_Azure_Data_Architect_Accenture_Naukri.docx` & `.pdf`
+     * `Navakanth_Reddy_Dumpa_Lead_Data_Engineer_InspireBrands.docx` & `.pdf`
+   - Committed to repository on branch `feature/official-job-verifier-layer` (`d98dab1`).
 
 ## 2026-09-14: ShoonyaAI import and verification continuation
 

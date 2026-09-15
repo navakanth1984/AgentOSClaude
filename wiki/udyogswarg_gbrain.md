@@ -1,5 +1,5 @@
 # Udyogswarg (JobHeaven) — GBrain Knowledge Entry
-**Last Updated:** 2026-09-14 | **Session:** [078d2158](conversation://078d2158-be72-49ed-bd70-0b00b9a0438a)
+**Last Updated:** 2026-09-15 | **Session:** [078d2158](conversation://078d2158-be72-49ed-bd70-0b00b9a0438a)
 
 ---
 
@@ -11,7 +11,7 @@
 - **Frontend:** React + Vite SPA at `frontend/` (proxying `/api` to backend)
 - **Active Backend Server Port:** `8130` (`task-1413`)
 - **Security Rule:** `SEC-001` (Zero Secret Exposure, loaded strictly via `.env.local`)
-- **Tests:** 100% unit tests passing
+- **Tests:** 100% unit tests passing (14/14 automated tests)
 
 ## Architecture
 
@@ -21,7 +21,14 @@
 | `/api/jobs` | GET | Fetch live job listings across ATS & scrapers |
 | `/api/feedback` | POST | Submit feedback |
 | `/api/jobs/matches` | POST | Get AI match scores & domain relevance |
+| `/api/jobs/verify` | POST | Trigger asynchronous liveness verification & ghost job purge |
 | `/api/applications` | GET/POST/PUT/DELETE | CRUD application tracker |
+| `/api/skills/market-intelligence` | POST | Evaluate candidate skill health, obsolescence radar & roadmaps |
+| `/api/skills/market-frequencies` | GET | Frequency distribution of skills across live jobs |
+| `/api/monitor/alerts` | GET | Fetch high-match monitored job alerts |
+| `/api/monitor/trigger` | POST | Trigger autonomous background job monitor sweep |
+| `/api/monitor/config` | GET/POST | Configure monitor frequency (daily/weekly) & score thresholds |
+| `/api/monitor/alerts/{id}/status` | PATCH | Update alert status (dismissed, saved, applied) |
 
 ### Frontend SPA Screens
 | Screen ID | Name | Content |
@@ -31,11 +38,13 @@
 | `#screen-detail` | Detail | Single job detail with skill chips |
 | `#screen-resume` | Resume | AI-tailored resume preview + download (docx/pdf/txt) |
 | `#screen-tracker` | Tracker | Application status dashboard with stats |
+| `/skills` | Market Intelligence | Market Viability Score, Demand Dials, Obsolescence Radar, Strategic Transition Roadmaps |
+| `MonitorAlertsModal` | Career Monitor | Autonomous daily/weekly career sweep manager, verified ATS alerts & direct apply links |
 
 ### Navigation Architecture
-- **Desktop (≥768px):** `header.topnav` → `.desktop-nav-links` with 4 nav buttons. Mobile `.tabbar` hidden.
-- **Mobile (<768px):** `nav.tabbar` at bottom with 5 tabs. Desktop nav links hidden.
-- **SPA Routing:** `showScreen(name)` toggles `.screen.active` class.
+- **Desktop (≥768px):** `header.topnav` → `.desktop-nav-links` with 5 nav links (Home, Tracker, Feedback, Skills, Career Monitor alert pill). Mobile `.tabbar` hidden.
+- **Mobile (<768px):** `nav.tabbar` at bottom with tabs. Desktop nav links hidden.
+- **SPA Routing:** React Router DOM routing (`/`, `/tracker`, `/skills`, `/resume`) and modal toggles.
 
 ### Key JS Functions (app.js)
 - `showScreen(name)` — SPA router
@@ -100,3 +109,29 @@ Resume:        .resume-paper
 ### 6. Automated Test Environment DB Isolation
 **Problem:** Automated test runs executing `init_db()` or truncating tables can inadvertently delete live listings in the local development SQLite database (`jobs.db`).
 **Solution:** In `store.py` and `conftest.py`, detect test runtime environments (`is_test_env = "pytest" in sys.modules`) and route SQLite operations strictly to `jobs_test.db` (or honor `SQLITE_DB_PATH`). Live production/dev data in `jobs.db` remains 100% untouched.
+
+### 7. Generic Link Fallback & Deep Search Resolution
+**Problem:** Aggregators, boards, or unauthenticated redirects frequently supply bare root domains (e.g. `https://www.linkedin.com/jobs/` or `https://naukri.com/jobs/`) which dump users on unhelpful generic homepages rather than the targeted opening.
+**Solution:** `resolve_direct_deep_link(raw_url, title, company)` intercepts bare generic URLs (identified via `is_generic_url`) and constructs targeted search query parameters (`https://www.linkedin.com/jobs/search/?keywords={company}+{title}` or official ATS links). The UI displays a distinct `🔍 Deep Search Link` badge with direct provenance indicator so users know exactly why and how the link was augmented.
+
+### 8. Autonomous Career Monitor & Third-Party Login ToS Analysis
+**Problem:** Users requested an in-app feature to log into their LinkedIn, Naukri, Monster, or Workday accounts so the app can autonomously monitor jobs daily or weekly.
+**Legal & Security Finding:**
+- **Server-Side Credential Storage:** Storing user passwords or auth cookies on our servers directly violates LinkedIn User Agreement §8.2(m) and Naukri/Monster Terms of Service. It triggers automated credential stuffing blocks and risks candidate account suspension.
+- **Direct Employer ATS Feeds (Workday / Greenhouse / Lever / Workable):** 100% compliant. Public ATS candidate portals have zero login requirements and expose public endpoints.
+- **Architectural Solution:**
+  1. **Zero Server Credential Storage:** Users are never prompted to save third-party account passwords to the backend.
+  2. **Direct ATS Monitoring:** Background daemon scans Tier 1 verified ATS endpoints directly.
+  3. **In-App Periodic Sweep (`career_monitor.py`):** Configurable daily/weekly autonomous evaluator sweeps active parsed resumes against live postings, auto-generates alerts for matches $\ge$ threshold (e.g., 50%), and flags dead/ghost listings before notifying the user.
+  4. **Email/RSS Forwarding Ingestion:** Safe compliance hook where users can forward platform job alert emails to their private app webhook for automated local ingestion without password sharing.
+
+### 9. Market Skill Demand & Obsolescence Navigator
+**Problem:** Job seekers need visibility into which of their current skills are at peak industry demand, which are stable cores, and which legacy tools are depreciating/obsolete, along with clear migration paths.
+**Solution:**
+- Built `skill_intelligence.py` with an empirical frequency evaluator across 2,400+ active roles and a curated Technology Evolution Ontology.
+- Classified skills into:
+  - **Peak Demand (High Momentum):** Microsoft Fabric, Delta Lake, OneLake, PySpark, FastAPI, LangChain, Medallion Architecture.
+  - **Stable Core (Reliable Foundation):** SQL, Python, Docker, Power BI, Azure Data Factory, Git.
+  - **Deprecated / At-Risk:** SSIS, On-Premises SSRS, Hadoop MapReduce, Synapse Dedicated SQL, Legacy Informatica PowerCenter.
+- Generates individualized **Market Viability Score (0-100)** and actionable **Strategic Migration Roadmaps** (e.g. SSIS $\rightarrow$ Fabric Data Factory / Dataflows Gen2; MapReduce $\rightarrow$ PySpark Delta Engine).
+- Integrated into `MarketIntelligenceScreen.tsx` (`/skills`) with interactive SVG score dials and visual transition timelines.
