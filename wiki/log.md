@@ -1,3 +1,37 @@
+## 2026-09-19: Nth Dimension Academy — OpenSEO, GEO & Lead Generation Engine Deployed to Production
+
+Shipped and verified the full OpenSEO, Generative Engine Optimization (GEO), and interactive Lead Generation pipeline for **Nth Dimension Academy** (`https://nthdimensionacademy.com`) following ACDLC v2.1.0rc1 and GPS Framework governance. Merged PR #1 into `main` (commit `b8cbffc`), deploying live to production via Vercel.
+
+### Shipped & Verified Features
+1. **Technical SEO & Agentic Discovery Foundation (GEO)**:
+   - Eliminated client-side SPA crawl blackout by injecting 1,754 characters of semantic pre-rendered HTML inside `<div id="root">`.
+   - Deployed permissive, agent-specific `robots.txt` explicitly permitting Googlebot, Bingbot, Applebot, GPTBot, ClaudeBot, and PerplexityBot, pointing directly to canonical `sitemap.xml`.
+   - Created machine-readable authority protocols (`llms.txt` and `llms-full.txt`) defining explicit routing criteria for AI answer engines.
+   - Deployed Vercel Edge Markdown content negotiation (`middleware.js` delivering markdown when `Accept: text/markdown` is requested).
+   - Embedded complete Schema.org `@graph` JSON-LD (`EducationalOrganization`, `Person`, and 5 `Course` entries with syllabus URLs).
+   - Created 4 standalone, indexable high-trust compliance pages (`/about/`, `/contact/`, `/privacy/`, `/terms/`).
+2. **Interactive 2-Minute Certification Matcher & Lead Capture**:
+   - Built 3-step interactive diagnostic (`CertificationMatcherModal.jsx`) matching candidate backgrounds (Power BI, Data Engineering, Databricks, DW Architecture, Generative AI) to DP-600, DP-700, DP-750, DP-800, or AI-103.
+   - Wired 1-click WhatsApp handoff to MCT Navakanth Reddy Dumpa (`+91 6304980314`) with pre-filled exam tokens, plus Vercel serverless lead intake handler (`api/leads.js`).
+   - Integrated CTAs into main Navbar and Hero section.
+3. **Learning Atlas Modernization & Lead Magnets**:
+   - Replaced dead "Coming Soon" buttons across all 5 Learning Atlases (`dp600-atlas`, `dp700-atlas`, `dp750-atlas`, `dp800-atlas`, `ai103-atlas`) with active `🎯 2-Min Matcher` and `⚡ 1-on-1 MCT Call` CTAs.
+   - Injected dedicated Lead Magnet CTA cards (*"Accelerate Your [COURSE] Certification Journey"*) above each atlas footer.
+   - Added persistent top control header to the atlas iframe overlay (`← Return to Academy Portal`, `🎯 2-Min Matcher`, `💬 WhatsApp MCT`, `✕`) preventing students from getting trapped in full-screen iframe mode.
+   - Elevated modal z-indexes to `z-[10001]`, resolving iframe layering collision.
+4. **Cosmic Guide AI Assistant**:
+   - Added quick prompt action pills (`[🎯 2-Min Matcher]`, `[💬 WhatsApp MCT]`, `[⚡ DP-600 vs DP-700]`).
+   - Upgraded fallback messaging to route users directly to WhatsApp during network timeouts.
+5. **GPS Framework Strategic Alignment**:
+   - Published canonical Stage 0 PRD and GPS Blueprint (`docs/gps-blueprint.md`).
+6. **Live Production Verification**:
+   - Live HTTP 200 confirmed on `https://nthdimensionacademy.com/`, `https://nthdimensionacademy.com/robots.txt`, `https://nthdimensionacademy.com/llms.txt`, `https://nthdimensionacademy.com/about/`, and `https://nthdimensionacademy.com/dp600-atlas/`.
+   - Verified live rendering, hero CTAs, and modal triggers via Chrome DevTools MCP on production with zero visual layout shift.
+
+## 2026-09-17: ShoonyaAI Evidence Receipts for Reproducible Analytical Runs
+
+Claimed the next local-verifiable readiness increment from `docs/WHOLE_PRODUCT_READINESS_REVIEW.md`: every completed ShoonyaAI run now carries a `shoonyaai-evidence-receipt/v1` receipt with SHA-256 hashes for the source profile, semantic catalog, prompt, validated plan, SQL parameters, and result rows. The receipt hash is written to metadata-only `run.completed` audit events and exported in the Excel provenance sheet. Also restored the parser distinction between explicit blank headers (`column_N`) and jagged row overflow (`extra_N`). Verification passed: `npm run lint`, `npm test`, `node scripts/mutation-check.mjs` (4/4 killed), and `npm run build` after sandbox approval for esbuild spawning. `graphify update .` refreshed `shoonyaai/.graphify`; Swift grammar remains unavailable and generated graph label/description instruction files are pending.
+
 ## 2026-09-17: ShoonyaAI Resilient Excel & Delimited Auto-Healing, Cloud Storage Connectors, 3D Pyramids Fix, and Open-Source OCR Blueprint
 
 Resolved multi-sheet Excel ingestion failures, eliminated Google Drive & delimited CSV column header errors via `sanitizeTabularMatrix`, upgraded cloud pull streaming for OneDrive/SharePoint & Google Drive, fixed Three.js 3D Pyramids button DOM collision, and established the open-source OCR integration architecture:
@@ -891,5 +925,4 @@ Session close-out and knowledge crystallization for the Curriculum Answer Key Wi
 - **2026-09-16**: ShoonyaAI enabled secure direct Azure Blob uploads for large datasets up to 45 MB under the Visual Studio Enterprise Subscription (`a1ce2694-4e38-4509-8bbc-64016f00d8f0`). Created resource group `rg-shoonyaai-storage` with FinOps tags (`DeleteAfter=2026-09-18`), `stshoonyaai942` (`Standard_LRS`), private `workspace` container, and CORS rules for `https://shoonyaai.vercel.app` and localhost. Registered Entra ID app `app-shoonyaai` (`3adfafb4-63d3-43c7-956b-124e497317eb`) with `Storage Blob Data Contributor` RBAC. Provisioned Azure Key Vault `kv-shoonyaai-942` with RBAC authorization and vaulted all credentials. Enhanced `backend/uploads.ts` with dual-auth resilience (`StorageSharedKeyCredential` and `DefaultAzureCredential`). Dispatched subagent `azure-qa-subagent` (`Azure Test Runner`) to execute smoke tests with `npx tsx`: verified 3.54 MB synthetic CSV generation, pre-signed user delegation SAS creation, direct Azure Blob PUT (HTTP 201 Created), backend SHA-256 integrity verification, and cleanup.
 - **2026-09-16**: ShoonyaAI deployed chunk-optimized frontend and Azure Blob direct-upload integration to Vercel production deployment `dpl_H2mvR2oMNMDXHALk1fBnfTpVvVtr` aliased to `https://shoonyaai.vercel.app`. Injected production and preview environment variables (`AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_STORAGE_ACCOUNT_KEY`, `AZURE_UPLOAD_CONTAINER`, `APP_ENV=preview`, `ALLOWED_ORIGINS`). Verified live cloud integration with synthetic 3.67 MB CSV dataset: pre-signed SAS grant issued by live Vercel API, direct PUT to Azure Blob `stshoonyaai942.blob.core.windows.net` returned HTTP 201 Created, upload completed with SHA-256 integrity check and imported 15,000 rows, and executed DuckDB analytical query. Headless Chrome Playwright verified live SAS issuance and complete endpoints returning HTTP 201. Full regression test suite passed (32/32 tests across 14 suites), 4/4 mutation checks killed, 18/18 connector probes passed, and `npm run lint` passed with 0 errors.
 - **2026-09-16**: Executed comprehensive multi-format and encoding test suite across all supported formats (CSV, TSV, JSON, XLSX) and character encodings (UTF-8, UTF-8 BOM, Windows-1252/Latin-1, multi-byte Unicode with Telugu, Hindi, Japanese, Arabic, and Emoji) using Chrome DevTools and Playwright against the live deployment `https://shoonyaai.vercel.app`. Verified single-sheet Excel workbook (`single-sheet-sales.xlsx`) parsed and profiled with type detection (region: text, quarter: text, revenue: number, cost: number, date: date). Verified contract rejection on multi-sheet Excel (`multi-sheet-rejected.xlsx` returning "Import a workbook with exactly one worksheet."). Verified Vega open source datasets (`seattle-weather.csv`, `gapminder.tsv`, `cars.json`) and unsupported extension rejection (`unsupported.parquet` returning "Choose a CSV, TSV, JSON, or XLSX file."). Captured full-page visual screenshots for all test cases in `output/playwright-formats/`.
-
 
