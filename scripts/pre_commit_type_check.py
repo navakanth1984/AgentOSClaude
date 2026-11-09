@@ -5,7 +5,7 @@ import sys
 # Only check syntax/logic errors in staged .py files instead.
 SKIP_PROJECTS = {
     "AutoGrade_Backend", "dead_loop_trailer", "AutoGrade_Flutter",
-    "capcut_pipeline", "clawglove_final",
+    "capcut_pipeline", "clawglove_final", "cognitive_video_studio",
 }
 
 
@@ -16,7 +16,7 @@ def get_staged_py_files() -> list[str]:
     )
     files = [
         f for f in result.stdout.splitlines()
-        if f.endswith(".py") and f.split("/")[0] not in SKIP_PROJECTS
+        if f.endswith(".py") and f.replace("\\", "/").split("/")[0] not in SKIP_PROJECTS
     ]
     return files
 
