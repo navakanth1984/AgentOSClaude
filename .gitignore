@@ -26,6 +26,8 @@ bin/
 renders/
 outputs/
 graphify-out/
+.graphify/
+voice_samples/
 *.zip
 *.db
 
