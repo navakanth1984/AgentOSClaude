@@ -16,6 +16,7 @@
 
 | ID | Date | Project | Summary | Tool | Link |
 |----|------|---------|---------|------|------|
+| S-010 | 2026-11-09 | integrate_new_ai_models | Researched and integrated indigenous AI models (EKA-1, Dhīr 2B/5B/9B, BharatGen, COILD) with live AIKosh connection (88 models) | Antigravity CLI | [[S-010_2026-11-09_indigenous-ai-models-aikosh-integration]] |
 | S-009 | 2026-06-05 | nthdimensionacademy | Migrate Cosmic Guide from API to local knowledge bank | Antigravity CLI | [[S-009_2026-06-05_cosmic-guide-local-knowledge]] |
 | S-008 | 2026-06-05 | DAAVA / Academy | Refined demo video playback, URL formatting/overflow in chat, updated contact/socials, and added sub-atlas return links | Antigravity CLI | [[S-008_2026-06-05_video-and-link-refinements]] |
 | S-007 | 2026-06-05 | DAAVA / Academy | Verified styling/branding and session alignment | Antigravity CLI | [[S-007_2026-06-05_branding-and-verification]] |
@@ -49,7 +50,7 @@ Before ending, the agent MUST:
 ### Naming Convention
 - **Session ID**: `S-001`, `S-002`, etc. (monotonically increasing)
 - **File name**: `S-{ID}_{date}_{short-slug}.md`
-- **Next available ID**: `S-010`
+- **Next available ID**: `S-011`
 
 ### Cross-Tool Compatibility
 This registry lives in the Obsidian vault at:

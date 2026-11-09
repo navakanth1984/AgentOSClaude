@@ -110,3 +110,6 @@ scratch/
 !nthdimensionacademy/assets/**
 
 
+
+.firecrawl/
+.graphify/
