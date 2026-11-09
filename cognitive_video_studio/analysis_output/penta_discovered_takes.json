@@ -1,0 +1,114 @@
+[
+  {
+    "take": "211212/MVI_0999",
+    "language": "en (0.46)",
+    "native": [
+      "[0.0s - 7.0s] Action."
+    ],
+    "english": [
+      "[0.0s - 7.0s] Action!"
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\211212_MVI_0999_frame.jpg"
+  },
+  {
+    "take": "211212/MVI_1000",
+    "language": "te (0.38)",
+    "native": [
+      "[1.0s - 2.0s] はつogen learn",
+      "[3.0s - 3.5s] action",
+      "[14.4s - 15.2s] cut"
+    ],
+    "english": [
+      "[1.0s - 2.0s] What is the matter?",
+      "[3.0s - 4.0s] Action!",
+      "[14.0s - 15.0s] Cut!"
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\211212_MVI_1000_frame.jpg"
+  },
+  {
+    "take": "211212/MVI_1005",
+    "language": "en (0.20)",
+    "native": [
+      "[0.0s - 2.0s] action"
+    ],
+    "english": [
+      "[0.0s - 2.0s] action"
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\211212_MVI_1005_frame.jpg"
+  },
+  {
+    "take": "211212/MVI_1010",
+    "language": "mr (0.38)",
+    "native": [
+      "[0.0s - 2.0s] ھاکشن",
+      "[2.0s - 4.0s] ھاکشن",
+      "[4.0s - 6.0s] ھاکشن",
+      "[6.0s - 8.0s] ھاکشن",
+      "[8.0s - 10.0s] ھاکش"
+    ],
+    "english": [
+      "[0.0s - 2.0s] Action!",
+      "[2.0s - 4.0s] I will do the same.",
+      "[4.0s - 6.0s] I will do the same."
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\211212_MVI_1010_frame.jpg"
+  },
+  {
+    "take": "211212/MVI_1013",
+    "language": "en (0.72)",
+    "native": [
+      "[0.0s - 4.0s] Action.",
+      "[4.0s - 7.0s] Good."
+    ],
+    "english": [
+      "[0.0s - 1.0s] Action.",
+      "[1.0s - 2.0s] Good."
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\211212_MVI_1013_frame.jpg"
+  },
+  {
+    "take": "211212/MVI_1035",
+    "language": "en (0.39)",
+    "native": [
+      "[0.0s - 8.6s] Action, cut, cut, cut."
+    ],
+    "english": [
+      "[0.0s - 5.0s] Action.",
+      "[5.0s - 8.0s] Cut, cut, cut."
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\211212_MVI_1035_frame.jpg"
+  },
+  {
+    "take": "221212/MVI_1162",
+    "language": "en (0.42)",
+    "native": [
+      "[0.0s - 2.0s] Action!"
+    ],
+    "english": [
+      "[0.0s - 2.0s] Action!"
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\221212_MVI_1162_frame.jpg"
+  },
+  {
+    "take": "221212/MVI_1164",
+    "language": "en (0.60)",
+    "native": [
+      "[0.0s - 7.0s] action."
+    ],
+    "english": [
+      "[0.0s - 9.0s] action cut"
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\221212_MVI_1164_frame.jpg"
+  },
+  {
+    "take": "221212/MVI_1167",
+    "language": "hi (0.56)",
+    "native": [
+      "[0.0s - 2.0s] Action"
+    ],
+    "english": [
+      "[0.0s - 2.0s] Action!"
+    ],
+    "frame": "C:/Users/navka/.gemini/antigravity/worktrees/navakanth001/integrate_reverse_engineer_anything/cognitive_video_studio/analysis_output\\221212_MVI_1167_frame.jpg"
+  }
+]

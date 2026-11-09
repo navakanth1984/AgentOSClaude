@@ -15,4 +15,4 @@ search-path = [
     ".",
     "daava_production/scripts",
 ]
-python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+python-interpreter-path = "C:\\Users\\navka\\AppData\\Local\\Programs\\Python\\Python315\\python.exe"

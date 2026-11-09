@@ -99,6 +99,7 @@ nth-dimension-react/
 # Agent Runtimes, Local Caches, and Tool Configs
 .agents/
 .gemini/
+.graphify/
 .temp_skills/
 .antigravity.md
 .antigravitycli/
