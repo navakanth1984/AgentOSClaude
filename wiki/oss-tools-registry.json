@@ -1,0 +1,48 @@
+{
+  "$comment": "Single source of truth for open-source tools kept ready for future apps. Checked by scripts/oss_doctor.py. Paths are machine-local (this Windows box). Add a tool here, then run the doctor - never hand-write a status.",
+  "version": 1,
+  "poc_suite": {
+    "report": "D:/navakanth001/open-source-pocs/report.json",
+    "upstream_dir": "D:/navakanth001/open-source-pocs/upstream",
+    "note": "35 scoped PoCs. 'verified' = the PoC passed in a sandbox, not 'wired into an app'. Promote a PoC into tools[] below before depending on it."
+  },
+  "tools": [
+    {"id": "magic-compact", "category": "context", "kind": "plugin", "plugin": "claude-magic-compact@magic-compact", "upstream": "aerovato/magic-compact", "use_for": "Lossless context compaction in long Claude Code sessions"},
+    {"id": "leanctx", "category": "context", "kind": "repo", "path": "C:/Users/navka/.claude/tools/leanctx", "upstream": "jia-gao/leanctx", "use_for": "Prompt compression library (Python) for LLM apps"},
+    {"id": "token-optimizer-mcp", "category": "context", "kind": "repo", "path": "C:/Users/navka/.claude/tools/token-optimizer-mcp", "upstream": "ooples/token-optimizer-mcp", "use_for": "Token-reduction MCP server (installed, not registered as an MCP yet)"},
+    {"id": "beacon-hooks", "category": "harness", "kind": "binary", "binary": "beacon-hooks", "use_for": "Pre/Post tool hooks, session start/stop harness (wired in ~/.claude/settings.json)"},
+
+    {"id": "open-seo", "category": "growth", "kind": "repo", "path": "D:/navakanth001/tools/open-seo/open-seo-src", "upstream": "every-app/open-seo", "use_for": "SEO/GEO/AEO audits, JSON-LD and AI-crawler checks"},
+    {"id": "postiz", "category": "growth", "kind": "repo", "path": "D:/navakanth001/open-source-pocs/upstream/postiz", "upstream": "gitroomhq/postiz-app", "requires": ["docker"], "use_for": "Self-hosted social post scheduling"},
+    {"id": "ghost", "category": "growth", "kind": "repo", "path": "D:/navakanth001/tools/Ghost", "upstream": "TryGhost/Ghost", "requires": ["node"], "use_for": "Self-hosted newsletter + memberships"},
+    {"id": "hermes-agent", "category": "agents", "kind": "repo", "path": "D:/navakanth001/tools/hermes-agent", "upstream": "NousResearch/hermes-agent", "use_for": "Function-calling local agent runtime"},
+    {"id": "ai-youtube-shorts", "category": "media", "kind": "repo", "path": "D:/navakanth001/tools/AI-Youtube-Shorts-Generator", "upstream": "Anil-matcha/AI-Youtube-Shorts-Generator", "requires": ["ffmpeg"], "use_for": "Long video -> 9:16 shorts"},
+    {"id": "videolingo", "category": "media", "kind": "repo", "path": "D:/navakanth001/tools/VideoLingo", "upstream": "Huanshere/VideoLingo", "requires": ["ffmpeg"], "use_for": "Subtitles + dubbing (Streamlit UI, port 8501)"},
+    {"id": "moneyprinterturbo", "category": "media", "kind": "repo", "path": "D:/navakanth001/tools/MoneyPrinterTurbo", "upstream": "harry0703/MoneyPrinterTurbo", "requires": ["ffmpeg"], "use_for": "Topic -> narrated short video"},
+    {"id": "openshorts", "category": "media", "kind": "repo", "path": "D:/navakanth001/tools/openshorts/openshorts-src", "upstream": "mutonby/openshorts", "use_for": "Shorts generation"},
+    {"id": "presenton", "category": "docs", "kind": "repo", "path": "D:/navakanth001/tools/presenton/presenton-src", "upstream": "presenton/presenton", "use_for": "AI presentation generator"},
+    {"id": "rea", "category": "dev", "kind": "repo", "path": "D:/navakanth001/tools/rea", "upstream": "morluto/rea", "use_for": "Reverse-engineer legacy UIs into React/Tailwind"},
+    {"id": "ecc", "category": "dev", "kind": "repo", "path": "D:/navakanth001/tools/ECC", "upstream": "affaan-m/ECC", "use_for": "Agent harness: effect refusal, fixture replay"},
+    {"id": "clodex", "category": "dev", "kind": "repo", "path": "D:/navakanth001/tools/clodex", "upstream": "Aotricx/Clodex", "requires": ["go"], "use_for": "Go-based coding-agent tool"},
+    {"id": "dify", "category": "agents", "kind": "repo", "path": "D:/navakanth001/tools/dify/dify-src", "upstream": "langgenius/dify", "requires": ["docker"], "use_for": "LLM app/workflow platform"},
+
+    {"id": "mcp-notebooklm", "category": "mcp", "kind": "mcp", "config": "repo", "server": "notebooklm", "use_for": "Push notes/transcripts into NotebookLM"},
+    {"id": "mcp-firecrawl", "category": "mcp", "kind": "mcp", "config": "repo", "server": "firecrawl", "use_for": "Web search/crawl to clean markdown"},
+    {"id": "mcp-pinecone", "category": "mcp", "kind": "mcp", "config": "repo", "server": "pinecone", "use_for": "Vector search"},
+    {"id": "mcp-local-llm", "category": "mcp", "kind": "mcp", "config": "repo", "server": "local-llm", "requires": ["ollama"], "use_for": "Offline LLM fallback via Ollama"},
+    {"id": "mcp-graphify", "category": "mcp", "kind": "mcp", "config": "repo", "server": "graphify", "use_for": "Codebase knowledge graph queries"},
+    {"id": "mcp-chrome-devtools", "category": "mcp", "kind": "mcp", "config": "user", "server": "chrome-devtools", "use_for": "Browser automation, console/network, Lighthouse"},
+    {"id": "mcp-stitch", "category": "mcp", "kind": "mcp", "config": "user", "server": "stitch", "use_for": "UI screen + design-system generation"},
+    {"id": "mcp-reticle", "category": "mcp", "kind": "mcp", "config": "user", "server": "reticle", "use_for": "Precise DOM selection checks"},
+    {"id": "mcp-ui-skills", "category": "mcp", "kind": "mcp", "config": "user", "server": "ui-skills", "use_for": "Accessible UI component guidance"},
+    {"id": "mcp-sarvam", "category": "mcp", "kind": "mcp", "config": "user", "server": "sarvam-voice-agents", "use_for": "Indic speech / voice agents"},
+    {"id": "mcp-catalyst", "category": "mcp", "kind": "mcp", "config": "user", "server": "catalyst", "use_for": "Zoho Catalyst serverless"},
+
+    {"id": "graphify", "category": "quality", "kind": "binary", "binary": "graphify", "use_for": "AST knowledge graph"},
+    {"id": "pyrefly", "category": "quality", "kind": "binary", "binary": "pyrefly", "use_for": "Python typecheck (pre-commit hook)"},
+    {"id": "ffmpeg", "category": "runtime", "kind": "binary", "binary": "ffmpeg", "use_for": "Media pipelines"},
+    {"id": "uv", "category": "runtime", "kind": "binary", "binary": "uv", "use_for": "Python envs for tool installs"},
+    {"id": "docker", "category": "runtime", "kind": "binary", "binary": "docker", "use_for": "Needed by Postiz, Dify, creator_stack self-hosting"},
+    {"id": "ollama", "category": "runtime", "kind": "binary", "binary": "ollama", "use_for": "Needed by mcp-local-llm"}
+  ]
+}
