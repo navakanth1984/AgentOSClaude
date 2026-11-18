@@ -24,6 +24,7 @@ import subprocess
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from urllib.parse import urlsplit
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REGISTRY = REPO_ROOT / "wiki" / "oss-tools-registry.json"
@@ -139,6 +140,19 @@ def _env_key_set(value: object) -> bool:
     return bool(os.environ.get(m.group(1))) if m else True
 
 
+def _redact_url(url: str) -> str:
+    """Keep scheme, host and path; drop userinfo, query and fragment, where credentials hide."""
+    try:
+        p = urlsplit(url)
+    except ValueError:
+        return "<unparseable url>"
+    host = p.hostname or ""
+    if p.port:
+        host += f":{p.port}"
+    suffix = " [query redacted]" if p.query or p.fragment else ""
+    return f"{p.scheme}://{host}{p.path}{suffix}"
+
+
 def _is_literal_secret(key: str, value: object) -> bool:
     secretish = re.search(r"(KEY|TOKEN|SECRET|PASSWORD)$", key.upper())
     return bool(secretish) and isinstance(value, str) and bool(value.strip()) and not value.strip().startswith("${")
@@ -153,7 +167,7 @@ def check_mcp(t: dict, repo_cfg: dict, user_cfg: dict) -> Result:
         r.status, r.detail = MISSING, [f"server '{t['server']}' not in {where}"]
         return r
     if entry.get("url"):
-        r.detail.append(f"remote {entry['url']} (auth via /mcp if prompted)")
+        r.detail.append(f"remote {_redact_url(entry['url'])} (auth via /mcp if prompted)")
     else:
         cmd = entry.get("command", "")
         if shutil.which(cmd) is None:
@@ -204,6 +218,9 @@ def run(only: str | None) -> tuple[list[Result], dict]:
     reg = _load_json(REGISTRY)
     if not reg:
         sys.exit(f"Registry missing or invalid: {REGISTRY}")
+    categories = sorted({t["category"] for t in reg["tools"]})
+    if only and only not in categories:
+        sys.exit(f"Unknown category '{only}'. Use one of: {', '.join(categories)}")
     repo_cfg = _load_json(REPO_ROOT / ".mcp.json")
     user_cfg = _load_json(USER_CLAUDE_JSON)
     results = []
@@ -245,7 +262,8 @@ def main() -> int:
         for status in sorted({r.status for r in not_usable}):
             print(f"\nFIX {status}: {FIX[status]}")
 
-    return 1 if (args.strict and not_usable) else 0
+    # An empty selection proves nothing, so a strict run must not pass on it.
+    return 1 if (args.strict and (not_usable or not results)) else 0
 
 
 if __name__ == "__main__":
