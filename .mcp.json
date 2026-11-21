@@ -16,7 +16,7 @@
         "firecrawl-mcp"
       ],
       "env": {
-        "FIRECRAWL_API_KEY": "fc-ab0fda1d312944c6bd1923b86168a4b4"
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY:-}"
       }
     },
     "pinecone": {
@@ -26,7 +26,7 @@
         "@pinecone-database/mcp"
       ],
       "env": {
-        "PINECONE_API_KEY": "pcsk_6iPuct_D53HLTRVJK1EQbmcocC17oDMY2Zm6NJ1kKypeFbPNuuFPwn5JRKtJTNgvZuK9ra"
+        "PINECONE_API_KEY": "${PINECONE_API_KEY:-}"
       }
     },
     "local-llm": {
@@ -42,7 +42,7 @@
       "args": [
         "graphify",
         "serve",
-        "C:/Users/navka/navakanth001/.graphify/graph.json"
+        "D:/navakanth001/.graphify/graph.json"
       ]
     }
   }
