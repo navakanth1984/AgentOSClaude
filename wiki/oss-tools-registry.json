@@ -25,6 +25,10 @@
     {"id": "ecc", "category": "dev", "kind": "repo", "path": "D:/navakanth001/tools/ECC", "upstream": "affaan-m/ECC", "use_for": "Agent harness: effect refusal, fixture replay"},
     {"id": "clodex", "category": "dev", "kind": "repo", "path": "D:/navakanth001/tools/clodex", "upstream": "Aotricx/Clodex", "requires": ["go"], "use_for": "Go-based coding-agent tool"},
     {"id": "dify", "category": "agents", "kind": "repo", "path": "D:/navakanth001/tools/dify/dify-src", "upstream": "langgenius/dify", "requires": ["docker"], "use_for": "LLM app/workflow platform"},
+    {"id": "slop-monster", "category": "quality", "kind": "repo", "path": "D:/navakanth001/tools/SlopMonster", "upstream": "ItsssssJack/SlopMonster", "use_for": "Lint AI tells out of copy (vault notes, social posts). MIT"},
+    {"id": "power-design", "category": "docs", "kind": "repo", "path": "D:/navakanth001/tools/power-design", "upstream": "ItsssssJack/power-design", "use_for": "Claude skill for slides that don't look AI-made. MIT"},
+    {"id": "astryx", "category": "dev", "kind": "repo", "path": "D:/navakanth001/tools/astryx", "upstream": "meta/astryx", "use_for": "Agent-ready customizable design system for web apps. MIT"},
+    {"id": "claude-code-game-studios", "category": "agents", "kind": "repo", "path": "D:/navakanth001/tools/Claude-Code-Game-Studios", "upstream": "Donchitos/Claude-Code-Game-Studios", "use_for": "49-agent game dev studio. MIT. Install per game project only, not globally (context cost)"},
 
     {"id": "mcp-notebooklm", "category": "mcp", "kind": "mcp", "config": "repo", "server": "notebooklm", "use_for": "Push notes/transcripts into NotebookLM"},
     {"id": "mcp-firecrawl", "category": "mcp", "kind": "mcp", "config": "repo", "server": "firecrawl", "use_for": "Web search/crawl to clean markdown"},
