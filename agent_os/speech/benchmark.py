@@ -29,6 +29,7 @@ def run_benchmark():
     process = psutil.Process(os.getpid())
     
     # We will use DummyTTSEngine if Kokoro isn't available, but let's try Kokoro first.
+    engine = None
     try:
         from agent_os.speech.engines.kokoro_engine import KokoroEngine
         engine = KokoroEngine()
@@ -107,7 +108,7 @@ def run_benchmark():
         # Save results to JSON artifact
         results = {
             "timestamp": time.time(),
-            "engine": engine.__class__.__name__ if 'engine' in locals() else "Mock",
+            "engine": engine.__class__.__name__ if engine is not None else "Mock",
             "num_chunks": num_chunks,
             "total_time_sec": total_time,
             "audio_duration_sec": total_audio_sec,
