@@ -14,6 +14,7 @@
 - [Cognitive Runtime Platform (CRP)](cognitive-runtime-platform.md) — Measurement-first adaptive runtime with telemetry, replay, and representation selection.
 - [Nth Dimension Academy](nth-dimension-academy.md) — Conversational AI teaching assistant on Google Cloud RAG.
 - [Nth Absolute Cinema](nth-absolute-cinema.md) — AI filmmaking Creative OS; five-graph compiler architecture; lives at `E:\nth-absolute-cinema\`, portable/hardware-adaptive by design.
+- [Stereographic Nine / UNKNOWN 9](stereographic-nine.md) — S³ "9" simulation, four worlds pages, and the deterministic WebGL film pipeline behind the UNKNOWN 9 teaser (v1–v5).
 - [OKF Bundle Generator](okf-bundle-generator.md) — Completed tool: DB schema → linked Markdown knowledge bundle.
 - [Design Extraction Workflow](design-extraction-workflow.md) — Standard practice: extract a design blueprint from a reference site (evidence-gated, anti-hallucination) and apply it to a new design; mirrored across all AI tools.
 - [OSS Tools Registry](oss-tools.md) — One registry of open-source tools kept ready for future apps + `scripts/oss_doctor.py` that reports real readiness (READY / NEEDS_DEPS / BLOCKED / EXPOSED).

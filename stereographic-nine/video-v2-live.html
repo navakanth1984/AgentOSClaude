@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Stereographic Nine — film timeline</title>
+<style>
+  html,body { margin:0; background:#000; overflow:hidden; }
+  canvas { display:block; }
+  #bar { position:fixed; left:0; right:0; bottom:0; padding:8px 12px; background:rgba(0,0,0,.6);
+    color:#9ab; font:12px ui-monospace,Consolas,monospace; display:flex; gap:10px; align-items:center; }
+  #bar input { flex:1; }
+  body.render #bar { display:none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="bar"><button id="play">pause</button><input id="scrub" type="range" min="0" max="24" step="0.01" value="0"><span id="tl">0.00 s</span></div>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { stereo, makeRot, hopfFiber, NINE, DEG, TAU, QUARTER } from './lib/s3-engine.js';
+
+/**
+ * The nine, alive. Same construction as buildNine() in the engine, plus motion that respects the
+ * glyph: every live offset is weighted by free = 1 − pin, so the pinned stem (which is what makes
+ * it a 9) stays aimed at the 4D pole while the coils spin, circulate and breathe at full strength.
+ * free is identical on both sides of the s = 0/1 seam, so the curve stays closed on S³.
+ */
+function buildLive(P, L, N) {
+  const x = new Float32Array(N), y = new Float32Array(N), z = new Float32Array(N), w = new Float32Array(N);
+  const n = Math.round(P.n), k = Math.round(P.k), sc = 0.75;
+  const aMax = P.amax * Math.PI / 2, a0 = P.a0 * QUARTER, curl = P.curl * DEG;
+  const env = (d, wd) => { const u = d / wd; return Math.exp(-u * u); };
+  const B = new Float32Array(N), D = new Float32Array(N), G = new Float64Array(N + 1);
+  for (let i = 0; i < N; i++) {
+    let d = Math.abs(i / N - sc); d = Math.min(d, 1 - d);
+    D[i] = d; B[i] = env(d, P.tw);
+    G[i + 1] = G[i] + (1 - (1 - P.eps) * env(d, P.tw * 1.9));
+  }
+  const Gtot = G[N], ic = Math.round(sc * N);
+  const W2 = Math.min(3.5 * P.tw, 0.24), W1 = Math.min(2 * P.tw, 0.75 * W2);
+  for (let i = 0; i < N; i++) {
+    const s = i / N, d = D[i], b = B[i];
+    const pin = P.pin * (d <= W1 ? 1 : d >= W2 ? 0 : Math.cos(Math.PI / 2 * (d - W1) / (W2 - W1)) ** 2);
+    const free = 1 - pin;
+    const dG = (G[i] - G[ic]) / Gtot;
+    // vibration: a travelling breathing wave + a fast shimmer on the tube radius (coils only)
+    const breathe = 1 + free * (L.breathA * Math.sin(TAU * L.breathK * s - L.breathW * L.t)
+                              + 0.04 * Math.sin(TAU * 31 * s + 23 * L.t));
+    const a = a0 * breathe + (Math.max(aMax, a0) - a0) * b;
+    // tail whip: a wave in the tail coordinate b (same value on the way out and back → still one stroke)
+    const whip = L.whipA * b * Math.sin(L.whipK * b - L.whipW * L.t);
+    const th = P.tang * DEG + TAU * n * dG * free + curl * b + L.thFlow * free + whip;
+    const ph = Math.PI / 2 + TAU * k * dG * free + L.phFlow * free;   // phFlow = zw spin of the coils
+    const ca = Math.cos(a), sa = Math.sin(a);
+    x[i] = ca * Math.cos(th); y[i] = ca * Math.sin(th); z[i] = sa * Math.cos(ph); w[i] = sa * Math.sin(ph);
+  }
+  return { x, y, z, w };
+}
+
+const qs = new URLSearchParams(location.search);
+const RENDER = qs.has('render');
+const W = +qs.get('w') || innerWidth, H = +qs.get('h') || innerHeight;
+export const DURATION = 24;
+if (RENDER) document.body.classList.add('render');
+
+// ---------- easing helpers ----------
+const clamp01 = x => Math.min(Math.max(x, 0), 1);
+const seg = (t, a, b) => clamp01((t - a) / (b - a));                    // 0→1 across [a,b]
+const smooth = u => u * u * (3 - 2 * u);
+const smoother = u => u * u * u * (u * (u * 6 - 15) + 10);
+const lerp = (a, b, u) => a + (b - a) * u;
+const logLerp = (a, b, u) => a * Math.pow(b / a, u);                     // constant-feeling dolly
+
+/**
+ * THE TIMELINE — every visual is a pure function of t (seconds), so any frame renders identically.
+ *  0–2   a tiny, faraway nine fades in among the stars
+ *  2–9   dolly in from distance 320 → 8.5: the nine grows until it fills the frame
+ *  9–12  hold: the big nine breathes
+ * 12–22  unravel: pinning releases, curl winds into a spiral, the head fattens to the Clifford
+ *        torus, the tail reaches for the pole, and the whole curve rotates through xw / yw
+ * 22–24  the spiraling mess drifts, then fades to black
+ */
+function shot(t) {
+  const u = smoother(seg(t, 12, 22));                 // unravel progress
+  const P = {
+    ...NINE,
+    pin:  lerp(1, 0, smooth(seg(t, 12, 15))),         // strands separate first
+    curl: lerp(-78, -78 - 1260, u),                   // tail winds 3.5 extra turns → spiral arm
+    eps:  lerp(0.005, 0.18, u),
+    a0:   lerp(0.2, 0.9, smooth(seg(t, 14, 21))),     // thin ring → fat Clifford-like torus
+    amax: lerp(0.72, 0.95, smooth(seg(t, 13, 20))),   // tail flings toward the pole / infinity
+  };
+  const ang = {
+    xy: 0,
+    xw: lerp(0, 250, smooth(seg(t, 13, 24))) * DEG,   // the inside-out rotation
+    yw: lerp(0, 130, smooth(seg(t, 15, 24))) * DEG,
+    zw: lerp(0, 200, u) * DEG,                        // only during the unravel: any zw before 12 s
+                                                      // turns the tail off the pole and breaks the 9
+  };
+  const dolly = t < 9 ? logLerp(320, 10.2, smoother(seg(t, 2, 9))) : lerp(10.2, 9.4, smooth(seg(t, 9, 12)));
+  const dist = t < 12 ? dolly : lerp(9.4, 15, smooth(seg(t, 12, 22)));
+  const orbit = lerp(0, 55, smooth(seg(t, 13, 24))) * DEG;    // swing round to show depth of the mess
+  const fade = Math.min(smooth(seg(t, 0, 1.5)), 1 - smooth(seg(t, 22.8, 24)));
+  const bloom = 0.9 + 0.18 * Math.sin(t * 2.1) + 0.08 * Math.sin(t * 7.3) - 0.45 * u;
+  // the mess has far more overlapping additive line than the glyph, so thin it out as it forms
+  const alpha = lerp(1, 0.38, smooth(seg(t, 13, 18)));
+  // live motion — on for the WHOLE film, at full strength from the first frame
+  const L = {
+    t,
+    phFlow: t * 2.6,            // coils spin in zw ≈ 150°/s (smoke-ring roll)
+    thFlow: t * 0.55,           // coils circulate around the ring
+    breathA: 0.13, breathK: 6, breathW: 5.5,
+    whipA: 6 * DEG, whipK: 9, whipW: 6.5,
+  };
+  const auraSpin = t * 55 * DEG; // Hopf aura spins in zw — it leaves its own torus invariant
+  return { P, ang, dist, orbit, fade, bloom, alpha, L, auraSpin };
+}
+
+// ---------- renderer ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, W / H, 0.01, 6000);
+const TARGET = new THREE.Vector3(0.3, -1.4, 0);
+
+// aS = position along the curve (0..1): drives travelling colour waves, energy packets and sparkles
+const VERT = `attribute float aW, aS; uniform float uClip, uSize, uPix, uT; varying float vW, vFade, vS, vSpark;
+  float hash(float n){ return fract(sin(n)*43758.5453); }
+  void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); gl_Position = projectionMatrix*mv;
+    vFade = 1. - smoothstep(uClip*.45, uClip, length(position)); vW = aW; vS = aS;
+    vSpark = step(.955, hash(aS*9001. + floor(uT*24.)*17.13));            // ~4.5% of particles flash per 1/24 s
+    gl_PointSize = uSize*uPix/max(-mv.z,.1) * (1. + 1.8*vSpark); }`;
+const RAMP = `uniform float uAlpha, uFade, uT; varying float vW, vFade, vS, vSpark;
+  vec3 ramp(float w){ float t = clamp(w*.5+.5, 0., 1.);
+    vec3 a=vec3(.32,.12,1.), b=vec3(.10,.88,1.), c=vec3(1.,.52,.12), d=vec3(1.,.96,.88);
+    if(t<.5) return mix(a,b,t/.5); if(t<.86) return mix(b,c,(t-.5)/.36); return mix(c,d,(t-.86)/.14); }
+  vec3 live(float w, float s){
+    vec3 c = ramp(w + .24*sin(6.2832*3.*s - 1.7*uT));                     // colour waves through the w-ramp
+    c = mix(c, c.brg, .16*(.5 + .5*sin(.45*uT)));                          // slow hue drift
+    float pk = pow(.5 + .5*sin(6.2832*22.*s - 7.5*uT), 6.);               // energy packets racing along
+    return c * (.72 + 1.15*pk); }`;
+const mk = (frag, alpha, size) => new THREE.ShaderMaterial({
+  vertexShader: VERT, fragmentShader: RAMP + frag, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uClip: { value: 40 }, uSize: { value: size }, uPix: { value: H / 900 }, uAlpha: { value: alpha },
+              uFade: { value: 1 }, uT: { value: 0 } },
+});
+const lineMat = mk(`void main(){ gl_FragColor = vec4(live(vW, vS)*(.55+.9*max(vW,0.)), uAlpha*vFade*uFade); }`, 0.85, 0);
+const ptsMat = mk(`void main(){ float r = length(gl_PointCoord-.5); if(r>.5) discard; float g = exp(-r*r*18.);
+  gl_FragColor = vec4(live(vW, vS)*g*(.6+max(vW,0.))*(1. + 2.5*vSpark), uAlpha*vFade*g*uFade); }`, 0.5, 20);
+const auraMat = mk(`void main(){ gl_FragColor = vec4(live(vW, vS)*.8, uAlpha*vFade*uFade); }`, 0.085, 0);
+
+const N = 9000;
+const pos = new Float32Array(N * 3), wA = new Float32Array(N), sA = new Float32Array(N);
+for (let i = 0; i < N; i++) sA[i] = i / N;
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+geo.setAttribute('aW', new THREE.BufferAttribute(wA, 1));
+geo.setAttribute('aS', new THREE.BufferAttribute(sA, 1));
+const line = new THREE.LineLoop(geo, lineMat), pts = new THREE.Points(geo, ptsMat);
+line.frustumCulled = pts.frustumCulled = false;
+scene.add(line, pts);
+
+// Hopf aura: linked field-line circles on two tori sheathing the head (η = 2α)
+const auraLoops = [];
+[[0.84, 26], [1.3, 18]].forEach(([eta, m], layer) => {
+  for (let j = 0; j < m; j++) auraLoops.push(hopfFiber(eta, TAU * j / m + layer * 0.37, 220));
+});
+let AV = 0; for (const Lp of auraLoops) AV += (Lp.length / 4) * 2;
+const auraSrc = new Float32Array(AV * 4), auraPos = new Float32Array(AV * 3), auraW = new Float32Array(AV), auraS = new Float32Array(AV);
+{ let v = 0;
+  auraLoops.forEach((Lp, li) => { const m = Lp.length / 4;
+    for (let j = 0; j < m; j++) for (const jj of [j, (j + 1) % m]) {
+      auraSrc.set(Lp.subarray(4 * jj, 4 * jj + 4), 4 * v); auraS[v] = (li / auraLoops.length + jj / m) % 1; v++; } }); }
+const auraGeo = new THREE.BufferGeometry();
+auraGeo.setAttribute('position', new THREE.BufferAttribute(auraPos, 3));
+auraGeo.setAttribute('aW', new THREE.BufferAttribute(auraW, 1));
+auraGeo.setAttribute('aS', new THREE.BufferAttribute(auraS, 1));
+const aura = new THREE.LineSegments(auraGeo, auraMat);
+aura.frustumCulled = false;
+scene.add(aura);
+
+// starfield: deterministic (seeded) so every render is identical
+let seed = 9;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const S = 5000, sp = new Float32Array(S * 3), sc = new Float32Array(S * 3);
+for (let i = 0; i < S; i++) {
+  const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, r = 700 + rnd() * 1500, q = Math.sqrt(1 - u * u);
+  sp.set([r * q * Math.cos(a), r * q * Math.sin(a), r * u], i * 3);
+  const k = 0.35 + 0.65 * rnd() ** 3, hue = rnd();
+  sc.set([k * (0.75 + 0.25 * hue), k * 0.85, k * (1.05 - 0.3 * hue)], i * 3);
+}
+const sg = new THREE.BufferGeometry();
+sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+sg.setAttribute('color', new THREE.BufferAttribute(sc, 3));
+const starMat = new THREE.PointsMaterial({ size: 1.6 * H / 1080, sizeAttenuation: false, vertexColors: true, transparent: true });
+scene.add(new THREE.Points(sg, starMat));
+
+const composer = new EffectComposer(renderer);
+composer.setPixelRatio(1); composer.setSize(W, H);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(W, H), 0.85, 0.55, 0);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ---------- render one exact moment ----------
+function renderAt(t) {
+  const s = shot(t);
+  const c = buildLive(s.P, s.L, N), R = makeRot(s.ang);
+  for (let i = 0; i < N; i++) wA[i] = stereo(c.x[i], c.y[i], c.z[i], c.w[i], R, pos, 3 * i);
+  geo.attributes.position.needsUpdate = geo.attributes.aW.needsUpdate = true;
+  const RA = makeRot({ ...s.ang, zw: s.ang.zw + s.auraSpin });
+  for (let v = 0; v < AV; v++)
+    auraW[v] = stereo(auraSrc[4 * v], auraSrc[4 * v + 1], auraSrc[4 * v + 2], auraSrc[4 * v + 3], RA, auraPos, 3 * v);
+  auraGeo.attributes.position.needsUpdate = auraGeo.attributes.aW.needsUpdate = true;
+  for (const m of [lineMat, ptsMat, auraMat]) m.uniforms.uT.value = t;
+  lineMat.uniforms.uFade.value = s.fade * s.alpha;
+  ptsMat.uniforms.uFade.value = s.fade * s.alpha * s.alpha;
+  auraMat.uniforms.uFade.value = s.fade * s.alpha;
+  starMat.opacity = s.fade;
+  bloom.strength = s.bloom;
+  camera.position.set(TARGET.x + s.dist * Math.sin(s.orbit), TARGET.y, TARGET.z + s.dist * Math.cos(s.orbit));
+  camera.lookAt(TARGET);
+  composer.render();
+}
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+window.__ready = true;
+
+if (!RENDER) {                      // interactive preview with scrub bar
+  let t = +qs.get('t') || 0, playing = true, last = performance.now();
+  const scrub = document.getElementById('scrub'), tl = document.getElementById('tl'), btn = document.getElementById('play');
+  scrub.oninput = () => { t = +scrub.value; };
+  btn.onclick = () => { playing = !playing; btn.textContent = playing ? 'pause' : 'play'; };
+  (function loop(now) {
+    if (playing) t = (t + (now - last) / 1000) % DURATION;
+    last = now; scrub.value = t; tl.textContent = t.toFixed(2) + ' s';
+    renderAt(t); requestAnimationFrame(loop);
+  })(last);
+  addEventListener('resize', () => location.reload());
+}
+</script>
+</body>
+</html>

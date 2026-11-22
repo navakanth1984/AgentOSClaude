@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S³ World · Ocean — the nine as a knotted vortex</title>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<script type="module">
+import { createWorld, hopfFiber } from './lib/s3-engine.js';
+
+let surf, snow, snowPos, pair, shafts;
+const SNOW = 3000, TOP = 3.6, BOTTOM = -9;
+
+createWorld({
+  title: 'OCEAN · KNOTTED VORTEX',
+  sub: 'The nine as a vortex ring whose core line stretches down into the deep, next to a Hopf-linked vortex pair.',
+  accent: '#5ff0e0',
+  bg: '#010d1a',
+  palette: ['#061a4a', '#00a6c8', '#7ff5e6', '#f2ffff'],
+  bloom: 0.85,
+  camera: { pos: [-0.4, -2.8, 9.2], target: [-0.4, -0.5, 0] },
+  controls: [
+    { id: 'swell', label: 'surface swell', min: 0, max: 0.5, step: 0.01, value: 0.18 },
+    { id: 'drift', label: 'marine-snow drift', min: 0, max: 1, step: 0.01, value: 0.25 },
+  ],
+  controlsLegend: 'Sea state',
+  toggles: [{ id: 'pairOn', label: 'Hopf-linked vortex pair', checked: true },
+            { id: 'shaftsOn', label: 'light shafts', checked: true }],
+  caption: `
+    <h2>Why S³ shows up in water</h2>
+    A <b>vortex ring</b> (a smoke ring, or the bubble rings dolphins blow) is fluid spinning around a closed
+    loop: a torus of circulation, the same kind of torus the nine's head is coiled on.<br><br>
+    In 2013, <b>Kleckner &amp; Irvine</b> (<i>Nature Physics</i>) 3D-printed knot- and link-shaped hydrofoils,
+    pulled them through water, and made <b>knotted and linked vortex loops</b> visible with micro-bubbles.
+    The linked pair on the right is the simplest such link, a <b>Hopf link</b>: two fibres of the Hopf
+    fibration, and every pair of Hopf fibres links exactly once. Linking is measured by
+    <b>helicity</b>, which an ideal fluid conserves. In the real experiment the loops eventually reconnect
+    and untie, because water is not ideal.<br><br>
+    The nine's tail is its vortex core line stretching off toward the 4D pole, which in 3D reads as a
+    filament sinking into the abyss.
+    <div class="honest">Honest scope: water flows in 3D. S³ and its Hopf fibres are an exact model of
+    how these vortex lines link (the same mathematics describes "knotted light"), not a fourth spatial
+    dimension hiding in the sea. Surface and shafts are decorative.</div>`,
+  setup(ctx) {
+    const { THREE, scene } = ctx;
+    scene.fog = new THREE.FogExp2(0x01101e, 0.05);
+
+    surf = new THREE.Mesh(new THREE.PlaneGeometry(90, 90, 180, 180).rotateX(-Math.PI / 2),
+      new THREE.ShaderMaterial({
+        transparent: true, side: THREE.DoubleSide, depthWrite: false,
+        uniforms: { uT: { value: 0 }, uA: { value: 0.18 } },
+        vertexShader: `uniform float uT, uA; varying vec3 vP; varying float vH;
+          void main(){ vec3 p = position;
+            float h = sin(p.x*.55 + uT*1.1) + .7*sin(p.z*.8 - uT*.9) + .4*sin((p.x+p.z)*1.7 + uT*1.9);
+            p.y += uA*h; vH = h; vP = p;
+            gl_Position = projectionMatrix*modelViewMatrix*vec4(p,1.); }`,
+        fragmentShader: `uniform float uT; varying vec3 vP; varying float vH;
+          void main(){
+            // two incommensurate wave sets → irregular glints instead of a dot grid
+            float c1 = sin(vP.x*1.7 + 1.3*sin(vP.z*.9 + uT*.6) + uT*.8);
+            float c2 = sin(vP.z*2.3 + 1.1*sin(vP.x*1.3 - uT*.5) - uT*.7);
+            float c = pow(max(c1*c2, 0.), 8.);
+            float fade = exp(-length(vP.xz)*.05);
+            vec3 col = mix(vec3(.01,.08,.13), vec3(.25,.65,.75), .3 + .15*vH + c);
+            gl_FragColor = vec4(col, (.10 + .22*c) * fade); }`,
+      }));
+    surf.position.y = TOP;
+    scene.add(surf);
+
+    shafts = new THREE.Group();
+    const shaftMat = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      uniforms: { uT: { value: 0 } },
+      vertexShader: `varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `uniform float uT; varying vec2 vU;
+        void main(){ float a = pow(vU.y, 2.2) * (1. - abs(vU.x*2.-1.)) * (.6 + .4*sin(uT*.7 + vU.y*3.));
+          gl_FragColor = vec4(vec3(.3,.8,.95)*a*.06, 1.); }`,
+    });
+    for (let i = 0; i < 7; i++) {
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(0.7 + Math.random(), 13), shaftMat);
+      m.position.set(-7 + i * 2.4 + Math.random(), TOP - 6.5, -3 - Math.random() * 4);
+      m.rotation.z = 0.18 + Math.random() * 0.1;
+      shafts.add(m);
+    }
+    scene.add(shafts);
+
+    snowPos = new Float32Array(SNOW * 3);
+    for (let i = 0; i < SNOW; i++) snowPos.set([(Math.random() - .5) * 26, BOTTOM + Math.random() * (TOP - BOTTOM), -12 + Math.random() * 18], i * 3);
+    const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
+    snow = new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xbfe9ff, size: 0.035, transparent: true, opacity: 0.55, depthWrite: false }));
+    scene.add(snow);
+
+    pair = new THREE.Group();
+    pair.position.set(3.3, 0.6, -1.5); pair.scale.setScalar(0.55);
+    const link = ctx.track(new ctx.Curves4D([hopfFiber(1.2, 0, 240), hopfFiber(1.2, Math.PI, 240)],
+      { alpha: 0.75, palette: ['#0b2a6b', '#36e0ff', '#c4fff6', '#ffffff'] }));
+    pair.add(link.obj); pair.userData.link = link;
+    scene.add(pair);
+  },
+  update(ctx) {
+    const { t, dt, U, T } = ctx;
+    surf.material.uniforms.uT.value = t; surf.material.uniforms.uA.value = U.swell;
+    shafts.visible = T.shaftsOn; shafts.children[0].material.uniforms.uT.value = t;
+    for (let i = 0; i < SNOW; i++) {
+      let y = snowPos[i * 3 + 1] - dt * U.drift * (0.15 + (i % 7) * 0.03);
+      if (y < BOTTOM) y = TOP; snowPos[i * 3 + 1] = y;
+    }
+    snow.geometry.attributes.position.needsUpdate = true;
+    pair.visible = T.pairOn; pair.userData.link.obj.visible = T.pairOn;
+  },
+  hud: ctx => `vortex link number (Hopf pair): <b>1</b>`,
+});
+</script>
+</body>
+</html>

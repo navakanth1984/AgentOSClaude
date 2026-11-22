@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S³ World · Universe — the nine in a closed cosmos</title>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<script type="module">
+import { createWorld, TAU } from './lib/s3-engine.js';
+
+let gal, galSrc, me;
+const M = 26000, FILAMENTS = 70;
+
+// Gaussian sample (Box–Muller)
+const gauss = () => Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(TAU * Math.random());
+function unit4(v) { const n = Math.hypot(...v); return v.map(c => c / n); }
+
+createWorld({
+  title: 'UNIVERSE · CLOSED COSMOS',
+  sub: 'If space has positive curvature (k = +1) it is a 3-sphere. Galaxies on S³, seen from our position, with the nine as a cosmic filament.',
+  accent: '#ffcf7a',
+  bg: '#000004',
+  palette: ['#cfe0ff', '#fff3df', '#ff9a4a', '#ff3b2a'],   // near us (w = −1) → far side (w → +1)
+  hot: 0.35,
+  bloom: 0.8,
+  clip: 40,
+  camera: { pos: [-0.6, -0.8, 11], target: [-0.6, -0.8, 0] },
+  spinPlanes: ['xw', 'yw', 'zw'],
+  spin: { plane: 'xw', speed: 6 },
+  controls: [{ id: 'gsize', label: 'galaxy size', min: 1, max: 16, step: 0.5, value: 7 }],
+  controlsLegend: 'Galaxies',
+  toggles: [{ id: 'galOn', label: 'galaxies + cosmic web', checked: true }],
+  caption: `
+    <h2>Why S³ might BE the universe</h2>
+    General relativity allows three uniform spatial geometries. The positively curved one (k = +1),
+    Einstein's 1917 static universe and the closed Friedmann–Lemaître models, has space shaped like
+    <b>exactly this 3-sphere</b>: finite volume, no edge, and a straight line that eventually comes back.<br><br>
+    You are at the <b>south pole</b> (0,0,0,−1), which projects to the origin (✛). The <b>unit sphere |P| = 1
+    is the universe's equator</b>: half of all of space projects inside it. The point exactly opposite you
+    projects to infinity. Galaxies are scattered uniformly on S³, with clumped strands along
+    <b>great circles</b>, the geodesics light travels along in a closed universe.<br><br>
+    The default <b>xw spin</b> moves you along a great circle. Galaxies stream outward past the
+    equator, reach infinity at the antipode, and come back in from the other side. That is what
+    "closed" means.
+    <div class="honest">Honest scope: measurements (Planck 2018 + BAO) give curvature
+    Ω<sub>k</sub> ≈ 0.001 ± 0.002, consistent with flat. A closed universe is still allowed if its radius
+    is far larger than what we can observe. Colour stands for distance from us along S³ (a stand-in for
+    redshift), and the galaxy count and web are schematic.</div>`,
+  setup(ctx) {
+    const { THREE, scene } = ctx;
+    galSrc = new Float32Array(M * 4);
+    const nUniform = Math.floor(M * 0.45);
+    for (let i = 0; i < nUniform; i++) galSrc.set(unit4([gauss(), gauss(), gauss(), gauss()]), 4 * i);
+    // cosmic web: galaxies clustered along random great circles (geodesics of S³)
+    const per = Math.floor((M - nUniform) / FILAMENTS);
+    let o = nUniform;
+    for (let f = 0; f < FILAMENTS; f++) {
+      const u = unit4([gauss(), gauss(), gauss(), gauss()]);
+      let v = [gauss(), gauss(), gauss(), gauss()];
+      const d = v.reduce((s, c, j) => s + c * u[j], 0);
+      v = unit4(v.map((c, j) => c - d * u[j]));                       // Gram–Schmidt: v ⟂ u
+      const arc = TAU * (0.15 + Math.random() * 0.35), t0 = Math.random() * TAU;
+      for (let j = 0; j < per && o < M; j++, o++) {
+        const t = t0 + arc * Math.random(), c = Math.cos(t), s = Math.sin(t);
+        galSrc.set(unit4(u.map((uc, k) => c * uc + s * v[k] + 0.025 * gauss())), 4 * o);
+      }
+    }
+    for (; o < M; o++) galSrc.set(unit4([gauss(), gauss(), gauss(), gauss()]), 4 * o);
+    gal = ctx.track(new ctx.Points4D(galSrc, { alpha: 1, size: 7, hot: 0.9 }));
+    scene.add(gal.obj);
+
+    me = new THREE.Group();
+    const lm = new THREE.LineBasicMaterial({ color: 0xffffff });
+    const cross = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(-0.12, 0, 0), new THREE.Vector3(0.12, 0, 0), new THREE.Vector3(0, -0.12, 0), new THREE.Vector3(0, 0.12, 0)]);
+    me.add(new THREE.LineSegments(cross, lm));
+    const eq = [];
+    for (let j = 0; j < 128; j++) { const a = TAU * j / 128, b = TAU * (j + 1) / 128; eq.push(Math.cos(a), Math.sin(a), 0, Math.cos(b), Math.sin(b), 0); }
+    const eg = new THREE.BufferGeometry(); eg.setAttribute('position', new THREE.Float32BufferAttribute(eq, 3));
+    me.add(new THREE.LineSegments(eg, new THREE.LineDashedMaterial({ color: 0x8090c0, dashSize: 0.06, gapSize: 0.05, transparent: true, opacity: 0.5 })));
+    me.children[1].computeLineDistances();
+    scene.add(me);
+  },
+  update(ctx) {
+    gal.obj.visible = ctx.T.galOn;
+    gal.obj.material.uniforms.uSize.value = ctx.U.gsize;
+  },
+  hud: ctx => {
+    if (!ctx.T.galOn) return '';
+    let inside = 0; const p = gal.pos;
+    for (let i = 0; i < M; i += 13) if (p[3 * i] ** 2 + p[3 * i + 1] ** 2 + p[3 * i + 2] ** 2 < 1) inside++;
+    return `galaxies inside the equator |P|&lt;1: <b>${(100 * inside / Math.ceil(M / 13)).toFixed(0)}%</b> (uniform S³ ⇒ ≈50%)`;
+  },
+});
+</script>
+</body>
+</html>

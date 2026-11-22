@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stereographic Nine — a closed 4D filament on S³ seen in ℝ³</title>
+<style>
+  :root { --fg:#d9e6ff; --dim:#7f8fb0; --acc:#5fe3ff; --hot:#ffa24a; --bg:#03040a; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+    font:13px/1.4 ui-sans-serif, system-ui, "Segoe UI", sans-serif; overflow:hidden; }
+  canvas { display:block; }
+  #panel { position:fixed; top:12px; left:12px; width:290px; max-height:calc(100% - 24px); overflow:auto;
+    background:rgba(8,12,24,.78); backdrop-filter:blur(8px); border:1px solid rgba(95,227,255,.18);
+    border-radius:10px; padding:12px 14px; }
+  #panel h1 { font-size:14px; margin:0 0 2px; letter-spacing:.04em; }
+  #panel .sub { color:var(--dim); font-size:11px; margin-bottom:10px; }
+  fieldset { border:none; border-top:1px solid rgba(255,255,255,.08); margin:8px 0 0; padding:8px 0 0; }
+  legend { color:var(--acc); font-size:11px; text-transform:uppercase; letter-spacing:.08em; padding:0; }
+  label { display:grid; grid-template-columns:1fr 52px; align-items:center; gap:2px 8px; margin:5px 0; }
+  label span.v { text-align:right; color:var(--hot); font-variant-numeric:tabular-nums; }
+  label input[type=range] { grid-column:1 / span 2; width:100%; accent-color:var(--acc); }
+  .row { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+  button { background:rgba(95,227,255,.1); color:var(--fg); border:1px solid rgba(95,227,255,.3);
+    border-radius:6px; padding:4px 9px; cursor:pointer; font:inherit; }
+  button:hover { background:rgba(95,227,255,.22); }
+  .chk { display:flex; gap:6px; align-items:center; margin:5px 0; }
+  #hud { position:fixed; right:12px; bottom:12px; background:rgba(8,12,24,.7); border-radius:8px;
+    padding:8px 12px; font:12px/1.5 ui-monospace, Consolas, monospace; color:var(--dim); min-width:250px; }
+  #hud b { color:var(--fg); font-weight:500; }
+  #eq { position:fixed; right:12px; top:12px; max-width:340px; background:rgba(8,12,24,.6); border-radius:8px;
+    padding:8px 12px; font:12px/1.55 ui-monospace, Consolas, monospace; color:var(--dim); }
+  #eq b { color:var(--acc); font-weight:500; }
+</style>
+</head>
+<body>
+<div id="panel">
+  <h1>STEREOGRAPHIC NINE</h1>
+  <div class="sub">One closed filament on S³ ⊂ ℝ⁴. The “9” is only the shadow it casts in ℝ³.</div>
+
+  <div class="row" style="margin-bottom:4px">
+    preset: <button id="preset9">“9” glyph</button><button id="presetRose">Clifford rosette</button>
+  </div>
+
+  <fieldset><legend>Head — torus winding (α = α₀)</legend>
+    <label>head tube α₀ (×π/4 · 1 = Clifford) <span class="v" id="v_a0"></span><input id="a0" type="range" min="0.05" max="1" step="0.01" value="0.2"></label>
+    <label>θ windings (around axis) <span class="v" id="v_n"></span><input id="n" type="range" min="1" max="9" step="1" value="1"></label>
+    <label>φ windings (through tube) <span class="v" id="v_k"></span><input id="k" type="range" min="1" max="80" step="1" value="44"></label>
+  </fieldset>
+
+  <fieldset><legend>Tail — drift toward north pole</legend>
+    <label>reach α<sub>max</sub> (×π/2) <span class="v" id="v_amax"></span><input id="amax" type="range" min="0.3" max="0.985" step="0.005" value="0.72"></label>
+    <label>tail width <span class="v" id="v_tw"></span><input id="tw" type="range" min="0.02" max="0.2" step="0.005" value="0.09"></label>
+    <label>tail tension ε <span class="v" id="v_eps"></span><input id="eps" type="range" min="0.005" max="0.3" step="0.005" value="0.005"></label>
+    <label>tail start θ₀ (°) <span class="v" id="v_tang"></span><input id="tang" type="range" min="-180" max="180" step="1" value="0"></label>
+    <label>tail curl (°) <span class="v" id="v_curl"></span><input id="curl" type="range" min="-180" max="180" step="1" value="-78"></label>
+    <label>stem pinning (0 = two strands) <span class="v" id="v_pin"></span><input id="pin" type="range" min="0" max="1" step="0.01" value="1"></label>
+  </fieldset>
+
+  <fieldset><legend>4D rotation (planes containing w)</legend>
+    <label>xw angle <span class="v" id="v_rxw"></span><input id="rxw" type="range" min="-180" max="180" step="0.5" value="0"></label>
+    <label>yw angle <span class="v" id="v_ryw"></span><input id="ryw" type="range" min="-180" max="180" step="0.5" value="0"></label>
+    <label>zw angle ψ <span class="v" id="v_rzw"></span><input id="rzw" type="range" min="-180" max="180" step="0.5" value="0"></label>
+    <label>auto-spin speed (°/s) <span class="v" id="v_spd"></span><input id="spd" type="range" min="0" max="60" step="1" value="0"></label>
+    <div class="row">
+      spin plane:
+      <button data-plane="zw">zw</button><button data-plane="xw">xw</button><button data-plane="yw">yw</button>
+      <span id="planeLbl" style="color:var(--hot)">zw</span>
+    </div>
+  </fieldset>
+
+  <fieldset><legend>Render</legend>
+    <label>bloom <span class="v" id="v_bloom"></span><input id="bloom" type="range" min="0" max="3" step="0.05" value="0.8"></label>
+    <label>clip radius <span class="v" id="v_clip"></span><input id="clip" type="range" min="6" max="80" step="1" value="28"></label>
+    <div class="chk"><input id="ghost" type="checkbox" checked><span>show projected Clifford torus (ghost)</span></div>
+    <div class="chk"><input id="pts" type="checkbox" checked><span>plasma particles</span></div>
+    <div class="row">
+      <button id="viewTop">“9” view (down Z)</button>
+      <button id="viewSide">side view</button>
+      <button id="reset">reset</button>
+    </div>
+  </fieldset>
+</div>
+
+<div id="eq">
+  <b>S³:</b> x²+y²+z²+w² = 1<br>
+  <b>Hopf coords:</b> x=cosα cosθ, y=cosα sinθ<br>
+  &nbsp;&nbsp;z=sinα cosφ, w=sinα sinφ<br>
+  <b>Projection:</b> (X,Y,Z) = (x,y,z)/(1−w)<br>
+  colour = w (violet −1 → cyan 0 → white-hot +1)
+</div>
+
+<div id="hud"></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const N = 9000;                // samples along the closed 4D curve
+const TAU = Math.PI * 2;
+const QUARTER = Math.PI / 4;   // α = π/4 is the Clifford torus
+
+// ---------- UI plumbing ----------
+const $ = id => document.getElementById(id);
+const ids = ['a0','n','k','amax','tw','eps','tang','curl','pin','rxw','ryw','rzw','spd','bloom','clip'];
+const P = {};
+function readUI() {
+  for (const id of ids) { P[id] = parseFloat($(id).value); $('v_'+id).textContent = +P[id].toFixed(3); }
+}
+readUI();
+let spinPlane = 'zw';
+document.querySelectorAll('[data-plane]').forEach(b => b.onclick = () => {
+  spinPlane = b.dataset.plane; $('planeLbl').textContent = spinPlane;
+});
+
+// ---------- the 4D curve (computed once per parameter change) ----------
+const base = { x:new Float32Array(N), y:new Float32Array(N), z:new Float32Array(N), w:new Float32Array(N) };
+
+// Tail envelope: how strongly sample s is pulled toward the pole.
+// d = wrapped distance from the tail centre (0..0.5), width = tail width.
+// Must be smooth and periodic so the curve stays closed on S³.
+function tailEnvelope(d, width) {
+  const u = d / width;
+  return Math.exp(-u * u);
+}
+
+function buildCurve() {
+  const n = Math.round(P.n), k = Math.round(P.k);
+  const aMax = P.amax * Math.PI / 2;
+  const sc = 0.75;                                   // tail sits at 3/4 of the loop
+  const B = new Float32Array(N), G = new Float64Array(N + 1);
+  // angular speed g(s) = 1 - (1-ε)B(s): angles crawl inside the tail, so the
+  // filament lingers near the pole instead of whipping straight through it
+  for (let i = 0; i < N; i++) {
+    const s = i / N;
+    let d = Math.abs(s - sc); d = Math.min(d, 1 - d);
+    B[i] = tailEnvelope(d, P.tw);
+    // slow the winding over a wider window than the pole-pull, so the coils have
+    // calmed before the tail starts to stretch (otherwise they balloon at the junction)
+    G[i + 1] = G[i] + (1 - (1 - P.eps) * tailEnvelope(d, P.tw * 1.9));
+  }
+  const Gtot = G[N], ic = Math.round(sc * N);
+  // integer windings + normalised cumulative speed ⇒ θ, φ advance exactly 2πn, 2πk ⇒ closed curve.
+  // Angles are measured from the tail peak, where θ = θ₀ and φ = π/2 (aimed at the pole (0,0,0,1)).
+  // curl is a symmetric bump in θ: the outgoing and returning strands follow the
+  // same (r, θ) path, so the tail reads as ONE stroke — and B is periodic, so still closed
+  const a0 = P.a0 * QUARTER, curl = P.curl * Math.PI / 180;
+  // Stem pinning: inside a compact window around the tail, pull θ and φ back to their
+  // peak values. Z = sinα·cosφ/(1−w) flips sign as φ crosses π/2, so any φ drift makes the
+  // way-out and way-back strands split in Z. A cos² window is EXACTLY zero outside W,
+  // so the windings far from the tail are untouched and the curve stays closed.
+  // Flat plateau over the whole stem (B > ~2% lives inside d < 2·tw), then a cos² roll-off.
+  // The s = 0/1 seam sits at d = 0.25 (tail at s = 0.75); dG wraps by a whole turn there,
+  // so the window must reach zero BEFORE the seam or the loop would tear.
+  const W2 = Math.min(3.5 * P.tw, 0.24), W1 = Math.min(2 * P.tw, 0.75 * W2);
+  for (let i = 0; i < N; i++) {
+    let d = Math.abs(i / N - sc); d = Math.min(d, 1 - d);
+    const pin = P.pin * (d <= W1 ? 1 : d >= W2 ? 0 : Math.cos(Math.PI / 2 * (d - W1) / (W2 - W1)) ** 2);
+    const dG = (G[i] - G[ic]) / Gtot;                   // signed progress from the tail peak
+    const a = a0 + (Math.max(aMax, a0) - a0) * B[i];
+    const th = P.tang * Math.PI / 180 + TAU * n * dG * (1 - pin) + curl * B[i];
+    const ph = Math.PI / 2 + TAU * k * dG * (1 - pin);
+    const ca = Math.cos(a), sa = Math.sin(a);
+    base.x[i] = ca * Math.cos(th); base.y[i] = ca * Math.sin(th);
+    base.z[i] = sa * Math.cos(ph); base.w[i] = sa * Math.sin(ph);
+  }
+}
+
+// ---------- 4D rotations + stereographic projection ----------
+function rotPlane(v, i, j, ang) {          // rotate components i,j of v in place
+  const c = Math.cos(ang), s = Math.sin(ang), a = v[i], b = v[j];
+  v[i] = a * c - b * s; v[j] = a * s + b * c;
+}
+const tmp = [0,0,0,0];
+function project4(x, y, z, w, R, out, o) {
+  tmp[0]=x; tmp[1]=y; tmp[2]=z; tmp[3]=w;
+  rotPlane(tmp, 0, 3, R.xw); rotPlane(tmp, 1, 3, R.yw); rotPlane(tmp, 2, 3, R.zw);
+  const d = Math.max(1 - tmp[3], 1e-5);
+  out[o] = tmp[0] / d; out[o+1] = tmp[1] / d; out[o+2] = tmp[2] / d;
+  return tmp[3];
+}
+
+// ---------- three.js scene ----------
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.01, 5000);
+camera.position.set(0, 0, 11);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+const vert = /* glsl */`
+  attribute float aW;
+  uniform float uClip, uSize, uPix;
+  varying float vW, vFade;
+  void main() {
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * mv;
+    vFade = 1.0 - smoothstep(uClip * 0.45, uClip, length(position));
+    vW = aW;
+    gl_PointSize = uSize * uPix / max(-mv.z, 0.1);
+  }`;
+const ramp = /* glsl */`
+  vec3 ramp(float w) {
+    float t = w * 0.5 + 0.5;
+    vec3 a = vec3(0.32,0.12,1.0), b = vec3(0.10,0.88,1.0), c = vec3(1.0,0.52,0.12), d = vec3(1.0,0.96,0.88);
+    if (t < 0.5)  return mix(a, b, t / 0.5);
+    if (t < 0.86) return mix(b, c, (t - 0.5) / 0.36);
+    return mix(c, d, (t - 0.86) / 0.14);
+  }`;
+const fragLine = ramp + /* glsl */`
+  uniform float uAlpha; varying float vW, vFade;
+  void main() { gl_FragColor = vec4(ramp(vW) * (0.55 + 0.9 * max(vW,0.0)), uAlpha * vFade); }`;
+const fragPts = ramp + /* glsl */`
+  uniform float uAlpha; varying float vW, vFade;
+  void main() {
+    float r = length(gl_PointCoord - 0.5); if (r > 0.5) discard;
+    float g = exp(-r * r * 18.0);
+    gl_FragColor = vec4(ramp(vW) * g * (0.6 + max(vW,0.0)), uAlpha * vFade * g);
+  }`;
+
+function mat(frag, alpha, size) {
+  return new THREE.ShaderMaterial({
+    vertexShader: vert, fragmentShader: frag, transparent:true, depthWrite:false,
+    blending: THREE.AdditiveBlending,
+    uniforms: { uClip:{value:P.clip}, uSize:{value:size}, uPix:{value:renderer.getPixelRatio()*innerHeight/900}, uAlpha:{value:alpha} }
+  });
+}
+
+// filament: shared geometry for the line and the particle cloud
+const pos = new Float32Array(N * 3), wAttr = new Float32Array(N);
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+geo.setAttribute('aW', new THREE.BufferAttribute(wAttr, 1));
+const lineMat = mat(fragLine, 0.85, 0), ptsMat = mat(fragPts, 0.55, 22);
+const line = new THREE.LineLoop(geo, lineMat);
+const pts = new THREE.Points(geo, ptsMat);
+line.frustumCulled = pts.frustumCulled = false;
+scene.add(line, pts);
+
+// ghost Clifford torus (α = π/4) — meridian + longitude circles, projected the same way
+const GU = 48, GV = 24, GS = 72;   // circles of each family, samples per circle
+const ghostSegs = (GU + GV) * GS;
+const gPos = new Float32Array(ghostSegs * 2 * 3), gW = new Float32Array(ghostSegs * 2);
+const gGeo = new THREE.BufferGeometry();
+gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
+gGeo.setAttribute('aW', new THREE.BufferAttribute(gW, 1));
+const ghostMat = mat(fragLine, 0.035, 0);
+const ghost = new THREE.LineSegments(gGeo, ghostMat);
+ghost.frustumCulled = false;
+scene.add(ghost);
+function updateGhost(R) {
+  let o = 0;
+  const ca = Math.cos(P.a0 * QUARTER), sa = Math.sin(P.a0 * QUARTER);
+  const put = (th, ph) => { gW[o] = project4(ca*Math.cos(th), ca*Math.sin(th), sa*Math.cos(ph), sa*Math.sin(ph), R, gPos, o*3); o++; };
+  for (let u = 0; u < GU; u++) { const th = TAU*u/GU;
+    for (let s = 0; s < GS; s++) { put(th, TAU*s/GS); put(th, TAU*(s+1)/GS); } }
+  for (let v = 0; v < GV; v++) { const ph = TAU*v/GV;
+    for (let s = 0; s < GS; s++) { put(TAU*s/GS, ph); put(TAU*(s+1)/GS, ph); } }
+  gGeo.attributes.position.needsUpdate = gGeo.attributes.aW.needsUpdate = true;
+}
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), P.bloom, 0.55, 0.0);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ---------- frame update ----------
+let dirty = true, paused = false, spin = 0, last = performance.now();
+ids.forEach(id => $(id).addEventListener('input', () => {
+  readUI(); if (['a0','n','k','amax','tw','eps','tang','curl','pin'].includes(id)) dirty = true;
+}));
+const deg = Math.PI / 180;
+
+function frame(now) {
+  const dt = Math.min((now - last) / 1000, 0.1); last = now;
+  if (dirty) { buildCurve(); dirty = false; }
+  if (!paused) spin += P.spd * dt;
+  const R = { xw:P.rxw*deg, yw:P.ryw*deg, zw:P.rzw*deg };
+  R[spinPlane] += spin * deg;
+
+  let minGap = 2, maxR = 0;
+  for (let i = 0; i < N; i++) {
+    const w = project4(base.x[i], base.y[i], base.z[i], base.w[i], R, pos, i*3);
+    wAttr[i] = w;
+    minGap = Math.min(minGap, 1 - w);
+    maxR = Math.max(maxR, Math.hypot(pos[i*3], pos[i*3+1], pos[i*3+2]));
+  }
+  geo.attributes.position.needsUpdate = geo.attributes.aW.needsUpdate = true;
+  ghost.visible = $('ghost').checked; if (ghost.visible) updateGhost(R);
+  pts.visible = $('pts').checked;
+  for (const m of [lineMat, ptsMat, ghostMat]) m.uniforms.uClip.value = P.clip;
+  bloom.strength = P.bloom;
+
+  $('hud').innerHTML =
+    `closest approach to pole&nbsp; 1−w = <b>${minGap.toExponential(2)}</b><br>` +
+    `farthest projected point |P| = <b>${maxR.toFixed(1)}</b><br>` +
+    `spin (${spinPlane}) = <b>${(((spin % 360) + 540) % 360 - 180).toFixed(1)}°</b> ${paused ? '(paused — space)' : ''}`;
+
+  controls.update();
+  composer.render();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// ---------- controls ----------
+function view(p, t = [0,0,0]) { camera.position.set(...p); camera.up.set(0,1,0); controls.target.set(...t); }
+const NINE_VIEW = [[-1.1, -1.2, 8.5], [-1.1, -1.2, 0]];   // look down Z, framed so the bowl sits high
+$('viewTop').onclick = () => view(...NINE_VIEW);
+$('viewSide').onclick = () => view([0, -11, 2.5]);
+function applyPreset(vals, cam) {
+  for (const [id, v] of Object.entries(vals)) $(id).value = v;
+  readUI(); dirty = true; spin = 0; view(...cam);
+}
+const PRESETS = {
+  preset9:    [{ a0:0.2, n:1, k:44, amax:0.72, tw:0.09, eps:0.005, tang:0,   curl:-78, pin:1, rxw:0, ryw:0, rzw:0, spd:0, clip:28 }, NINE_VIEW],
+  presetRose: [{ a0:1,   n:5, k:3,  amax:0.93, tw:0.06, eps:0.08, tang:-62, curl:0,   pin:0, rxw:0, ryw:0, rzw:0, spd:0, clip:28 }, [[0,0,11],[0,0,0]]],
+};
+for (const [btn, [vals, cam]] of Object.entries(PRESETS)) $(btn).onclick = () => applyPreset(vals, cam);
+view(...NINE_VIEW);
+$('reset').onclick = () => location.reload();
+addEventListener('keydown', e => { if (e.code === 'Space') { paused = !paused; e.preventDefault(); } });
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight);
+  for (const m of [lineMat, ptsMat, ghostMat]) m.uniforms.uPix.value = renderer.getPixelRatio()*innerHeight/900;
+});
+window.__nine = { P, base, buildCurve };   // debugging handle
+</script>
+</body>
+</html>
