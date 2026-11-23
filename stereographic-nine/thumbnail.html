@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>UNKNOWN 9 — YouTube thumbnail (1280×720)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=block">
+<style>
+  /* Hero = an exact v8 render frame (t = 12.8 s, Hopf flow), so the 9 is the computed 4D shape, not an AI guess. */
+  html, body { margin: 0; background: #000; }
+  #t { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #01040a; }
+  #hero { position: absolute; width: 1060px; left: 372px; top: -96px;
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+                  mask-image: linear-gradient(90deg, transparent 0, #000 22%); }
+  /* darken behind the title so it reads at 160 px wide on a phone */
+  #shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(1,4,10,.92) 0, rgba(1,4,10,.55) 38%, transparent 58%); }
+  #scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px); }
+  .br { position: absolute; width: 34px; height: 34px; border: 0 solid rgba(90,225,255,.55); }
+  .tl { left: 22px; top: 22px; border-left-width: 2px; border-top-width: 2px; }
+  .tr { right: 22px; top: 22px; border-right-width: 2px; border-top-width: 2px; }
+  .bl { left: 22px; bottom: 22px; border-left-width: 2px; border-bottom-width: 2px; }
+  .bb { right: 22px; bottom: 22px; border-right-width: 2px; border-bottom-width: 2px; }
+  #title { position: absolute; left: 58px; top: 262px; font: 900 128px/1 Cinzel, serif; letter-spacing: 4px;
+           color: #e9fbff;
+           text-shadow: -5px 0 0 rgba(255,40,200,.85), 5px 0 0 rgba(30,200,255,.85),
+                        0 0 18px rgba(80,220,255,.9), 0 0 46px rgba(120,80,255,.7), 0 0 90px rgba(255,40,200,.45); }
+  #soon { position: absolute; left: 64px; top: 412px; font: 700 40px/1 Cinzel, serif; letter-spacing: 14px;
+          color: #ffd6f6; text-shadow: 0 0 12px rgba(255,60,210,.9), 0 0 30px rgba(255,60,210,.5); }
+  #tag { position: absolute; left: 64px; top: 196px; font: 700 26px/1 Cinzel, serif; letter-spacing: 10px;
+         color: #8fe8ff; text-shadow: 0 0 10px rgba(60,210,255,.8); }
+  #rule { position: absolute; left: 64px; top: 472px; width: 470px; height: 2px;
+          background: linear-gradient(90deg, rgba(90,225,255,.9), rgba(255,40,200,.0)); }
+</style>
+</head>
+<body>
+<div id="t">
+  <img id="hero" src="renders/thumb-hero-f00384.png" alt="">
+  <div id="fadeb" style="position:absolute;left:0;right:0;top:470px;height:175px;background:linear-gradient(180deg,transparent,#01040a 100%)"></div>
+  <div id="shade"></div>
+  <div id="scan"></div>
+  <div class="br tl"></div><div class="br tr"></div><div class="br bl"></div><div class="br bb"></div>
+  <div id="tag">OFFICIAL TEASER</div>
+  <div id="title">UNKNOWN</div>
+  <div id="soon">COMING SOON</div>
+  <div id="rule"></div>
+</div>
+<script>
+  Promise.all([document.fonts.load('900 128px Cinzel'), document.fonts.load('700 40px Cinzel'),
+               new Promise(r => { const i = document.getElementById('hero'); i.complete ? r() : i.onload = r; })])
+    .then(() => { window.__ready = true; });
+</script>
+</body>
+</html>

@@ -30,6 +30,9 @@ import { DEG, TAU, QUARTER } from './lib/s3-engine.js';
 
 const qs = new URLSearchParams(location.search);
 const RENDER = qs.has('render');
+// thumbnail/poster layout overrides — all no-ops when absent, so the film is unchanged:
+// ts = title scale, ux = title x (NDC), ty = title y shift (16:9 units), nx = nine x (NDC), zoom = camera closer on the lockup
+const TTS = +(qs.get('ts') || 1), UXQ = qs.get('ux'), TYQ = +(qs.get('ty') || 0), NXQ = qs.get('nx'), ZQ = +(qs.get('zoom') || 1);
 const W = +qs.get('w') || innerWidth, H = +qs.get('h') || innerHeight;
 const DURATION = 31;
 // ---------- IMAX scaling: the 16:9 cut is the reference; a taller frame keeps its horizontal field of view and
@@ -724,6 +727,7 @@ function renderAt(t) {
   const bf = bloom.compositeMaterial.uniforms.bloomFactors.value, BF = [1, 0.85, 0.6, 0.3, 0.1], sp = s.spread ?? 1;   // coarse mips kept low all film: the halo hugs the outline
   for (let i = 0; i < 5; i++) bf[i] = BF[i] * (i === 0 ? 1 : i === 1 ? 0.3 + 0.7 * sp : sp);
   // pan sideways so the nine lands at screen x = s.nx, plus a deterministic impact shake
+  if (s.title) { if (NXQ !== null) s.nx = +NXQ; s.dist /= ZQ; }
   const pan = -(s.nx - NINE_OFS_X) * TAN * s.dist * camera.aspect;
   const jx = s.shake * (Math.sin(t * 91.7) + 0.6 * Math.sin(t * 57.3)), jy = s.shake * (Math.cos(t * 83.1) + 0.6 * Math.sin(t * 61.9));
   const rx = Math.cos(s.orbit), rz = -Math.sin(s.orbit);
@@ -746,9 +750,10 @@ function renderAt(t) {
   const ti = s.title;
   unkT.mesh.visible = soonT.mesh.visible = credT.mesh.visible = embers.visible = !!ti;
   if (ti) {
-    placeText(unkT, ti.unk.x, 0.02, 0.19);
-    placeText(soonT, ti.unk.x, -0.2, 0.042);
-    placeText(credT, ti.unk.x, -0.31, 0.03);
+    const ux = UXQ !== null ? +UXQ : ti.unk.x, ly = y => (TTS === 1 && !TYQ) ? y : TYQ + 0.02 + (y - 0.02) * TTS;
+    placeText(unkT, ux, ly(0.02), 0.19 * TTS);
+    placeText(soonT, ux, ly(-0.2), 0.042 * TTS);
+    placeText(credT, ux, ly(-0.31), 0.03 * TTS);
     for (const [tp, o] of [[unkT, ti.unk], [soonT, ti.soon], [credT, ti.cred]]) {
       tp.mat.uniforms.uT.value = t; tp.mat.uniforms.uReveal.value = o.reveal;
       tp.mat.uniforms.uGlitch.value = o.glitch; tp.mat.uniforms.uBeat.value = o.beat * s.fade;
