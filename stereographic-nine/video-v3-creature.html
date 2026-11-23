@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Stereographic Nine — film timeline (v3: sunburst head, horror tail)</title>
+<style>
+  html,body { margin:0; background:#000; overflow:hidden; }
+  canvas { display:block; }
+  #bar { position:fixed; left:0; right:0; bottom:0; padding:8px 12px; background:rgba(0,0,0,.6);
+    color:#9ab; font:12px ui-monospace,Consolas,monospace; display:flex; gap:10px; align-items:center; }
+  #bar input { flex:1; }
+  body.render #bar { display:none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="bar"><button id="play">pause</button><input id="scrub" type="range" min="0" max="24" step="0.01" value="0"><span id="tl">0.00 s</span></div>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { stereo, makeRot, DEG, TAU, QUARTER } from './lib/s3-engine.js';
+
+const qs = new URLSearchParams(location.search);
+const RENDER = qs.has('render');
+const W = +qs.get('w') || innerWidth, H = +qs.get('h') || innerHeight;
+const DURATION = 24;
+if (RENDER) document.body.classList.add('render');
+
+// ---------- easing ----------
+const clamp01 = x => Math.min(Math.max(x, 0), 1);
+const seg = (t, a, b) => clamp01((t - a) / (b - a));
+const smooth = u => u * u * (3 - 2 * u);
+const smoother = u => u * u * u * (u * (u * 6 - 15) + 10);
+const lerp = (a, b, u) => a + (b - a) * u;
+const logLerp = (a, b, u) => a * Math.pow(b / a, u);
+
+// Head = the FIRST version: a dense coil on the Clifford torus (α = π/4), 2 turns round, 41 through the tube.
+const HEAD = { a0: 1, n: 2, k: 41, amax: 0.82, tw: 0.07, eps: 0.01, tang: 0, curl: -80, pin: 1 };
+const N = 9000, SC = 0.75, IC = Math.round(SC * N);
+const K = 14;                                         // tendril strands in the tail bundle
+
+/**
+ * One frame of the creature on S³.
+ *  - main curve: the nine (sunburst head + pinned stem). Live offsets are weighted by free = 1 − pin,
+ *    so the coils spin/circulate/breathe at full strength while the stem stays aimed at the 4D pole.
+ *  - tendrils: K strands braided round the pinned stem, offset in θ and φ ON S³. Near the pole the
+ *    projection magnifies offsets by 1/(1−w), so the bundle splays into claws at the tip by itself.
+ */
+function buildCreature(P, L) {
+  const x = new Float32Array(N), y = new Float32Array(N), z = new Float32Array(N), w = new Float32Array(N);
+  const n = Math.round(P.n), k = Math.round(P.k);
+  const aMax = P.amax * Math.PI / 2, a0 = P.a0 * QUARTER, curl = P.curl * DEG;
+  const env = (d, wd) => { const u = d / wd; return Math.exp(-u * u); };
+  const B = new Float32Array(N), D = new Float32Array(N), G = new Float64Array(N + 1);
+  for (let i = 0; i < N; i++) {
+    let d = Math.abs(i / N - SC); d = Math.min(d, 1 - d);
+    D[i] = d; B[i] = env(d, P.tw);
+    G[i + 1] = G[i] + (1 - (1 - P.eps) * env(d, P.tw * 1.9));
+  }
+  const Gtot = G[N];
+  const W2 = Math.min(3.5 * P.tw, 0.24), W1 = Math.min(2 * P.tw, 0.75 * W2);
+  const A = new Float32Array(N), TH = new Float32Array(N), PH = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const s = i / N, d = D[i], b = B[i];
+    const pin = P.pin * (d <= W1 ? 1 : d >= W2 ? 0 : Math.cos(Math.PI / 2 * (d - W1) / (W2 - W1)) ** 2);
+    const free = 1 - pin;
+    const dG = (G[i] - G[IC]) / Gtot;
+    const breathe = 1 + free * (L.breathA * Math.sin(TAU * L.breathK * s - L.breathW * L.t)
+                              + 0.025 * Math.sin(TAU * 31 * s + 23 * L.t));
+    const a = a0 * breathe + (Math.max(aMax, a0) - a0) * b;
+    const whip = L.whipA * b * b * Math.sin(L.whipK * b - L.whipW * L.t);
+    const th = P.tang * DEG + TAU * n * dG * free + curl * b + L.thFlow * free + whip;
+    const ph = Math.PI / 2 + TAU * k * dG * free + L.phFlow * free;
+    A[i] = a; TH[i] = th; PH[i] = ph;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    x[i] = ca * Math.cos(th); y[i] = ca * Math.sin(th); z[i] = sa * Math.cos(ph); w[i] = sa * Math.sin(ph);
+  }
+  // tendrils follow the outgoing half of the pinned stem (root at d = W1, tip at the peak)
+  const i0 = IC - Math.round(W1 * N), M = Math.floor((IC - i0) / 2) + 1;
+  const T = new Float32Array(K * M * 4), U = new Float32Array(K * M);
+  for (let j = 0; j < K; j++) for (let m = 0; m < M; m++) {
+    const i = Math.min(i0 + 2 * m, IC), u = (B[i] - B[i0]) / (1 - B[i0]);          // 0 root → 1 tip
+    const thorn = 1 + 2.2 * Math.max(0, Math.sin(TAU * 6 * u - 6.5 * L.t + j * 1.7)) ** 10;
+    const claw = 1 + 1.6 * smooth(clamp01((u - 0.72) / 0.28));                      // tip splays into claws
+    const root = smooth(clamp01((u - 0.0) / 0.14));
+    const chi = TAU * j / K + 2.6 * TAU * u - 3.2 * L.t + 0.55 * Math.sin(4 * Math.PI * u - 2.3 * L.t + j);
+    const rTh = L.tendril * 0.17 * (1 - 0.55 * u) * thorn * claw * root * (0.75 + 0.25 * Math.sin(j * 2.3));
+    const rPh = L.tendril * 0.09 * (1 - 0.9 * u) * thorn * root;                     // depth tapers
+    const a = A[i], th = TH[i] + rTh * Math.cos(chi), ph = PH[i] + rPh * Math.sin(chi);
+    const ca = Math.cos(a), sa = Math.sin(a), o = (j * M + m) * 4;
+    T[o] = ca * Math.cos(th); T[o + 1] = ca * Math.sin(th); T[o + 2] = sa * Math.cos(ph); T[o + 3] = sa * Math.sin(ph);
+    U[j * M + m] = u;
+  }
+  return { x, y, z, w, B, T, U, M };
+}
+
+/**
+ * TIMELINE (every visual is a pure function of t)
+ *  0–2   a faraway sunburst nine fades in      2–9  dolly in: it grows to fill the frame
+ *  9–12  the creature at full size: coils roll, the tail lunges, lightning cracks
+ * 12–22  unravel into the spiraling mess       22–24 drift, fade to black
+ */
+function shot(t) {
+  const u = smoother(seg(t, 12, 22));
+  const strike = Math.max(0, Math.sin(1.25 * t - 0.6)) ** 5;      // periodic lunge
+  const P = {
+    ...HEAD,
+    pin:  lerp(1, 0, smooth(seg(t, 12, 15))),
+    curl: lerp(HEAD.curl + 16 * strike, HEAD.curl - 1260, u),
+    eps:  lerp(HEAD.eps, 0.18, u),
+    amax: lerp(HEAD.amax + 0.035 * strike, 0.95, smooth(seg(t, 13, 20))),
+  };
+  const ang = {
+    xy: 0,
+    xw: lerp(0, 250, smooth(seg(t, 13, 24))) * DEG,
+    yw: lerp(0, 130, smooth(seg(t, 15, 24))) * DEG,
+    zw: lerp(0, 200, u) * DEG,
+  };
+  const dolly = t < 9 ? logLerp(420, 19, smoother(seg(t, 2, 9))) : lerp(19, 17.8, smooth(seg(t, 9, 12)));
+  const dist = t < 12 ? dolly : lerp(17.8, 22, smooth(seg(t, 12, 22)));
+  const orbit = lerp(0, 55, smooth(seg(t, 13, 24))) * DEG;
+  const fade = Math.min(smooth(seg(t, 0, 1.5)), 1 - smooth(seg(t, 22.8, 24)));
+  const bloom = 1.0 + 0.2 * Math.sin(t * 2.1) + 0.35 * strike - 0.5 * u;
+  const alpha = lerp(1, 0.38, smooth(seg(t, 13, 18)));
+  const L = {
+    t, phFlow: t * 2.6, thFlow: t * 0.35,
+    breathA: 0.06, breathK: 6, breathW: 5.5,
+    whipA: 9 * DEG, whipK: 10, whipW: 7.5,
+    tendril: 1 + 0.35 * strike,
+  };
+  return { P, ang, dist, orbit, fade, bloom, alpha, L, tendrilFade: 1 - smooth(seg(t, 16.5, 20.5)) };   // tendrils ride the unravel into the spiral, then burn out
+}
+
+// ---------- renderer ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, W / H, 0.01, 8000);
+const TARGET = new THREE.Vector3(1.6, -2.7, 0);
+
+const HASH = `float hash(float n){ return fract(sin(n)*43758.5453); }`;
+const VERT = `attribute float aW, aS, aB; uniform float uClip, uSize, uPix, uT; varying float vW, vFade, vS, vSpark, vB;
+  ${HASH}
+  void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); gl_Position = projectionMatrix*mv;
+    vFade = 1. - smoothstep(uClip*.45, uClip, length(position)); vW = aW; vS = aS; vB = aB;
+    vSpark = step(.955, hash(aS*9001. + floor(uT*24.)*17.13));
+    gl_PointSize = uSize*uPix/max(-mv.z,.1) * (1. + 1.8*vSpark); }`;
+const RAMP = `uniform float uAlpha, uFade, uT; varying float vW, vFade, vS, vSpark, vB;
+  vec3 ramp(float w){ float t = clamp(w*.5+.5, 0., 1.);
+    vec3 a=vec3(.32,.12,1.), b=vec3(.10,.88,1.), c=vec3(1.,.52,.12), d=vec3(1.,.96,.88);
+    if(t<.5) return mix(a,b,t/.5); if(t<.86) return mix(b,c,(t-.5)/.36); return mix(c,d,(t-.86)/.14); }
+  vec3 live(float w, float s){
+    vec3 c = ramp(w + .24*sin(6.2832*3.*s - 1.7*uT));
+    c = mix(c, c.brg, .16*(.5 + .5*sin(.45*uT)));
+    float pk = pow(.5 + .5*sin(6.2832*22.*s - 7.5*uT), 6.);
+    vec3 head = c * (.72 + 1.15*pk);
+    // the stem: a white-hot spine with ember pulses running down to the tip
+    float sp = pow(.5 + .5*sin(6.2832*60.*s - 11.*uT), 4.);
+    vec3 spine = mix(vec3(1.,.25,.05), vec3(1.,.9,.75), .35 + .65*sp);
+    return mix(head, spine*1.25, smoothstep(.03, .35, vB)); }`;
+const mk = (frag, alpha, size) => new THREE.ShaderMaterial({
+  vertexShader: VERT, fragmentShader: RAMP + frag, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uClip: { value: 60 }, uSize: { value: size }, uPix: { value: H / 900 }, uAlpha: { value: alpha },
+              uFade: { value: 1 }, uT: { value: 0 } },
+});
+const lineMat = mk(`void main(){ gl_FragColor = vec4(live(vW, vS)*(.55+.9*max(vW,0.)), uAlpha*vFade*uFade); }`, 0.8, 0);
+const ptsMat = mk(`void main(){ float r = length(gl_PointCoord-.5); if(r>.5) discard; float g = exp(-r*r*18.);
+  gl_FragColor = vec4(live(vW, vS)*g*(.6+max(vW,0.))*(1. + 2.5*vSpark), uAlpha*vFade*g*uFade); }`, 0.45, 26);
+
+const pos = new Float32Array(N * 3), wA = new Float32Array(N), sA = new Float32Array(N), bA = new Float32Array(N);
+for (let i = 0; i < N; i++) sA[i] = i / N;
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+geo.setAttribute('aW', new THREE.BufferAttribute(wA, 1));
+geo.setAttribute('aS', new THREE.BufferAttribute(sA, 1));
+geo.setAttribute('aB', new THREE.BufferAttribute(bA, 1));
+const line = new THREE.LineLoop(geo, lineMat), pts = new THREE.Points(geo, ptsMat);
+line.frustumCulled = pts.frustumCulled = false;
+scene.add(line, pts);
+
+// ---------- tendril bundle ----------
+const TVERT = `attribute float aU, aJ; uniform float uClip; varying float vU, vJ, vFade;
+  void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); gl_Position = projectionMatrix*mv;
+    vFade = 1. - smoothstep(uClip*.45, uClip, length(position)); vU = aU; vJ = aJ; }`;
+const TFRAG = `uniform float uT, uAlpha, uFade; varying float vU, vJ, vFade;
+  ${HASH}
+  void main(){
+    vec3 blood = vec3(.42,0.,.02), ember = vec3(1.,.16,.03), hot = vec3(1.,.82,.62), violet = vec3(.55,.35,1.);
+    float pk = pow(.5 + .5*sin(6.2832*7.*vU - 9.*uT + vJ*11.), 8.);       // pulses racing to the claws
+    vec3 c = mix(blood, ember, .3 + .7*vU) + hot*pk*.9;
+    float bolt = step(.955, hash(floor(uT*18.) + vJ*37.));                 // lightning through one strand
+    c = mix(c, violet*2.2 + hot*.5, bolt*.85);
+    gl_FragColor = vec4(c, uAlpha*vFade*uFade*(.45 + .55*smoothstep(0., .2, vU)));
+  }`;
+const tMat = new THREE.ShaderMaterial({ vertexShader: TVERT, fragmentShader: TFRAG, transparent: true, depthWrite: false,
+  blending: THREE.AdditiveBlending, uniforms: { uClip: { value: 60 }, uT: { value: 0 }, uAlpha: { value: 0.85 }, uFade: { value: 1 } } });
+const probe = buildCreature(HEAD, { t: 0, phFlow: 0, thFlow: 0, breathA: 0, breathK: 1, breathW: 0, whipA: 0, whipK: 1, whipW: 0, tendril: 1 });
+const TM = probe.M, TSEG = K * (TM - 1);
+const tPos = new Float32Array(TSEG * 2 * 3), tU = new Float32Array(TSEG * 2), tJ = new Float32Array(TSEG * 2);
+const tGeo = new THREE.BufferGeometry();
+tGeo.setAttribute('position', new THREE.BufferAttribute(tPos, 3));
+tGeo.setAttribute('aU', new THREE.BufferAttribute(tU, 1));
+tGeo.setAttribute('aJ', new THREE.BufferAttribute(tJ, 1));
+const tendrils = new THREE.LineSegments(tGeo, tMat);
+tendrils.frustumCulled = false;
+scene.add(tendrils);
+// vertebrae: glowing beads on every strand give the bundle body (WebGL lines are only 1 px wide)
+const beadMat = new THREE.ShaderMaterial({
+  vertexShader: TVERT.replace('vU = aU; vJ = aJ; }', 'vU = aU; vJ = aJ; gl_PointSize = uPix * (3. + 6.*sin(3.1416*aU)) * 14. / max(-mv.z, .1); }')
+                     .replace('uniform float uClip;', 'uniform float uClip, uPix;'),
+  fragmentShader: TFRAG.replace('gl_FragColor = vec4(c, uAlpha*vFade*uFade*(.45 + .55*smoothstep(0., .2, vU)));',
+    'float r = length(gl_PointCoord-.5); if (r > .5) discard; float g = exp(-r*r*16.); ' +
+    'gl_FragColor = vec4(c*g, uAlpha*vFade*uFade*g*(.45 + .55*smoothstep(0., .2, vU)));'),
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uClip: { value: 60 }, uPix: { value: H / 1080 }, uT: { value: 0 }, uAlpha: { value: 0.10 }, uFade: { value: 1 } } });
+const beads = new THREE.Points(tGeo, beadMat);
+beads.frustumCulled = false;
+scene.add(beads);
+const tmp3 = new Float32Array(3);
+
+// ---------- starfield ----------
+let seed = 9;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const S = 5000, sp = new Float32Array(S * 3), sc = new Float32Array(S * 3);
+for (let i = 0; i < S; i++) {
+  const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, r = 900 + rnd() * 1800, q = Math.sqrt(1 - u * u);
+  sp.set([r * q * Math.cos(a), r * q * Math.sin(a), r * u], i * 3);
+  const k = 0.35 + 0.65 * rnd() ** 3, hue = rnd();
+  sc.set([k * (0.75 + 0.25 * hue), k * 0.85, k * (1.05 - 0.3 * hue)], i * 3);
+}
+const sg = new THREE.BufferGeometry();
+sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+sg.setAttribute('color', new THREE.BufferAttribute(sc, 3));
+const starMat = new THREE.PointsMaterial({ size: 1.6 * H / 1080, sizeAttenuation: false, vertexColors: true, transparent: true });
+scene.add(new THREE.Points(sg, starMat));
+
+const composer = new EffectComposer(renderer);
+composer.setPixelRatio(1); composer.setSize(W, H);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(W, H), 1.0, 0.6, 0);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ---------- render one exact moment ----------
+function renderAt(t) {
+  const s = shot(t);
+  const c = buildCreature(s.P, s.L), R = makeRot(s.ang);
+  for (let i = 0; i < N; i++) { wA[i] = stereo(c.x[i], c.y[i], c.z[i], c.w[i], R, pos, 3 * i); bA[i] = c.B[i] * s.P.pin; }
+  geo.attributes.position.needsUpdate = geo.attributes.aW.needsUpdate = geo.attributes.aB.needsUpdate = true;
+  let v = 0;
+  for (let j = 0; j < K; j++) for (let m = 0; m < TM - 1; m++) for (const mm of [m, m + 1]) {
+    const o = (j * TM + mm) * 4;
+    stereo(c.T[o], c.T[o + 1], c.T[o + 2], c.T[o + 3], R, tPos, 3 * v);
+    tU[v] = c.U[j * TM + mm]; tJ[v] = j; v++;
+  }
+  tGeo.attributes.position.needsUpdate = tGeo.attributes.aU.needsUpdate = tGeo.attributes.aJ.needsUpdate = true;
+  for (const m of [lineMat, ptsMat, tMat, beadMat]) m.uniforms.uT.value = t;
+  lineMat.uniforms.uFade.value = s.fade * s.alpha;
+  ptsMat.uniforms.uFade.value = s.fade * s.alpha * s.alpha;
+  tMat.uniforms.uFade.value = beadMat.uniforms.uFade.value = s.fade * s.tendrilFade;
+  tendrils.visible = beads.visible = s.tendrilFade > 0.001;
+  starMat.opacity = s.fade;
+  bloom.strength = s.bloom;
+  camera.position.set(TARGET.x + s.dist * Math.sin(s.orbit), TARGET.y, TARGET.z + s.dist * Math.cos(s.orbit));
+  camera.lookAt(TARGET);
+  composer.render();
+}
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+window.__ready = true;
+
+if (!RENDER) {
+  let t = +qs.get('t') || 0, playing = true, last = performance.now();
+  const scrub = document.getElementById('scrub'), tl = document.getElementById('tl'), btn = document.getElementById('play');
+  scrub.oninput = () => { t = +scrub.value; };
+  btn.onclick = () => { playing = !playing; btn.textContent = playing ? 'pause' : 'play'; };
+  (function loop(now) {
+    if (playing) t = (t + (now - last) / 1000) % DURATION;
+    last = now; scrub.value = t; tl.textContent = t.toFixed(2) + ' s';
+    renderAt(t); requestAnimationFrame(loop);
+  })(last);
+  addEventListener('resize', () => location.reload());
+}
+</script>
+</body>
+</html>

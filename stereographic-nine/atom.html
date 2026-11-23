@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S³ World · Atom — the nine as an electron spin state</title>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<script type="module">
+import { createWorld, hopfFiber, bloch, rotate4, TAU } from './lib/s3-engine.js';
+
+let fibers, nucleus, cloud, blochGroup, blochLine, blochPos, mark9, markB;
+const STRIDE = 3;            // every 3rd sample of the nine is mapped to the Bloch sphere
+const BLOCH_R = 1.1;
+const T4 = [0, 0, 0, 0];
+
+createWorld({
+  title: 'ATOM · SPINOR ON S³',
+  sub: 'An electron spin state ψ = (ψ₁, ψ₂) with |ψ₁|² + |ψ₂|² = 1 IS a point of S³. The nine is a path of spin states.',
+  accent: '#b48cff',
+  bg: '#04020c',
+  palette: ['#5a0a8a', '#4a5cff', '#7fe6ff', '#ffffff'],
+  bloom: 0.9,
+  camera: { pos: [0.9, -0.9, 10], target: [0.9, -0.9, 0] },
+  spinPlanes: ['prec', 'zw', 'xw', 'yw'],
+  spin: { plane: 'prec', speed: 40 },
+  controls: [{ id: 'trace', label: 'state-tracer speed', min: 0, max: 0.2, step: 0.005, value: 0.04 }],
+  controlsLegend: 'Spin state',
+  toggles: [{ id: 'fib', label: 'Hopf fibration (state circles)', checked: true },
+            { id: 'blo', label: 'Bloch sphere (Hopf image)', checked: true },
+            { id: 'cld', label: '1s electron cloud', checked: true }],
+  caption: `
+    <h2>Why S³ shows up in an atom</h2>
+    A spin-½ electron's state is two complex numbers ψ = (ψ₁, ψ₂) with |ψ₁|² + |ψ₂|² = 1. Writing
+    ψ₁ = x+iy and ψ₂ = z+iw gives x²+y²+z²+w² = 1: <b>the space of spin states is exactly S³</b>.
+    The rotations acting on it, SU(2), are S³ too.<br><br>
+    Physics can't see a state's overall phase, so all states e<sup>it</sup>ψ are the same <i>physical</i>
+    state. Each such set is one circle on S³, a <b>Hopf fibre</b>, and the <b>Hopf map</b> sends each
+    circle to a single point of the <b>Bloch sphere</b> (right). The faint linked circles are those
+    fibres. Under the Hopf map the nine becomes a cap loop plus a meridian stroke: a nine on the Bloch
+    sphere as well.<br><br>
+    <b>Larmor spin</b> (default) is precession in a magnetic field: ψ₁ → e<sup>−iψ/2</sup>ψ₁,
+    ψ₂ → e<sup>+iψ/2</sup>ψ₂. Watch the HUD. At 360° the Bloch picture is back where it started, but the
+    state is <b>−ψ</b>, the antipodal point of S³, so the shape in ℝ³ is different. Only at
+    <b>720°</b> does it return. This is the measured 4π-periodicity of spinors (neutron interferometry, 1975).
+    <div class="honest">Honest scope: S³ here is the electron's <i>state space</i>, not physical space;
+    the electron doesn't have a 4D shape. Nucleus and cloud are schematic and not to scale.</div>`,
+  setup(ctx) {
+    const { THREE, scene, nine4 } = ctx;
+    scene.add(new THREE.AmbientLight(0x6070a0, 0.6));
+    const pl = new THREE.PointLight(0xffffff, 40); pl.position.set(2, 3, 4); scene.add(pl);
+
+    nucleus = new THREE.Group();
+    const geo = new THREE.SphereGeometry(0.065, 24, 16);
+    const pm = new THREE.MeshStandardMaterial({ color: 0xff5a7a, emissive: 0x401020, roughness: 0.4 });
+    const nm = new THREE.MeshStandardMaterial({ color: 0x9aaad0, emissive: 0x101830, roughness: 0.5 });
+    for (let i = 0; i < 12; i++) {
+      const m = new THREE.Mesh(geo, i % 2 ? pm : nm);
+      const u = Math.random() * 2 - 1, a = Math.random() * TAU, r = 0.1 * Math.cbrt(Math.random());
+      m.position.set(r * Math.sqrt(1 - u * u) * Math.cos(a), r * Math.sqrt(1 - u * u) * Math.sin(a), r * u);
+      nucleus.add(m);
+    }
+    scene.add(nucleus);
+
+    const C = 5000, cp = new Float32Array(C * 3);
+    for (let i = 0; i < C; i++) {             // |ψ_1s|² ∝ e^{-2r/a}: sample r from a Gamma(3) radial law
+      const r = -0.12 * Math.log(Math.random() * Math.random() * Math.random());
+      const u = Math.random() * 2 - 1, a = Math.random() * TAU;
+      cp.set([r * Math.sqrt(1 - u * u) * Math.cos(a), r * Math.sqrt(1 - u * u) * Math.sin(a), r * u], i * 3);
+    }
+    const cg = new THREE.BufferGeometry(); cg.setAttribute('position', new THREE.BufferAttribute(cp, 3));
+    cloud = new THREE.Points(cg, new THREE.PointsMaterial({ color: 0x7a8cff, size: 0.012, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false }));
+    scene.add(cloud);
+
+    const loops = [];
+    [0.55, 1.1, 1.65, 2.2].forEach((eta, s) => { for (let j = 0; j < 14; j++) loops.push(hopfFiber(eta, TAU * j / 14 + s * 0.3, 180)); });
+    fibers = ctx.track(new ctx.Curves4D(loops, { alpha: 0.09, hot: 0.5 }));
+    scene.add(fibers.obj);
+
+    blochGroup = new THREE.Group(); blochGroup.position.set(4.3, 0.9, 0);
+    const wire = [];
+    for (let l = 1; l < 6; l++) { const th = Math.PI * l / 6;            // latitudes
+      for (let j = 0; j < 64; j++) { const a = TAU * j / 64, b = TAU * (j + 1) / 64;
+        wire.push(Math.sin(th) * Math.cos(a), Math.cos(th), Math.sin(th) * Math.sin(a), Math.sin(th) * Math.cos(b), Math.cos(th), Math.sin(th) * Math.sin(b)); } }
+    for (let m = 0; m < 6; m++) { const a = Math.PI * m / 6;               // meridians
+      for (let j = 0; j < 64; j++) { const p = TAU * j / 64, q = TAU * (j + 1) / 64;
+        wire.push(Math.sin(p) * Math.cos(a), Math.cos(p), Math.sin(p) * Math.sin(a), Math.sin(q) * Math.cos(a), Math.cos(q), Math.sin(q) * Math.sin(a)); } }
+    wire.push(0, -1.25, 0, 0, 1.25, 0);
+    const wg = new THREE.BufferGeometry(); wg.setAttribute('position', new THREE.Float32BufferAttribute(wire.map(v => v * BLOCH_R), 3));
+    blochGroup.add(new THREE.LineSegments(wg, new THREE.LineBasicMaterial({ color: 0x4a5a90, transparent: true, opacity: 0.35 })));
+    blochPos = new Float32Array(Math.ceil(nine4.N / STRIDE) * 3);
+    const bg = new THREE.BufferGeometry(); bg.setAttribute('position', new THREE.BufferAttribute(blochPos, 3));
+    blochLine = new THREE.LineLoop(bg, new THREE.LineBasicMaterial({ color: 0x9fe8ff, transparent: true, opacity: 0.9 }));
+    blochLine.frustumCulled = false;
+    blochGroup.add(blochLine);
+    markB = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    blochGroup.add(markB);
+    scene.add(blochGroup);
+    mark9 = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    scene.add(mark9);
+  },
+  update(ctx) {
+    const { nine4, R, T, U, t, ninePos } = ctx;
+    fibers.obj.visible = T.fib; cloud.visible = T.cld; blochGroup.visible = T.blo;
+    nucleus.rotation.y += ctx.dt * 0.3;
+    const B = [0, 0, 0];
+    if (T.blo) {
+      // Bloch-sphere axes: state |0⟩ (ψ₂ = 0) at the top, so put the Hopf z-component on screen-y.
+      for (let i = 0, o = 0; i < nine4.N; i += STRIDE, o += 3) {
+        rotate4(nine4.x[i], nine4.y[i], nine4.z[i], nine4.w[i], R, T4);
+        bloch(T4[0], T4[1], T4[2], T4[3], B);
+        blochPos[o] = B[0] * BLOCH_R; blochPos[o + 1] = B[2] * BLOCH_R; blochPos[o + 2] = B[1] * BLOCH_R;
+      }
+      blochLine.geometry.attributes.position.needsUpdate = true;
+    }
+    const idx = Math.floor(((t * U.trace) % 1) * nine4.N);
+    mark9.position.set(ninePos[idx * 3], ninePos[idx * 3 + 1], ninePos[idx * 3 + 2]);
+    rotate4(nine4.x[idx], nine4.y[idx], nine4.z[idx], nine4.w[idx], R, T4);
+    bloch(T4[0], T4[1], T4[2], T4[3], B);
+    markB.position.set(B[0] * BLOCH_R, B[2] * BLOCH_R, B[1] * BLOCH_R);
+  },
+  hud: ctx => {
+    if (ctx.spinPlane !== 'prec') return `Larmor off: rotating in ${ctx.spinPlane} (not a physical spin rotation)`;
+    const turns = Math.floor(ctx.spin / 360) % 2;
+    return `Larmor angle mod 720° = <b>${(ctx.spin % 720).toFixed(0)}°</b> → state <b>${turns ? '−ψ (same Bloch point, different spinor)' : '+ψ'}</b>`;
+  },
+});
+</script>
+</body>
+</html>

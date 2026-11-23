@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S³ World · Sun — the nine as a Hopf flux rope</title>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<script type="module">
+import { createWorld, hopfFiber, TAU } from './lib/s3-engine.js';
+
+let sunMat, corona, ropes;
+
+createWorld({
+  title: 'SUN · HOPF FLUX ROPE',
+  sub: 'The nine as a twisted magnetic flux rope wrapped around the solar core, erupting as a CME-like tail.',
+  accent: '#ffb347',
+  bg: '#070200',
+  palette: ['#3a0618', '#ff2f6a', '#ffb347', '#fff6e0'],   // H-alpha red head → gold → white tail
+  bloom: 0.75,
+  controls: [
+    { id: 'tori', label: 'flux surfaces (nested tori)', min: 1, max: 6, step: 1, value: 3 },
+    { id: 'gran', label: 'granulation speed', min: 0, max: 3, step: 0.05, value: 1 },
+  ],
+  controlsLegend: 'Solar magnetic field',
+  toggles: [{ id: 'ropes', label: 'Kamchatnov–Hopf field lines', checked: true },
+            { id: 'cor', label: 'corona glow', checked: true }],
+  caption: `
+    <h2>Why S³ shows up in the Sun</h2>
+    <b>Kamchatnov–Hopf field</b> (1982): an exact solution of ideal magnetohydrodynamics whose magnetic
+    field lines are <b>Hopf fibres</b>, the linked great circles of S³, carried into ℝ³ by exactly this
+    stereographic projection. Every pair of field lines links once, so the field has nonzero
+    <b>magnetic helicity</b>, a quantity plasma conserves very well.<br><br>
+    The faint linked circles are those field lines on nested flux tori. The nine's coiled head lies on the
+    innermost torus, wrapped <b>toroidally</b> around the core, the same direction the solar dynamo winds
+    its field. Its tail is the flux rope reaching for the 4D pole, which in 3D reads as an eruption
+    (coronal-mass-ejection flux ropes are twisted, helical structures).
+    <div class="honest">Honest scope: the Sun's real field is turbulent and only <i>locally</i> resembles
+    Hopf-type linked flux. The 4D picture is a faithful map of that field topology, not a claim that the
+    Sun contains a 4D object. The 0.5 radius sphere is schematic, not to scale.</div>`,
+  setup(ctx) {
+    const { THREE, scene } = ctx;
+    sunMat = new THREE.ShaderMaterial({
+      uniforms: { uT: { value: 0 } },
+      vertexShader: `varying vec3 vN, vP;
+        void main(){ vN = normalize(normalMatrix*normal); vP = position;
+          gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `uniform float uT; varying vec3 vN, vP;
+        float h(vec3 p){ return fract(sin(dot(p, vec3(127.1,311.7,74.7)))*43758.5453); }
+        float n3(vec3 p){ vec3 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+          return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x), mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x), f.y),
+                     mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x), mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x), f.y), f.z); }
+        void main(){
+          float mu = clamp(vN.z, 0., 1.);                      // limb darkening
+          float g = 0.6*n3(vP*16. + uT*.35) + 0.4*n3(vP*37. - uT*.6);
+          vec3 c = mix(vec3(1.,.32,.04), vec3(1.,.86,.55), g);
+          gl_FragColor = vec4(c * (0.35 + 0.85*pow(mu, .45)) * 0.8, 1.);
+        }`,
+    });
+    scene.add(new THREE.Mesh(new THREE.SphereGeometry(0.5, 96, 64), sunMat));
+
+    const cv = document.createElement('canvas'); cv.width = cv.height = 256;
+    const g2 = cv.getContext('2d'), gr = g2.createRadialGradient(128, 128, 20, 128, 128, 128);
+    gr.addColorStop(0, 'rgba(255,170,80,0.45)'); gr.addColorStop(0.35, 'rgba(255,100,30,0.1)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g2.fillStyle = gr; g2.fillRect(0, 0, 256, 256);
+    corona = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+    corona.scale.set(1.7, 1.7, 1);
+    scene.add(corona);
+
+    ropes = [];
+    [0.5, 0.85, 1.2, 1.55, 1.9, 2.25].forEach((eta, s) => {
+      const loops = [];
+      for (let j = 0; j < 20; j++) loops.push(hopfFiber(eta, TAU * j / 20 + s * 0.4, 200));
+      const c = ctx.track(new ctx.Curves4D(loops, { alpha: 0.1, hot: 0.4 }));
+      scene.add(c.obj); ropes.push(c);
+    });
+  },
+  update(ctx) {
+    sunMat.uniforms.uT.value += ctx.dt * ctx.U.gran;
+    corona.visible = ctx.T.cor;
+    ropes.forEach((c, i) => { c.obj.visible = ctx.T.ropes && i < ctx.U.tori; });
+  },
+  hud: ctx => `field lines shown: <b>${ctx.T.ropes ? 20 * ctx.U.tori : 0}</b> (each pair linked once)`,
+});
+</script>
+</body>
+</html>

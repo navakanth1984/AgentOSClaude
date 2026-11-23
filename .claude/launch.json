@@ -28,6 +28,13 @@
       "port": 5174
     },
     {
+      "name": "stereographic-nine",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "stereographic-nine", "--no-clipboard"],
+      "autoPort": true,
+      "port": 5506
+    },
+    {
       "name": "articraft",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "articraft", "--no-clipboard"],
