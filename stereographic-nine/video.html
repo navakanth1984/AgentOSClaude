@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>UNKNOWN 9 — film timeline (v5: 3D/4D spectacle)</title>
+<title>UNKNOWN 9 — film timeline (v8: futuristic hologram look — IMAX 1.43:1, exact SO(4) / Hopf / Möbius motion)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=block">
 <style>
   html,body { margin:0; background:#000; overflow:hidden; }
@@ -18,19 +18,28 @@
 </script>
 </head>
 <body>
-<div id="bar"><button id="play">pause</button><input id="scrub" type="range" min="0" max="29" step="0.01" value="0"><span id="tl">0.00 s</span></div>
+<div id="bar"><button id="play">pause</button><input id="scrub" type="range" min="0" max="31" step="0.01" value="0"><span id="tl">0.00 s</span></div>
 <script type="module">
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { stereo, makeRot, DEG, TAU, QUARTER } from './lib/s3-engine.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { DEG, TAU, QUARTER } from './lib/s3-engine.js';
 
 const qs = new URLSearchParams(location.search);
 const RENDER = qs.has('render');
 const W = +qs.get('w') || innerWidth, H = +qs.get('h') || innerHeight;
-const DURATION = 29;
+const DURATION = 31;
+// ---------- IMAX scaling: the 16:9 cut is the reference; a taller frame keeps its horizontal field of view and
+// gains picture top and bottom (IMAX 1.43:1 = 4096×2864). Everything measured in pixels scales with HREF, the
+// height a 16:9 frame of the same width would have, so a 4K IMAX frame is the 1080p film with 2.1× the detail.
+const REF_ASP = 16 / 9, ASP = W / H;
+const WIDE = Math.max(1, REF_ASP / ASP);             // vertical field gain (1.243 at 1.43:1, 1 at 16:9)
+const HREF = W / REF_ASP;                            // equivalent 16:9 height in pixels
+const PXS = Math.max(1, W / 1920);                   // pixel scale vs the 1080p reference
+const MATTE_ASP = 4096 / 2160;                       // IMAX digital 1.90:1, the letterbox inside the 1.43 frame
 if (RENDER) document.body.classList.add('render');
 
 // ---------- easing ----------
@@ -101,62 +110,150 @@ function buildCreature(P, L) {
   return { x, y, z, w, B, T, U, M };
 }
 
+// =====================================================================================================
+// EXACT 4D ALGEBRA
+// A point of S³ is a unit quaternion p = x + y·i + z·j + w·k. Every rotation of S³ is p ↦ q_L · p · q_R
+// for a pair of unit quaternions (SO(4) ≅ S³×S³/±1), and every conformal map of S³ is such a rotation
+// composed with a Lorentz boost of the light cone in ℝ⁴'¹ (SO(4,1)). Nothing below is an ad-hoc angle mix.
+// =====================================================================================================
+const qmul = (a, b) => [
+  a[0] * b[0] - a[1] * b[1] - a[2] * b[2] - a[3] * b[3],
+  a[0] * b[1] + a[1] * b[0] + a[2] * b[3] - a[3] * b[2],
+  a[0] * b[2] - a[1] * b[3] + a[2] * b[0] + a[3] * b[1],
+  a[0] * b[3] + a[1] * b[2] - a[2] * b[1] + a[3] * b[0]];
+const qexp = (th, u) => { const s = Math.sin(th); return [Math.cos(th), s * u[0], s * u[1], s * u[2]]; };   // e^{θu}, |u| = 1, u ⟂ 1
+const unit3 = v => { const l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; };
+function qslerp(a, b, u) {                                   // geodesic on S³ (no sign flip: endpoints are chosen jointly)
+  const d = Math.min(1, Math.max(-1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3]));
+  const om = Math.acos(d), s = Math.sin(om);
+  if (s < 1e-6) return a.map((c, i) => lerp(c, b[i], u));
+  const ka = Math.sin((1 - u) * om) / s, kb = Math.sin(u * om) / s;
+  return a.map((c, i) => ka * c + kb * b[i]);
+}
+const ONE = [1, 0, 0, 0], PHI = (1 + Math.sqrt(5)) / 2;
+
+/** The group element as a 4×4 matrix (images of 1, i, j, k) + a boost of rapidity η towards the point n ∈ S³. */
+function makeG(L, R, eta = 0, n = [0, 0, 0, 1]) {
+  const m = new Float64Array(16);
+  for (let c = 0; c < 4; c++) {
+    const e = [0, 0, 0, 0]; e[c] = 1;
+    const v = qmul(qmul(L, e), R);
+    for (let r = 0; r < 4; r++) m[4 * r + c] = v[r];
+  }
+  return { m, L, R, eta, n, ch: Math.cosh(eta), sh: Math.sinh(eta) };
+}
+const compose = (A, B) => makeG(qmul(A.L, B.L), qmul(B.R, A.R), A.eta, A.n);   // A∘B (B's boost is dropped: drifts have none)
+
+/**
+ * Rotate, boost, then stereographically project from the pole k:  σ(p) = (x, y, z) / (1 − w).
+ * Boost (exact, stays on S³):  p ↦ ( p + ((cosh η − 1)(p·n) + sinh η) n ) / (cosh η + sinh η (p·n)).
+ * Points flow from −n to n; with n = k it is a pure zoom by e^η on screen.
+ */
+function proj(x, y, z, w, G, out, o) {
+  const m = G.m;
+  let X = m[0] * x + m[1] * y + m[2] * z + m[3] * w;
+  let Y = m[4] * x + m[5] * y + m[6] * z + m[7] * w;
+  let Z = m[8] * x + m[9] * y + m[10] * z + m[11] * w;
+  let Q = m[12] * x + m[13] * y + m[14] * z + m[15] * w;
+  if (G.sh !== 0) {
+    const n = G.n, s = X * n[0] + Y * n[1] + Z * n[2] + Q * n[3];
+    const k = (G.ch - 1) * s + G.sh, T = G.ch + G.sh * s;
+    X = (X + k * n[0]) / T; Y = (Y + k * n[1]) / T; Z = (Z + k * n[2]) / T; Q = (Q + k * n[3]) / T;
+  }
+  const d = Math.max(1 - Q, 1e-5);
+  out[o] = X / d; out[o + 1] = Y / d; out[o + 2] = Z / d;
+  return Q;
+}
+
 /**
  * TIMELINE (every visual is a pure function of t)
- *  0–2   a faraway sunburst nine fades in      2–9  dolly in: it grows to fill the frame
- *  9–12  the creature at full size: coils roll, the tail lunges, lightning cracks
- * 12–22  unravel into the spiraling mess       22–24 drift, fade to black
+ *  0–9    a faraway sunburst nine fades in, dolly in                9–12  the creature, a 10° isoclinic breath
+ * 12.2–16.4  I   HOPF FLOW: q_L = e^{θu}, θ: 0 → 2π. Every point runs once round its Hopf fibre; at θ = π the
+ *              nine is its own antipode −p (inside out). The trails are exact fibre arcs → the nine's Hopf torus.
+ * 16.4–24.9  II  DOUBLE ROTATION: q_L = e^{ω t u_L}, q_R = e^{(ω/φ) t u_R}. Golden ratio ⇒ the orbit never closes.
+ * 21.0–24.8  III CONFORMAL BOOST (SO(4,1)): sink swings from the pole (zoom) to the side (everything pours into it)
+ * 24.0–25.6  IV  GEODESIC RETURN: slerp (q_L, q_R) → ±(1, 1) on S³×S³, η → 0, the nine snaps back
+ * 25.6–31    title lockup (as v5, +2 s); the 4D tail-whip is the exact zw rotation (e^{iα/2}, e^{−iα/2})
  */
+const T_HOPF0 = 12.2, T_HOPF1 = 16.4, T_DBL = 16.4, T_BST0 = 21.0, T_BST1 = 24.8, T_RET0 = 24.0, T_FREEZE = 24.9;
+const U_BREATH = unit3([0.3, 1, 0.2]), U_HOPF = unit3([0.25, 1, 0.55]);
+const U_L = unit3([0.6, 0.2, 1]), U_R = unit3([1, -0.7, 0.35]), N_SIDE = unit3([0.8, -0.35, 0.45]);
+const OMEGA = 1.05;
+function rawGroup(t) {
+  const beta = 10 * DEG * Math.sin(Math.PI * smoother(seg(t, 9.3, 12.3)));
+  const thH = TAU * smoother(seg(t, T_HOPF0, T_HOPF1));
+  const d = Math.max(0, Math.min(t, T_FREEZE) - T_DBL), tau = d < 1.2 ? d * d / 2.4 : d - 0.6;   // C¹ spin-up
+  const thL = OMEGA * tau, thR = thL / PHI;
+  const L = qmul(qexp(thL, U_L), qmul(qexp(thH, U_HOPF), qexp(beta, U_BREATH)));
+  const R = qexp(thR, U_R);
+  const eta = 1.55 * Math.sin(Math.PI * seg(t, T_BST0, T_BST1)) ** 2;
+  const psi = lerp(15, 110, smooth(seg(t, T_BST0, T_BST1))) * DEG;          // sink: from the pole k towards the side
+  const n = [Math.sin(psi) * N_SIDE[0], Math.sin(psi) * N_SIDE[1], Math.sin(psi) * N_SIDE[2], Math.cos(psi)];
+  return { L, R, eta, n, thH, thL, thR, psi };
+}
+// (L, R) and (−L, −R) are the same rotation: pick the nearer identity once, so the return is the shorter geodesic
+const SIGN = (() => { const g = rawGroup(T_FREEZE); return Math.acos(g.L[0]) + Math.acos(g.R[0]) <= Math.PI ? 1 : -1; })();
+
 function shotMess(t) {
-  const u = smoother(seg(t, 12, 22));
+  const u = smoother(seg(t, 16.4, 23.5));
   const strike = Math.max(0, Math.sin(1.25 * t - 0.6)) ** 5;      // periodic lunge
   const P = {
     ...HEAD,
-    pin:  lerp(1, 0, smooth(seg(t, 12, 15))),
+    pin:  lerp(1, 0, smooth(seg(t, 16.4, 19.4))),
     curl: lerp(HEAD.curl + 16 * strike, HEAD.curl - 1260, u),
     eps:  lerp(HEAD.eps, 0.18, u),
-    amax: lerp(HEAD.amax + 0.035 * strike, 0.95, smooth(seg(t, 13, 20))),
-  };
-  const ang = {
-    xy: 0,
-    xw: (lerp(0, 250, smooth(seg(t, 13, 24))) + 16 * Math.sin(Math.PI * smoother(seg(t, 9.3, 12.3)))) * DEG,
-    yw: lerp(0, 130, smooth(seg(t, 15, 24))) * DEG,
-    zw: lerp(0, 200, u) * DEG,
+    amax: lerp(HEAD.amax + 0.035 * strike, 0.95, smooth(seg(t, 17.4, 22.4))),
   };
   const dolly = t < 9 ? logLerp(420, 19, smoother(seg(t, 2, 9))) : lerp(19, 17.8, smooth(seg(t, 9, 12)));
-  const dist = t < 12 ? dolly : lerp(17.8, 22, smooth(seg(t, 12, 22)));
+  const dist = t < 12 ? dolly : lerp(17.8, 23, smooth(seg(t, 12, 15))) - 1.2 * smooth(seg(t, 19, 24));
   const reveal = smoother(seg(t, 1.5, 9.4));
-  const orbit = (-62 * (1 - reveal) + 42 * Math.sin(Math.PI * seg(t, 9.6, 13)) + lerp(0, 55, smooth(seg(t, 13, 24)))) * DEG;
-  const elev = (26 * (1 - reveal) - 24 * Math.sin(Math.PI * seg(t, 9.6, 13)) + 24 * Math.sin(Math.PI * seg(t, 13, 22))) * DEG;
-  // the S³ lattice: its own slow 4D drift so the nested tori keep turning inside out around the creature
-  const lat = { xw: 0.21 * t, yw: 0.13 * t + 0.8, zw: 0.07 * t, glow: 1 };
+  const orbit = (-62 * (1 - reveal) + 42 * Math.sin(Math.PI * seg(t, 9.6, 13)) + lerp(0, 70, smooth(seg(t, 13, 25)))) * DEG;
+  const elev = (26 * (1 - reveal) - 24 * Math.sin(Math.PI * seg(t, 9.6, 13)) + 28 * Math.sin(Math.PI * seg(t, 13, 24))) * DEG;
   const fade = smooth(seg(t, 0, 1.5));
-  const bloom = 1.0 + 0.2 * Math.sin(t * 2.1) + 0.35 * strike - 0.5 * u;
-  const alpha = lerp(1, 0.38, smooth(seg(t, 13, 18)));
+  const bloom = 1.0 + 0.2 * Math.sin(t * 2.1) + 0.35 * strike - 0.5 * u - 0.4 * Math.sin(Math.PI * seg(t, 12.2, 16.8));
+  const alpha = lerp(1, 0.42, smooth(seg(t, 17, 21)));
   const L = {
     t, phFlow: t * 2.6, thFlow: t * 0.35,
     breathA: 0.06, breathK: 6, breathW: 5.5,
     whipA: 9 * DEG, whipK: 10, whipW: 7.5,
     tendril: 1 + 0.35 * strike,
   };
-  return { P, ang, dist, orbit, elev, lat, fade, bloom, alpha, L, strike, tendrilFade: 1 - smooth(seg(t, 16.5, 20.5)) };   // tendrils ride the unravel into the spiral, then burn out
+  // trail = exact past orbit of each point; long during the Hopf flow (→ fibres), shorter in the double rotation
+  const trail = 3.2 * smooth(seg(t, 12.2, 13.6)) - 1.8 * smooth(seg(t, 16, 17.5)) - 0.4 * smooth(seg(t, 21, 22.5)) - 1.0 * smooth(seg(t, 24, 25.2));
+  return { P, dist, orbit, elev, lat: { glow: 1 }, fade, spread: lerp(0.04, 1, smoother(seg(t, 2.5, 9.5))), bloom, alpha, L, strike, trail: Math.max(0, trail),
+           tendrilFade: 1 - smooth(seg(t, 19.5, 22.5)) };
 }
 
 /**
- * FINAL 5 s (22–27): the mess implodes back into the nine on the LEFT, "UNKNOWN" burns in on its RIGHT,
+ * FINAL (24–31): the mess implodes back into the nine on the LEFT, "UNKNOWN" burns in on its RIGHT,
  * then the two trade places (the nine whips its tail through the 4th dimension while it crosses) so the
- * lockup reads "UNKNOWN 9", and "COMING SOON" flickers on underneath.
+ * lockup reads "UNKNOWN 9", and "COMING SOON" + the credit flicker on underneath.
  */
 const H1 = n => { const s = Math.sin(n) * 43758.5453; return s - Math.floor(s); };
 const pulse = (t, c, w) => Math.exp(-(((t - c) / w) ** 2));
-const T_SNAP = 23.6, T_SWAP0 = 24.8, T_SWAP1 = 25.75, T_CRED = 26.9, T_END = 28.8;
+const T_SNAP = 25.6, T_SWAP0 = 26.8, T_SWAP1 = 27.75, T_CRED = 28.9, T_END = 30.8;
 const NINE_X0 = -0.50, NINE_X1 = 0.55;            // screen x (NDC) of the nine: left of the word, then right
 const UNK_X0 = 0.30, UNK_X1 = -0.26;               // screen x of "UNKNOWN": right of the nine, then left
-const TAN = Math.tan(20 * DEG);                     // half of the 40° vertical FOV
+const TAN = Math.tan(20 * DEG) * WIDE;              // half-height of the view at unit distance (40° vertical FOV at 16:9)
+const I3 = [1, 0, 0];
+
+/** the exact group element at time t (pure) */
+function groupAt(t) {
+  const g = rawGroup(t);
+  const r = smoother(seg(t, T_RET0, T_SNAP));
+  let L = g.L, R = g.R, eta = g.eta;
+  if (r > 0) { const id = [SIGN, 0, 0, 0]; L = qslerp(L, id, r); R = qslerp(R, id, r); eta *= 1 - r; }
+  const al = TAU * smoother(seg(t, T_SWAP0, T_SWAP1));          // zw rotation by α = (e^{iα/2}, e^{−iα/2})
+  if (al > 0) { L = qmul(qexp(al / 2, I3), L); R = qmul(R, qexp(-al / 2, I3)); }
+  const G = makeG(L, R, eta, g.n);
+  G.info = { ...g, r, eta };
+  return G;
+}
+
 function shot(t) {
   const s = shotMess(t);
   s.nx = 0; s.shake = 0; s.title = null;
-  const r = smoother(seg(t, 22, T_SNAP));
+  const r = smoother(seg(t, T_RET0, T_SNAP));
   if (r <= 0) return s;
   const k = s.strike, P = s.P;
   P.pin  = lerp(P.pin, 1, r);
@@ -164,15 +261,10 @@ function shot(t) {
   P.eps  = lerp(P.eps, HEAD.eps, r);
   P.amax = lerp(P.amax, HEAD.amax + 0.035 * k, r);
   const sw = smoother(seg(t, T_SWAP0, T_SWAP1));
-  // every 4D rotation winds forward to a full turn (= identity); zw adds one more turn during the swap:
-  // zw keeps the Clifford-torus head in place but swings the tail off the pole and back - a 4D tail-whip
-  s.ang.xw = lerp(s.ang.xw, TAU, r);
-  s.ang.yw = lerp(s.ang.yw, 0, r);
-  s.ang.zw = lerp(s.ang.zw, TAU, r) + TAU * sw;
-  s.dist  = lerp(s.dist, lerp(26.5, 24.6, smooth(seg(t, T_SNAP, 29))), r);
-  s.orbit = lerp(s.orbit, 0, r) + 9 * DEG * Math.sin(0.9 * (t - T_SNAP)) * smooth(seg(t, T_SNAP, 25)) * (1 - 0.6 * smooth(seg(t, T_SWAP0, T_SWAP1)));
-  s.elev  = lerp(s.elev, 0, r) + 4 * DEG * Math.sin(0.7 * (t - T_SNAP)) * smooth(seg(t, T_SNAP, 25));
-  s.lat.glow = 1 - 0.55 * smooth(seg(t, 23.3, 24.4));
+  s.dist  = lerp(s.dist, lerp(26.5, 24.6, smooth(seg(t, T_SNAP, DURATION))), r);
+  s.orbit = lerp(s.orbit, 0, r) + 9 * DEG * Math.sin(0.9 * (t - T_SNAP)) * smooth(seg(t, T_SNAP, T_SNAP + 1.4)) * (1 - 0.6 * sw);
+  s.elev  = lerp(s.elev, 0, r) + 4 * DEG * Math.sin(0.7 * (t - T_SNAP)) * smooth(seg(t, T_SNAP, T_SNAP + 1.4));
+  s.lat.glow = 1 - 0.55 * smooth(seg(t, 25.3, 26.4));
   s.nx    = lerp(0, NINE_X0, r) + (NINE_X1 - NINE_X0) * sw;
   s.alpha = lerp(s.alpha, 1, r);
   s.tendrilFade = lerp(s.tendrilFade, 1, r);
@@ -181,17 +273,16 @@ function shot(t) {
   if (t > T_SWAP1 + 0.3) s.bloom = Math.min(s.bloom, 1.4 + 0.8 * pulse(t, T_END, 0.07));   // keep the lockup legible on lunges
   s.fade *= 1 - smooth(seg(t, T_END + 0.05, DURATION));        // hit, then cut to black
   s.shake = 0.35 * pulse(t, T_SNAP + 0.05, 0.16) + 0.22 * pulse(t, T_SWAP1 + 0.04, 0.13) + 0.3 * pulse(t, T_END, 0.12);
-  const spike = t > 24.5 && H1(Math.floor(t * 9) * 7.7) > 0.86 ? 0.55 : 0;   // stray glitch hits
-  const soonOn = smooth(seg(t, 25.6, 26.35)), credOn = smooth(seg(t, 26.5, 27.3));
+  const spike = t > 26.5 && H1(Math.floor(t * 9) * 7.7) > 0.86 ? 0.55 : 0;   // stray glitch hits
+  const soonOn = smooth(seg(t, 27.6, 28.35)), credOn = smooth(seg(t, 28.5, 29.3));
   const endHit = pulse(t, T_END, 0.12);
   s.title = {
-    unk: { reveal: smooth(seg(t, 23.35, 24.55)), x: lerp(UNK_X0, UNK_X1, sw), beat: 1 + 0.35 * k,
-           glitch: Math.min(1.2, 0.12 + 0.9 * (1 - smooth(seg(t, 23.35, 24.7))) + 0.8 * pulse(t, (T_SWAP0 + T_SWAP1) / 2, 0.22)
+    unk: { reveal: smooth(seg(t, 25.35, 26.55)), x: lerp(UNK_X0, UNK_X1, sw), beat: 1 + 0.35 * k,
+           glitch: Math.min(1.2, 0.12 + 0.9 * (1 - smooth(seg(t, 25.35, 26.7))) + 0.8 * pulse(t, (T_SWAP0 + T_SWAP1) / 2, 0.22)
                               + 0.8 * pulse(t, T_SWAP1, 0.07) + spike + 0.5 * pulse(t, T_CRED, 0.08) + 1.1 * endHit) },
-    // failing-neon ignition: random frames drop out until it holds
     soon: { reveal: soonOn, beat: H1(Math.floor(t * 22) * 3.3) < soonOn * 1.15 ? 1 : 0.12, glitch: 0.1 + 0.6 * (1 - soonOn) + spike * 0.6 + endHit },
     cred: { reveal: credOn, beat: H1(Math.floor(t * 19) * 5.1 + 2) < credOn * 1.15 ? 1 : 0.1, glitch: 0.1 + 0.7 * (1 - credOn) + spike * 0.6 + endHit },
-    embers: smooth(seg(t, 23.4, 24.4)),
+    embers: smooth(seg(t, 25.4, 26.4)),
   };
   return s;
 }
@@ -202,7 +293,7 @@ renderer.setPixelRatio(1);
 renderer.setSize(W, H);
 document.body.prepend(renderer.domElement);
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(40, W / H, 0.01, 8000);
+const camera = new THREE.PerspectiveCamera(2 * Math.atan(TAN) / DEG, W / H, 0.01, 8000);
 const TARGET = new THREE.Vector3(1.6, -2.7, 0);
 const NINE_OFS_X = -0.08;                               // screen x (NDC) of the nine's centre when the camera looks at TARGET
 
@@ -216,20 +307,20 @@ const VERT = `attribute float aW, aS, aB; uniform float uClip, uSize, uPix, uT, 
     gl_PointSize = uSize*uPix/max(-mv.z,.1) * (1. + 1.8*vSpark); }`;
 const RAMP = `uniform float uAlpha, uFade, uT; varying float vW, vFade, vS, vSpark, vB, vDG;
   vec3 ramp(float w){ float t = clamp(w*.5+.5, 0., 1.);
-    vec3 a=vec3(.32,.12,1.), b=vec3(.10,.88,1.), c=vec3(1.,.52,.12), d=vec3(1.,.96,.88);
+    vec3 a=vec3(.30,.10,1.), b=vec3(.02,.85,1.), c=vec3(1.,.12,.70), d=vec3(.45,.80,1.);   // UV > cyan > magenta > ice
     if(t<.5) return mix(a,b,t/.5); if(t<.86) return mix(b,c,(t-.5)/.36); return mix(c,d,(t-.86)/.14); }
   vec3 live(float w, float s){
     vec3 c = ramp(w + .24*sin(6.2832*3.*s - 1.7*uT));
     c = mix(c, c.brg, .16*(.5 + .5*sin(.45*uT)));
     float pk = pow(.5 + .5*sin(6.2832*22.*s - 7.5*uT), 6.);
-    vec3 head = c * (.72 + 1.15*pk);
+    vec3 head = c * (.62 + 1.0*pk);   // v8: a little less energy so additive neon keeps its hue
     // the stem: a white-hot spine with ember pulses running down to the tip
     float sp = pow(.5 + .5*sin(6.2832*60.*s - 11.*uT), 4.);
-    vec3 spine = mix(vec3(1.,.25,.05), vec3(1.,.9,.75), .35 + .65*sp);
+    vec3 spine = mix(vec3(.85,.06,.72), vec3(.40,.82,1.), .35 + .65*sp);      // plasma spine: magenta pulses in ice
     return mix(head, spine*1.25, smoothstep(.03, .35, vB)); }`;
 const mk = (frag, alpha, size) => new THREE.ShaderMaterial({
   vertexShader: VERT, fragmentShader: RAMP + frag, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-  uniforms: { uClip: { value: 60 }, uSize: { value: size }, uPix: { value: H / 900 }, uAlpha: { value: alpha },
+  uniforms: { uClip: { value: 60 }, uSize: { value: size }, uPix: { value: HREF / 900 }, uAlpha: { value: alpha },
               uFade: { value: 1 }, uT: { value: 0 }, uFocus: { value: 20 } },
 });
 const lineMat = mk(`void main(){ gl_FragColor = vec4(live(vW, vS)*(.55+.9*max(vW,0.))*vDG, uAlpha*vFade*uFade); }`, 0.8, 0);
@@ -254,7 +345,7 @@ const TVERT = `attribute float aU, aJ; uniform float uClip, uFocus; varying floa
 const TFRAG = `uniform float uT, uAlpha, uFade; varying float vU, vJ, vFade, vDG;
   ${HASH}
   void main(){
-    vec3 blood = vec3(.42,0.,.02), ember = vec3(1.,.16,.03), hot = vec3(1.,.82,.62), violet = vec3(.55,.35,1.);
+    vec3 blood = vec3(.06,.02,.40), ember = vec3(.05,.62,1.), hot = vec3(.85,.96,1.), violet = vec3(1.,.18,.82);
     float pk = pow(.5 + .5*sin(6.2832*7.*vU - 9.*uT + vJ*11.), 8.);       // pulses racing to the claws
     vec3 c = mix(blood, ember, .3 + .7*vU) + hot*pk*.9;
     float bolt = step(.955, hash(floor(uT*18.) + vJ*37.));                 // lightning through one strand
@@ -281,7 +372,7 @@ const beadMat = new THREE.ShaderMaterial({
     'float r = length(gl_PointCoord-.5); if (r > .5) discard; float g = exp(-r*r*16.); ' +
     'gl_FragColor = vec4(c*g, uAlpha*vFade*uFade*g*(.45 + .55*smoothstep(0., .2, vU)));'),
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-  uniforms: { uClip: { value: 60 }, uPix: { value: H / 1080 }, uT: { value: 0 }, uAlpha: { value: 0.10 }, uFade: { value: 1 }, uFocus: { value: 20 } } });
+  uniforms: { uClip: { value: 60 }, uPix: { value: HREF / 1080 }, uT: { value: 0 }, uAlpha: { value: 0.10 }, uFade: { value: 1 }, uFocus: { value: 20 } } });
 const beads = new THREE.Points(tGeo, beadMat);
 beads.frustumCulled = false;
 scene.add(beads);
@@ -290,7 +381,7 @@ const tmp3 = new Float32Array(3);
 // ---------- S³ lattice: the head's own Clifford torus (α = π/4) + two nested Hopf tori ----------
 // Same projection as the creature. The Clifford ghost shares the creature's rotation (the head coil lies ON it);
 // the nested pair runs its own slow 4D drift, so as they pass the pole they balloon through the camera and turn inside out.
-const GU = 40, GV = 22, GS = 64, TORI = [QUARTER, QUARTER - 0.42, QUARTER + 0.42];
+const GU = 40, GV = 22, GS = 150, TORI = [QUARTER, QUARTER - 0.42, QUARTER + 0.42];
 const gVerts = TORI.length * (GU + GV) * GS * 2;
 const gPos = new Float32Array(gVerts * 3), gW = new Float32Array(gVerts), gK = new Float32Array(gVerts);
 const gGeo = new THREE.BufferGeometry();
@@ -298,7 +389,7 @@ gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
 gGeo.setAttribute('aW', new THREE.BufferAttribute(gW, 1));
 gGeo.setAttribute('aK', new THREE.BufferAttribute(gK, 1));
 const latMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-  uniforms: { uClip: { value: 70 }, uFocus: { value: 20 }, uA: { value: 0.05 }, uT: { value: 0 } },
+  uniforms: { uClip: { value: 52 }, uFocus: { value: 20 }, uA: { value: 0.05 }, uT: { value: 0 } },
   vertexShader: `attribute float aW, aK; uniform float uClip, uFocus; varying float vW, vK, vFade, vDG;
     void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); gl_Position = projectionMatrix*mv;
       vFade = 1. - smoothstep(uClip*.4, uClip, length(position)); vW = aW; vK = aK;
@@ -306,21 +397,30 @@ const latMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, 
   fragmentShader: `uniform float uA, uT; varying float vW, vK, vFade, vDG;
     void main(){
       vec3 cool = mix(vec3(.30,.12,1.), vec3(.1,.85,1.), clamp(vW*.5+.5, 0., 1.));      // violet → cyan by depth in w
-      vec3 c = mix(cool, vec3(1.,.35,.08), step(.5, vK) * (.5 + .5*sin(uT*1.3 + vK*2.)) * .6);
+      vec3 c = mix(cool, vec3(1.,.15,.75), step(.5, vK) * (.5 + .5*sin(uT*1.3 + vK*2.)) * .6);
       gl_FragColor = vec4(c*vDG, uA*vFade*(vK < .5 ? 1.4 : 1.)); }`,
 });
 const lattice = new THREE.LineSegments(gGeo, latMat);
 lattice.frustumCulled = false;
 scene.add(lattice);
+// a segment whose ends straddle the pole is a chord through ∞, not part of the curve: collapse it
+function cutLong(P, nVerts, maxLen) {
+  const m2 = maxLen * maxLen;
+  for (let v = 0; v < nVerts; v += 2) {
+    const a = 3 * v, b = a + 3, dx = P[b] - P[a], dy = P[b + 1] - P[a + 1], dz = P[b + 2] - P[a + 2];
+    if (dx * dx + dy * dy + dz * dz > m2) { P[b] = P[a]; P[b + 1] = P[a + 1]; P[b + 2] = P[a + 2]; }
+  }
+}
 function updateLattice(Rhead, Rdrift, breathe) {
   let o = 0;
   TORI.forEach((alpha, k) => {
     const R = k === 0 ? Rhead : Rdrift, al = k === 0 ? alpha * breathe : alpha;
     const ca = Math.cos(al), sa = Math.sin(al);
-    const put = (th, ph) => { gW[o] = stereo(ca * Math.cos(th), ca * Math.sin(th), sa * Math.cos(ph), sa * Math.sin(ph), R, gPos, 3 * o); gK[o] = k; o++; };
+    const put = (th, ph) => { gW[o] = proj(ca * Math.cos(th), ca * Math.sin(th), sa * Math.cos(ph), sa * Math.sin(ph), R, gPos, 3 * o); gK[o] = k; o++; };
     for (let u = 0; u < GU; u++) { const th = TAU * u / GU; for (let q = 0; q < GS; q++) { put(th, TAU * q / GS); put(th, TAU * (q + 1) / GS); } }
     for (let v = 0; v < GV; v++) { const ph = TAU * v / GV; for (let q = 0; q < GS; q++) { put(TAU * q / GS, ph); put(TAU * (q + 1) / GS, ph); } }
   });
+  cutLong(gPos, o, 6);
   gGeo.attributes.position.needsUpdate = gGeo.attributes.aW.needsUpdate = gGeo.attributes.aK.needsUpdate = true;
 }
 
@@ -332,19 +432,71 @@ for (let i = 0; i < S; i++) {
   const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, r = 900 + rnd() * 1800, q = Math.sqrt(1 - u * u);
   sp.set([r * q * Math.cos(a), r * q * Math.sin(a), r * u], i * 3);
   const k = 0.35 + 0.65 * rnd() ** 3, hue = rnd();
-  sc.set([k * (0.75 + 0.25 * hue), k * 0.85, k * (1.05 - 0.3 * hue)], i * 3);
+  sc.set([k * (0.55 + 0.25 * hue), k * 0.88, k * 1.1], i * 3);   // cold stars
 }
 const sg = new THREE.BufferGeometry();
 sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
 sg.setAttribute('color', new THREE.BufferAttribute(sc, 3));
-const starMat = new THREE.PointsMaterial({ size: 1.6 * H / 1080, sizeAttenuation: false, vertexColors: true, transparent: true });
+const starMat = new THREE.PointsMaterial({ size: 1.6 * HREF / 1080, sizeAttenuation: false, vertexColors: true, transparent: true });
 scene.add(new THREE.Points(sg, starMat));
 
 const composer = new EffectComposer(renderer);
 composer.setPixelRatio(1); composer.setSize(W, H);
 composer.addPass(new RenderPass(scene, camera));
 const bloom = new UnrealBloomPass(new THREE.Vector2(W, H), 1.0, 0.6, 0);
+// three r160 builds each blur kernel with σ = radius, truncated at 1σ (edge weight ≈ 0.6): effectively a separable
+// BOX filter, which turns every bright source into a square halo. Re-weight as a true Gaussian truncated at 2.5σ,
+// so the halo is round per point and the glow follows the outline of the nine.
+bloom.separableBlurMaterials.forEach(m => {
+  const kr = m.defines.KERNEL_RADIUS, sg = kr / 2.5, c = m.uniforms.gaussianCoefficients.value;
+  for (let i = 0; i < kr; i++) c[i] = Math.exp(-0.5 * i * i / (sg * sg)) / (2.5066 * sg);
+});
+// bloom mips are sized in pixels: run them at the 1080p-equivalent size so the halo keeps the same share of the frame
+const bloomSetSize = bloom.setSize.bind(bloom);
+bloom.setSize = (w, h) => bloomSetSize(Math.round(w / PXS), Math.round(h / PXS));
 composer.addPass(bloom);
+// IMAX expanded aspect ratio: a hard matte to 1.90:1 that drops away to the full 1.43:1 frame at the big moment
+const matte = new ShaderPass({ uniforms: { tDiffuse: { value: null }, uVis: { value: 1 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position, 1.); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float uVis; varying vec2 vUv;
+    void main(){ gl_FragColor = texture2D(tDiffuse, vUv) * step(abs(vUv.y - .5), uVis*.5); }` });
+// ---------- v8 hologram pass: RGB split, teal grade, scanlines, HUD geometry (no text), scan sweeps ----------
+const holo = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uC: { value: new THREE.Vector2(.5, .5) }, uR: { value: .2 }, uHud: { value: 0 },
+              uBr: { value: 0 }, uCA: { value: .0015 }, uSw: { value: -1 }, uRot: { value: 0 }, uSpin: { value: 0 },
+              uPx: { value: PXS / H }, uAsp: { value: W / H }, uLines: { value: 240 * WIDE }, uVis: { value: 1 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position, 1.); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform vec2 uC; uniform float uR, uHud, uBr, uCA, uSw, uRot, uSpin, uPx, uAsp, uLines, uVis;
+    varying vec2 vUv;
+    float ln(float d, float w){ return exp(-d*d/(w*w)); }
+    void main(){
+      vec2 d = vUv - .5; vec2 da = d*vec2(uAsp, 1.); float rr = dot(da, da);
+      float cs = cos(uSpin), sn = sin(uSpin);
+      vec2 off = mat2(cs, -sn, sn, cs) * (d * uCA * (.3 + 2.*rr));                  // RGB split; its axis spins with the swirl
+      vec3 col = vec3(texture2D(tDiffuse, vUv + off).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - off).b);
+      float l = dot(col, vec3(.2126, .7152, .0722));
+      col = mix(col, col*vec3(.8, 1.02, 1.15), .55*(1. - smoothstep(0., .5, l)));      // teal shadows
+      col += vec3(0., .004, .012)*(1. - smoothstep(0., .2, l));                           // deep-blue blacks
+      col *= 1. - .06*(.5 + .5*sin(vUv.y*uLines*6.2832));                                // scanlines
+      vec3 hud = vec3(.3, .9, 1.);
+      float w = 1.15*uPx;
+      // reticle tracking the nine: dashed ring, four counter-rotating arcs, cardinal ticks, inner pip ring
+      vec2 p = (vUv - uC)*vec2(uAsp, 1.); float r = length(p), a = atan(p.y, p.x)/6.2832;
+      float g = ln(r - uR, w)*step(.42, fract(a*96. + uRot));
+      g += .8*ln(r - uR*1.13, w*1.4)*step(.66, fract(a*4. - uRot*1.618));
+      float c4 = abs(fract(a*4. + .5) - .5)/4.*6.2832*r;
+      g += ln(c4, w)*step(uR*1.2, r)*step(r, uR*1.34);
+      g += .6*ln(r - uR*.12, w)*step(.5, fract(a*12. - uRot*2.));
+      // frame brackets inside the visible (matted) area
+      float y0 = .5 - uVis*.5, y1 = .5 + uVis*.5, mg = .03;
+      vec2 m = vec2(min(vUv.x, 1. - vUv.x)*uAsp - mg, min(vUv.y - y0, y1 - vUv.y) - mg);
+      float br = ln(m.x, w)*step(-w, m.y)*step(m.y, .05) + ln(m.y, w)*step(-w, m.x)*step(m.x, .05);
+      col += hud*(g*.42*uHud + br*.28*uBr);
+      if (uSw >= 0.) col += vec3(.55, .9, 1.)*(ln(vUv.y - uSw, 1.6*uPx)*.7 + .035*smoothstep(.04, 0., uSw - vUv.y)*step(vUv.y, uSw));
+      gl_FragColor = vec4(col, 1.);
+    }` });
+composer.addPass(holo);
+composer.addPass(matte);
 composer.addPass(new OutputPass());
 
 // ---------- title: text lives in the scene (camera-space planes) so it gets the same bloom as the nine ----------
@@ -352,6 +504,7 @@ scene.add(camera);
 const TD = 5, HH = TAN * TD;                         // planes sit 5 units in front of the lens; HH = half view height there
 try { await document.fonts.load('900 200px Cinzel'); await document.fonts.load('400 120px Cinzel'); } catch (e) {}
 function textTexture(str, weight, px, track) {
+  px *= PXS; track *= PXS;                          // rasterise at output resolution (crisp at 4K)
   // R = sharp glyphs, G = wide blur (the halo); packed into one texture
   const pad = px * 0.9, mk = () => document.createElement('canvas').getContext('2d');
   const m = mk(); m.font = `${weight} ${px}px Cinzel, serif`; if ('letterSpacing' in m) m.letterSpacing = `${track}px`;
@@ -390,9 +543,9 @@ const TITLE_FRAG = `uniform sampler2D uTex; uniform float uT, uReveal, uGlitch, 
     float edge = uReveal*1.5 - (.55*n + .45*vUv.x);
     float vis = smoothstep(0., .05, edge), burn = vis * (1. - smoothstep(.05, .24, edge));
     float lava = fbm(vUv*vec2(16., 4.5) + vec2(uT*.3, uT*1.1));             // cracks of light crawling inside the letters
-    vec3 hot = vec3(1., .9, .75), ember = vec3(1., .13, .02), blood = vec3(.5, 0., .02);
-    vec3 col = mix(ember, hot, smoothstep(.5, .9, lava)) * core;
-    col += (max(cR.r - core, 0.)*vec3(1., .06, .02) + max(cB.r - core, 0.)*vec3(.2, .3, 1.)*min(uGlitch*2., 1.)) * 1.6;   // RGB split (cyan side only while glitching)
+    vec3 hot = vec3(.86, .97, 1.), ember = vec3(1., .1, .75), blood = vec3(.02, .06, .45), core0 = vec3(.03, .55, 1.);
+    vec3 col = mix(core0, hot, smoothstep(.5, .9, lava)) * core;   // holographic cyan letters, magenta burn front
+    col += (max(cR.r - core, 0.)*vec3(1., .08, .7) + max(cB.r - core, 0.)*vec3(.2, .3, 1.)*min(uGlitch*2., 1.)) * 1.6;   // RGB split (cyan side only while glitching)
     col += blood * .3 * glow * glow;
     col *= vis * uBeat;
     col += ember * 2.2 * burn * (core + .3*glow);
@@ -411,6 +564,7 @@ function titlePlane(spec, seed, gain) {
 }
 // place a plane by screen position (NDC) and by the on-screen height of its capital letters (NDC units)
 function placeText(tp, x, y, capH) {
+  y /= WIDE; capH /= WIDE;                           // sizes are 16:9-frame units: keep them relative to the width
   const h = capH / tp.spec.capFrac * HH;
   tp.mesh.scale.set(h * tp.spec.aspect, h, 1);
   tp.mesh.position.set(x * HH * camera.aspect, y * HH, -TD);
@@ -426,7 +580,7 @@ const eGeo = new THREE.BufferGeometry();
 eGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(EN * 3), 3));
 eGeo.setAttribute('aSeed', new THREE.BufferAttribute(eSeed, 3));
 const emberMat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending,
-  uniforms: { uT: { value: 0 }, uA: { value: 0 }, uHH: { value: HH }, uAsp: { value: W / H }, uPix: { value: H / 1080 } },
+  uniforms: { uT: { value: 0 }, uA: { value: 0 }, uHH: { value: HH }, uAsp: { value: W / H }, uPix: { value: HREF / 1080 } },
   vertexShader: `attribute vec3 aSeed; uniform float uT, uHH, uAsp, uPix; varying float vLife, vK;
     void main(){
       float life = fract(aSeed.y + uT*(.08 + .14*aSeed.z));
@@ -438,31 +592,137 @@ const emberMat = new THREE.ShaderMaterial({ transparent: true, depthTest: false,
   fragmentShader: `uniform float uA, uT; varying float vLife, vK;
     void main(){ float r = length(gl_PointCoord - .5); if (r > .5) discard;
       float f = sin(3.1416*vLife) * (.6 + .4*sin(uT*17. + vK*90.));
-      gl_FragColor = vec4(mix(vec3(1., .18, .03), vec3(1., .7, .35), vK) * exp(-r*r*14.) * f * uA, 1.); }`,
+      gl_FragColor = vec4(mix(vec3(.08, .55, 1.), vec3(.85, .95, 1.), vK) * exp(-r*r*14.) * f * uA, 1.); }`,
 });
 const embers = new THREE.Points(eGeo, emberMat);
 embers.frustumCulled = false; embers.renderOrder = 9; camera.add(embers);
 
+// ---------- exact orbit trails: each sample point drawn at g(t − τ)·p for τ ∈ [0, Λ] ----------
+// During the pure Hopf flow g(t − τ)·p = e^{−(Δθ)u} e^{θu} p, i.e. an arc of the Hopf fibre through p, so the
+// trails ARE fibres: Villarceau circles, every pair linked once. Their union over the nine is its Hopf torus.
+const TR = 240, TS = 96, trPos = new Float32Array(TR * (TS - 1) * 2 * 3);
+const trAge = new Float32Array(TR * (TS - 1) * 2), trS = new Float32Array(TR * (TS - 1) * 2), trW = new Float32Array(TR * (TS - 1) * 2);
+const trGeo = new THREE.BufferGeometry();
+trGeo.setAttribute('position', new THREE.BufferAttribute(trPos, 3));
+trGeo.setAttribute('aAge', new THREE.BufferAttribute(trAge, 1));
+trGeo.setAttribute('aS', new THREE.BufferAttribute(trS, 1));
+trGeo.setAttribute('aW', new THREE.BufferAttribute(trW, 1));
+const trMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uClip: { value: 42 }, uFocus: { value: 20 }, uA: { value: 0 }, uT: { value: 0 } },
+  vertexShader: `attribute float aAge, aS, aW; uniform float uClip, uFocus; varying float vAge, vS, vW, vFade, vDG;
+    void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); gl_Position = projectionMatrix*mv;
+      vFade = 1. - smoothstep(uClip*.4, uClip, length(position)); vAge = aAge; vS = aS; vW = aW;
+      vDG = clamp(1. + (uFocus + mv.z)*.11, .3, 1.8); }`,
+  fragmentShader: `uniform float uA, uT; varying float vAge, vS, vW, vFade, vDG;
+    void main(){
+      vec3 cyan = vec3(.05,.85,1.), violet = vec3(.4,.15,1.), gold = vec3(1.,.15,.75);   // the 'gold' family is magenta in v8
+      vec3 c = mix(cyan, violet, vAge);
+      c = mix(c, gold, .45*smoothstep(.55, 1., .5+.5*sin(6.2832*vS*3. + uT*.8)));       // three fibre families glow gold
+      c += vec3(1.)*pow(1. - vAge, 6.)*.8;                                               // white-hot heads
+      gl_FragColor = vec4(c*vDG*(.6 + .5*max(vW, 0.)), uA*vFade*pow(1. - vAge, 1.4)); }`,
+});
+const trails = new THREE.LineSegments(trGeo, trMat);
+trails.frustumCulled = false;
+scene.add(trails);
+const trBody = new Float32Array(TR * 4), trTmp = new Float32Array(TS * 4);
+function updateTrails(c, t, span) {
+  for (let j = 0; j < TR; j++) {
+    const i = Math.floor((j + 0.5) * N / TR);
+    trBody[4 * j] = c.x[i]; trBody[4 * j + 1] = c.y[i]; trBody[4 * j + 2] = c.z[i]; trBody[4 * j + 3] = c.w[i];
+  }
+  const Gs = [];
+  for (let q = 0; q < TS; q++) Gs.push(groupAt(t - span * q / (TS - 1)));
+  const P3 = new Float32Array(TS * 3), PW = new Float32Array(TS);
+  let v = 0;
+  for (let j = 0; j < TR; j++) {
+    const b = 4 * j;
+    for (let q = 0; q < TS; q++) PW[q] = proj(trBody[b], trBody[b + 1], trBody[b + 2], trBody[b + 3], Gs[q], P3, 3 * q);
+    for (let q = 0; q < TS - 1; q++) for (const qq of [q, q + 1]) {
+      trPos[3 * v] = P3[3 * qq]; trPos[3 * v + 1] = P3[3 * qq + 1]; trPos[3 * v + 2] = P3[3 * qq + 2];
+      trAge[v] = qq / (TS - 1); trS[v] = j / TR; trW[v] = PW[qq]; v++;
+    }
+  }
+  cutLong(trPos, v, 7);
+  for (const k of ['position', 'aAge', 'aS', 'aW']) trGeo.attributes[k].needsUpdate = true;
+}
+
+// ---------- math HUD: the live parameters of the transformation being applied ----------
+const hudCv = document.createElement('canvas'); hudCv.width = 1800; hudCv.height = 150;
+const hudCx = hudCv.getContext('2d'), hudTex = new THREE.CanvasTexture(hudCv);
+hudTex.minFilter = THREE.LinearFilter; hudTex.generateMipmaps = false;
+const hudMat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uTex: { value: hudTex }, uA: { value: 0 } },
+  vertexShader: TITLE_VERT,
+  fragmentShader: `uniform sampler2D uTex; uniform float uA; varying vec2 vUv;
+    void main(){ vec4 c = texture2D(uTex, vUv); gl_FragColor = vec4(c.rgb*uA, 1.); }` });
+const hud = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), hudMat);
+hud.renderOrder = 11; hud.frustumCulled = false; camera.add(hud);
+let hudLast = '';
+const f3 = x => (x >= 0 ? ' ' : '') + x.toFixed(3);
+function hudText(t, info) {
+  const win = (a, b) => smooth(seg(t, a, a + 0.5)) * (1 - smooth(seg(t, b - 0.5, b)));
+  const rows = [
+    [win(2.6, 8.8),   'S³ ⊂ ℝ⁴ · STEREOGRAPHIC', 'x² + y² + z² + w² = 1      σ(p) = (x, y, z) / (1 − w)'],
+    [win(12.0, 16.7), 'I · HOPF FLOW', `p ↦ e^{θu} p      θ = ${f3(info.thH)} rad      fibres = great circles, pairwise linked`],
+    [win(16.5, 21.3), 'II · DOUBLE ROTATION  SO(4) ≅ S³×S³/±1', `p ↦ q_L p q_R      θ_L = ${f3(info.thL)}   θ_R = ${f3(info.thR)}   ω_R/ω_L = 1/φ  (never closes)`],
+    [win(21.2, 24.3), 'III · CONFORMAL BOOST  SO(4,1)', `p ↦ (p + ((cosh η−1) p·n + sinh η) n) / (cosh η + sinh η p·n)      η = ${f3(info.eta)}   ψ = ${(info.psi / DEG).toFixed(1)}°`],
+    [win(24.2, 25.7), 'IV · GEODESIC RETURN', `slerp (q_L, q_R) → ±(1, 1) on S³×S³      ${(100 * info.r).toFixed(1)} %`],
+  ];
+  let best = rows[0];
+  for (const r of rows) if (r[0] > best[0]) best = r;
+  return best;
+}
+const SHOW_HUD = false;                                // math caption off (user: no bottom-left text)
+function updateHud(t, info, fade) {
+  if (!SHOW_HUD) { hud.visible = false; return; }
+  const [a, head, body] = hudText(t, info);
+  hud.visible = a > 0.002;
+  if (!hud.visible) return;
+  const key = head + body;
+  if (key !== hudLast) {
+    hudLast = key;
+    hudCx.clearRect(0, 0, hudCv.width, hudCv.height);
+    hudCx.fillStyle = '#ffb070'; hudCx.font = '700 44px Cinzel, serif';
+    if ('letterSpacing' in hudCx) hudCx.letterSpacing = '6px';
+    hudCx.fillText(head, 8, 52);
+    hudCx.fillStyle = '#8fdcff'; hudCx.font = '30px Consolas, "Cascadia Mono", monospace';
+    if ('letterSpacing' in hudCx) hudCx.letterSpacing = '0px';
+    hudCx.fillText(body, 8, 112);
+    hudTex.needsUpdate = true;
+  }
+  const hN = 0.16, asp = hudCv.width / hudCv.height, wW = hN * HH * asp;
+  hud.scale.set(wW, hN * HH, 1);
+  hud.position.set(-0.93 * HH * camera.aspect + wW / 2, -0.83 * HH, -TD);
+  hudMat.uniforms.uA.value = 0.42 * a * fade;
+}
+
 // ---------- render one exact moment ----------
 function renderAt(t) {
   const s = shot(t);
-  const c = buildCreature(s.P, s.L), R = makeRot(s.ang);
-  for (let i = 0; i < N; i++) { wA[i] = stereo(c.x[i], c.y[i], c.z[i], c.w[i], R, pos, 3 * i); bA[i] = c.B[i] * s.P.pin; }
+  const R = groupAt(t);
+  const c = buildCreature(s.P, s.L);
+  for (let i = 0; i < N; i++) { wA[i] = proj(c.x[i], c.y[i], c.z[i], c.w[i], R, pos, 3 * i); bA[i] = c.B[i] * s.P.pin; }
   geo.attributes.position.needsUpdate = geo.attributes.aW.needsUpdate = geo.attributes.aB.needsUpdate = true;
   let v = 0;
   for (let j = 0; j < K; j++) for (let m = 0; m < TM - 1; m++) for (const mm of [m, m + 1]) {
     const o = (j * TM + mm) * 4;
-    stereo(c.T[o], c.T[o + 1], c.T[o + 2], c.T[o + 3], R, tPos, 3 * v);
+    proj(c.T[o], c.T[o + 1], c.T[o + 2], c.T[o + 3], R, tPos, 3 * v);
     tU[v] = c.U[j * TM + mm]; tJ[v] = j; v++;
   }
   tGeo.attributes.position.needsUpdate = tGeo.attributes.aU.needsUpdate = tGeo.attributes.aJ.needsUpdate = true;
   for (const m of [lineMat, ptsMat, tMat, beadMat]) m.uniforms.uT.value = t;
-  lineMat.uniforms.uFade.value = s.fade * s.alpha;
-  ptsMat.uniforms.uFade.value = s.fade * s.alpha * s.alpha;
-  tMat.uniforms.uFade.value = beadMat.uniforms.uFade.value = s.fade * s.tendrilFade;
+  const dens = t < 9.5 ? Math.min(1, Math.max(0.22, Math.pow(19 / s.dist, 0.45))) : 1;   // 9000 points in a few pixels: dim by size
+  lineMat.uniforms.uFade.value = s.fade * s.alpha * dens * PXS;   // 1-px lines: same light per area at 4K
+  ptsMat.uniforms.uFade.value = s.fade * s.alpha * s.alpha * dens * dens;
+  tMat.uniforms.uFade.value = s.fade * s.tendrilFade * dens * PXS;
+  beadMat.uniforms.uFade.value = s.fade * s.tendrilFade * dens;
   tendrils.visible = beads.visible = s.tendrilFade > 0.001;
   starMat.opacity = s.fade;
   bloom.strength = s.bloom;
+  // glow follows the shape: while the nine is small, the coarse bloom mips (1/16, 1/32 res) would smear it into
+  // a blocky square, so they open up only as the camera closes in; far away the light starts as a dot
+  const bf = bloom.compositeMaterial.uniforms.bloomFactors.value, BF = [1, 0.85, 0.6, 0.3, 0.1], sp = s.spread ?? 1;   // coarse mips kept low all film: the halo hugs the outline
+  for (let i = 0; i < 5; i++) bf[i] = BF[i] * (i === 0 ? 1 : i === 1 ? 0.3 + 0.7 * sp : sp);
   // pan sideways so the nine lands at screen x = s.nx, plus a deterministic impact shake
   const pan = -(s.nx - NINE_OFS_X) * TAN * s.dist * camera.aspect;
   const jx = s.shake * (Math.sin(t * 91.7) + 0.6 * Math.sin(t * 57.3)), jy = s.shake * (Math.cos(t * 83.1) + 0.6 * Math.sin(t * 61.9));
@@ -471,10 +731,17 @@ function renderAt(t) {
   camera.position.set(TARGET.x + pan * rx + s.dist * ce * Math.sin(s.orbit) + jx, TARGET.y + s.dist * se + jy,
                       TARGET.z + pan * rz + s.dist * ce * Math.cos(s.orbit));
   const focus = Math.hypot(s.dist, pan);
-  for (const m of [lineMat, ptsMat, tMat, beadMat, latMat]) m.uniforms.uFocus.value = focus;
-  updateLattice(R, makeRot({ xw: s.ang.xw + s.lat.xw, yw: s.ang.yw + s.lat.yw, zw: s.ang.zw + s.lat.zw }), 1);
+  for (const m of [lineMat, ptsMat, tMat, beadMat, latMat, trMat]) m.uniforms.uFocus.value = focus;
+  // the nested tori ride the same exact motion composed with their own slow (non-isoclinic) drift
+  const drift = makeG(qexp(0.17 * t, unit3([0.4, 1, 0.3])), qexp(0.11 * t + 0.4, unit3([1, 0.2, -0.6])));
+  updateLattice(R, compose(R, drift), 1);
+  trails.visible = s.trail > 0.02;
+  if (trails.visible) updateTrails(c, t, s.trail);
+  trMat.uniforms.uT.value = t;
+  trMat.uniforms.uA.value = 0.11 * PXS * s.fade * smooth(clamp01(s.trail / 0.6));
+  updateHud(t, R.info, s.fade);
   latMat.uniforms.uT.value = t;
-  latMat.uniforms.uA.value = 0.05 * s.fade * s.lat.glow;
+  latMat.uniforms.uA.value = 0.042 * PXS * s.fade * s.lat.glow;
   camera.lookAt(TARGET.x + pan * rx + 0.5 * jx, TARGET.y + 0.5 * jy, TARGET.z + pan * rz);
   const ti = s.title;
   unkT.mesh.visible = soonT.mesh.visible = credT.mesh.visible = embers.visible = !!ti;
@@ -488,7 +755,54 @@ function renderAt(t) {
     }
     emberMat.uniforms.uT.value = t; emberMat.uniforms.uA.value = ti.embers * s.fade;
   }
+  matte.uniforms.uVis.value = ASP < REF_ASP ? Math.min(1, (W / imaxMatte(t)) / H) : 1;
+  driveHolo(t, s);
   composer.render();
+}
+/** the swirl clock shared with the score (tools/score.py --future): 0.35 > 7 rev/s, exponential, 16 > 24 s */
+const SW0 = 16, SW1 = 24, SWR0 = 0.35, SWK = Math.log(20) / (SW1 - SW0);
+function swirlPhase(t) {                               // revolutions since 16 s (keeps accelerating until the freeze)
+  const x = Math.min(Math.max(t, SW0), T_FREEZE) - SW0;
+  return SWR0 / SWK * (Math.exp(SWK * x) - 1);
+}
+const _v = new THREE.Vector3(), _dist = new Float32Array(Math.ceil(N / 10));
+function driveHolo(t, s) {
+  camera.updateMatrixWorld();
+  let sx = 0, sy = 0, n = 0;
+  for (let i = 0; i < N; i += 10) {
+    _v.set(pos[3 * i], pos[3 * i + 1], pos[3 * i + 2]).project(camera);
+    if (Math.abs(_v.x) > 1.3 || Math.abs(_v.y) > 1.3 || _v.z > 1) continue;
+    sx += _v.x; sy += _v.y; n++;
+  }
+  const cx = n ? sx / n : 0, cy = n ? sy / n : 0;
+  let k = 0;
+  for (let i = 0; i < N; i += 10) {
+    _v.set(pos[3 * i], pos[3 * i + 1], pos[3 * i + 2]).project(camera);
+    if (Math.abs(_v.x) > 1.3 || Math.abs(_v.y) > 1.3 || _v.z > 1) continue;
+    _dist[k++] = Math.hypot((_v.x - cx) * 0.5 * ASP, (_v.y - cy) * 0.5);
+  }
+  const ds = _dist.subarray(0, k).sort();
+  const R = Math.min(0.42, Math.max(0.05, 1.25 * (k ? ds[Math.floor(0.85 * (k - 1))] : 0.1)));
+  const u = holo.uniforms, sw = swirlPhase(t);
+  u.uC.value.set(cx * 0.5 + 0.5, cy * 0.5 + 0.5); u.uR.value = R;
+  u.uRot.value = 0.06 * t + sw;                       // reticle spins with the swirl (same curve as the sound)
+  u.uSpin.value = 6.2832 * sw;
+  const hit = c => Math.exp(-(((t - c) / 0.12) ** 2));
+  const swirl = clamp01((t - SW0) / (SW1 - SW0));
+  u.uCA.value = 0.0015 + 0.005 * swirl * swirl * (t < T_FREEZE ? 1 : 0) + 0.006 * (hit(T_HOPF0) + hit(T_SNAP) + hit(T_SWAP1) + hit(T_END));
+  u.uHud.value = s.fade * smooth(seg(t, 2.5, 4.5))
+                 * (1 - 0.9 * smooth(seg(t, T_FREEZE, T_FREEZE + 0.2)) * (1 - smooth(seg(t, T_SNAP, T_SNAP + 0.15))))
+                 * (1 - 0.6 * smooth(seg(t, T_SNAP + 0.6, 27)));
+  u.uBr.value = s.fade * smooth(seg(t, 0.8, 2.2));
+  u.uVis.value = matte.uniforms.uVis.value;
+  u.uSw.value = -1;
+  for (const c of [0.9, T_HOPF0, T_SNAP]) if (t >= c && t < c + 0.5) u.uSw.value = 1 - (t - c) / 0.5;   // scan sweeps, top to bottom
+}
+/** visible aspect ratio at time t inside the 1.43:1 frame (IMAX "expanded aspect ratio").
+ *  Real IMAX releases switch with a hard cut, never a slide: 1.90:1 for the quiet arrival,
+ *  full 1.43:1 from the Hopf flow on, when the nine turns inside out and the trails fill the sky. */
+function imaxMatte(t) {
+  return t < T_HOPF0 ? MATTE_ASP : 1.43;
 }
 window.renderAt = renderAt;
 // debug: screen-space (NDC) bounding box of the main curve at time t
