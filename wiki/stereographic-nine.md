@@ -1,7 +1,7 @@
 # Stereographic Nine — S³ "9" simulation + UNKNOWN 9 teaser
 
 **Status**: Verified 2026-11-23 (v6, v7 IMAX, v8 futuristic), 2026-11-22 (v1–v5) (renders checked with ffprobe + frames pulled from each MP4). Code lives in
-`stereographic-nine/` on branch `claude/4d-geometry-nine-projection-9aa0a3` — **not yet committed**.
+`stereographic-nine/` on branch `claude/4d-geometry-nine-projection-9aa0a3` — committed (v1–v5 `3f663fe4`, v6–v8 `e1e5812b`), **not pushed, no PR yet**.
 
 One closed filament on the 3-sphere S³ ⊂ ℝ⁴ whose stereographic projection into ℝ³ reads as the digit 9;
 grew into four "worlds" pages and a deterministic film pipeline that produced the "UNKNOWN 9" teaser.
@@ -123,9 +123,9 @@ Every visual is a pure function of `t` → `renderAt(t)` → `canvas.toDataURL` 
 - v4 `unknown9-teaser-1080p.mp4`: 810 frames, 27.0 s — ffprobe.
 
 ### Known Gaps
-- Nothing committed; `stereographic-nine/` is untracked and `.claude/launch.json` modified. ADLC (branch → PR) still pending.
+- ~~Nothing committed~~ — resolved 2026-11-23: `stereographic-nine/` is tracked (3f663fe4, e1e5812b).
 - v5 (40.7 MB) and v6 (50.2 MB) masters exceed the 30 MB Remote Control limit; v6 has a 19 MB `-phone.mp4`, v5 none.
-- v6, v7, v8 not yet committed (v1–v5 are in 3f663fe4). v7 4K masters (231/209 MB) only shareable via the 17 MB phone copy.
+- Committed on the branch (v1–v5 3f663fe4, v6–v8 e1e5812b) but not pushed; ADLC push + PR into master pending. v7 4K masters (231/209 MB) only shareable via the 17 MB phone copy.
 - Set aside, not deleted: `renders/*.x265-banded-20261123.mp4` (banded x265 encodes), `*.failed-20261123.mp4` (no moov atom).
 - v7 is IMAX-*shaped* (aspect, resolution, framing), not an IMAX DCP: no IMAX DMR/certification, no 48 fps, no DCP package. The v6 math caption is disabled, not deleted (`SHOW_HUD`).
 - Fonts (Cinzel) and three.js load from Google Fonts / unpkg at render time — offline rendering fails.
