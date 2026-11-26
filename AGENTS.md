@@ -55,3 +55,11 @@ When wrapping a feature, milestone, or hand-off to another agent (e.g. Antigravi
 3. Keep it **cold-start friendly**: assume no prior context; name exact files, commands, and the branch/PR/CI state.
 
 This is part of the self-improving loop — the handoff is how work survives across sessions and across agents.
+
+---
+
+## Cloud GPU & Remote Compute Cost Guard (Mandatory Auto-Pause)
+To prevent accidental billing and idle resource burn:
+1. **Auto-Pause on Wait/Prompt**: Whenever an agent is waiting for human input (e.g. license approval, credential input, plan review) or between active turns, any running cloud GPU instance (JarvisLabs, RunPod, E2E, etc.) MUST be immediately paused (`jl pause <id> --yes`).
+2. **Session Teardown & Parking**: Before ending, disconnecting, or parking a session, verify all remote instances are either paused or destroyed. Never leave a billable compute instance running unattended.
+3. **Data Protection**: Store all code, virtual environments, datasets, and checkpoints inside persistent storage volumes (`/home/`) before pausing so resumes are seamless.
