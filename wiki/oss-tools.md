@@ -42,5 +42,27 @@ python scripts/oss_doctor.py --strict      # exit 1 if anything is not usable (f
 - The `manage_oss_arsenal.ps1`, `openseo_audit.py` and `postiz_syndicator.py` scripts exist only on the unmerged `claude_code_opensource_tools` branch (Antigravity worktree), not on `master`. That script's `status` command prints "All 7 … governed" whether or not the tools exist.
 - PoC suite: 32 verified, 3 failed (brag, cliproxyapi, text-to-cad).
 
+## Intake reviews (repos from videos/lists)
+
+**Status**: Verified 2026-11-28
+
+How a repo gets into the registry: resolve the full `owner/name`, read license + last push from the GitHub API, check it isn't already registered or already a skill, decide, then shallow-clone (`git clone --depth 1`) into `D:/navakanth001/tools`, add the entry, and run the doctor. Put usage limits in the entry's `use_for`, because that's the text an agent reads when it picks a tool. Procedure lives in the `external-repo-adoption-audit` skill.
+
+| Date | Source | Added | Not added |
+|---|---|---|---|
+| 2026-11-21 | "9 free GitHub repos" video ([PR #49](https://github.com/navakanth1984/AgentOSClaude/pull/49)) | slop-monster, power-design, astryx, claude-code-game-studios | Cardboard (proprietary SaaS), Heretic (AGPL, no use), Opuscar (CC BY-NC) |
+| 2026-11-28 | ["10 open-source projects" video](https://www.youtube.com/watch?v=qM7dlXtgZwU) ([PR #52](https://github.com/navakanth1984/AgentOSClaude/pull/52)) | artcraft, rea-video, awesome-design-md, open-design, ai-website-cloner, every-app, freellmapi | REA (already registered), [Camoufox](https://github.com/daijro/camoufox) (built to evade bot detection), [Coolify](https://github.com/coollabsio/coolify) (deferred, needs a Linux host) |
+
+### Verified
+- Licenses and activity for the 2026-11-28 batch: `gh api repos/<owner>/<name>` (`license.spdx_id`, `pushed_at`), run 2026-11-28. All MIT or Apache-2.0, all pushed in Nov 2026.
+- Readiness: `python scripts/oss_doctor.py` on 2026-11-28 → artcraft and awesome-design-md READY; rea-video, open-design, ai-website-cloner, every-app and freellmapi NEEDS_DEPS; 28/45 usable overall.
+
+### Known Gaps
+- The 5 NEEDS_DEPS repos have not been installed or run. Registered means "cloned and licensed", not "works".
+- `rea-video` and `free-llm-api` already exist as skills under `~/.claude/skills/`. They were not checked against the newly cloned upstream, so they may be out of date.
+- `open-design` takes 510 MB on disk. The clones are shallow, so `git pull` is the update path.
+- The two EXPOSED MCP keys (firecrawl, pinecone) from the 2026-11-18 baseline are still exposed on 2026-11-28.
+- There are no tests for `oss_doctor.py`. Its output is trusted only because it is read directly from disk state.
+
 ## Related
 - [Agent OS](agent-os.md) · [Code Development Lifecycle](development-lifecycle.md) · [Storage Management](storage-management.md) (deps are deleted to save space and get reinstalled, which is why NEEDS_DEPS is common)
