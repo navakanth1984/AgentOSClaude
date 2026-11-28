@@ -198,3 +198,5 @@
 2026-11-18 — Added OSS Tools Registry (wiki/oss-tools.md, wiki/oss-tools-registry.json) + scripts/oss_doctor.py; baseline 19/34 usable; doctor flags literal secrets in tracked .mcp.json.
 
 2026-11-21 — Registered 4 OSS repos vetted from the "9 free GitHub repos" video (slop-monster, power-design, astryx, claude-code-game-studios; all MIT, licenses checked via GitHub API). Shallow-cloned to D:/navakanth001/tools; doctor: 3 READY, astryx NEEDS_DEPS (npm install pending); total 26/38 usable.
+
+2026-11-28 — Registered 7 OSS repos vetted from the "10 open-source projects" video (artcraft, rea-video, awesome-design-md, open-design, ai-website-cloner, every-app, freellmapi; licenses checked via GitHub API). REA already registered. Rejected Camoufox (anti-bot-detection browser); deferred Coolify (needs a Linux host). Doctor: 2 READY, 5 NEEDS_DEPS; total 28/45 usable.
